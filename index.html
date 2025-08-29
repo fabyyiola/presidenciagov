@@ -48,12 +48,12 @@
         <nav class="bg-white border-t border-gray-200">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex justify-center space-x-8 py-4">
-                    <a href="#" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Inicio</a>
-                    <a href="#" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Equipo</a>
-                    <a href="#" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Tu Ciudad</a>
-                    <a href="#" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Trámites</a>
-                    <a href="#" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Transparencia</a>
-                    <a href="#" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Proyectos</a>
+                    <a href="index.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50 bg-blue-50">Inicio</a>
+                    <a href="equipo.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Equipo</a>
+                    <a href="tuciudad.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Tu Ciudad</a>
+                    <a href="tramites.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Trámites</a>
+                    <a href="transparencia.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Transparencia</a>
+                    <a href="proyectos.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Proyectos</a>
                 </div>
             </div>
         </nav>
@@ -280,6 +280,17 @@
         document.querySelector('button').addEventListener('click', function() {
             alert('¡Gracias por tu interés! Te contactaremos pronto para agendar tu visita al Museo Arqueológico.');
         });
+         const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fade-in {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in {
+                animation: fade-in 1s ease-out;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976f06e99536f863',t:'MTc1NjUwMTc0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

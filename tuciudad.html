@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Ciudad - Sabinas Hidalgo, Nuevo León</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'municipal-blue': '#2563eb',
+                        'municipal-teal': '#14b8a6',
+                        'municipal-pink': '#f87171',
+                        'municipal-green': '#22c55e'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="font-sans bg-white">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <!-- Top Bar -->
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-municipal-blue hover:text-blue-700 font-medium">Contáctanos</a>
+            
+            <!-- Logo -->
+            <div class="flex items-center">
+                <div class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-6 py-3 rounded-lg font-bold text-lg">
+                    Sabinas Hidalgo N.L.
+                </div>
+            </div>
+            
+            <!-- Social Media -->
+            <div class="flex space-x-3">
+                <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="bg-white border-t border-gray-200">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-center space-x-8 py-4">
+                    <a href="index.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Inicio</a>
+                    <a href="equipo.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Equipo</a>
+                    <a href="tuciudad.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50 bg-blue-50">Tu Ciudad</a>
+                    <a href="tramites.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Trámites</a>
+                    <a href="transparencia.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Transparencia</a>
+                    <a href="proyectos.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Proyectos</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-64 bg-gradient-to-r from-municipal-green to-municipal-teal flex items-center justify-center">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="relative text-center text-white z-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">TU CIUDAD</h1>
+            <p class="text-xl text-green-100">Descubre y conecta con Sabinas Hidalgo</p>
+        </div>
+    </section>
+
+    <!-- Quick Navigation -->
+    <section class="py-8 bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-center space-x-8">
+                <a href="#directorio" class="text-municipal-blue hover:text-blue-700 font-medium px-4 py-2 rounded-full border border-municipal-blue hover:bg-blue-50 transition duration-300">
+                    <i class="fas fa-store mr-2"></i>Directorio de Negocios
+                </a>
+                <a href="#turismo" class="text-municipal-teal hover:text-teal-700 font-medium px-4 py-2 rounded-full border border-municipal-teal hover:bg-teal-50 transition duration-300">
+                    <i class="fas fa-map-marked-alt mr-2"></i>Lugares Turísticos
+                </a>
+                <a href="#eventos" class="text-municipal-green hover:text-green-700 font-medium px-4 py-2 rounded-full border border-municipal-green hover:bg-green-50 transition duration-300">
+                    <i class="fas fa-calendar-alt mr-2"></i>Eventos Locales
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Directory Section -->
+    <section id="directorio" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-municipal-blue mb-4">DIRECTORIO DE NEGOCIOS</h2>
+                <p class="text-gray-600 mb-8">Apoya a los emprendedores locales de Sabinas Hidalgo</p>
+                
+                <button id="registerBusinessBtn" class="bg-municipal-blue hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300 mb-8">
+                    <i class="fas fa-plus mr-2"></i>Registrar mi Negocio
+                </button>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="max-w-4xl mx-auto mb-8">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <input type="text" id="businessSearch" placeholder="Buscar negocios..." class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                    <select id="categoryFilter" class="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                        <option value="">Todas las categorías</option>
+                        <option value="restaurante">Restaurantes</option>
+                        <option value="tienda">Tiendas</option>
+                        <option value="servicio">Servicios</option>
+                        <option value="salud">Salud</option>
+                        <option value="educacion">Educación</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Business Cards -->
+            <div id="businessGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Sample businesses -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300" data-category="restaurante">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-municipal-pink rounded-full flex items-center justify-center text-white text-xl mr-4">
+                            🍕
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-municipal-blue">Pizzería Don Carlos</h3>
+                            <p class="text-sm text-gray-600">Restaurante</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Deliciosas pizzas artesanales y comida italiana. Servicio a domicilio disponible.</p>
+                    <div class="text-sm text-gray-500 space-y-1">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Calle Hidalgo #123, Centro</p>
+                        <p><i class="fas fa-phone mr-2"></i>(824) 555-0101</p>
+                        <p><i class="fas fa-clock mr-2"></i>Lun-Dom: 12:00-22:00</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300" data-category="tienda">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-municipal-teal rounded-full flex items-center justify-center text-white text-xl mr-4">
+                            👗
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-municipal-blue">Boutique Elegancia</h3>
+                            <p class="text-sm text-gray-600">Tienda de Ropa</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Ropa de moda para toda la familia. Las últimas tendencias a precios accesibles.</p>
+                    <div class="text-sm text-gray-500 space-y-1">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Av. Juárez #456, Centro</p>
+                        <p><i class="fas fa-phone mr-2"></i>(824) 555-0102</p>
+                        <p><i class="fas fa-clock mr-2"></i>Lun-Sáb: 9:00-19:00</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300" data-category="servicio">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-municipal-green rounded-full flex items-center justify-center text-white text-xl mr-4">
+                            🔧
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-municipal-blue">Taller Mecánico Rodríguez</h3>
+                            <p class="text-sm text-gray-600">Servicios Automotrices</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Reparación y mantenimiento de vehículos. 25 años de experiencia.</p>
+                    <div class="text-sm text-gray-500 space-y-1">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Calle Morelos #789, Col. Industrial</p>
+                        <p><i class="fas fa-phone mr-2"></i>(824) 555-0103</p>
+                        <p><i class="fas fa-clock mr-2"></i>Lun-Vie: 8:00-18:00</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300" data-category="salud">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-municipal-blue rounded-full flex items-center justify-center text-white text-xl mr-4">
+                            💊
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-municipal-blue">Farmacia San José</h3>
+                            <p class="text-sm text-gray-600">Farmacia</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Medicamentos, productos de salud y belleza. Servicio las 24 horas.</p>
+                    <div class="text-sm text-gray-500 space-y-1">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Plaza Principal #12, Centro</p>
+                        <p><i class="fas fa-phone mr-2"></i>(824) 555-0104</p>
+                        <p><i class="fas fa-clock mr-2"></i>24 horas</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300" data-category="educacion">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white text-xl mr-4">
+                            📚
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-municipal-blue">Academia de Inglés Global</h3>
+                            <p class="text-sm text-gray-600">Educación</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Cursos de inglés para todas las edades. Certificaciones internacionales.</p>
+                    <div class="text-sm text-gray-500 space-y-1">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Calle Allende #234, Centro</p>
+                        <p><i class="fas fa-phone mr-2"></i>(824) 555-0105</p>
+                        <p><i class="fas fa-clock mr-2"></i>Lun-Vie: 15:00-21:00</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300" data-category="restaurante">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white text-xl mr-4">
+                            ☕
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-municipal-blue">Café Central</h3>
+                            <p class="text-sm text-gray-600">Cafetería</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">El mejor café de la región. Desayunos, postres y ambiente acogedor.</p>
+                    <div class="text-sm text-gray-500 space-y-1">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Plaza de Armas #1, Centro</p>
+                        <p><i class="fas fa-phone mr-2"></i>(824) 555-0106</p>
+                        <p><i class="fas fa-clock mr-2"></i>Lun-Dom: 7:00-22:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tourist Places Section -->
+    <section id="turismo" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-municipal-blue text-center mb-12">LUGARES TURÍSTICOS</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <!-- Parque la Turbina -->
+                <div class="bg-gradient-to-br from-green-400 to-green-600 rounded-2xl p-8 text-white relative overflow-hidden">
+                    <div class="absolute top-4 right-4 text-6xl opacity-20">🌊</div>
+                    <h3 class="text-2xl font-bold mb-4">PARQUE LA TURBINA</h3>
+                    <p class="text-green-100 mb-6">
+                        Hermoso parque natural con cascadas y áreas recreativas. Perfecto para un día familiar 
+                        rodeado de naturaleza y agua cristalina.
+                    </p>
+                    <div class="space-y-2 text-sm text-green-100">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Carretera a Lampazos, Km 8</p>
+                        <p><i class="fas fa-clock mr-2"></i>Todos los días: 8:00-18:00</p>
+                        <p><i class="fas fa-ticket-alt mr-2"></i>Entrada gratuita</p>
+                    </div>
+                    <button class="mt-6 bg-white text-green-600 px-6 py-2 rounded-full font-semibold hover:bg-green-50 transition duration-300">
+                        Ver más detalles
+                    </button>
+                </div>
+
+                <!-- Parque Ojo de Agua -->
+                <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl p-8 text-white relative overflow-hidden">
+                    <div class="absolute top-4 right-4 text-6xl opacity-20">💧</div>
+                    <h3 class="text-2xl font-bold mb-4">PARQUE OJO DE AGUA</h3>
+                    <p class="text-blue-100 mb-6">
+                        Manantial natural de aguas termales con propiedades curativas. Un oasis de tranquilidad 
+                        y relajación en medio del desierto.
+                    </p>
+                    <div class="space-y-2 text-sm text-blue-100">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Ejido Ojo de Agua, 15 km al norte</p>
+                        <p><i class="fas fa-clock mr-2"></i>Todos los días: 7:00-19:00</p>
+                        <p><i class="fas fa-ticket-alt mr-2"></i>$50 por persona</p>
+                    </div>
+                    <button class="mt-6 bg-white text-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-50 transition duration-300">
+                        Ver más detalles
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Cerro la Ermita -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="bg-gradient-to-r from-orange-400 to-red-500 h-32 flex items-center justify-center">
+                        <span class="text-white text-5xl">⛰️</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-municipal-blue text-lg mb-2">CERRO LA ERMITA</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Mirador natural con vistas panorámicas de la ciudad. Ideal para senderismo y fotografía.
+                        </p>
+                        <div class="text-xs text-gray-500 space-y-1">
+                            <p><i class="fas fa-hiking mr-2"></i>Dificultad: Moderada</p>
+                            <p><i class="fas fa-clock mr-2"></i>2-3 horas de caminata</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plaza de Armas -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="bg-gradient-to-r from-municipal-blue to-blue-600 h-32 flex items-center justify-center">
+                        <span class="text-white text-5xl">🏛️</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-municipal-blue text-lg mb-2">PLAZA DE ARMAS</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Corazón histórico de la ciudad con arquitectura colonial y eventos culturales.
+                        </p>
+                        <div class="text-xs text-gray-500 space-y-1">
+                            <p><i class="fas fa-camera mr-2"></i>Perfecto para fotos</p>
+                            <p><i class="fas fa-music mr-2"></i>Eventos los fines de semana</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Templo de San José -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-32 flex items-center justify-center">
+                        <span class="text-white text-5xl">⛪</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-municipal-blue text-lg mb-2">TEMPLO DE SAN JOSÉ</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Iglesia histórica del siglo XVIII con hermosa arquitectura barroca mexicana.
+                        </p>
+                        <div class="text-xs text-gray-500 space-y-1">
+                            <p><i class="fas fa-history mr-2"></i>Patrimonio histórico</p>
+                            <p><i class="fas fa-pray mr-2"></i>Misas diarias</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Local Events Section -->
+    <section id="eventos" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-municipal-blue text-center mb-12">EVENTOS LOCALES</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-municipal-pink rounded-full flex items-center justify-center text-white text-xl mr-4">
+                            🎪
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-municipal-blue">Feria de San José</h3>
+                            <p class="text-sm text-municipal-pink font-semibold">19 de Marzo</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">Celebración patronal con juegos mecánicos, comida típica y eventos culturales.</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-municipal-green rounded-full flex items-center justify-center text-white text-xl mr-4">
+                            🌽
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-municipal-blue">Festival del Elote</h3>
+                            <p class="text-sm text-municipal-green font-semibold">Agosto</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">Celebración de la cosecha con degustación de platillos tradicionales a base de maíz.</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-municipal-teal rounded-full flex items-center justify-center text-white text-xl mr-4">
+                            🎭
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-municipal-blue">Noche de Talentos</h3>
+                            <p class="text-sm text-municipal-teal font-semibold">Primer sábado del mes</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">Espectáculo mensual donde los ciudadanos muestran sus talentos artísticos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Registration Modal -->
+    <div id="businessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-municipal-blue">Registrar mi Negocio</h3>
+                    <button id="closeModal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                
+                <form id="businessForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Negocio *</label>
+                            <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
+                            <select required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                                <option value="">Seleccionar categoría</option>
+                                <option value="restaurante">Restaurante</option>
+                                <option value="tienda">Tienda</option>
+                                <option value="servicio">Servicio</option>
+                                <option value="salud">Salud</option>
+                                <option value="educacion">Educación</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Descripción del Negocio *</label>
+                        <textarea required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-municipal-blue" placeholder="Describe qué productos o servicios ofreces..."></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Dirección *</label>
+                            <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
+                            <input type="tel" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Horario de Atención</label>
+                            <input type="text" placeholder="Ej: Lun-Vie: 9:00-18:00" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email (opcional)</label>
+                            <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Propietario *</label>
+                        <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" required class="mr-2">
+                        <label class="text-sm text-gray-700">Acepto que mi información sea publicada en el directorio municipal *</label>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-4 pt-4">
+                        <button type="button" id="cancelBtn" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition duration-300">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-municipal-blue text-white rounded-md hover:bg-blue-700 transition duration-300">
+                            Registrar Negocio
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-municipal-blue text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="font-bold text-xl mb-4">CONTACTO</h3>
+                    <p class="mb-2">📍 Palacio Municipal, Centro</p>
+                    <p class="mb-2">📞 (824) 123-4567</p>
+                    <p class="mb-2">✉️ contacto@sabinashidalgo.gob.mx</p>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-xl mb-4">HORARIOS</h3>
+                    <p class="mb-2">Lunes a Viernes: 8:00 - 16:00 hrs</p>
+                    <p class="mb-2">Sábados: 9:00 - 13:00 hrs</p>
+                    <p class="mb-2">Miércoles Ciudadano: 11:30 - 13:30 hrs</p>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-xl mb-4">SÍGUENOS</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-2xl hover:text-blue-300"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-2xl hover:text-blue-300"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-2xl hover:text-blue-300"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-2xl hover:text-blue-300"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-blue-400 mt-8 pt-8 text-center">
+                <p>&copy; 2024 Gobierno Municipal de Sabinas Hidalgo, Nuevo León. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById('businessModal');
+        const registerBtn = document.getElementById('registerBusinessBtn');
+        const closeModal = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const businessForm = document.getElementById('businessForm');
+
+        registerBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+
+        // Form submission
+        businessForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('¡Gracias por registrar tu negocio! Será revisado y publicado en las próximas 24 horas.');
+            modal.classList.add('hidden');
+            businessForm.reset();
+        });
+
+        // Search and filter functionality
+        const searchInput = document.getElementById('businessSearch');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const businessCards = document.querySelectorAll('#businessGrid > div');
+
+        function filterBusinesses() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedCategory = categoryFilter.value;
+
+            businessCards.forEach(card => {
+                const businessName = card.querySelector('h3').textContent.toLowerCase();
+                const businessCategory = card.getAttribute('data-category');
+                
+                const matchesSearch = businessName.includes(searchTerm);
+                const matchesCategory = !selectedCategory || businessCategory === selectedCategory;
+                
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', filterBusinesses);
+        categoryFilter.addEventListener('change', filterBusinesses);
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Tourist place details
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.includes('Ver más detalles')) {
+                button.addEventListener('click', function() {
+                    const placeName = this.closest('div').querySelector('h3').textContent;
+                    alert(`Más información sobre ${placeName} próximamente disponible en nuestra app móvil.`);
+                });
+            }
+        });
+
+        // Business card click functionality
+        businessCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const businessName = this.querySelector('h3').textContent;
+                const phone = this.querySelector('.fa-phone').parentElement.textContent;
+                alert(`Contactar a ${businessName}\n${phone}`);
+            });
+        });
+         const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fade-in {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in {
+                animation: fade-in 1s ease-out;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976f347a56a3f863',t:'MTc1NjUwMzYwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

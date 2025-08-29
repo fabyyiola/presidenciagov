@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trámites y Servicios - Sabinas Hidalgo, Nuevo León</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'municipal-blue': '#2563eb',
+                        'municipal-teal': '#14b8a6',
+                        'municipal-pink': '#f87171',
+                        'municipal-green': '#22c55e'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="font-sans bg-white">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <!-- Top Bar -->
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-municipal-blue hover:text-blue-700 font-medium">Contáctanos</a>
+            
+            <!-- Logo -->
+            <div class="flex items-center">
+                <div class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-6 py-3 rounded-lg font-bold text-lg">
+                    Sabinas Hidalgo N.L.
+                </div>
+            </div>
+            
+            <!-- Social Media -->
+            <div class="flex space-x-3">
+                <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="bg-white border-t border-gray-200">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-center space-x-8 py-4">
+                    <a href="index.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Inicio</a>
+                    <a href="equipo.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Equipo</a>
+                    <a href="tuciudad.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Tu Ciudad</a>
+                    <a href="tramites.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50 bg-blue-50">Trámites</a>
+                    <a href="transparencia.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Transparencia</a>
+                    <a href="proyectos.html" class="text-municipal-blue hover:text-blue-700 font-medium px-3 py-2 rounded-md hover:bg-blue-50">Proyectos</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-64 bg-gradient-to-r from-municipal-blue to-purple-600 flex items-center justify-center">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="relative text-center text-white z-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">TRÁMITES Y SERVICIOS</h1>
+            <p class="text-xl text-blue-100">Facilitamos tus gestiones municipales</p>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="py-8 bg-white border-b">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h2 class="text-2xl font-bold text-municipal-blue text-center mb-6">¿Qué trámite necesitas realizar?</h2>
+                
+                <div class="flex flex-col md:flex-row gap-4 mb-4">
+                    <input type="text" id="tramiteSearch" placeholder="Buscar trámite... (ej: licencia, apoyo, certificado)" 
+                           class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-municipal-blue text-lg">
+                    <select id="categoryFilter" class="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                        <option value="">Todas las categorías</option>
+                        <option value="identificacion">Identificación y Documentos</option>
+                        <option value="apoyos">Apoyos Económicos</option>
+                        <option value="licencias">Licencias y Permisos</option>
+                        <option value="certificados">Certificados</option>
+                        <option value="predial">Predial y Catastro</option>
+                        <option value="desarrollo">Desarrollo Urbano</option>
+                        <option value="salud">Salud</option>
+                        <option value="educacion">Educación</option>
+                    </select>
+                </div>
+                
+                <div class="text-center">
+                    <p class="text-gray-600 text-sm">💡 <strong>Tip:</strong> Usa palabras clave como "licencia", "apoyo", "certificado" o "permiso"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Most Common Procedures -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-municipal-blue text-center mb-8">TRÁMITES MÁS SOLICITADOS</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-6 text-white hover:shadow-lg transition duration-300 cursor-pointer" data-category="identificacion">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🆔</div>
+                        <h3 class="font-bold text-lg mb-2">Renovación de Licencia</h3>
+                        <p class="text-blue-100 text-sm">Renueva tu licencia de conducir</p>
+                        <div class="mt-4 text-xs">
+                            <span class="bg-white bg-opacity-20 px-2 py-1 rounded">⏱️ 30 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-6 text-white hover:shadow-lg transition duration-300 cursor-pointer" data-category="apoyos">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🎒</div>
+                        <h3 class="font-bold text-lg mb-2">Apoyo Escolar</h3>
+                        <p class="text-green-100 text-sm">Becas y útiles escolares</p>
+                        <div class="mt-4 text-xs">
+                            <span class="bg-white bg-opacity-20 px-2 py-1 rounded">⏱️ 15 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 rounded-lg p-6 text-white hover:shadow-lg transition duration-300 cursor-pointer" data-category="identificacion">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">📋</div>
+                        <h3 class="font-bold text-lg mb-2">Módulo INE</h3>
+                        <p class="text-teal-100 text-sm">Credencial de elector</p>
+                        <div class="mt-4 text-xs">
+                            <span class="bg-white bg-opacity-20 px-2 py-1 rounded">⏱️ 45 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg p-6 text-white hover:shadow-lg transition duration-300 cursor-pointer" data-category="apoyos">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🏥</div>
+                        <h3 class="font-bold text-lg mb-2">Apoyo Médico</h3>
+                        <p class="text-pink-100 text-sm">Gastos médicos y medicinas</p>
+                        <div class="mt-4 text-xs">
+                            <span class="bg-white bg-opacity-20 px-2 py-1 rounded">⏱️ 20 min</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Procedures by Category -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-municipal-blue text-center mb-12">TODOS LOS TRÁMITES</h2>
+            
+            <div id="tramitesGrid" class="space-y-8">
+                <!-- Identificación y Documentos -->
+                <div class="category-section" data-category="identificacion">
+                    <h3 class="text-2xl font-bold text-municipal-blue mb-6 flex items-center">
+                        <span class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">🆔</span>
+                        IDENTIFICACIÓN Y DOCUMENTOS
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="licencia-conducir" data-category="identificacion">
+                            <h4 class="font-bold text-municipal-blue mb-2">Licencia de Conducir (Nueva)</h4>
+                            <p class="text-gray-600 text-sm mb-3">Obtén tu primera licencia de conducir</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $850</span>
+                                <span>⏱️ 45 min</span>
+                                <span>📍 Módulo de Tránsito</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="renovacion-licencia" data-category="identificacion">
+                            <h4 class="font-bold text-municipal-blue mb-2">Renovación de Licencia</h4>
+                            <p class="text-gray-600 text-sm mb-3">Renueva tu licencia de conducir vigente</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $650</span>
+                                <span>⏱️ 30 min</span>
+                                <span>📍 Módulo de Tránsito</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="ine-credencial" data-category="identificacion">
+                            <h4 class="font-bold text-municipal-blue mb-2">Credencial INE</h4>
+                            <p class="text-gray-600 text-sm mb-3">Tramita tu credencial de elector</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 Gratuito</span>
+                                <span>⏱️ 45 min</span>
+                                <span>📍 Módulo INE</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="acta-nacimiento" data-category="identificacion">
+                            <h4 class="font-bold text-municipal-blue mb-2">Acta de Nacimiento</h4>
+                            <p class="text-gray-600 text-sm mb-3">Copia certificada del acta de nacimiento</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $85</span>
+                                <span>⏱️ 15 min</span>
+                                <span>📍 Registro Civil</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="curp" data-category="identificacion">
+                            <h4 class="font-bold text-municipal-blue mb-2">CURP</h4>
+                            <p class="text-gray-600 text-sm mb-3">Clave Única de Registro de Población</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 Gratuito</span>
+                                <span>⏱️ 10 min</span>
+                                <span>📍 Registro Civil</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="pasaporte" data-category="identificacion">
+                            <h4 class="font-bold text-municipal-blue mb-2">Pasaporte Mexicano</h4>
+                            <p class="text-gray-600 text-sm mb-3">Solicitud de pasaporte para viajes</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $1,345</span>
+                                <span>⏱️ 60 min</span>
+                                <span>📍 Oficina SRE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apoyos Económicos -->
+                <div class="category-section" data-category="apoyos">
+                    <h3 class="text-2xl font-bold text-municipal-blue mb-6 flex items-center">
+                        <span class="bg-green-100 text-green-600 p-2 rounded-lg mr-3">💰</span>
+                        APOYOS ECONÓMICOS Y SOCIALES
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="apoyo-escolar" data-category="apoyos">
+                            <h4 class="font-bold text-municipal-blue mb-2">Apoyo Escolar</h4>
+                            <p class="text-gray-600 text-sm mb-3">Becas y útiles escolares para estudiantes</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 Hasta $3,000</span>
+                                <span>⏱️ 15 min</span>
+                                <span>📍 DIF Municipal</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="apoyo-alimentario" data-category="apoyos">
+                            <h4 class="font-bold text-municipal-blue mb-2">Apoyo Alimentario</h4>
+                            <p class="text-gray-600 text-sm mb-3">Despensas y comedores comunitarios</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 Gratuito</span>
+                                <span>⏱️ 20 min</span>
+                                <span>📍 DIF Municipal</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="apoyo-medico" data-category="apoyos">
+                            <h4 class="font-bold text-municipal-blue mb-2">Apoyo Médico</h4>
+                            <p class="text-gray-600 text-sm mb-3">Gastos médicos, medicinas y cirugías</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 Hasta $50,000</span>
+                                <span>⏱️ 30 min</span>
+                                <span>📍 DIF Municipal</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="apoyo-adultos" data-category="apoyos">
+                            <h4 class="font-bold text-municipal-blue mb-2">Apoyo Adultos Mayores</h4>
+                            <p class="text-gray-600 text-sm mb-3">Pensión para adultos mayores de 65 años</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $1,600/mes</span>
+                                <span>⏱️ 25 min</span>
+                                <span>📍 DIF Municipal</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="apoyo-discapacidad" data-category="apoyos">
+                            <h4 class="font-bold text-municipal-blue mb-2">Apoyo por Discapacidad</h4>
+                            <p class="text-gray-600 text-sm mb-3">Pensión para personas con discapacidad</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $2,800/mes</span>
+                                <span>⏱️ 30 min</span>
+                                <span>📍 DIF Municipal</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="apoyo-vivienda" data-category="apoyos">
+                            <h4 class="font-bold text-municipal-blue mb-2">Apoyo para Vivienda</h4>
+                            <p class="text-gray-600 text-sm mb-3">Mejoramiento y construcción de vivienda</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 Hasta $80,000</span>
+                                <span>⏱️ 45 min</span>
+                                <span>📍 Desarrollo Social</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Licencias y Permisos -->
+                <div class="category-section" data-category="licencias">
+                    <h3 class="text-2xl font-bold text-municipal-blue mb-6 flex items-center">
+                        <span class="bg-purple-100 text-purple-600 p-2 rounded-lg mr-3">📋</span>
+                        LICENCIAS Y PERMISOS
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="licencia-funcionamiento" data-category="licencias">
+                            <h4 class="font-bold text-municipal-blue mb-2">Licencia de Funcionamiento</h4>
+                            <p class="text-gray-600 text-sm mb-3">Permiso para operar un negocio</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $1,200-$5,000</span>
+                                <span>⏱️ 5 días</span>
+                                <span>📍 Desarrollo Económico</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="permiso-construccion" data-category="licencias">
+                            <h4 class="font-bold text-municipal-blue mb-2">Permiso de Construcción</h4>
+                            <p class="text-gray-600 text-sm mb-3">Autorización para construir o remodelar</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $800-$15,000</span>
+                                <span>⏱️ 10 días</span>
+                                <span>📍 Desarrollo Urbano</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="permiso-evento" data-category="licencias">
+                            <h4 class="font-bold text-municipal-blue mb-2">Permiso para Eventos</h4>
+                            <p class="text-gray-600 text-sm mb-3">Autorización para eventos públicos</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $500-$2,000</span>
+                                <span>⏱️ 3 días</span>
+                                <span>📍 Seguridad Pública</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificados -->
+                <div class="category-section" data-category="certificados">
+                    <h3 class="text-2xl font-bold text-municipal-blue mb-6 flex items-center">
+                        <span class="bg-teal-100 text-teal-600 p-2 rounded-lg mr-3">📜</span>
+                        CERTIFICADOS
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="certificado-residencia" data-category="certificados">
+                            <h4 class="font-bold text-municipal-blue mb-2">Certificado de Residencia</h4>
+                            <p class="text-gray-600 text-sm mb-3">Constancia de domicilio</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $45</span>
+                                <span>⏱️ 15 min</span>
+                                <span>📍 Secretaría</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="certificado-ingresos" data-category="certificados">
+                            <h4 class="font-bold text-municipal-blue mb-2">Certificado de Ingresos</h4>
+                            <p class="text-gray-600 text-sm mb-3">Constancia de nivel socioeconómico</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $65</span>
+                                <span>⏱️ 20 min</span>
+                                <span>📍 Desarrollo Social</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer tramite-card" 
+                             data-tramite="certificado-solteria" data-category="certificados">
+                            <h4 class="font-bold text-municipal-blue mb-2">Certificado de Soltería</h4>
+                            <p class="text-gray-600 text-sm mb-3">Constancia de estado civil</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>💰 $55</span>
+                                <span>⏱️ 15 min</span>
+                                <span>📍 Registro Civil</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Procedure Detail Modal -->
+    <div id="procedureModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="modalTitle" class="text-2xl font-bold text-municipal-blue"></h3>
+                    <button id="closeModal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                
+                <div id="modalContent" class="space-y-6">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-municipal-blue text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="font-bold text-xl mb-4">CONTACTO</h3>
+                    <p class="mb-2">📍 Palacio Municipal, Centro</p>
+                    <p class="mb-2">📞 (824) 123-4567</p>
+                    <p class="mb-2">✉️ tramites@sabinashidalgo.gob.mx</p>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-xl mb-4">HORARIOS DE ATENCIÓN</h3>
+                    <p class="mb-2">Lunes a Viernes: 8:00 - 16:00 hrs</p>
+                    <p class="mb-2">Sábados: 9:00 - 13:00 hrs</p>
+                    <p class="mb-2">Miércoles Ciudadano: 11:30 - 13:30 hrs</p>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-xl mb-4">INFORMACIÓN IMPORTANTE</h3>
+                    <p class="mb-2">📋 Lleva identificación oficial</p>
+                    <p class="mb-2">💰 Pagos en efectivo o tarjeta</p>
+                    <p class="mb-2">📞 Citas: (824) 123-4567</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-blue-400 mt-8 pt-8 text-center">
+                <p>&copy; 2024 Gobierno Municipal de Sabinas Hidalgo, Nuevo León. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Procedure details database
+        const procedureDetails = {
+            'licencia-conducir': {
+                title: 'Licencia de Conducir (Nueva)',
+                description: 'Obtén tu primera licencia de conducir para vehículos particulares',
+                requirements: [
+                    'Identificación oficial vigente (INE, pasaporte)',
+                    'CURP',
+                    'Comprobante de domicilio (no mayor a 3 meses)',
+                    'Certificado médico (expedido por médico autorizado)',
+                    '2 fotografías tamaño infantil',
+                    'Comprobante de pago'
+                ],
+                steps: [
+                    'Acudir al módulo de tránsito con documentos',
+                    'Realizar pago en caja',
+                    'Presentar examen teórico',
+                    'Realizar examen práctico de manejo',
+                    'Toma de fotografía y huellas',
+                    'Entrega de licencia temporal'
+                ],
+                cost: '$850 pesos',
+                time: '45 minutos aproximadamente',
+                location: 'Módulo de Tránsito Municipal',
+                schedule: 'Lunes a Viernes: 8:00 - 15:00 hrs'
+            },
+            'apoyo-escolar': {
+                title: 'Apoyo Escolar',
+                description: 'Programa de becas y útiles escolares para estudiantes de familias de bajos recursos',
+                requirements: [
+                    'Identificación oficial del padre/madre/tutor',
+                    'CURP del estudiante',
+                    'Constancia de estudios vigente',
+                    'Comprobante de domicilio',
+                    'Comprobante de ingresos familiares',
+                    'Acta de nacimiento del estudiante'
+                ],
+                steps: [
+                    'Llenar solicitud en DIF Municipal',
+                    'Entregar documentos requeridos',
+                    'Estudio socioeconómico (visita domiciliaria)',
+                    'Evaluación del comité',
+                    'Notificación de resultado',
+                    'Entrega del apoyo (si es aprobado)'
+                ],
+                cost: 'Gratuito',
+                time: '15 minutos para solicitud',
+                location: 'DIF Municipal',
+                schedule: 'Lunes a Viernes: 8:00 - 15:00 hrs'
+            },
+            'ine-credencial': {
+                title: 'Credencial INE',
+                description: 'Tramita tu credencial para votar por primera vez o renueva la vigente',
+                requirements: [
+                    'Acta de nacimiento certificada',
+                    'Comprobante de domicilio (no mayor a 3 meses)',
+                    'Identificación con fotografía (si es renovación)',
+                    'CURP'
+                ],
+                steps: [
+                    'Acudir al módulo INE',
+                    'Llenar formato de solicitud',
+                    'Entrega de documentos',
+                    'Toma de fotografía y firma',
+                    'Captura de huellas dactilares',
+                    'Recibo de trámite (credencial llega por paquetería)'
+                ],
+                cost: 'Gratuito',
+                time: '45 minutos aproximadamente',
+                location: 'Módulo INE en Palacio Municipal',
+                schedule: 'Lunes a Viernes: 9:00 - 17:00 hrs'
+            },
+            'apoyo-medico': {
+                title: 'Apoyo Médico',
+                description: 'Apoyo económico para gastos médicos, medicinas, estudios y cirugías',
+                requirements: [
+                    'Identificación oficial',
+                    'CURP del paciente',
+                    'Comprobante de domicilio',
+                    'Recetas médicas y/o presupuestos',
+                    'Estudios médicos que justifiquen el apoyo',
+                    'Comprobante de ingresos familiares'
+                ],
+                steps: [
+                    'Solicitar cita en DIF Municipal',
+                    'Presentar documentos médicos',
+                    'Entrevista con trabajadora social',
+                    'Estudio socioeconómico',
+                    'Evaluación médica municipal',
+                    'Dictamen del comité',
+                    'Entrega del apoyo económico'
+                ],
+                cost: 'Gratuito',
+                time: '30 minutos para solicitud',
+                location: 'DIF Municipal',
+                schedule: 'Lunes a Viernes: 8:00 - 15:00 hrs'
+            }
+        };
+
+        // Search and filter functionality
+        const searchInput = document.getElementById('tramiteSearch');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const tramiteCards = document.querySelectorAll('.tramite-card');
+        const categorySections = document.querySelectorAll('.category-section');
+
+        function filterProcedures() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedCategory = categoryFilter.value;
+
+            // Hide all category sections first
+            categorySections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            let hasVisibleCards = false;
+
+            tramiteCards.forEach(card => {
+                const cardTitle = card.querySelector('h4').textContent.toLowerCase();
+                const cardDescription = card.querySelector('p').textContent.toLowerCase();
+                const cardCategory = card.getAttribute('data-category');
+                
+                const matchesSearch = cardTitle.includes(searchTerm) || cardDescription.includes(searchTerm);
+                const matchesCategory = !selectedCategory || cardCategory === selectedCategory;
+                
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'block';
+                    // Show the parent category section
+                    const parentSection = card.closest('.category-section');
+                    if (parentSection) {
+                        parentSection.style.display = 'block';
+                    }
+                    hasVisibleCards = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // If no search term and no category filter, show all sections
+            if (!searchTerm && !selectedCategory) {
+                categorySections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                tramiteCards.forEach(card => {
+                    card.style.display = 'block';
+                });
+            }
+        }
+
+        searchInput.addEventListener('input', filterProcedures);
+        categoryFilter.addEventListener('change', filterProcedures);
+
+        // Modal functionality
+        const modal = document.getElementById('procedureModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const closeModal = document.getElementById('closeModal');
+
+        function showProcedureDetails(procedureId) {
+            const details = procedureDetails[procedureId];
+            if (!details) {
+                alert('Información detallada próximamente disponible');
+                return;
+            }
+
+            modalTitle.textContent = details.title;
+            
+            modalContent.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-lg text-municipal-blue mb-3">📋 REQUISITOS</h4>
+                        <ul class="space-y-2 text-sm">
+                            ${details.requirements.map(req => `<li class="flex items-start"><span class="text-green-500 mr-2">✓</span>${req}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-bold text-lg text-municipal-blue mb-3">📝 PROCEDIMIENTO</h4>
+                        <ol class="space-y-2 text-sm">
+                            ${details.steps.map((step, index) => `<li class="flex items-start"><span class="bg-municipal-blue text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">${index + 1}</span>${step}</li>`).join('')}
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-4 mt-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                        <div>
+                            <strong class="text-municipal-blue">💰 Costo:</strong><br>
+                            ${details.cost}
+                        </div>
+                        <div>
+                            <strong class="text-municipal-blue">⏱️ Tiempo:</strong><br>
+                            ${details.time}
+                        </div>
+                        <div>
+                            <strong class="text-municipal-blue">📍 Ubicación:</strong><br>
+                            ${details.location}
+                        </div>
+                        <div>
+                            <strong class="text-municipal-blue">🕒 Horario:</strong><br>
+                            ${details.schedule}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 border-l-4 border-municipal-blue p-4 mt-4">
+                    <p class="text-sm text-blue-800">
+                        <strong>💡 Descripción:</strong> ${details.description}
+                    </p>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+
+        // Add click events to procedure cards
+        tramiteCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const procedureId = card.getAttribute('data-tramite');
+                showProcedureDetails(procedureId);
+            });
+        });
+
+        // Add click events to most common procedures
+        document.querySelectorAll('.bg-gradient-to-br').forEach(card => {
+            card.addEventListener('click', () => {
+                const title = card.querySelector('h3').textContent;
+                if (title.includes('Renovación de Licencia')) {
+                    showProcedureDetails('renovacion-licencia');
+                } else if (title.includes('Apoyo Escolar')) {
+                    showProcedureDetails('apoyo-escolar');
+                } else if (title.includes('Módulo INE')) {
+                    showProcedureDetails('ine-credencial');
+                } else if (title.includes('Apoyo Médico')) {
+                    showProcedureDetails('apoyo-medico');
+                }
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+         const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fade-in {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in {
+                animation: fade-in 1s ease-out;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976f3ca76212f863',t:'MTc1NjUwMzk0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
