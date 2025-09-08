@@ -1,0 +1,484 @@
+<!-- Turismo.html (solo contenido de la página, sin <html> / <body>) -->
+<section class="section-content p-6">
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Lugares Turísticos</h2>
+      <p class="text-gov-gray">Gestión de lugares turísticos y atractivos locales</p>
+    </div>
+    <button onclick="openModal('lugares')" class="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-200 flex items-center">
+      <i class="fas fa-plus mr-2"></i>
+      Agregar Lugar Turístico
+    </button>
+  </div>
+
+  <div id="lugares-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Tarjetas se renderizan por JS -->
+  </div>
+</section>
+
+<!-- Modal Visor de Imágenes (propio de Turismo) -->
+<div id="image-viewer-modal" class="fixed inset-0 bg-black bg-opacity-90 modal-backdrop hidden z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+      <h3 id="image-viewer-title" class="text-xl font-bold text-gray-800">Galería de Imágenes</h3>
+      <button onclick="closeImageViewer()" class="text-gov-gray hover:text-gray-800 transition duration-200">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+
+    <div class="p-6">
+      <div class="mb-4">
+        <img id="main-viewer-image" src="" alt="" class="w-full h-96 object-cover rounded-lg">
+      </div>
+
+      <div id="image-thumbnails" class="flex space-x-2 overflow-x-auto pb-2"></div>
+
+      <div id="place-info" class="mt-6 p-4 bg-gray-50 rounded-lg"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  // ====== Estado en localStorage ======
+  const LS_KEY = 'lugaresTuristicos';
+
+  function loadLugares() {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) {
+      try { return JSON.parse(raw); } catch {}
+    }
+    // Seed mínimo si no hay datos (puedes quitar o extender)
+    const seed = [
+      {
+        id: 1,
+        nombre: "Plaza Principal Benito Juárez",
+        categoria: "Plaza y Jardines",
+        descripcion: "Hermosa plaza central con arquitectura colonial, ideal para pasear en familia.",
+        direccion: "Centro Histórico, Sabinas Hidalgo, N.L.",
+        horario: "24 horas",
+        precio: "Gratuito",
+        googleMaps: "https://maps.google.com/?q=Plaza+Principal+Sabinas+Hidalgo",
+        recomendaciones: "Visitar por la tarde-noche; suele haber eventos culturals.",
+        imagenes: [],
+        imagenPrincipal: 0,
+        icono: "fas fa-tree"
+      }
+    ];
+    localStorage.setItem(LS_KEY, JSON.stringify(seed));
+    return seed;
+  }
+
+  function saveLugares(arr) {
+    localStorage.setItem(LS_KEY, JSON.stringify(arr));
+  }
+
+  // Estado en memoria
+  let lugaresTuristicos = loadLugares();
+  window.currentImages = []; // para previsualización al subir
+
+  // ====== Render ======
+  function renderLugaresTuristicos() {
+    const grid = document.getElementById('lugares-grid');
+    grid.innerHTML = lugaresTuristicos.map(createTouristCard).join('');
+  }
+
+  function createTouristCard(lugar) {
+    const mainImage = (lugar.imagenes && lugar.imagenes.length > 0)
+      ? (lugar.imagenes[lugar.imagenPrincipal] || lugar.imagenes[0])
+      : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23f6f6f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='Arial' font-size='16'%3ESin imagen%3C/text%3E%3C/svg%3E";
+
+    return `
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover fade-in">
+        <div class="relative">
+          <img src="${mainImage}" alt="${lugar.nombre}" class="w-full h-48 object-cover">
+          <div class="absolute top-4 left-4">
+            <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+              ${lugar.categoria}
+            </span>
+          </div>
+          <div class="absolute top-4 right-4 flex space-x-2">
+            <button onclick="__turismo.editTouristPlace(${lugar.id})" class="bg-white bg-opacity-90 hover:bg-opacity-100 p-2 rounded-lg transition duration-200">
+              <i class="fas fa-edit text-gray-600"></i>
+            </button>
+            <button onclick="__turismo.deleteTouristPlace(${lugar.id})" class="bg-red-500 bg-opacity-90 hover:bg-opacity-100 p-2 rounded-lg transition duration-200">
+              <i class="fas fa-trash text-white"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-bold text-gray-800 flex-1">${lugar.nombre}</h3>
+            <div class="bg-orange-100 p-2 rounded-lg ml-3">
+              <i class="${lugar.icono || 'fas fa-map-marked-alt'} text-orange-600"></i>
+            </div>
+          </div>
+
+          <p class="text-gray-600 mb-4 text-sm leading-relaxed">${lugar.descripcion || ''}</p>
+
+          <div class="space-y-2 text-sm mb-4">
+            <div class="flex items-center text-gray-500">
+              <i class="fas fa-map-marker-alt mr-2 text-orange-500"></i>
+              <span class="truncate">${lugar.direccion || ''}</span>
+            </div>
+            <div class="flex items-center text-gray-500">
+              <i class="fas fa-clock mr-2 text-orange-500"></i>
+              <span>${lugar.horario || ''}</span>
+            </div>
+            <div class="flex items-center text-gray-500">
+              <i class="fas fa-ticket-alt mr-2 text-orange-500"></i>
+              <span class="font-medium">${lugar.precio || ''}</span>
+            </div>
+          </div>
+
+          <div class="flex space-x-2">
+            <button onclick="__turismo.viewTouristPlace(${lugar.id})" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition duration-200 text-sm font-medium">
+              <i class="fas fa-images mr-2"></i>
+              Ver Galería
+            </button>
+            ${lugar.googleMaps ? `
+              <a href="${lugar.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 text-sm">
+                <i class="fas fa-map"></i>
+              </a>` : ''
+            }
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ====== Visor de Imágenes ======
+  function viewTouristPlace(id) {
+    const lugar = lugaresTuristicos.find(l => l.id === id);
+    if (!lugar) return;
+    const modal = document.getElementById('image-viewer-modal');
+    const title = document.getElementById('image-viewer-title');
+    const mainImage = document.getElementById('main-viewer-image');
+    const thumbnails = document.getElementById('image-thumbnails');
+    const placeInfo = document.getElementById('place-info');
+
+    title.textContent = lugar.nombre;
+    mainImage.src = (lugar.imagenes && lugar.imagenes.length)
+      ? (lugar.imagenes[lugar.imagenPrincipal] || lugar.imagenes[0])
+      : '';
+    mainImage.alt = lugar.nombre;
+
+    thumbnails.innerHTML = (lugar.imagenes || []).map((img, index) => `
+      <img src="${img}" alt="${lugar.nombre} ${index + 1}"
+        class="w-16 h-16 object-cover rounded cursor-pointer border-2 ${index === (lugar.imagenPrincipal || 0) ? 'border-orange-500' : 'border-gray-200'} hover:border-orange-400 transition duration-200"
+        onclick="__turismo.changeMainImage('${img}', ${index})">
+    `).join('');
+
+    placeInfo.innerHTML = `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h4 class="font-bold text-gray-800 mb-2">${lugar.nombre}</h4>
+          <p class="text-sm text-gray-600 mb-3">${lugar.descripcion || ''}</p>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center"><i class="fas fa-tag text-orange-500 mr-2"></i><span class="font-medium">${lugar.categoria || ''}</span></div>
+            <div class="flex items-center"><i class="fas fa-map-marker-alt text-orange-500 mr-2"></i><span>${lugar.direccion || ''}</span></div>
+            <div class="flex items-center"><i class="fas fa-clock text-orange-500 mr-2"></i><span>${lugar.horario || ''}</span></div>
+            <div class="flex items-center"><i class="fas fa-ticket-alt text-orange-500 mr-2"></i><span class="font-medium">${lugar.precio || ''}</span></div>
+          </div>
+        </div>
+        <div>
+          <h5 class="font-bold text-gray-800 mb-2">Recomendaciones</h5>
+          <p class="text-sm text-gray-600 mb-3">${lugar.recomendaciones || ''}</p>
+          ${lugar.googleMaps ? `
+            <a href="${lugar.googleMaps}" target="_blank" class="inline-flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200 text-sm">
+              <i class="fas fa-map mr-2"></i> Ver en Google Maps
+            </a>` : ''
+          }
+        </div>
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+  }
+
+  function changeMainImage(imageSrc, index) {
+    const mainImage = document.getElementById('main-viewer-image');
+    const thumbnails = document.querySelectorAll('#image-thumbnails img');
+    mainImage.src = imageSrc;
+    thumbnails.forEach((t,i) => {
+      t.classList.toggle('border-orange-500', i === index);
+      t.classList.toggle('border-gray-200', i !== index);
+    });
+  }
+  function closeImageViewer() {
+    document.getElementById('image-viewer-modal').classList.add('hidden');
+  }
+
+  // ====== Editar / Borrar ======
+  function editTouristPlace(id) {
+    // Integra con tu modal global
+    window.currentEditType = 'lugares';
+    window.currentEditId = id;
+
+    // Asegura que el layout abra el modal y dibuje campos de 'lugares'
+    if (typeof window.renderFormFields === 'function') {
+      // Si tu renderFormFields global existe, solo abre
+      if (typeof window.openModal === 'function') {
+        window.openModal('lugares');
+      }
+    } else {
+      // Si no tienes renderFormFields global, abrimos igual para que el Layout ponga el modal;
+      if (typeof window.openModal === 'function') {
+        window.openModal('lugares');
+      }
+    }
+
+    // Prefill cuando el modal ya esté en DOM (pequeño delay)
+    setTimeout(() => {
+      const lugar = lugaresTuristicos.find(l => l.id === id);
+      if (!lugar) return;
+      const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val ?? ''; }
+      setVal('nombre', lugar.nombre);
+      setVal('categoria', lugar.categoria);
+      setVal('descripcion', lugar.descripcion);
+      setVal('direccion', lugar.direccion);
+      setVal('horario', lugar.horario);
+      setVal('precio', lugar.precio);
+      setVal('googleMaps', lugar.googleMaps);
+      setVal('recomendaciones', lugar.recomendaciones);
+      setVal('icono', lugar.icono);
+
+      // Previsualizar imágenes existentes (solo lectura)
+      const preview = document.getElementById('image-preview');
+      if (preview && Array.isArray(lugar.imagenes)) {
+        preview.innerHTML = lugar.imagenes.map((img, i) => `
+          <div class="relative">
+            <img src="${img}" alt="Imagen ${i+1}" class="w-full h-20 object-cover rounded border">
+            <div class="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-xs px-1 rounded">
+              ${i === (lugar.imagenPrincipal||0) ? 'Principal' : i + 1}
+            </div>
+          </div>
+        `).join('');
+      }
+    }, 120);
+  }
+
+  function deleteTouristPlace(id) {
+    if (!confirm('¿Eliminar este lugar turístico?')) return;
+    const idx = lugaresTuristicos.findIndex(l => l.id === id);
+    if (idx !== -1) {
+      lugaresTuristicos.splice(idx, 1);
+      saveLugares(lugaresTuristicos);
+      renderLugaresTuristicos();
+    }
+  }
+
+  // ====== Guardar desde el modal global ======
+  function saveTouristPlace() {
+    const fd = (id) => (document.getElementById(id)?.value ?? '').trim();
+
+    const formData = {
+      nombre: fd('nombre'),
+      categoria: fd('categoria'),
+      descripcion: fd('descripcion'),
+      direccion: fd('direccion'),
+      horario: fd('horario'),
+      precio: fd('precio'),
+      googleMaps: fd('googleMaps'),
+      recomendaciones: fd('recomendaciones'),
+      icono: fd('icono'),
+      imagenes: Array.isArray(window.currentImages) ? window.currentImages : [],
+      imagenPrincipal: 0
+    };
+
+    if (window.currentEditId) {
+      const i = lugaresTuristicos.findIndex(x => x.id === window.currentEditId);
+      if (i !== -1) {
+        // Si no se subieron imágenes nuevas, conservamos las existentes
+        if (!formData.imagenes.length) {
+          formData.imagenes = lugaresTuristicos[i].imagenes || [];
+          formData.imagenPrincipal = lugaresTuristicos[i].imagenPrincipal || 0;
+        }
+        lugaresTuristicos[i] = { ...lugaresTuristicos[i], ...formData };
+      }
+    } else {
+      const newId = (lugaresTuristicos.length ? Math.max(...lugaresTuristicos.map(x => x.id)) : 0) + 1;
+      lugaresTuristicos.push({ id: newId, ...formData });
+    }
+
+    window.currentImages = [];
+    saveLugares(lugaresTuristicos);
+    renderLugaresTuristicos();
+
+    // Cierra modal global si existe
+    if (typeof window.closeModal === 'function') window.closeModal();
+  }
+
+  // ====== Previsualización de imágenes (input[file]) ======
+  function handleImagePreview(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('image-preview');
+    if (!window.currentImages) window.currentImages = [];
+
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imageData = e.target.result;
+        const idx = window.currentImages.length;
+        window.currentImages.push(imageData);
+
+        const div = document.createElement('div');
+        div.className = 'relative group';
+        div.innerHTML = `
+          <img src="${imageData}" alt="Preview ${idx+1}" class="w-full h-20 object-cover rounded border">
+          <div class="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-xs px-1 rounded">${idx===0?'Principal':idx+1}</div>
+          <button type="button" onclick="__turismo.removeImage(${idx})" class="absolute top-1 left-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200">×</button>
+          ${idx===0?'':`<button type="button" onclick="__turismo.setMainImage(${idx})" class="absolute bottom-1 left-1 bg-orange-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">Principal</button>`}
+        `;
+        previewContainer.appendChild(div);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    event.target.value = '';
+  }
+
+  function refreshImagePreview() {
+    const previewContainer = document.getElementById('image-preview');
+    if (!previewContainer || !window.currentImages) return;
+    previewContainer.innerHTML = '';
+    window.currentImages.forEach((img, i) => {
+      const div = document.createElement('div');
+      div.className = 'relative group';
+      div.innerHTML = `
+        <img src="${img}" alt="Preview ${i+1}" class="w-full h-20 object-cover rounded border">
+        <div class="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-xs px-1 rounded">${i===0?'Principal':i+1}</div>
+        <button type="button" onclick="__turismo.removeImage(${i})" class="absolute top-1 left-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200">×</button>
+        ${i===0?'':`<button type="button" onclick="__turismo.setMainImage(${i})" class="absolute bottom-1 left-1 bg-orange-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">Principal</button>`}
+      `;
+      previewContainer.appendChild(div);
+    });
+  }
+  function setMainImage(index) {
+    if (!window.currentImages || index >= window.currentImages.length) return;
+    const selected = window.currentImages.splice(index,1)[0];
+    window.currentImages.unshift(selected);
+    refreshImagePreview();
+  }
+  function removeImage(index) {
+    if (!window.currentImages) return;
+    window.currentImages.splice(index, 1);
+    refreshImagePreview();
+  }
+
+  // ====== Hook opcional al renderFormFields global ======
+  // Si tu Layout ya define window.renderFormFields, lo envolvemos para inyectar los campos de 'lugares'
+  (function hookRenderFormFields() {
+    const prev = window.renderFormFields;
+    window.renderFormFields = function(type) {
+      if (type !== 'lugares') return prev && prev(type);
+
+      const container = document.getElementById('form-fields');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Lugar *</label>
+          <input type="text" id="nombre" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
+          <select id="categoria" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+            <option value="">Seleccionar categoría</option>
+            <option>Plaza y Jardines</option>
+            <option>Parque</option>
+            <option>Museo</option>
+            <option>Monumento</option>
+            <option>Balneario</option>
+            <option>Ecoturismo</option>
+            <option>Ruta Histórica</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Descripción *</label>
+          <textarea id="descripcion" rows="3" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Dirección</label>
+            <input type="text" id="direccion" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Horario</label>
+            <input type="text" id="horario" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="Ej. 9:00–18:00">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Precio</label>
+            <input type="text" id="precio" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="Gratuito / $50">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Google Maps (URL)</label>
+            <input type="url" id="googleMaps" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="https://...">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Recomendaciones</label>
+          <textarea id="recomendaciones" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="Mejor horario, qué llevar, etc."></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Icono</label>
+          <select id="icono" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+            <option value="fas fa-map-marked-alt">Genérico</option>
+            <option value="fas fa-monument">Monumento</option>
+            <option value="fas fa-church">Iglesia</option>
+            <option value="fas fa-mountain">Montaña</option>
+            <option value="fas fa-university">Museo</option>
+            <option value="fas fa-swimming-pool">Alberca</option>
+            <option value="fas fa-tree">Árbol</option>
+            <option value="fas fa-camera">Cámara</option>
+            <option value="fas fa-hiking">Senderismo</option>
+            <option value="fas fa-water">Agua</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Imágenes</label>
+          <div class="space-y-3">
+            <input type="file" id="imagenes" multiple accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+            <p class="text-xs text-gray-500">Puedes seleccionar múltiples imágenes. La primera será la imagen principal.</p>
+            <div id="image-preview" class="grid grid-cols-3 gap-2 mt-3"></div>
+          </div>
+        </div>
+      `;
+
+      // Listener para previews
+      setTimeout(() => {
+        const imageInput = document.getElementById('imagenes');
+        if (imageInput) imageInput.addEventListener('change', handleImagePreview);
+      }, 80);
+    };
+  })();
+
+  // Expone API mínima al Layout / global
+  window.saveTouristPlace = saveTouristPlace;
+
+  // Namespace interno para los handlers usados en HTML
+  window.__turismo = {
+    viewTouristPlace,
+    changeMainImage,
+    closeImageViewer,
+    editTouristPlace,
+    deleteTouristPlace,
+    removeImage,
+    setMainImage
+  };
+
+  // Render inicial
+  renderLugaresTuristicos();
+
+})();
+</script>
