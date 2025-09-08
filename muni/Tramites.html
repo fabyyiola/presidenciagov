@@ -1,0 +1,93 @@
+
+<div class="flex justify-between items-center mb-8">
+  <div>
+    <h2 class="text-3xl font-bold text-gray-800 mb-2">Administración de Trámites</h2>
+    <p class="text-gov-gray">Gestión de trámites y servicios municipales</p>
+  </div>
+  <button id="add-tram" class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition duration-200 flex items-center">
+    <i class="fas fa-plus mr-2"></i>
+    Agregar Trámite
+  </button>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead class="bg-gray-50 border-b border-gray-200">
+        <tr>
+          <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trámite</th>
+          <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+          <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Costo</th>
+          <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiempo</th>
+          <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ubicación</th>
+          <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tramites-table-body" class="bg-white divide-y divide-gray-200"></tbody>
+    </table>
+  </div>
+  <div id="empty-tramites-state" class="text-center py-12 hidden">
+    <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-file-alt text-gray-400 text-2xl"></i>
+    </div>
+    <h3 class="text-lg font-medium text-gray-800 mb-2">No hay trámites registrados</h3>
+    <p class="text-gov-gray">Los trámites aparecerán aquí cuando se agreguen.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  const tbody = document.getElementById('tramites-table-body');
+  const empty = document.getElementById('empty-tramites-state');
+  let data = JSON.parse(localStorage.getItem('tramites')||'[]');
+
+  if (!data.length) {
+    data = [{
+      id:1, titulo:"Constancia de Residencia", categoria:"identificacion",
+      costo:"$45", tiempo:"20 min", ubicacion:"Presidencia Municipal"
+    }];
+    localStorage.setItem('tramites', JSON.stringify(data));
+  }
+
+  function render(){
+    if(!data.length){ empty.classList.remove('hidden'); tbody.innerHTML=''; return; }
+    empty.classList.add('hidden');
+    tbody.innerHTML = data.map(t => \`
+      <tr>
+        <td class="px-6 py-4 whitespace-nowrap">\${t.titulo}</td>
+        <td class="px-6 py-4 whitespace-nowrap">\${t.categoria || ''}</td>
+        <td class="px-6 py-4 whitespace-nowrap">\${t.costo || ''}</td>
+        <td class="px-6 py-4 whitespace-nowrap">\${t.tiempo || ''}</td>
+        <td class="px-6 py-4 whitespace-nowrap">\${t.ubicacion || ''}</td>
+        <td class="px-6 py-4 whitespace-nowrap space-x-2">
+          <button data-id="\${t.id}" class="edit px-3 py-1 text-sm border rounded-lg">Editar</button>
+          <button data-id="\${t.id}" class="del px-3 py-1 text-sm bg-red-600 text-white rounded-lg">Eliminar</button>
+        </td>
+      </tr>
+    \`).join('');
+  }
+  function save(){ localStorage.setItem('tramites', JSON.stringify(data)); }
+  function del(id){ data = data.filter(x=>x.id!==id); save(); render(); }
+
+  tbody.addEventListener('click', (e)=>{
+    const delBtn = e.target.closest('button.del');
+    if(delBtn){ del(Number(delBtn.dataset.id)); return; }
+    const editBtn = e.target.closest('button.edit');
+    if(editBtn){
+      const item = data.find(x=>x.id===Number(editBtn.dataset.id));
+      const titulo = prompt('Título', item.titulo) || item.titulo;
+      Object.assign(item, {titulo});
+      save(); render();
+    }
+  });
+
+  document.getElementById('add-tram').addEventListener('click', ()=>{
+    const id = Date.now();
+    const titulo = prompt('Título del trámite', 'Nuevo Trámite') || 'Nuevo Trámite';
+    data.push({ id, titulo });
+    save(); render();
+  });
+
+  render();
+})();
+</script>
