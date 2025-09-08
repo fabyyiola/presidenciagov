@@ -1,0 +1,168 @@
+<!-- Cabildo Municipal.html -->
+<section class="section-content p-6">
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Cabildo Municipal</h2>
+      <p class="text-gov-gray">Gestión de los miembros del cabildo</p>
+    </div>
+    <button id="cab-add" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-200 flex items-center">
+      <i class="fas fa-plus mr-2"></i> Agregar Miembro
+    </button>
+  </div>
+  <div id="cabildo-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+</section>
+
+<script>
+(function(){
+  const LS_KEY='cabildo';
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modal-title');
+  const form = document.getElementById('modal-form');
+  const formFields = document.getElementById('form-fields');
+  const confirmModal = document.getElementById('confirm-modal');
+  const confirmBtn = document.getElementById('confirm-delete-btn');
+  let editingId = null;
+
+  const seed = [
+    { id:1, nombre:"Lic. José Manuel Rodríguez", titulo:"Primer Regidor", descripcion:"Comisión de Hacienda y Patrimonio", telefono:"(873) 742-0040", email:"regidor1@sabinashidalgo.gob.mx", partido:"Partido Acción Nacional", icono:"fas fa-user-tie" },
+    { id:2, nombre:"Lic. Carmen Beatriz López", titulo:"Segunda Regidora", descripcion:"Comisión de Desarrollo Social", telefono:"(873) 742-0041", email:"regidor2@sabinashidalgo.gob.mx", partido:"Movimiento Ciudadano", icono:"fas fa-female" },
+    { id:3, nombre:"Ing. Fernando Castillo Vega", titulo:"Tercer Regidor", descripcion:"Comisión de Obras Públicas", telefono:"(873) 742-0042", email:"regidor3@sabinashidalgo.gob.mx", partido:"Partido Revolucionario Institucional", icono:"fas fa-user-tie" }
+  ];
+
+  function getAll(){
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw){ localStorage.setItem(LS_KEY, JSON.stringify(seed)); return seed.slice(); }
+    try { return JSON.parse(raw); } catch { return seed.slice(); }
+  }
+  function saveAll(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
+
+  function createCard(it){
+    return `
+      <div class="bg-white rounded-xl shadow-sm p-6 card-hover fade-in">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center">
+            <div class="bg-gov-blue bg-opacity-10 p-3 rounded-lg mr-3">
+              <i class="${it.icono} text-gov-blue text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800 text-lg">${it.nombre}</h3>
+              <p class="text-gov-gray text-sm">${it.titulo}</p>
+            </div>
+          </div>
+          <div class="flex space-x-2">
+            <button data-id="${it.id}" class="cab-edit text-gov-blue hover:bg-blue-50 p-2 rounded-lg transition"><i class="fas fa-edit"></i></button>
+            <button data-id="${it.id}" class="cab-del text-red-600 hover:bg-red-50 p-2 rounded-lg transition"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+        <div class="space-y-2 mb-4">
+          <p class="text-sm text-gov-gray"><i class="fas fa-phone mr-2"></i>${it.telefono}</p>
+          <p class="text-sm text-gov-gray"><i class="fas fa-envelope mr-2"></i>${it.email}</p>
+          <p class="text-sm text-gov-gray"><i class="fas fa-flag mr-2"></i>${it.partido}</p>
+        </div>
+        <p class="text-gray-700 text-sm">${it.descripcion}</p>
+      </div>`;
+  }
+
+  function render(){
+    const grid = document.getElementById('cabildo-grid');
+    const data = getAll();
+    grid.innerHTML = data.map(createCard).join('');
+    grid.querySelectorAll('.cab-edit').forEach(b=>b.onclick=()=>openModal(+b.dataset.id));
+    grid.querySelectorAll('.cab-del').forEach(b=>b.onclick=()=>confirmDelete(+b.dataset.id));
+  }
+
+  function openModal(id=null){
+    editingId = id;
+    modalTitle.textContent = id ? 'Editar Miembro' : 'Agregar Miembro';
+    formFields.innerHTML = `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
+          <input type="text" id="form-nombre" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Título/Cargo *</label>
+          <input type="text" id="form-titulo" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Descripción *</label>
+        <textarea id="form-descripcion" required rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent"></textarea>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
+          <input type="tel" id="form-telefono" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+          <input type="email" id="form-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Partido Político</label>
+        <select id="form-partido" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+          <option value="">Seleccionar partido</option>
+          <option value="Partido Acción Nacional">Partido Acción Nacional</option>
+          <option value="Partido Revolucionario Institucional">Partido Revolucionario Institucional</option>
+          <option value="Movimiento Ciudadano">Movimiento Ciudadano</option>
+          <option value="MORENA">MORENA</option>
+          <option value="Independiente">Independiente</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Icono</label>
+        <select id="form-icono" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+          <option value="fas fa-user-tie">Usuario Formal</option>
+          <option value="fas fa-female">Mujer</option>
+        </select>
+      </div>`;
+    if(id){
+      const it = getAll().find(x=>x.id===id);
+      ['nombre','titulo','descripcion','telefono','email','icono','partido'].forEach(k=>{
+        const el = document.getElementById('form-'+k);
+        if(el) el.value = it[k] || '';
+      });
+    }
+    modal.classList.remove('hidden');
+  }
+
+  function confirmDelete(id){
+    confirmModal.classList.remove('hidden');
+    confirmBtn.onclick = ()=>{
+      const arr = getAll().filter(x=>x.id!==id);
+      saveAll(arr);
+      confirmModal.classList.add('hidden');
+      render();
+    };
+  }
+
+  form.onsubmit = (e)=>{
+    if(modal.classList.contains('hidden')) return;
+    e.preventDefault();
+    const data = {
+      nombre: document.getElementById('form-nombre').value.trim(),
+      titulo: document.getElementById('form-titulo').value.trim(),
+      descripcion: document.getElementById('form-descripcion').value.trim(),
+      telefono: document.getElementById('form-telefono').value.trim(),
+      email: document.getElementById('form-email').value.trim(),
+      partido: document.getElementById('form-partido').value,
+      icono: document.getElementById('form-icono').value
+    };
+    const arr = getAll();
+    if(editingId){
+      const i = arr.findIndex(x=>x.id===editingId);
+      arr[i] = { ...arr[i], ...data };
+    }else{
+      arr.push({ id: Date.now(), ...data });
+    }
+    saveAll(arr);
+    modal.classList.add('hidden');
+    editingId = null;
+    render();
+  };
+
+  document.getElementById('cab-add').onclick = ()=> openModal();
+  render();
+})();
+</script>

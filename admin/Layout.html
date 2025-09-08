@@ -1,0 +1,283 @@
+<!-- Layout.html -->
+<!-- :contentReference[oaicite:0]{index=0} -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Administración Municipal - SPA</title>
+
+  <!-- Tailwind + theme (preserve original look & feel) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'gov-blue': '#1e40af',
+            'gov-green': '#059669',
+            'gov-gray': '#6b7280',
+            'gov-light': '#f8fafc'
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    .sidebar-transition{transition:all .3s ease}
+    .card-hover{transition:all .3s ease}
+    .card-hover:hover{transform:translateY(-2px);box-shadow:0 10px 25px -5px rgba(0,0,0,.1)}
+    .modal-backdrop{backdrop-filter:blur(4px)}
+    .fade-in{animation:fadeIn .3s ease-in}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .nav-active { background-color: #1e40af; color: #fff !important; }
+  </style>
+</head>
+<body class="bg-gov-light font-sans">
+  <!-- Header (preserved) -->
+  <header class="bg-white shadow-sm border-b border-gray-200 fixed w-full top-0 z-40">
+    <div class="flex items-center justify-between px-6 py-4">
+      <div class="flex items-center">
+        <button id="sidebarToggle" class="lg:hidden mr-4 text-gov-gray hover:text-gov-blue transition duration-200">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        <div class="flex items-center">
+          <div class="bg-gradient-to-r from-gov-blue to-gov-green text-white p-2 rounded-lg mr-3">
+            <i class="fas fa-city text-xl"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold text-gray-800">Administración Municipal</h1>
+            <p class="text-sm text-gov-gray">Sabinas Hidalgo, Nuevo León</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button class="text-gov-gray hover:text-gov-blue transition duration-200">
+          <i class="fas fa-bell text-lg"></i>
+        </button>
+        <div class="flex items-center space-x-2">
+          <div class="text-right">
+            <p class="text-sm font-medium text-gray-800">Admin Usuario</p>
+            <p class="text-xs text-gov-gray">Administrador</p>
+          </div>
+          <div class="w-8 h-8 bg-gov-blue rounded-full flex items-center justify-center">
+            <i class="fas fa-user text-white text-sm"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar (preserved) -->
+  <aside id="sidebar" class="fixed left-0 top-16 h-full w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 sidebar-transition z-30">
+    <nav class="p-6">
+      <ul class="space-y-2">
+        <!-- Equipo -->
+        <li>
+          <div class="menu-parent">
+            <button data-submenu="equipo" class="nav-parent flex items-center justify-between w-full p-3 rounded-lg text-gov-gray hover:bg-gray-100 transition duration-200">
+              <div class="flex items-center">
+                <i class="fas fa-users-cog mr-3"></i>
+                Equipo
+              </div>
+              <i id="equipo-arrow" class="fas fa-chevron-right transition-transform duration-200"></i>
+            </button>
+            <ul id="equipo-submenu" class="ml-6 mt-2 space-y-1 hidden">
+              <li>
+                <a href="#secretarias" data-route="secretarias" class="spa-link nav-link flex items-center p-2 pl-4 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200 text-sm">
+                  <i class="fas fa-building mr-3 text-xs"></i> Secretarías
+                </a>
+              </li>
+              <li>
+                <a href="#direcciones" data-route="direcciones" class="spa-link nav-link flex items-center p-2 pl-4 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200 text-sm">
+                  <i class="fas fa-sitemap mr-3 text-xs"></i> Direcciones
+                </a>
+              </li>
+              <li>
+                <a href="#cabildo" data-route="cabildo" class="spa-link nav-link flex items-center p-2 pl-4 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200 text-sm">
+                  <i class="fas fa-users mr-3 text-xs"></i> Cabildo Municipal
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- Negocios -->
+        <li>
+          <a href="#negocios" data-route="negocios" class="spa-link nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200">
+            <i class="fas fa-store mr-3"></i> Negocios Registrados
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Dynamic render area -->
+  <main class="lg:ml-64 pt-16 min-h-screen">
+    <section id="app"></section>
+  </main>
+
+  <!-- Global Modals (shared across pages) -->
+  <!-- Generic Add/Edit Modal -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <h3 id="modal-title" class="text-xl font-bold text-gray-800">Agregar Elemento</h3>
+          <button id="modal-close" class="text-gov-gray hover:text-gray-800 transition duration-200">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+      </div>
+      <form id="modal-form" class="p-6">
+        <div id="form-fields" class="space-y-4"></div>
+        <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
+          <button type="button" id="modal-cancel" class="px-6 py-2 border border-gray-300 rounded-lg text-gov-gray hover:bg-gray-50 transition duration-200">Cancelar</button>
+          <button type="submit" id="submit-btn" class="px-6 py-2 bg-gov-blue text-white rounded-lg hover:bg-blue-700 transition duration-200">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Confirm Delete Modal -->
+  <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full">
+      <div class="p-6 text-center">
+        <div class="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Confirmar Eliminación</h3>
+        <p class="text-gov-gray mb-6">¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer.</p>
+        <div class="flex justify-center space-x-3">
+          <button id="confirm-cancel" class="px-6 py-2 border border-gray-300 rounded-lg text-gov-gray hover:bg-gray-50 transition duration-200">Cancelar</button>
+          <button id="confirm-delete-btn" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- (Optional) Business Wizard kept global so any page can open it if needed -->
+  <div id="business-wizard-modal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+        <h3 class="text-2xl font-bold text-gray-800">Registro de Negocio</h3>
+        <button id="bw-close" class="text-gov-gray hover:text-gray-800 transition duration-200"><i class="fas fa-times text-xl"></i></button>
+      </div>
+      <div id="bw-content" class="p-6">
+        <!-- Negocios page will populate -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ------------ GLOBAL SPA (only) ------------
+    const ROUTES = {
+      secretarias: 'Secretarias.html',
+      direcciones: 'Direcciones.html',
+      cabildo: 'Cabildo Municipal.html',
+      negocios: 'Negocios Registrados.html'
+    };
+
+    const app = document.getElementById('app');
+
+    // Mobile sidebar toggle
+    document.getElementById('sidebarToggle').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('-translate-x-full');
+    });
+
+    // Submenu toggle (generic)
+    document.querySelectorAll('.nav-parent').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const name = btn.dataset.submenu;
+        const submenu = document.getElementById(`${name}-submenu`);
+        const arrow = document.getElementById(`${name}-arrow`);
+        submenu.classList.toggle('hidden');
+        arrow.classList.toggle('rotate-90');
+      });
+    });
+
+    // SPA link handling
+    function bindSpaLinks(){
+      document.querySelectorAll('a.spa-link').forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          e.preventDefault();
+          const route = a.dataset.route;
+          if(route) navigate(route);
+        });
+      });
+    }
+
+    function setActiveMenu(route){
+      document.querySelectorAll('.nav-link').forEach(l=>{
+        l.classList.remove('nav-active','text-white');
+        l.classList.add('text-gov-gray');
+        const r = l.getAttribute('data-route');
+        if(r===route){
+          l.classList.add('nav-active');
+          l.classList.remove('text-gov-gray');
+        }
+      });
+      // ensure Equipo submenu opens for team routes
+      if(['secretarias','direcciones','cabildo'].includes(route)){
+        document.getElementById('equipo-submenu').classList.remove('hidden');
+        document.getElementById('equipo-arrow').classList.add('rotate-90');
+      }
+    }
+
+    async function navigate(route){
+      const file = ROUTES[route] || ROUTES.secretarias;
+      const res = await fetch(file, {cache: 'no-cache'});
+      const html = await res.text();
+      app.innerHTML = html;
+
+      // Execute inline scripts from loaded fragment
+      const tmp = document.createElement('div');
+      tmp.innerHTML = html;
+      tmp.querySelectorAll('script').forEach(old=>{
+        const s = document.createElement('script');
+        if(old.type) s.type = old.type;
+        s.textContent = old.textContent;
+        document.body.appendChild(s);
+        // cleanup after exec to avoid leaks
+        setTimeout(()=>s.remove(),0);
+      });
+
+      // Rebind any global-needed hooks (modal base buttons)
+      wireGlobalModalBase();
+
+      setActiveMenu(route);
+      localStorage.setItem('currentRoute', route);
+    }
+
+    function wireGlobalModalBase(){
+      const modal = document.getElementById('modal');
+      const modalClose = document.getElementById('modal-close');
+      const modalCancel = document.getElementById('modal-cancel');
+      [modalClose, modalCancel].forEach(btn=>{
+        if(btn) btn.onclick = ()=> modal.classList.add('hidden');
+      });
+
+      const confirmModal = document.getElementById('confirm-modal');
+      const confirmCancel = document.getElementById('confirm-cancel');
+      if(confirmCancel) confirmCancel.onclick = ()=> confirmModal.classList.add('hidden');
+
+      const bwClose = document.getElementById('bw-close');
+      if(bwClose) bwClose.onclick = ()=> document.getElementById('business-wizard-modal').classList.add('hidden');
+    }
+
+    // Initial load (default to Secretarías)
+    bindSpaLinks();
+    const initial = (location.hash && location.hash.replace('#','')) || localStorage.getItem('currentRoute') || 'secretarias';
+    navigate(initial);
+
+    // Keep hash in sync (optional)
+    window.addEventListener('hashchange', ()=>{
+      const r = location.hash.replace('#','');
+      if(ROUTES[r]) navigate(r);
+    });
+  </script>
+</body>
+</html>

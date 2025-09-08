@@ -1,0 +1,2631 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración Municipal - Sabinas Hidalgo, N.L.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'gov-blue': '#1e40af',
+                        'gov-green': '#059669',
+                        'gov-gray': '#6b7280',
+                        'gov-light': '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar-transition {
+            transition: all 0.3s ease;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gov-light font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 fixed w-full top-0 z-40">
+        <div class="flex items-center justify-between px-6 py-4">
+            <div class="flex items-center">
+                <button id="sidebarToggle" class="lg:hidden mr-4 text-gov-gray hover:text-gov-blue transition duration-200">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div class="flex items-center">
+                    <div class="bg-gradient-to-r from-gov-blue to-gov-green text-white p-2 rounded-lg mr-3">
+                        <i class="fas fa-city text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">Administración Municipal</h1>
+                        <p class="text-sm text-gov-gray">Sabinas Hidalgo, Nuevo León</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="text-gov-gray hover:text-gov-blue transition duration-200">
+                    <i class="fas fa-bell text-lg"></i>
+                </button>
+                <div class="flex items-center space-x-2">
+                    <div class="text-right">
+                        <p class="text-sm font-medium text-gray-800">Admin Usuario</p>
+                        <p class="text-xs text-gov-gray">Administrador</p>
+                    </div>
+                    <div class="w-8 h-8 bg-gov-blue rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-16 h-full w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 sidebar-transition z-30">
+        <nav class="p-6">
+            <ul class="space-y-2">
+                <!-- CORE MENU ITEMS -->
+                <li>
+                    <a href="#" onclick="showSection('dashboard')" class="nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200 active">
+                        <i class="fas fa-tachometer-alt mr-3"></i>
+                        Dashboard
+                    </a>
+                </li>
+                
+                <!-- EQUIPO PARENT MENU -->
+                <li>
+                    <div class="menu-parent">
+                        <button onclick="toggleSubmenu('equipo')" class="nav-parent flex items-center justify-between w-full p-3 rounded-lg text-gov-gray hover:bg-gray-100 transition duration-200">
+                            <div class="flex items-center">
+                                <i class="fas fa-users-cog mr-3"></i>
+                                Equipo
+                            </div>
+                            <i id="equipo-arrow" class="fas fa-chevron-right transition-transform duration-200"></i>
+                        </button>
+                        <ul id="equipo-submenu" class="ml-6 mt-2 space-y-1 hidden">
+                            <li>
+                                <a href="#" onclick="showSection('secretarias')" class="nav-link flex items-center p-2 pl-4 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200 text-sm">
+                                    <i class="fas fa-building mr-3 text-xs"></i>
+                                    Secretarías
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="showSection('direcciones')" class="nav-link flex items-center p-2 pl-4 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200 text-sm">
+                                    <i class="fas fa-sitemap mr-3 text-xs"></i>
+                                    Direcciones
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="showSection('cabildo')" class="nav-link flex items-center p-2 pl-4 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200 text-sm">
+                                    <i class="fas fa-users mr-3 text-xs"></i>
+                                    Cabildo Municipal
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <li>
+                    <a href="#" onclick="showSection('negocios')" class="nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200">
+                        <i class="fas fa-store mr-3"></i>
+                        Negocios Registrados
+                    </a>
+                </li>
+                
+                <!-- ADD NEW MENU ITEMS HERE -->
+                <!-- Example for single menu item:
+                <li>
+                    <a href="#" onclick="showSection('new-section')" class="nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200">
+                        <i class="fas fa-icon-name mr-3"></i>
+                        New Section Name
+                    </a>
+                </li>
+                -->
+                
+                <!-- Example for parent menu with submenu:
+                <li>
+                    <div class="menu-parent">
+                        <button onclick="toggleSubmenu('parent-name')" class="nav-parent flex items-center justify-between w-full p-3 rounded-lg text-gov-gray hover:bg-gray-100 transition duration-200">
+                            <div class="flex items-center">
+                                <i class="fas fa-icon-name mr-3"></i>
+                                Parent Menu Name
+                            </div>
+                            <i id="parent-name-arrow" class="fas fa-chevron-right transition-transform duration-200"></i>
+                        </button>
+                        <ul id="parent-name-submenu" class="ml-6 mt-2 space-y-1 hidden">
+                            <li>
+                                <a href="#" onclick="showSection('sub-section-1')" class="nav-link flex items-center p-2 pl-4 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200 text-sm">
+                                    <i class="fas fa-sub-icon mr-3 text-xs"></i>
+                                    Sub Section 1
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                -->
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="lg:ml-64 pt-16 min-h-screen">
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="section-content p-6">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Dashboard</h2>
+                <p class="text-gov-gray">Resumen general del sistema administrativo</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-gov-blue bg-opacity-10 p-3 rounded-lg">
+                            <i class="fas fa-building text-gov-blue text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-2xl font-bold text-gray-800" id="secretarias-count">8</p>
+                            <p class="text-gov-gray">Secretarías</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-gov-green bg-opacity-10 p-3 rounded-lg">
+                            <i class="fas fa-sitemap text-gov-green text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-2xl font-bold text-gray-800" id="direcciones-count">12</p>
+                            <p class="text-gov-gray">Direcciones</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-purple-500 bg-opacity-10 p-3 rounded-lg">
+                            <i class="fas fa-users text-purple-500 text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-2xl font-bold text-gray-800" id="cabildo-count">15</p>
+                            <p class="text-gov-gray">Miembros del Cabildo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Actividad Reciente</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <div class="bg-gov-blue bg-opacity-10 p-2 rounded-full mr-3">
+                            <i class="fas fa-plus text-gov-blue"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-800">Nueva Secretaría agregada</p>
+                            <p class="text-sm text-gov-gray">Secretaría de Desarrollo Social - hace 2 horas</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <div class="bg-gov-green bg-opacity-10 p-2 rounded-full mr-3">
+                            <i class="fas fa-edit text-gov-green"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-800">Información actualizada</p>
+                            <p class="text-sm text-gov-gray">Dirección de Salud - hace 4 horas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secretarías Section -->
+        <section id="secretarias-section" class="section-content p-6 hidden">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Secretarías</h2>
+                    <p class="text-gov-gray">Gestión de las secretarías municipales</p>
+                </div>
+                <button onclick="openModal('secretarias')" class="bg-gov-blue text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center">
+                    <i class="fas fa-plus mr-2"></i>
+                    Agregar Secretaría
+                </button>
+            </div>
+
+            <div id="secretarias-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Secretarías cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Direcciones Section -->
+        <section id="direcciones-section" class="section-content p-6 hidden">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Direcciones</h2>
+                    <p class="text-gov-gray">Gestión de las direcciones municipales</p>
+                </div>
+                <button onclick="openModal('direcciones')" class="bg-gov-green text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-200 flex items-center">
+                    <i class="fas fa-plus mr-2"></i>
+                    Agregar Dirección
+                </button>
+            </div>
+
+            <div id="direcciones-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Direcciones cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Cabildo Section -->
+        <section id="cabildo-section" class="section-content p-6 hidden">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Cabildo Municipal</h2>
+                    <p class="text-gov-gray">Gestión de los miembros del cabildo</p>
+                </div>
+                <button onclick="openModal('cabildo')" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-200 flex items-center">
+                    <i class="fas fa-plus mr-2"></i>
+                    Agregar Miembro
+                </button>
+            </div>
+
+            <div id="cabildo-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cabildo cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Business Registration Section -->
+        <section id="negocios-section" class="section-content p-6 hidden">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Negocios Registrados</h2>
+                    <p class="text-gov-gray">Administración y seguimiento de negocios locales</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="bg-white rounded-lg px-4 py-2 shadow-sm border">
+                        <span class="text-sm text-gov-gray">Total de negocios:</span>
+                        <span class="font-bold text-gov-blue ml-2" id="total-businesses">0</span>
+                    </div>
+                    <button onclick="exportBusinessData()" class="bg-gov-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200 flex items-center">
+                        <i class="fas fa-download mr-2"></i>
+                        Exportar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter System -->
+            <div class="bg-white rounded-xl shadow-sm p-4 mb-4">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base font-bold text-gray-800">Filtros</h3>
+                    <button onclick="clearAllFilters()" class="text-red-600 hover:text-red-700 text-sm font-medium" id="clear-filters-btn" style="display: none;">
+                        <i class="fas fa-times mr-1"></i>
+                        Limpiar todos los filtros
+                    </button>
+                </div>
+                
+                <!-- Active Filters -->
+                <div id="active-filters" class="flex flex-wrap gap-2 mb-3" style="display: none;">
+                    <!-- Active filter chips will appear here -->
+                </div>
+                
+                <!-- Add Filter Button -->
+                <div class="relative inline-block">
+                    <button onclick="toggleFilterDropdown()" class="border-2 border-dashed border-gray-300 rounded-lg px-4 py-2 text-gray-500 hover:border-gov-blue hover:text-gov-blue transition duration-200 flex items-center text-sm" id="add-filter-btn">
+                        <i class="fas fa-plus mr-2"></i>
+                        Haz clic para agregar filtro
+                    </button>
+                    
+                    <!-- Filter Dropdown -->
+                    <div id="filter-dropdown" class="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 hidden w-80">
+                        <div class="p-2">
+                            <div class="text-xs font-medium text-gray-500 uppercase tracking-wider px-3 py-2">Selecciona un campo para filtrar</div>
+                            <div class="space-y-1">
+                                <button onclick="addFilter('nombre')" class="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg flex items-center">
+                                    <i class="fas fa-store text-gov-blue mr-3 w-4"></i>
+                                    <span class="text-sm">Nombre del negocio</span>
+                                </button>
+                                <button onclick="addFilter('propietario')" class="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg flex items-center">
+                                    <i class="fas fa-user text-gov-blue mr-3 w-4"></i>
+                                    <span class="text-sm">Propietario</span>
+                                </button>
+                                <button onclick="addFilter('categoria')" class="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg flex items-center">
+                                    <i class="fas fa-tag text-gov-blue mr-3 w-4"></i>
+                                    <span class="text-sm">Categoría</span>
+                                </button>
+                                <button onclick="addFilter('giro')" class="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg flex items-center">
+                                    <i class="fas fa-briefcase text-gov-blue mr-3 w-4"></i>
+                                    <span class="text-sm">Tipo de negocio</span>
+                                </button>
+                                <button onclick="addFilter('estado')" class="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg flex items-center">
+                                    <i class="fas fa-toggle-on text-gov-blue mr-3 w-4"></i>
+                                    <span class="text-sm">Estado</span>
+                                </button>
+                                <button onclick="addFilter('telefono')" class="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg flex items-center">
+                                    <i class="fas fa-phone text-gov-blue mr-3 w-4"></i>
+                                    <span class="text-sm">Teléfono</span>
+                                </button>
+                                <button onclick="addFilter('email')" class="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg flex items-center">
+                                    <i class="fas fa-envelope text-gov-blue mr-3 w-4"></i>
+                                    <span class="text-sm">Email</span>
+                                </button>
+                                <button onclick="addFilter('direccion')" class="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg flex items-center">
+                                    <i class="fas fa-map-marker-alt text-gov-blue mr-3 w-4"></i>
+                                    <span class="text-sm">Dirección</span>
+                                </button>
+                                <button onclick="addFilter('fechaRegistro')" class="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg flex items-center">
+                                    <i class="fas fa-calendar text-gov-blue mr-3 w-4"></i>
+                                    <span class="text-sm">Fecha de registro</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Table -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Negocio</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Propietario</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contacto</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="business-table-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Business rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Empty state -->
+                <div id="empty-business-state" class="text-center py-12 hidden">
+                    <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-store text-gray-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-800 mb-2">No hay negocios registrados</h3>
+                    <p class="text-gov-gray">Los negocios aparecerán aquí cuando se registren desde el portal público.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Business Detail View -->
+        <section id="business-detail-section" class="section-content p-6 hidden">
+            <div class="mb-6">
+                <button onclick="showSection('negocios')" class="text-gov-blue hover:text-blue-700 mb-4 flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Volver a la lista
+                </button>
+                <div id="business-detail-content">
+                    <!-- Business details will be populated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ADD NEW SECTIONS HERE -->
+        <!-- Example:
+        <section id="new-section-section" class="section-content p-6 hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">New Section Title</h2>
+                <p class="text-gov-gray">Section description</p>
+            </div>
+            
+            Your content here...
+        </section>
+        -->
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h3 id="modal-title" class="text-xl font-bold text-gray-800">Agregar Elemento</h3>
+                    <button onclick="closeModal()" class="text-gov-gray hover:text-gray-800 transition duration-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <form id="modal-form" class="p-6">
+                <div id="form-fields" class="space-y-4">
+                    <!-- Form fields will be populated by JavaScript -->
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
+                    <button type="button" onclick="closeModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gov-gray hover:bg-gray-50 transition duration-200">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="submit-btn" class="px-6 py-2 bg-gov-blue text-white rounded-lg hover:bg-blue-700 transition duration-200">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-md w-full">
+            <div class="p-6 text-center">
+                <div class="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Confirmar Eliminación</h3>
+                <p class="text-gov-gray mb-6">¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer.</p>
+                
+                <div class="flex justify-center space-x-3">
+                    <button onclick="closeConfirmModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gov-gray hover:bg-gray-50 transition duration-200">
+                        Cancelar
+                    </button>
+                    <button id="confirm-delete-btn" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Business Registration Wizard Modal -->
+    <div id="business-wizard-modal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <!-- Wizard Header -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-2xl font-bold text-gray-800">Registro de Negocio</h3>
+                    <button onclick="closeBusinessWizard()" class="text-gov-gray hover:text-gray-800 transition duration-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="flex items-center space-x-4">
+                    <div id="step-1-indicator" class="flex items-center">
+                        <div class="w-8 h-8 bg-gov-blue text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                        <span class="ml-2 text-sm font-medium text-gov-blue">Información General</span>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-200 rounded">
+                        <div id="progress-bar" class="h-1 bg-gov-blue rounded transition-all duration-300" style="width: 25%"></div>
+                    </div>
+                    <div id="step-2-indicator" class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                        <span class="ml-2 text-sm font-medium text-gray-600">Giro y Servicios</span>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-200 rounded"></div>
+                    <div id="step-3-indicator" class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                        <span class="ml-2 text-sm font-medium text-gray-600">Detalles Específicos</span>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-200 rounded"></div>
+                    <div id="step-4-indicator" class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">4</div>
+                        <span class="ml-2 text-sm font-medium text-gray-600">Confirmación</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Wizard Content -->
+            <div class="p-6">
+                <!-- Step 1: General Information -->
+                <div id="wizard-step-1" class="wizard-step">
+                    <h4 class="text-xl font-bold text-gray-800 mb-6">Información General del Negocio</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Negocio *</label>
+                            <input type="text" id="business-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Propietario *</label>
+                            <input type="text" id="business-owner" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
+                            <input type="tel" id="business-phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" id="business-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Dirección *</label>
+                            <input type="text" id="business-address" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Horario de Apertura</label>
+                            <input type="time" id="business-open" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Horario de Cierre</label>
+                            <input type="time" id="business-close" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Business Type -->
+                <div id="wizard-step-2" class="wizard-step hidden">
+                    <h4 class="text-xl font-bold text-gray-800 mb-6">Giro del Negocio</h4>
+                    <div id="business-types">
+                        <!-- Business types will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Step 3: Specific Details -->
+                <div id="wizard-step-3" class="wizard-step hidden">
+                    <h4 class="text-xl font-bold text-gray-800 mb-6">Detalles Específicos</h4>
+                    <div id="specific-details-content">
+                        <!-- Content will be populated based on business type -->
+                    </div>
+                </div>
+
+                <!-- Step 4: Confirmation -->
+                <div id="wizard-step-4" class="wizard-step hidden">
+                    <h4 class="text-xl font-bold text-gray-800 mb-6">Confirmación de Datos</h4>
+                    <div id="confirmation-content" class="bg-gray-50 rounded-lg p-6">
+                        <!-- Confirmation details will be populated -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Wizard Footer -->
+            <div class="p-6 border-t border-gray-200 flex justify-between">
+                <button id="wizard-prev-btn" onclick="previousStep()" class="px-6 py-2 border border-gray-300 rounded-lg text-gov-gray hover:bg-gray-50 transition duration-200 hidden">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Anterior
+                </button>
+                <div class="flex space-x-3">
+                    <button onclick="closeBusinessWizard()" class="px-6 py-2 border border-gray-300 rounded-lg text-gov-gray hover:bg-gray-50 transition duration-200">
+                        Cancelar
+                    </button>
+                    <button id="wizard-next-btn" onclick="nextStep()" class="px-6 py-2 bg-gov-blue text-white rounded-lg hover:bg-blue-700 transition duration-200">
+                        Siguiente
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CORE SYSTEM FUNCTIONS - DON'T MODIFY
+        // ==========================================
+        
+        // Current section tracking
+        let currentSection = 'dashboard';
+        let currentEditId = null;
+        let currentEditType = null;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            renderAllSections();
+            updateCounts();
+            
+            // Sidebar toggle for mobile
+            document.getElementById('sidebarToggle').addEventListener('click', function() {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Form submission
+            document.getElementById('modal-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveItem();
+            });
+        });
+
+        // Core navigation function - handles all section switching
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.section-content').forEach(s => s.classList.add('hidden'));
+            
+            // Show selected section
+            const targetSection = document.getElementById(`${section}-section`);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+            
+            // Update navigation highlighting
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active', 'bg-gov-blue', 'text-white');
+                link.classList.add('text-gov-gray');
+            });
+            
+            // Highlight active menu item
+            event.target.classList.add('active', 'bg-gov-blue', 'text-white');
+            event.target.classList.remove('text-gov-gray');
+            
+            currentSection = section;
+        }
+
+        // ==========================================
+        // DATA STORAGE - ADD YOUR DATA ARRAYS HERE
+        // ==========================================
+        
+        let secretarias = [
+            {
+                id: 1,
+                nombre: "Secretaría del Ayuntamiento",
+                responsable: "Lic. Carlos Mendoza Ruiz",
+                titulo: "Secretario del Ayuntamiento",
+                descripcion: "Encargada de la administración general y actas de cabildo",
+                telefono: "(873) 742-0001",
+                email: "secretaria@sabinashidalgo.gob.mx",
+                icono: "fas fa-gavel"
+            },
+            {
+                id: 2,
+                nombre: "Secretaría de Finanzas",
+                responsable: "C.P. María Elena Torres",
+                titulo: "Secretaria de Finanzas",
+                descripcion: "Administración de recursos financieros municipales",
+                telefono: "(873) 742-0015",
+                email: "finanzas@sabinashidalgo.gob.mx",
+                icono: "fas fa-coins"
+            },
+            {
+                id: 3,
+                nombre: "Secretaría de Desarrollo Social",
+                responsable: "Lic. Roberto Hernández",
+                titulo: "Secretario de Desarrollo Social",
+                descripcion: "Programas sociales y desarrollo comunitario",
+                telefono: "(873) 742-0020",
+                email: "desarrollo@sabinashidalgo.gob.mx",
+                icono: "fas fa-heart"
+            }
+        ];
+
+        let direcciones = [
+            {
+                id: 1,
+                nombre: "Dirección de Salud",
+                responsable: "Dra. Patricia Flores Vega",
+                titulo: "Directora de Salud",
+                descripcion: "Programas de salud pública y prevención",
+                telefono: "(873) 742-0025",
+                email: "salud@sabinashidalgo.gob.mx",
+                icono: "fas fa-heartbeat"
+            },
+            {
+                id: 2,
+                nombre: "Dirección de Obras Públicas",
+                responsable: "Ing. Miguel Ángel Sánchez",
+                titulo: "Director de Obras Públicas",
+                descripcion: "Infraestructura y mantenimiento urbano",
+                telefono: "(873) 742-0030",
+                email: "obras@sabinashidalgo.gob.mx",
+                icono: "fas fa-hard-hat"
+            },
+            {
+                id: 3,
+                nombre: "Dirección de Educación y Cultura",
+                responsable: "Profra. Ana Lucía Morales",
+                titulo: "Directora de Educación",
+                descripcion: "Programas educativos y actividades culturales",
+                telefono: "(873) 742-0035",
+                email: "educacion@sabinashidalgo.gob.mx",
+                icono: "fas fa-graduation-cap"
+            }
+        ];
+
+        let cabildo = [
+            {
+                id: 1,
+                nombre: "Lic. José Manuel Rodríguez",
+                titulo: "Primer Regidor",
+                descripcion: "Comisión de Hacienda y Patrimonio",
+                telefono: "(873) 742-0040",
+                email: "regidor1@sabinashidalgo.gob.mx",
+                partido: "Partido Acción Nacional",
+                icono: "fas fa-user-tie"
+            },
+            {
+                id: 2,
+                nombre: "Lic. Carmen Beatriz López",
+                titulo: "Segunda Regidora",
+                descripcion: "Comisión de Desarrollo Social",
+                telefono: "(873) 742-0041",
+                email: "regidor2@sabinashidalgo.gob.mx",
+                partido: "Movimiento Ciudadano",
+                icono: "fas fa-female"
+            },
+            {
+                id: 3,
+                nombre: "Ing. Fernando Castillo Vega",
+                titulo: "Tercer Regidor",
+                descripcion: "Comisión de Obras Públicas",
+                telefono: "(873) 742-0042",
+                email: "regidor3@sabinashidalgo.gob.mx",
+                partido: "Partido Revolucionario Institucional",
+                icono: "fas fa-user-tie"
+            }
+        ];
+
+        // Business data
+        let activeFilters = {};
+        let filteredNegocios = [];
+        
+        let negocios = [
+            {
+                id: 1,
+                nombre: "Restaurante El Sabor",
+                propietario: "María González Hernández",
+                giro: "restaurante",
+                categoria: "alimentos",
+                categoriaNombre: "Alimentos y Bebidas",
+                giroNombre: "Restaurante",
+                telefono: "(873) 742-1234",
+                email: "elsabor@email.com",
+                direccion: "Calle Hidalgo #123, Centro",
+                horarioApertura: "08:00",
+                horarioCierre: "22:00",
+                horario: "08:00 - 22:00",
+                tiposComida: ["Mexicana", "Antojitos"],
+                serviciosGenerales: ["domicilio", "whatsapp", "efectivo", "tarjetas"],
+                menu: [
+                    {id: 1, nombre: "Tacos de Carnitas", precio: 15.00, foto: null},
+                    {id: 2, nombre: "Enchiladas Verdes", precio: 45.00, foto: null},
+                    {id: 3, nombre: "Pozole Rojo", precio: 60.00, foto: null}
+                ],
+                fechaRegistro: "2024-01-15",
+                estado: "activo",
+                icono: "fas fa-utensils"
+            },
+            {
+                id: 2,
+                nombre: "Ferretería San José",
+                propietario: "Juan Carlos Pérez Morales",
+                giro: "ferreteria",
+                categoria: "comercio",
+                categoriaNombre: "Comercio y Ventas",
+                giroNombre: "Ferretería",
+                telefono: "(873) 742-5678",
+                email: "ferreteria@email.com",
+                direccion: "Av. Revolución #456, Col. Centro",
+                horarioApertura: "07:00",
+                horarioCierre: "19:00",
+                horario: "07:00 - 19:00",
+                productos: ["Herramientas", "Materiales de construcción", "Plomería", "Electricidad"],
+                serviciosGenerales: ["credito", "mayoreo", "menudeo", "estacionamiento"],
+                fechaRegistro: "2024-01-20",
+                estado: "activo",
+                icono: "fas fa-tools"
+            },
+            {
+                id: 3,
+                nombre: "Panadería La Espiga",
+                propietario: "Rosa María Castillo",
+                giro: "panaderia",
+                categoria: "alimentos",
+                categoriaNombre: "Alimentos y Bebidas",
+                giroNombre: "Panadería / Pastelería",
+                telefono: "(873) 742-9012",
+                email: "laespiga@email.com",
+                direccion: "Calle Morelos #89, Centro",
+                horarioApertura: "06:00",
+                horarioCierre: "20:00",
+                horario: "06:00 - 20:00",
+                serviciosGenerales: ["separado", "whatsapp", "efectivo"],
+                fechaRegistro: "2024-02-01",
+                estado: "activo",
+                icono: "fas fa-bread-slice"
+            },
+            {
+                id: 4,
+                nombre: "Farmacia Guadalupe",
+                propietario: "Dr. Miguel Ángel Ruiz",
+                giro: "farmacia",
+                categoria: "salud",
+                categoriaNombre: "Salud y Bienestar",
+                giroNombre: "Farmacia",
+                telefono: "(873) 742-3456",
+                email: "farmacia.guadalupe@email.com",
+                direccion: "Av. Juárez #234, Centro",
+                horarioApertura: "08:00",
+                horarioCierre: "21:00",
+                horario: "08:00 - 21:00",
+                servicios: ["Medicamentos con receta", "Medicamentos sin receta", "Toma de presión", "Inyecciones"],
+                serviciosGenerales: ["domicilio", "tarjetas", "transferencia"],
+                fechaRegistro: "2024-01-10",
+                estado: "activo",
+                icono: "fas fa-pills"
+            },
+            {
+                id: 5,
+                nombre: "Taller Mecánico El Rayo",
+                propietario: "Roberto Sánchez López",
+                giro: "mecanico",
+                categoria: "servicios",
+                categoriaNombre: "Servicios",
+                giroNombre: "Taller Mecánico",
+                telefono: "(873) 742-7890",
+                email: "tallerelrayo@email.com",
+                direccion: "Carretera Nacional Km 2.5",
+                horarioApertura: "08:00",
+                horarioCierre: "18:00",
+                horario: "08:00 - 18:00",
+                serviciosGenerales: ["garantia", "reparacion", "mantenimiento", "estacionamiento"],
+                fechaRegistro: "2024-01-25",
+                estado: "pendiente",
+                icono: "fas fa-wrench"
+            }
+        ];
+
+        // Business wizard data
+        let currentWizardStep = 1;
+        let wizardData = {};
+        
+        const businessTypes = [
+            { id: 'restaurante', name: 'Restaurante', icon: 'fas fa-utensils', color: 'bg-red-500' },
+            { id: 'ferreteria', name: 'Ferretería', icon: 'fas fa-tools', color: 'bg-orange-500' },
+            { id: 'abarrotes', name: 'Tienda de Abarrotes', icon: 'fas fa-shopping-basket', color: 'bg-green-500' },
+            { id: 'merceria', name: 'Mercería', icon: 'fas fa-cut', color: 'bg-pink-500' },
+            { id: 'papeleria', name: 'Papelería', icon: 'fas fa-pen', color: 'bg-blue-500' },
+            { id: 'farmacia', name: 'Farmacia', icon: 'fas fa-pills', color: 'bg-teal-500' },
+            { id: 'panaderia', name: 'Panadería', icon: 'fas fa-bread-slice', color: 'bg-yellow-500' },
+            { id: 'carniceria', name: 'Carnicería', icon: 'fas fa-drumstick-bite', color: 'bg-red-600' },
+            { id: 'zapateria', name: 'Zapatería', icon: 'fas fa-shoe-prints', color: 'bg-purple-500' },
+            { id: 'ropa', name: 'Tienda de Ropa', icon: 'fas fa-tshirt', color: 'bg-indigo-500' },
+            { id: 'electronica', name: 'Electrónicos', icon: 'fas fa-mobile-alt', color: 'bg-gray-600' },
+            { id: 'muebleria', name: 'Mueblería', icon: 'fas fa-couch', color: 'bg-yellow-600' },
+            { id: 'peluqueria', name: 'Peluquería', icon: 'fas fa-cut', color: 'bg-pink-400' },
+            { id: 'mecanico', name: 'Taller Mecánico', icon: 'fas fa-wrench', color: 'bg-gray-700' },
+            { id: 'lavanderia', name: 'Lavandería', icon: 'fas fa-tint', color: 'bg-blue-400' },
+            { id: 'veterinaria', name: 'Veterinaria', icon: 'fas fa-paw', color: 'bg-green-600' },
+            { id: 'optica', name: 'Óptica', icon: 'fas fa-glasses', color: 'bg-purple-600' },
+            { id: 'joyeria', name: 'Joyería', icon: 'fas fa-gem', color: 'bg-yellow-400' },
+            { id: 'floreria', name: 'Florería', icon: 'fas fa-seedling', color: 'bg-green-400' },
+            { id: 'consultorio', name: 'Consultorio Médico', icon: 'fas fa-stethoscope', color: 'bg-blue-600' }
+        ];
+
+        // ADD YOUR NEW DATA ARRAYS HERE
+        // Example: let newSectionData = [];
+
+        // ==========================================
+        // RENDERING FUNCTIONS - ADD YOUR RENDER FUNCTIONS HERE
+        // ==========================================
+        
+        function renderAllSections() {
+            renderSecretarias();
+            renderDirecciones();
+            renderCabildo();
+            renderNegocios();
+            // ADD YOUR RENDER FUNCTION CALLS HERE
+        }
+
+        function renderSecretarias() {
+            const grid = document.getElementById('secretarias-grid');
+            grid.innerHTML = secretarias.map(item => createCard(item, 'secretarias')).join('');
+        }
+
+        function renderDirecciones() {
+            const grid = document.getElementById('direcciones-grid');
+            grid.innerHTML = direcciones.map(item => createCard(item, 'direcciones')).join('');
+        }
+
+        function renderCabildo() {
+            const grid = document.getElementById('cabildo-grid');
+            grid.innerHTML = cabildo.map(item => createCard(item, 'cabildo')).join('');
+        }
+
+        function renderNegocios() {
+            const tableBody = document.getElementById('business-table-body');
+            const emptyState = document.getElementById('empty-business-state');
+            const totalCount = document.getElementById('total-businesses');
+            
+            // Apply filters
+            applyFilters();
+            
+            const businessesToShow = Object.keys(activeFilters).length > 0 ? filteredNegocios : negocios;
+            
+            totalCount.textContent = businessesToShow.length;
+            
+            if (businessesToShow.length === 0) {
+                tableBody.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                if (Object.keys(activeFilters).length > 0) {
+                    emptyState.querySelector('h3').textContent = 'No se encontraron negocios';
+                    emptyState.querySelector('p').textContent = 'No hay negocios que coincidan con los filtros aplicados.';
+                } else {
+                    emptyState.querySelector('h3').textContent = 'No hay negocios registrados';
+                    emptyState.querySelector('p').textContent = 'Los negocios aparecerán aquí cuando se registren desde el portal público.';
+                }
+            } else {
+                emptyState.classList.add('hidden');
+                tableBody.innerHTML = businessesToShow.map(negocio => createBusinessTableRow(negocio)).join('');
+            }
+        }
+
+        function createBusinessTableRow(negocio) {
+            const statusBadge = negocio.estado === 'activo' ? 
+                '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Activo</span>' :
+                negocio.estado === 'pendiente' ?
+                '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Pendiente</span>' :
+                '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Inactivo</span>';
+            
+            return `
+                <tr class="hover:bg-gray-50 transition duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <div class="h-10 w-10 rounded-lg bg-gov-blue bg-opacity-10 flex items-center justify-center">
+                                    <i class="${negocio.icono} text-gov-blue"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${negocio.nombre}</div>
+                                <div class="text-sm text-gray-500">${negocio.giroNombre || negocio.giro}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${negocio.propietario}</div>
+                        <div class="text-sm text-gray-500">${negocio.fechaRegistro || 'N/A'}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${negocio.categoriaNombre || 'Sin categoría'}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${negocio.telefono}</div>
+                        <div class="text-sm text-gray-500">${negocio.email || 'Sin email'}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        ${statusBadge}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button onclick="viewBusinessDetail(${negocio.id})" class="text-gov-blue hover:text-blue-700 mr-3">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button onclick="toggleBusinessStatus(${negocio.id})" class="text-yellow-600 hover:text-yellow-700 mr-3" title="Cambiar estado">
+                            <i class="fas fa-toggle-on"></i>
+                        </button>
+                        <button onclick="deleteBusiness(${negocio.id})" class="text-red-600 hover:text-red-700" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // ADD YOUR NEW RENDER FUNCTIONS HERE
+
+        // ==========================================
+        // UTILITY FUNCTIONS
+        // ==========================================
+        
+        function createCard(item, type) {
+            const extraField = type === 'cabildo' ? 
+                `<p class="text-sm text-gov-gray mb-2"><i class="fas fa-flag mr-2"></i>${item.partido}</p>` : '';
+            
+            return `
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover fade-in">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="bg-gov-blue bg-opacity-10 p-3 rounded-lg mr-3">
+                                <i class="${item.icono} text-gov-blue text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-lg">${item.nombre}</h3>
+                                <p class="text-gov-gray text-sm">${item.titulo}</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="editItem(${item.id}, '${type}')" class="text-gov-blue hover:bg-blue-50 p-2 rounded-lg transition duration-200">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteItem(${item.id}, '${type}')" class="text-red-600 hover:bg-red-50 p-2 rounded-lg transition duration-200">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4">
+                        <p class="text-sm text-gov-gray"><i class="fas fa-user mr-2"></i>${item.responsable || item.nombre}</p>
+                        <p class="text-sm text-gov-gray"><i class="fas fa-phone mr-2"></i>${item.telefono}</p>
+                        <p class="text-sm text-gov-gray"><i class="fas fa-envelope mr-2"></i>${item.email}</p>
+                        ${extraField}
+                    </div>
+                    
+                    <p class="text-gray-700 text-sm">${item.descripcion}</p>
+                </div>
+            `;
+        }
+
+        function updateCounts() {
+            document.getElementById('secretarias-count').textContent = secretarias.length;
+            document.getElementById('direcciones-count').textContent = direcciones.length;
+            document.getElementById('cabildo-count').textContent = cabildo.length;
+        }
+
+        // ==========================================
+        // MODAL FUNCTIONS
+        // ==========================================
+        
+        function openModal(type, editId = null) {
+            currentEditType = type;
+            currentEditId = editId;
+            
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modal-title');
+            const formFields = document.getElementById('form-fields');
+            
+            // Set title
+            if (editId) {
+                title.textContent = `Editar ${type === 'secretarias' ? 'Secretaría' : type === 'direcciones' ? 'Dirección' : 'Miembro del Cabildo'}`;
+            } else {
+                title.textContent = `Agregar ${type === 'secretarias' ? 'Secretaría' : type === 'direcciones' ? 'Dirección' : 'Miembro del Cabildo'}`;
+            }
+            
+            // Generate form fields
+            let fields = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
+                        <input type="text" id="form-nombre" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Responsable *</label>
+                        <input type="text" id="form-responsable" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Título/Cargo *</label>
+                    <input type="text" id="form-titulo" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Descripción *</label>
+                    <textarea id="form-descripcion" required rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent"></textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
+                        <input type="tel" id="form-telefono" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                        <input type="email" id="form-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                    </div>
+                </div>
+            `;
+            
+            if (type === 'cabildo') {
+                fields += `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Partido Político</label>
+                        <select id="form-partido" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                            <option value="">Seleccionar partido</option>
+                            <option value="Partido Acción Nacional">Partido Acción Nacional</option>
+                            <option value="Partido Revolucionario Institucional">Partido Revolucionario Institucional</option>
+                            <option value="Movimiento Ciudadano">Movimiento Ciudadano</option>
+                            <option value="MORENA">MORENA</option>
+                            <option value="Independiente">Independiente</option>
+                        </select>
+                    </div>
+                `;
+            }
+            
+            fields += `
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Icono</label>
+                    <select id="form-icono" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                        <option value="fas fa-building">Edificio</option>
+                        <option value="fas fa-gavel">Martillo</option>
+                        <option value="fas fa-coins">Monedas</option>
+                        <option value="fas fa-heart">Corazón</option>
+                        <option value="fas fa-heartbeat">Salud</option>
+                        <option value="fas fa-hard-hat">Obras</option>
+                        <option value="fas fa-graduation-cap">Educación</option>
+                        <option value="fas fa-user-tie">Usuario Formal</option>
+                        <option value="fas fa-female">Mujer</option>
+                        <option value="fas fa-leaf">Ecología</option>
+                        <option value="fas fa-shield-alt">Seguridad</option>
+                    </select>
+                </div>
+            `;
+            
+            formFields.innerHTML = fields;
+            
+            // Fill form if editing
+            if (editId) {
+                fillForm(type, editId);
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function fillForm(type, id) {
+            let data;
+            if (type === 'secretarias') data = secretarias.find(item => item.id === id);
+            else if (type === 'direcciones') data = direcciones.find(item => item.id === id);
+            else if (type === 'cabildo') data = cabildo.find(item => item.id === id);
+            
+            if (data) {
+                document.getElementById('form-nombre').value = data.nombre;
+                document.getElementById('form-responsable').value = data.responsable || data.nombre;
+                document.getElementById('form-titulo').value = data.titulo;
+                document.getElementById('form-descripcion').value = data.descripcion;
+                document.getElementById('form-telefono').value = data.telefono;
+                document.getElementById('form-email').value = data.email;
+                document.getElementById('form-icono').value = data.icono;
+                
+                if (type === 'cabildo' && data.partido) {
+                    document.getElementById('form-partido').value = data.partido;
+                }
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+            document.getElementById('modal-form').reset();
+            currentEditId = null;
+            currentEditType = null;
+        }
+
+        function saveItem() {
+            const formData = {
+                nombre: document.getElementById('form-nombre').value,
+                responsable: document.getElementById('form-responsable').value,
+                titulo: document.getElementById('form-titulo').value,
+                descripcion: document.getElementById('form-descripcion').value,
+                telefono: document.getElementById('form-telefono').value,
+                email: document.getElementById('form-email').value,
+                icono: document.getElementById('form-icono').value
+            };
+            
+            if (currentEditType === 'cabildo') {
+                formData.partido = document.getElementById('form-partido').value;
+            }
+            
+            if (currentEditId) {
+                // Update existing item
+                if (currentEditType === 'secretarias') {
+                    const index = secretarias.findIndex(item => item.id === currentEditId);
+                    secretarias[index] = { ...secretarias[index], ...formData };
+                } else if (currentEditType === 'direcciones') {
+                    const index = direcciones.findIndex(item => item.id === currentEditId);
+                    direcciones[index] = { ...direcciones[index], ...formData };
+                } else if (currentEditType === 'cabildo') {
+                    const index = cabildo.findIndex(item => item.id === currentEditId);
+                    cabildo[index] = { ...cabildo[index], ...formData };
+                }
+            } else {
+                // Add new item
+                const newId = Date.now();
+                const newItem = { id: newId, ...formData };
+                
+                if (currentEditType === 'secretarias') {
+                    secretarias.push(newItem);
+                } else if (currentEditType === 'direcciones') {
+                    direcciones.push(newItem);
+                } else if (currentEditType === 'cabildo') {
+                    cabildo.push(newItem);
+                }
+            }
+            
+            renderAllSections();
+            updateCounts();
+            closeModal();
+        }
+
+        function editItem(id, type) {
+            openModal(type, id);
+        }
+
+        function deleteItem(id, type) {
+            currentEditId = id;
+            currentEditType = type;
+            
+            document.getElementById('confirm-modal').classList.remove('hidden');
+            
+            document.getElementById('confirm-delete-btn').onclick = function() {
+                if (currentEditType === 'secretarias') {
+                    secretarias = secretarias.filter(item => item.id !== currentEditId);
+                } else if (currentEditType === 'direcciones') {
+                    direcciones = direcciones.filter(item => item.id !== currentEditId);
+                } else if (currentEditType === 'cabildo') {
+                    cabildo = cabildo.filter(item => item.id !== currentEditId);
+                }
+                
+                renderAllSections();
+                updateCounts();
+                closeConfirmModal();
+            };
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            currentEditId = null;
+            currentEditType = null;
+        }
+
+        // ==========================================
+        // SUBMENU FUNCTIONS
+        // ==========================================
+        
+        function toggleSubmenu(menuName) {
+            const submenu = document.getElementById(`${menuName}-submenu`);
+            const arrow = document.getElementById(`${menuName}-arrow`);
+            
+            if (submenu.classList.contains('hidden')) {
+                // Show submenu
+                submenu.classList.remove('hidden');
+                arrow.classList.add('rotate-90');
+            } else {
+                // Hide submenu
+                submenu.classList.add('hidden');
+                arrow.classList.remove('rotate-90');
+            }
+        }
+
+        // ==========================================
+        // BUSINESS WIZARD FUNCTIONS
+        // ==========================================
+        
+        function openBusinessWizard() {
+            currentWizardStep = 1;
+            wizardData = {};
+            document.getElementById('business-wizard-modal').classList.remove('hidden');
+            updateWizardStep();
+            populateBusinessTypes();
+        }
+
+        function closeBusinessWizard() {
+            document.getElementById('business-wizard-modal').classList.add('hidden');
+            resetWizardForm();
+        }
+
+        function resetWizardForm() {
+            currentWizardStep = 1;
+            wizardData = {};
+            document.querySelectorAll('.wizard-step input, .wizard-step select, .wizard-step textarea').forEach(input => {
+                input.value = '';
+            });
+            document.querySelectorAll('.business-type-card').forEach(card => {
+                card.classList.remove('ring-2', 'ring-gov-blue', 'bg-blue-50');
+            });
+        }
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                saveCurrentStepData();
+                if (currentWizardStep < 4) {
+                    currentWizardStep++;
+                    updateWizardStep();
+                    if (currentWizardStep === 3) {
+                        populateSpecificDetails();
+                    } else if (currentWizardStep === 4) {
+                        populateConfirmation();
+                    }
+                } else {
+                    // Final step - save business
+                    saveBusiness();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentWizardStep > 1) {
+                currentWizardStep--;
+                updateWizardStep();
+            }
+        }
+
+        function updateWizardStep() {
+            // Hide all steps
+            document.querySelectorAll('.wizard-step').forEach(step => step.classList.add('hidden'));
+            
+            // Show current step
+            document.getElementById(`wizard-step-${currentWizardStep}`).classList.remove('hidden');
+            
+            // Update progress bar
+            const progressWidth = (currentWizardStep / 4) * 100;
+            document.getElementById('progress-bar').style.width = `${progressWidth}%`;
+            
+            // Update step indicators
+            for (let i = 1; i <= 4; i++) {
+                const indicator = document.getElementById(`step-${i}-indicator`);
+                const circle = indicator.querySelector('div');
+                const text = indicator.querySelector('span');
+                
+                if (i <= currentWizardStep) {
+                    circle.classList.remove('bg-gray-300', 'text-gray-600');
+                    circle.classList.add('bg-gov-blue', 'text-white');
+                    text.classList.remove('text-gray-600');
+                    text.classList.add('text-gov-blue');
+                } else {
+                    circle.classList.remove('bg-gov-blue', 'text-white');
+                    circle.classList.add('bg-gray-300', 'text-gray-600');
+                    text.classList.remove('text-gov-blue');
+                    text.classList.add('text-gray-600');
+                }
+            }
+            
+            // Update buttons
+            const prevBtn = document.getElementById('wizard-prev-btn');
+            const nextBtn = document.getElementById('wizard-next-btn');
+            
+            if (currentWizardStep === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            if (currentWizardStep === 4) {
+                nextBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Registrar Negocio';
+            } else {
+                nextBtn.innerHTML = 'Siguiente <i class="fas fa-arrow-right ml-2"></i>';
+            }
+        }
+
+        function populateBusinessTypes() {
+            const container = document.getElementById('business-types');
+            
+            // Business categories with subcategories
+            const businessCategories = {
+                'alimentos': {
+                    name: 'Alimentos y Bebidas',
+                    icon: 'fas fa-utensils',
+                    color: 'bg-red-500',
+                    subcategories: [
+                        {
+                            id: 'restaurante',
+                            name: 'Restaurante',
+                            description: 'Negocio establecido con mesas y atención al cliente, servicio completo de alimentos y bebidas.',
+                            icon: 'fas fa-utensils'
+                        },
+                        {
+                            id: 'servicar',
+                            name: 'Servicar',
+                            description: 'Negocio de comida rápida con atención desde el auto sin necesidad de bajarse.',
+                            icon: 'fas fa-car'
+                        },
+                        {
+                            id: 'fondita',
+                            name: 'Fondita / Cocina económica',
+                            description: 'Negocio pequeño y familiar que ofrece comida casera a precios accesibles con menú del día.',
+                            icon: 'fas fa-home'
+                        },
+                        {
+                            id: 'comida_casera',
+                            name: 'Comidas caseras por días',
+                            description: 'Persona que vende platillos preparados en casa ciertos días, por encargo o entrega.',
+                            icon: 'fas fa-calendar-alt'
+                        },
+                        {
+                            id: 'comida_ambulante',
+                            name: 'Comida ambulante / Puesto callejero',
+                            description: 'Venta de alimentos en la vía pública de forma itinerante o en un punto fijo sin local.',
+                            icon: 'fas fa-shopping-cart'
+                        },
+                        {
+                            id: 'food_truck',
+                            name: 'Carro de comida / Food truck',
+                            description: 'Unidad móvil equipada para preparar y vender alimentos en diferentes lugares.',
+                            icon: 'fas fa-truck'
+                        },
+                        {
+                            id: 'panaderia',
+                            name: 'Panadería / Pastelería',
+                            description: 'Venta de pan, pasteles y repostería, muchas veces de producción local.',
+                            icon: 'fas fa-bread-slice'
+                        },
+                        {
+                            id: 'otro_alimentos',
+                            name: 'Otro',
+                            description: 'Otro tipo de negocio de alimentos y bebidas no listado anteriormente.',
+                            icon: 'fas fa-plus-circle'
+                        }
+                    ]
+                }
+            };
+            
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Category Selection -->
+                    <div id="category-selection">
+                        <h5 class="font-bold text-gray-800 mb-4">Selecciona la categoría principal de tu negocio:</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${Object.entries(businessCategories).map(([categoryId, category]) => `
+                                <div class="category-card p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-gov-blue transition duration-200" 
+                                     onclick="selectCategory('${categoryId}')">
+                                    <div class="text-center">
+                                        <div class="${category.color} bg-opacity-10 p-4 rounded-lg mx-auto mb-3 w-20 h-20 flex items-center justify-center">
+                                            <i class="${category.icon} text-3xl text-gray-700"></i>
+                                        </div>
+                                        <h6 class="font-medium text-gray-800">${category.name}</h6>
+                                    </div>
+                                </div>
+                            `).join('')}
+                            
+                            <!-- Placeholder categories -->
+                            <div class="category-card p-4 border-2 border-gray-200 rounded-lg opacity-50 cursor-not-allowed">
+                                <div class="text-center">
+                                    <div class="bg-orange-500 bg-opacity-10 p-4 rounded-lg mx-auto mb-3 w-20 h-20 flex items-center justify-center">
+                                        <i class="fas fa-shopping-bag text-3xl text-gray-700"></i>
+                                    </div>
+                                    <h6 class="font-medium text-gray-800">Comercio y Ventas</h6>
+                                    <p class="text-xs text-gray-500 mt-1">Próximamente</p>
+                                </div>
+                            </div>
+                            
+                            <div class="category-card p-4 border-2 border-gray-200 rounded-lg opacity-50 cursor-not-allowed">
+                                <div class="text-center">
+                                    <div class="bg-blue-500 bg-opacity-10 p-4 rounded-lg mx-auto mb-3 w-20 h-20 flex items-center justify-center">
+                                        <i class="fas fa-tools text-3xl text-gray-700"></i>
+                                    </div>
+                                    <h6 class="font-medium text-gray-800">Servicios</h6>
+                                    <p class="text-xs text-gray-500 mt-1">Próximamente</p>
+                                </div>
+                            </div>
+                            
+                            <div class="category-card p-4 border-2 border-gray-200 rounded-lg opacity-50 cursor-not-allowed">
+                                <div class="text-center">
+                                    <div class="bg-green-500 bg-opacity-10 p-4 rounded-lg mx-auto mb-3 w-20 h-20 flex items-center justify-center">
+                                        <i class="fas fa-heartbeat text-3xl text-gray-700"></i>
+                                    </div>
+                                    <h6 class="font-medium text-gray-800">Salud y Bienestar</h6>
+                                    <p class="text-xs text-gray-500 mt-1">Próximamente</p>
+                                </div>
+                            </div>
+                            
+                            <div class="category-card p-4 border-2 border-gray-200 rounded-lg opacity-50 cursor-not-allowed">
+                                <div class="text-center">
+                                    <div class="bg-purple-500 bg-opacity-10 p-4 rounded-lg mx-auto mb-3 w-20 h-20 flex items-center justify-center">
+                                        <i class="fas fa-graduation-cap text-3xl text-gray-700"></i>
+                                    </div>
+                                    <h6 class="font-medium text-gray-800">Educación, Cultura y Entretenimiento</h6>
+                                    <p class="text-xs text-gray-500 mt-1">Próximamente</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Subcategory Selection -->
+                    <div id="subcategory-selection" class="hidden">
+                        <div class="flex items-center mb-4">
+                            <button type="button" onclick="goBackToCategories()" class="text-gov-blue hover:text-blue-700 mr-4">
+                                <i class="fas fa-arrow-left mr-2"></i>Volver a categorías
+                            </button>
+                            <h5 class="font-bold text-gray-800" id="selected-category-title"></h5>
+                        </div>
+                        
+                        <div id="subcategory-grid" class="grid grid-cols-1 gap-4">
+                            <!-- Subcategories will be populated here -->
+                        </div>
+                        
+                        <!-- Custom subcategory input for "Otro" -->
+                        <div id="custom-subcategory" class="hidden mt-4 p-4 bg-gray-50 rounded-lg">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Especifica tu tipo de negocio:</label>
+                            <input type="text" id="custom-business-type" placeholder="Ej: Venta de jugos naturales, Cafetería, etc." 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <!-- General Services Section -->
+                    <div id="general-services-section" class="hidden pt-6 border-t border-gray-200">
+                        <h5 class="font-bold text-gray-800 mb-4">Servicios Generales (selecciona los que apliquen)</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            ${[
+                                { id: 'domicilio', name: 'Servicio a domicilio', icon: 'fas fa-truck' },
+                                { id: 'separado', name: 'Servicio de apartado/separado', icon: 'fas fa-bookmark' },
+                                { id: 'credito', name: 'Venta a crédito', icon: 'fas fa-credit-card' },
+                                { id: 'whatsapp', name: 'Pedidos por WhatsApp', icon: 'fab fa-whatsapp' },
+                                { id: 'facebook', name: 'Ventas por Facebook', icon: 'fab fa-facebook' },
+                                { id: 'efectivo', name: 'Acepta solo efectivo', icon: 'fas fa-money-bill-wave' },
+                                { id: 'tarjetas', name: 'Acepta tarjetas', icon: 'fas fa-credit-card' },
+                                { id: 'transferencia', name: 'Acepta transferencias', icon: 'fas fa-mobile-alt' },
+                                { id: 'mayoreo', name: 'Venta al mayoreo', icon: 'fas fa-boxes' },
+                                { id: 'menudeo', name: 'Venta al menudeo', icon: 'fas fa-shopping-basket' },
+                                { id: 'instalacion', name: 'Servicio de instalación', icon: 'fas fa-tools' },
+                                { id: 'garantia', name: 'Ofrece garantía', icon: 'fas fa-shield-alt' },
+                                { id: 'reparacion', name: 'Servicio de reparación', icon: 'fas fa-wrench' },
+                                { id: 'mantenimiento', name: 'Servicio de mantenimiento', icon: 'fas fa-cogs' },
+                                { id: 'estacionamiento', name: 'Estacionamiento disponible', icon: 'fas fa-parking' },
+                                { id: 'wifi', name: 'WiFi gratuito', icon: 'fas fa-wifi' },
+                                { id: 'aire', name: 'Aire acondicionado', icon: 'fas fa-snowflake' },
+                                { id: 'accesible', name: 'Acceso para discapacitados', icon: 'fas fa-wheelchair' }
+                            ].map(servicio => `
+                                <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" class="general-service-checkbox text-gov-blue focus:ring-gov-blue" value="${servicio.id}" onchange="updateGeneralServices()">
+                                    <i class="${servicio.icon} text-gov-blue w-5"></i>
+                                    <span class="text-sm text-gray-700">${servicio.name}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Store categories data globally
+            window.businessCategories = businessCategories;
+        }
+
+        function selectCategory(categoryId) {
+            const category = window.businessCategories[categoryId];
+            if (!category) return;
+            
+            // Hide category selection and show subcategory selection
+            document.getElementById('category-selection').classList.add('hidden');
+            document.getElementById('subcategory-selection').classList.remove('hidden');
+            document.getElementById('general-services-section').classList.remove('hidden');
+            
+            // Update title
+            document.getElementById('selected-category-title').textContent = category.name;
+            
+            // Populate subcategories
+            const subcategoryGrid = document.getElementById('subcategory-grid');
+            subcategoryGrid.innerHTML = category.subcategories.map(subcategory => `
+                <div class="subcategory-card p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-gov-blue transition duration-200" 
+                     onclick="selectSubcategory('${subcategory.id}', '${subcategory.name}')">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="bg-gov-blue bg-opacity-10 p-3 rounded-lg">
+                                <i class="${subcategory.icon} text-gov-blue text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h6 class="font-medium text-gray-800 mb-2">${subcategory.name}</h6>
+                            <p class="text-sm text-gray-600">${subcategory.description}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Store selected category
+            wizardData.categoria = categoryId;
+            wizardData.categoriaNombre = category.name;
+        }
+        
+        function selectSubcategory(subcategoryId, subcategoryName) {
+            // Remove selection from all subcategory cards
+            document.querySelectorAll('.subcategory-card').forEach(card => {
+                card.classList.remove('ring-2', 'ring-gov-blue', 'bg-blue-50');
+            });
+            
+            // Add selection to clicked card
+            event.target.closest('.subcategory-card').classList.add('ring-2', 'ring-gov-blue', 'bg-blue-50');
+            
+            // Store selection
+            wizardData.giro = subcategoryId;
+            wizardData.giroNombre = subcategoryName;
+            
+            // Show/hide custom input for "Otro"
+            const customSection = document.getElementById('custom-subcategory');
+            if (subcategoryId.includes('otro')) {
+                customSection.classList.remove('hidden');
+            } else {
+                customSection.classList.add('hidden');
+                document.getElementById('custom-business-type').value = '';
+            }
+        }
+        
+        function goBackToCategories() {
+            // Show category selection and hide subcategory selection
+            document.getElementById('category-selection').classList.remove('hidden');
+            document.getElementById('subcategory-selection').classList.add('hidden');
+            document.getElementById('general-services-section').classList.add('hidden');
+            
+            // Clear selections
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.classList.remove('ring-2', 'ring-gov-blue', 'bg-blue-50');
+            });
+            
+            // Clear wizard data
+            delete wizardData.categoria;
+            delete wizardData.categoriaNombre;
+            delete wizardData.giro;
+            delete wizardData.giroNombre;
+        }
+
+        function selectBusinessType(typeId) {
+            // This function is kept for backward compatibility
+            // Remove selection from all cards
+            document.querySelectorAll('.business-type-card').forEach(card => {
+                card.classList.remove('ring-2', 'ring-gov-blue', 'bg-blue-50');
+            });
+            
+            // Add selection to clicked card
+            event.target.closest('.business-type-card').classList.add('ring-2', 'ring-gov-blue', 'bg-blue-50');
+            
+            wizardData.giro = typeId;
+        }
+
+        function populateSpecificDetails() {
+            const container = document.getElementById('specific-details-content');
+            const businessType = wizardData.giro;
+            
+            let content = '';
+            
+            if (businessType === 'restaurante') {
+                content = `
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Tipo de Comida (puedes seleccionar varios)</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                ${['Mexicana', 'Hamburguesas', 'Pizza', 'Mariscos', 'Tacos', 'Comida Rápida', 'Antojitos', 'Internacional'].map(tipo => `
+                                    <button type="button" onclick="toggleFoodType('${tipo}')" class="food-type-btn p-3 border border-gray-300 rounded-lg hover:border-gov-blue hover:bg-blue-50 transition duration-200 text-sm" data-type="${tipo}">
+                                        ${tipo}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Menú Principal (opcional)</label>
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Nombre del Platillo *</label>
+                                            <input type="text" id="menu-item-name" placeholder="Ej: Tacos de carnitas" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent text-sm">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Precio *</label>
+                                            <input type="number" id="menu-item-price" placeholder="0.00" step="0.01" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent text-sm">
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-xs font-medium text-gray-600 mb-1">Foto (opcional)</label>
+                                        <input type="file" id="menu-item-photo" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent text-sm">
+                                        <p class="text-xs text-gray-500 mt-1">Formatos: JPG, PNG, GIF (máx. 5MB)</p>
+                                    </div>
+                                    <button type="button" onclick="addMenuItem()" class="w-full px-4 py-2 bg-gov-blue text-white rounded-lg hover:bg-blue-700 transition duration-200 text-sm">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Agregar Platillo
+                                    </button>
+                                </div>
+                                <div id="menu-list" class="space-y-3">
+                                    <!-- Menu items will be added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (businessType === 'ferreteria') {
+                content = `
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Productos Principales</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                ${['Herramientas', 'Materiales de construcción', 'Plomería', 'Electricidad', 'Pintura', 'Tornillería', 'Jardinería', 'Cerrajería'].map(producto => `
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" class="product-checkbox" value="${producto}" onchange="updateProducts()">
+                                        <span class="text-sm">${producto}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (businessType === 'farmacia') {
+                content = `
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Servicios Adicionales</label>
+                            <div class="grid grid-cols-1 gap-3">
+                                ${['Medicamentos con receta', 'Medicamentos sin receta', 'Productos de belleza', 'Consulta médica', 'Toma de presión', 'Inyecciones', 'Productos naturistas'].map(servicio => `
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" class="service-checkbox" value="${servicio}" onchange="updateServices()">
+                                        <span class="text-sm">${servicio}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content = `
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Productos o Servicios Principales</label>
+                            <textarea id="general-services" rows="4" placeholder="Describe los principales productos o servicios que ofreces..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Información Adicional</label>
+                            <textarea id="additional-info" rows="3" placeholder="Cualquier información adicional relevante..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent"></textarea>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = content;
+            wizardData.menu = [];
+            wizardData.productos = [];
+            wizardData.servicios = [];
+            if (!wizardData.serviciosGenerales) {
+                wizardData.serviciosGenerales = [];
+            }
+        }
+
+        function toggleFoodType(tipo) {
+            const button = event.target;
+            
+            if (!wizardData.tiposComida) {
+                wizardData.tiposComida = [];
+            }
+            
+            if (wizardData.tiposComida.includes(tipo)) {
+                // Remove from selection
+                wizardData.tiposComida = wizardData.tiposComida.filter(t => t !== tipo);
+                button.classList.remove('ring-2', 'ring-gov-blue', 'bg-blue-50');
+            } else {
+                // Add to selection
+                wizardData.tiposComida.push(tipo);
+                button.classList.add('ring-2', 'ring-gov-blue', 'bg-blue-50');
+            }
+        }
+
+        function addMenuItem() {
+            const nameInput = document.getElementById('menu-item-name');
+            const priceInput = document.getElementById('menu-item-price');
+            const photoInput = document.getElementById('menu-item-photo');
+            
+            const name = nameInput.value.trim();
+            const price = priceInput.value.trim();
+            
+            if (!name) {
+                alert('Por favor ingresa el nombre del platillo.');
+                nameInput.focus();
+                return;
+            }
+            
+            if (!price || parseFloat(price) <= 0) {
+                alert('Por favor ingresa un precio válido.');
+                priceInput.focus();
+                return;
+            }
+            
+            const menuItem = {
+                id: Date.now(),
+                nombre: name,
+                precio: parseFloat(price),
+                foto: null
+            };
+            
+            // Handle photo if provided
+            if (photoInput.files && photoInput.files[0]) {
+                const file = photoInput.files[0];
+                if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                    alert('La imagen es muy grande. Por favor selecciona una imagen menor a 5MB.');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    menuItem.foto = e.target.result;
+                    addMenuItemToList(menuItem);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                addMenuItemToList(menuItem);
+            }
+            
+            // Clear form
+            nameInput.value = '';
+            priceInput.value = '';
+            photoInput.value = '';
+        }
+        
+        function addMenuItemToList(menuItem) {
+            if (!wizardData.menu) wizardData.menu = [];
+            wizardData.menu.push(menuItem);
+            
+            const menuList = document.getElementById('menu-list');
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'bg-white border border-gray-200 rounded-lg p-4';
+            itemDiv.innerHTML = `
+                <div class="flex items-start space-x-4">
+                    ${menuItem.foto ? `
+                        <div class="flex-shrink-0">
+                            <img src="${menuItem.foto}" alt="${menuItem.nombre}" class="w-16 h-16 object-cover rounded-lg">
+                        </div>
+                    ` : `
+                        <div class="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-utensils text-gray-400"></i>
+                        </div>
+                    `}
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800">${menuItem.nombre}</h4>
+                        <p class="text-gov-green font-bold">$${menuItem.precio.toFixed(2)}</p>
+                    </div>
+                    <button type="button" onclick="removeMenuItem(${menuItem.id})" class="text-red-600 hover:text-red-800 p-1">
+                        <i class="fas fa-trash text-sm"></i>
+                    </button>
+                </div>
+            `;
+            menuList.appendChild(itemDiv);
+        }
+
+        function removeMenuItem(itemId) {
+            wizardData.menu = wizardData.menu.filter(menuItem => menuItem.id !== itemId);
+            event.target.closest('.bg-white').remove();
+        }
+
+        function updateProducts() {
+            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+            wizardData.productos = Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function updateServices() {
+            const checkboxes = document.querySelectorAll('.service-checkbox:checked');
+            wizardData.servicios = Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function updateGeneralServices() {
+            const checkboxes = document.querySelectorAll('.general-service-checkbox:checked');
+            wizardData.serviciosGenerales = Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function populateConfirmation() {
+            const container = document.getElementById('confirmation-content');
+            
+            // Map service IDs to readable names
+            const serviceNames = {
+                'domicilio': 'Servicio a domicilio',
+                'separado': 'Servicio de apartado/separado',
+                'credito': 'Venta a crédito',
+                'whatsapp': 'Pedidos por WhatsApp',
+                'facebook': 'Ventas por Facebook',
+                'efectivo': 'Acepta solo efectivo',
+                'tarjetas': 'Acepta tarjetas',
+                'transferencia': 'Acepta transferencias',
+                'mayoreo': 'Venta al mayoreo',
+                'menudeo': 'Venta al menudeo',
+                'instalacion': 'Servicio de instalación',
+                'garantia': 'Ofrece garantía',
+                'reparacion': 'Servicio de reparación',
+                'mantenimiento': 'Servicio de mantenimiento',
+                'estacionamiento': 'Estacionamiento disponible',
+                'wifi': 'WiFi gratuito',
+                'aire': 'Aire acondicionado',
+                'accesible': 'Acceso para discapacitados'
+            };
+            
+            // Get business type display name
+            let businessTypeDisplay = wizardData.giroNombre || wizardData.giro;
+            if (wizardData.giroPersonalizado) {
+                businessTypeDisplay = wizardData.giroPersonalizado;
+            }
+            
+            let extraInfo = '';
+            if (wizardData.tiposComida && wizardData.tiposComida.length > 0) {
+                extraInfo += `<p><strong>Tipos de Comida:</strong> ${wizardData.tiposComida.join(', ')}</p>`;
+            }
+            if (wizardData.menu && wizardData.menu.length > 0) {
+                extraInfo += `<div class="mt-4"><strong>Menú:</strong><div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">`;
+                wizardData.menu.forEach(item => {
+                    extraInfo += `
+                        <div class="bg-white border border-gray-200 rounded-lg p-3 flex items-center space-x-3">
+                            ${item.foto ? `<img src="${item.foto}" alt="${item.nombre}" class="w-12 h-12 object-cover rounded-lg">` : `<div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center"><i class="fas fa-utensils text-gray-400 text-sm"></i></div>`}
+                            <div class="flex-1">
+                                <p class="font-medium text-sm">${item.nombre}</p>
+                                <p class="text-gov-green font-bold text-sm">$${item.precio.toFixed(2)}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                extraInfo += `</div></div>`;
+            }
+            if (wizardData.productos && wizardData.productos.length > 0) {
+                extraInfo += `<p><strong>Productos:</strong> ${wizardData.productos.join(', ')}</p>`;
+            }
+            if (wizardData.servicios && wizardData.servicios.length > 0) {
+                extraInfo += `<p><strong>Servicios Específicos:</strong> ${wizardData.servicios.join(', ')}</p>`;
+            }
+            if (wizardData.serviciosGenerales && wizardData.serviciosGenerales.length > 0) {
+                const serviciosTexto = wizardData.serviciosGenerales.map(id => serviceNames[id] || id).join(', ');
+                extraInfo += `<p><strong>Servicios Generales:</strong> ${serviciosTexto}</p>`;
+            }
+            
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <h5 class="font-bold text-lg text-gray-800">Información General</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <p><strong>Nombre:</strong> ${wizardData.nombre}</p>
+                        <p><strong>Propietario:</strong> ${wizardData.propietario}</p>
+                        <p><strong>Categoría:</strong> ${wizardData.categoriaNombre || 'No especificada'}</p>
+                        <p><strong>Tipo de Negocio:</strong> ${businessTypeDisplay}</p>
+                        <p><strong>Teléfono:</strong> ${wizardData.telefono}</p>
+                        <p><strong>Email:</strong> ${wizardData.email || 'No especificado'}</p>
+                        <p><strong>Dirección:</strong> ${wizardData.direccion}</p>
+                        <p><strong>Horario:</strong> ${wizardData.horarioApertura} - ${wizardData.horarioCierre}</p>
+                    </div>
+                    
+                    ${extraInfo ? `<div class="pt-4 border-t border-gray-200"><h5 class="font-bold text-lg text-gray-800 mb-2">Detalles Específicos</h5><div class="text-sm space-y-1">${extraInfo}</div></div>` : ''}
+                </div>
+            `;
+        }
+
+        function validateCurrentStep() {
+            if (currentWizardStep === 1) {
+                const required = ['business-name', 'business-owner', 'business-phone', 'business-address'];
+                for (let id of required) {
+                    const input = document.getElementById(id);
+                    if (!input.value.trim()) {
+                        alert('Por favor completa todos los campos obligatorios.');
+                        input.focus();
+                        return false;
+                    }
+                }
+            } else if (currentWizardStep === 2) {
+                if (!wizardData.giro) {
+                    alert('Por favor selecciona el tipo de negocio.');
+                    return false;
+                }
+                
+                // If "Otro" is selected, validate custom input
+                if (wizardData.giro.includes('otro')) {
+                    const customInput = document.getElementById('custom-business-type');
+                    if (!customInput.value.trim()) {
+                        alert('Por favor especifica tu tipo de negocio.');
+                        customInput.focus();
+                        return false;
+                    }
+                    // Store custom business type
+                    wizardData.giroPersonalizado = customInput.value.trim();
+                }
+            }
+            return true;
+        }
+
+        function saveCurrentStepData() {
+            if (currentWizardStep === 1) {
+                wizardData.nombre = document.getElementById('business-name').value;
+                wizardData.propietario = document.getElementById('business-owner').value;
+                wizardData.telefono = document.getElementById('business-phone').value;
+                wizardData.email = document.getElementById('business-email').value;
+                wizardData.direccion = document.getElementById('business-address').value;
+                wizardData.horarioApertura = document.getElementById('business-open').value;
+                wizardData.horarioCierre = document.getElementById('business-close').value;
+            } else if (currentWizardStep === 3) {
+                const generalServices = document.getElementById('general-services');
+                const additionalInfo = document.getElementById('additional-info');
+                
+                if (generalServices) {
+                    wizardData.serviciosGenerales = generalServices.value;
+                }
+                if (additionalInfo) {
+                    wizardData.informacionAdicional = additionalInfo.value;
+                }
+            }
+        }
+
+        function saveBusiness() {
+            const businessType = businessTypes.find(type => type.id === wizardData.giro);
+            const newBusiness = {
+                id: Date.now(),
+                nombre: wizardData.nombre,
+                propietario: wizardData.propietario,
+                giro: wizardData.giro,
+                telefono: wizardData.telefono,
+                email: wizardData.email,
+                direccion: wizardData.direccion,
+                horario: `${wizardData.horarioApertura} - ${wizardData.horarioCierre}`,
+                icono: businessType?.icon || 'fas fa-store',
+                ...wizardData
+            };
+            
+            negocios.push(newBusiness);
+            renderNegocios();
+            closeBusinessWizard();
+            
+            // Show success message
+            alert('¡Negocio registrado exitosamente!');
+        }
+
+        function viewBusinessDetail(id) {
+            const business = negocios.find(n => n.id === id);
+            if (!business) return;
+            
+            // Hide all sections and show business detail
+            document.querySelectorAll('.section-content').forEach(s => s.classList.add('hidden'));
+            document.getElementById('business-detail-section').classList.remove('hidden');
+            
+            // Map service IDs to readable names
+            const serviceNames = {
+                'domicilio': 'Servicio a domicilio',
+                'separado': 'Servicio de apartado/separado',
+                'credito': 'Venta a crédito',
+                'whatsapp': 'Pedidos por WhatsApp',
+                'facebook': 'Ventas por Facebook',
+                'efectivo': 'Acepta solo efectivo',
+                'tarjetas': 'Acepta tarjetas',
+                'transferencia': 'Acepta transferencias',
+                'mayoreo': 'Venta al mayoreo',
+                'menudeo': 'Venta al menudeo',
+                'instalacion': 'Servicio de instalación',
+                'garantia': 'Ofrece garantía',
+                'reparacion': 'Servicio de reparación',
+                'mantenimiento': 'Servicio de mantenimiento',
+                'estacionamiento': 'Estacionamiento disponible',
+                'wifi': 'WiFi gratuito',
+                'aire': 'Aire acondicionado',
+                'accesible': 'Acceso para discapacitados'
+            };
+            
+            const statusBadge = business.estado === 'activo' ? 
+                '<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800"><i class="fas fa-check-circle mr-2"></i>Activo</span>' :
+                business.estado === 'pendiente' ?
+                '<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800"><i class="fas fa-clock mr-2"></i>Pendiente de Aprobación</span>' :
+                '<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800"><i class="fas fa-times-circle mr-2"></i>Inactivo</span>';
+            
+            let menuSection = '';
+            if (business.menu && business.menu.length > 0) {
+                menuSection = `
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-utensils mr-3 text-gov-blue"></i>
+                            Menú
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${business.menu.map(item => `
+                                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition duration-200">
+                                    ${item.foto ? `
+                                        <img src="${item.foto}" alt="${item.nombre}" class="w-full h-32 object-cover rounded-lg mb-3">
+                                    ` : `
+                                        <div class="w-full h-32 bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
+                                            <i class="fas fa-utensils text-gray-400 text-2xl"></i>
+                                        </div>
+                                    `}
+                                    <h4 class="font-medium text-gray-800 mb-1">${item.nombre}</h4>
+                                    <p class="text-gov-green font-bold text-lg">$${item.precio.toFixed(2)}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let servicesSection = '';
+            if (business.serviciosGenerales && business.serviciosGenerales.length > 0) {
+                const serviciosTexto = business.serviciosGenerales.map(id => serviceNames[id] || id);
+                servicesSection = `
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-cogs mr-3 text-gov-blue"></i>
+                            Servicios Generales
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            ${serviciosTexto.map(servicio => `
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <i class="fas fa-check text-gov-green mr-3"></i>
+                                    <span class="text-sm text-gray-700">${servicio}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let specificServicesSection = '';
+            if (business.servicios && business.servicios.length > 0) {
+                specificServicesSection = `
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-list-check mr-3 text-gov-blue"></i>
+                            Servicios Específicos
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            ${business.servicios.map(servicio => `
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <i class="fas fa-check text-gov-green mr-3"></i>
+                                    <span class="text-sm text-gray-700">${servicio}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let productsSection = '';
+            if (business.productos && business.productos.length > 0) {
+                productsSection = `
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-boxes mr-3 text-gov-blue"></i>
+                            Productos Principales
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            ${business.productos.map(producto => `
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <i class="fas fa-box text-gov-blue mr-3"></i>
+                                    <span class="text-sm text-gray-700">${producto}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let foodTypesSection = '';
+            if (business.tiposComida && business.tiposComida.length > 0) {
+                foodTypesSection = `
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-utensils mr-3 text-gov-blue"></i>
+                            Tipos de Comida
+                        </h3>
+                        <div class="flex flex-wrap gap-2">
+                            ${business.tiposComida.map(tipo => `
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                    ${tipo}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            const content = `
+                <div class="space-y-6">
+                    <!-- Header -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="flex items-center">
+                                <div class="bg-gov-blue bg-opacity-10 p-4 rounded-xl mr-4">
+                                    <i class="${business.icono} text-gov-blue text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h1 class="text-3xl font-bold text-gray-800 mb-2">${business.nombre}</h1>
+                                    <p class="text-lg text-gov-gray mb-2">${business.giroNombre || business.giro}</p>
+                                    ${statusBadge}
+                                </div>
+                            </div>
+                            <div class="flex space-x-3">
+                                <button onclick="toggleBusinessStatus(${business.id})" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition duration-200">
+                                    <i class="fas fa-toggle-on mr-2"></i>
+                                    Cambiar Estado
+                                </button>
+                                <button onclick="deleteBusiness(${business.id})" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200">
+                                    <i class="fas fa-trash mr-2"></i>
+                                    Eliminar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Basic Info Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="space-y-4">
+                                <h3 class="font-bold text-gray-800 text-lg border-b border-gray-200 pb-2">Información de Contacto</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user text-gov-blue mr-3 w-5"></i>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Propietario</p>
+                                            <p class="font-medium text-gray-800">${business.propietario}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-phone text-gov-blue mr-3 w-5"></i>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Teléfono</p>
+                                            <p class="font-medium text-gray-800">${business.telefono}</p>
+                                        </div>
+                                    </div>
+                                    ${business.email ? `
+                                        <div class="flex items-center">
+                                            <i class="fas fa-envelope text-gov-blue mr-3 w-5"></i>
+                                            <div>
+                                                <p class="text-sm text-gray-500">Email</p>
+                                                <p class="font-medium text-gray-800">${business.email}</p>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <h3 class="font-bold text-gray-800 text-lg border-b border-gray-200 pb-2">Ubicación y Horarios</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-start">
+                                        <i class="fas fa-map-marker-alt text-gov-blue mr-3 w-5 mt-1"></i>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Dirección</p>
+                                            <p class="font-medium text-gray-800">${business.direccion}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-gov-blue mr-3 w-5"></i>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Horario</p>
+                                            <p class="font-medium text-gray-800">${business.horario}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <h3 class="font-bold text-gray-800 text-lg border-b border-gray-200 pb-2">Información del Registro</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-calendar text-gov-blue mr-3 w-5"></i>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Fecha de Registro</p>
+                                            <p class="font-medium text-gray-800">${business.fechaRegistro || 'No especificada'}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-tag text-gov-blue mr-3 w-5"></i>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Categoría</p>
+                                            <p class="font-medium text-gray-800">${business.categoriaNombre || 'Sin categoría'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${foodTypesSection}
+                    ${menuSection}
+                    ${productsSection}
+                    ${specificServicesSection}
+                    ${servicesSection}
+                </div>
+            `;
+            
+            document.getElementById('business-detail-content').innerHTML = content;
+        }
+
+        function toggleBusinessStatus(id) {
+            const business = negocios.find(n => n.id === id);
+            if (!business) return;
+            
+            const currentStatus = business.estado;
+            let newStatus;
+            
+            if (currentStatus === 'activo') {
+                newStatus = 'inactivo';
+            } else if (currentStatus === 'pendiente') {
+                newStatus = 'activo';
+            } else {
+                newStatus = 'activo';
+            }
+            
+            if (confirm(`¿Cambiar el estado del negocio "${business.nombre}" a "${newStatus}"?`)) {
+                business.estado = newStatus;
+                renderNegocios();
+                
+                // If we're in detail view, refresh it
+                if (!document.getElementById('business-detail-section').classList.contains('hidden')) {
+                    viewBusinessDetail(id);
+                }
+            }
+        }
+
+        function deleteBusiness(id) {
+            const business = negocios.find(n => n.id === id);
+            if (!business) return;
+            
+            if (confirm(`¿Estás seguro de que deseas eliminar el negocio "${business.nombre}"? Esta acción no se puede deshacer.`)) {
+                negocios = negocios.filter(n => n.id !== id);
+                renderNegocios();
+                
+                // If we're in detail view, go back to list
+                if (!document.getElementById('business-detail-section').classList.contains('hidden')) {
+                    showSection('negocios');
+                }
+            }
+        }
+
+        function exportBusinessData() {
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Nombre,Propietario,Categoría,Tipo,Teléfono,Email,Dirección,Horario,Estado,Fecha de Registro\n"
+                + negocios.map(business => 
+                    `"${business.nombre}","${business.propietario}","${business.categoriaNombre || ''}","${business.giroNombre || business.giro}","${business.telefono}","${business.email || ''}","${business.direccion}","${business.horario}","${business.estado}","${business.fechaRegistro || ''}"`
+                ).join("\n");
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `negocios_registrados_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // ==========================================
+        // FILTER SYSTEM FUNCTIONS
+        // ==========================================
+        
+        function toggleFilterDropdown() {
+            const dropdown = document.getElementById('filter-dropdown');
+            dropdown.classList.toggle('hidden');
+            
+            // Close dropdown when clicking outside
+            if (!dropdown.classList.contains('hidden')) {
+                document.addEventListener('click', function closeDropdown(e) {
+                    if (!e.target.closest('#filter-dropdown') && !e.target.closest('#add-filter-btn')) {
+                        dropdown.classList.add('hidden');
+                        document.removeEventListener('click', closeDropdown);
+                    }
+                });
+            }
+        }
+        
+        function addFilter(fieldType) {
+            // Close dropdown
+            document.getElementById('filter-dropdown').classList.add('hidden');
+            
+            // Don't add duplicate filters
+            if (activeFilters[fieldType]) {
+                return;
+            }
+            
+            const filterConfig = getFilterConfig(fieldType);
+            const filterId = `filter-${fieldType}-${Date.now()}`;
+            
+            // Create filter element
+            const filterElement = document.createElement('div');
+            filterElement.className = 'inline-flex items-center bg-blue-50 border border-blue-200 rounded-lg p-2 space-x-2';
+            filterElement.id = filterId;
+            
+            filterElement.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <i class="${filterConfig.icon} text-gov-blue"></i>
+                    <span class="text-sm font-medium text-gray-700">${filterConfig.label}:</span>
+                </div>
+                <div class="filter-input">
+                    ${filterConfig.input}
+                </div>
+                <button onclick="removeFilter('${fieldType}', '${filterId}')" class="text-red-500 hover:text-red-700 ml-2">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            // Add to active filters container
+            const activeFiltersContainer = document.getElementById('active-filters');
+            activeFiltersContainer.appendChild(filterElement);
+            activeFiltersContainer.style.display = 'flex';
+            
+            // Show clear all button
+            document.getElementById('clear-filters-btn').style.display = 'block';
+            
+            // Initialize filter
+            activeFilters[fieldType] = {
+                type: filterConfig.type,
+                value: filterConfig.type === 'select' ? '' : '',
+                element: filterId
+            };
+            
+            // Add event listeners based on filter type
+            const inputElement = filterElement.querySelector('.filter-input input, .filter-input select');
+            if (inputElement) {
+                if (filterConfig.type === 'text' || filterConfig.type === 'date') {
+                    inputElement.addEventListener('input', () => updateFilterValue(fieldType, inputElement.value));
+                } else if (filterConfig.type === 'select') {
+                    inputElement.addEventListener('change', () => updateFilterValue(fieldType, inputElement.value));
+                }
+            }
+        }
+        
+        function getFilterConfig(fieldType) {
+            const configs = {
+                'nombre': {
+                    label: 'Nombre del negocio',
+                    icon: 'fas fa-store',
+                    type: 'text',
+                    input: '<input type="text" placeholder="Buscar por nombre..." class="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-gov-blue focus:border-transparent w-40">'
+                },
+                'propietario': {
+                    label: 'Propietario',
+                    icon: 'fas fa-user',
+                    type: 'text',
+                    input: '<input type="text" placeholder="Buscar por propietario..." class="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-gov-blue focus:border-transparent w-40">'
+                },
+                'categoria': {
+                    label: 'Categoría',
+                    icon: 'fas fa-tag',
+                    type: 'select',
+                    input: `<select class="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-gov-blue focus:border-transparent w-40">
+                        <option value="">Todas las categorías</option>
+                        <option value="alimentos">Alimentos y Bebidas</option>
+                        <option value="comercio">Comercio y Ventas</option>
+                        <option value="servicios">Servicios</option>
+                        <option value="salud">Salud y Bienestar</option>
+                    </select>`
+                },
+                'giro': {
+                    label: 'Tipo de negocio',
+                    icon: 'fas fa-briefcase',
+                    type: 'select',
+                    input: `<select class="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-gov-blue focus:border-transparent w-40">
+                        <option value="">Todos los tipos</option>
+                        <option value="restaurante">Restaurante</option>
+                        <option value="ferreteria">Ferretería</option>
+                        <option value="panaderia">Panadería</option>
+                        <option value="farmacia">Farmacia</option>
+                        <option value="mecanico">Taller Mecánico</option>
+                        <option value="abarrotes">Tienda de Abarrotes</option>
+                        <option value="merceria">Mercería</option>
+                        <option value="papeleria">Papelería</option>
+                    </select>`
+                },
+                'estado': {
+                    label: 'Estado',
+                    icon: 'fas fa-toggle-on',
+                    type: 'select',
+                    input: `<select class="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-gov-blue focus:border-transparent w-32">
+                        <option value="">Todos los estados</option>
+                        <option value="activo">Activo</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>`
+                },
+                'telefono': {
+                    label: 'Teléfono',
+                    icon: 'fas fa-phone',
+                    type: 'text',
+                    input: '<input type="text" placeholder="Buscar por teléfono..." class="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-gov-blue focus:border-transparent w-36">'
+                },
+                'email': {
+                    label: 'Email',
+                    icon: 'fas fa-envelope',
+                    type: 'text',
+                    input: '<input type="text" placeholder="Buscar por email..." class="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-gov-blue focus:border-transparent w-40">'
+                },
+                'direccion': {
+                    label: 'Dirección',
+                    icon: 'fas fa-map-marker-alt',
+                    type: 'text',
+                    input: '<input type="text" placeholder="Buscar por dirección..." class="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-gov-blue focus:border-transparent w-40">'
+                },
+                'fechaRegistro': {
+                    label: 'Fecha de registro',
+                    icon: 'fas fa-calendar',
+                    type: 'date',
+                    input: '<input type="date" class="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-gov-blue focus:border-transparent w-36">'
+                }
+            };
+            
+            return configs[fieldType] || configs['nombre'];
+        }
+        
+        function updateFilterValue(fieldType, value) {
+            if (activeFilters[fieldType]) {
+                activeFilters[fieldType].value = value;
+                renderNegocios();
+            }
+        }
+        
+        function removeFilter(fieldType, elementId) {
+            // Remove from active filters
+            delete activeFilters[fieldType];
+            
+            // Remove DOM element
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.remove();
+            }
+            
+            // Hide containers if no filters
+            if (Object.keys(activeFilters).length === 0) {
+                document.getElementById('active-filters').style.display = 'none';
+                document.getElementById('clear-filters-btn').style.display = 'none';
+            }
+            
+            // Re-render table
+            renderNegocios();
+        }
+        
+        function clearAllFilters() {
+            // Clear all filters
+            activeFilters = {};
+            
+            // Remove all filter elements
+            const activeFiltersContainer = document.getElementById('active-filters');
+            activeFiltersContainer.innerHTML = '';
+            activeFiltersContainer.style.display = 'none';
+            
+            // Hide clear button
+            document.getElementById('clear-filters-btn').style.display = 'none';
+            
+            // Re-render table
+            renderNegocios();
+        }
+        
+        function applyFilters() {
+            if (Object.keys(activeFilters).length === 0) {
+                filteredNegocios = [...negocios];
+                return;
+            }
+            
+            filteredNegocios = negocios.filter(negocio => {
+                return Object.entries(activeFilters).every(([fieldType, filter]) => {
+                    if (!filter.value) return true; // Empty filter doesn't filter
+                    
+                    let fieldValue = '';
+                    
+                    switch (fieldType) {
+                        case 'nombre':
+                            fieldValue = negocio.nombre || '';
+                            break;
+                        case 'propietario':
+                            fieldValue = negocio.propietario || '';
+                            break;
+                        case 'categoria':
+                            fieldValue = negocio.categoria || '';
+                            break;
+                        case 'giro':
+                            fieldValue = negocio.giro || '';
+                            break;
+                        case 'estado':
+                            fieldValue = negocio.estado || '';
+                            break;
+                        case 'telefono':
+                            fieldValue = negocio.telefono || '';
+                            break;
+                        case 'email':
+                            fieldValue = negocio.email || '';
+                            break;
+                        case 'direccion':
+                            fieldValue = negocio.direccion || '';
+                            break;
+                        case 'fechaRegistro':
+                            fieldValue = negocio.fechaRegistro || '';
+                            break;
+                        default:
+                            return true;
+                    }
+                    
+                    // Apply filter based on type
+                    if (filter.type === 'text') {
+                        return fieldValue.toLowerCase().includes(filter.value.toLowerCase());
+                    } else if (filter.type === 'select') {
+                        return fieldValue === filter.value;
+                    } else if (filter.type === 'date') {
+                        return fieldValue === filter.value;
+                    }
+                    
+                    return true;
+                });
+            });
+        }
+
+        // ADD YOUR CUSTOM FUNCTIONS HERE
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97c08427702785e7',t:'MTc1NzM1NjIxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
+<li>
+    <a href="#" onclick="showSection('your-section')" class="nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200">
+        <i class="fas fa-your-icon mr-3"></i>
+        Your Section Name
+    </a>
+</li>
+
+<section id="your-section-section" class="section-content p-6 hidden">
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Your Section Title</h2>
+        <p class="text-gov-gray">Your section description</p>
+    </div>
+    
+    <!-- Your content here -->
+</section>
