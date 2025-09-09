@@ -1,426 +1,388 @@
-<section id="HomeContent" class="min-h-screen">
-  <!-- hero (dynamic) -->
-  <section class="relative h-96 flex items-center justify-center" id="home-hero">
-    <div class="absolute inset-0" id="hero-bg"></div>
-    <div class="absolute inset-0 bg-black/30"></div>
-    <div class="relative text-center text-white z-10">
-      <h1 id="hero-title" class="text-4xl md:text-5xl font-bold mb-6"></h1>
-      <button id="home-cta"
-        class="hidden bg-municipal-blue hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300">
-      </button>
-    </div>
-  </section>
+<section id="HomeContent" class="min-h-screen bg-slate-50">
 
-  <!-- KPIs -->
-  <section class="bg-white">
-    <div class="max-w-7xl mx-auto px-4 py-8">
-      <div id="home-kpis" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
-    </div>
-  </section>
-
-  <!-- services -->
-  <section class="py-12 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-municipal-blue text-center mb-8" id="services-title"></h2>
-      <div class="max-w-md mx-auto mb-10">
-        <input id="services-search" type="text" placeholder="Buscar"
-          class="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-municipal-blue">
-      </div>
-      <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-      <div id="services-empty" class="text-center text-gray-500 mt-6 hidden">No hay servicios configurados.</div>
-    </div>
-  </section>
-
-  <!-- citizen wednesday (optional from config) -->
-  <section id="wednesday-wrap" class="py-12 bg-orange-100 hidden">
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="text-center mb-8">
-        <h2 id="wednesday-title" class="text-3xl font-bold text-municipal-blue mb-6"></h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="font-bold text-municipal-blue mb-2">UBICACIÓN</h3>
-            <p id="wednesday-loc1" class="text-gray-700"></p>
-            <p id="wednesday-loc2" class="text-gray-700"></p>
-          </div>
-          <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="font-bold text-municipal-blue mb-2">HORARIO</h3>
-            <p id="wednesday-hours1" class="text-gray-700"></p>
-            <p id="wednesday-hours2" class="text-gray-700"></p>
+  <!-- HERO: blurred city/museum backdrop, headline & CTA -->
+  <section class="relative">
+    <div id="hero-img" class="h-[420px] w-full bg-center bg-cover"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+    <div class="absolute inset-0 pointer-events-none backdrop-blur-[2px]"></div>
+    <div class="absolute inset-0 flex items-center">
+      <div class="max-w-7xl mx-auto px-4 w-full">
+        <div class="text-white max-w-3xl">
+          <h1 id="hero-title" class="text-4xl md:text-5xl font-extrabold leading-tight"></h1>
+          <p id="hero-sub" class="mt-4 text-white/90 text-lg"></p>
+          <div class="mt-6 flex gap-3">
+            <a id="hero-cta" class="hidden inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 font-semibold shadow-md transition">
+              <i class="fas fa-calendar-check"></i><span></span>
+            </a>
+            <a id="hero-cta-sec" class="hidden inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 font-semibold backdrop-blur transition">
+              <i class="fas fa-info-circle"></i><span></span>
+            </a>
           </div>
         </div>
-        <div class="mt-8 bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto">
-          <h3 class="font-bold text-municipal-blue mb-4">SERVICIOS DISPONIBLES</h3>
-          <ul id="wednesday-services" class="text-gray-700 space-y-2"></ul>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- municipality highlights (from config) -->
-  <section class="py-12 bg-white">
+  <!-- KPI STRIP -->
+  <section class="-mt-10 relative z-10">
     <div class="max-w-7xl mx-auto px-4">
-      <h2 id="highlights-title" class="text-3xl font-bold text-municipal-blue text-center mb-10"></h2>
-      <div id="highlights-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+      <div id="kpi-strip" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
     </div>
   </section>
 
-  <!-- events -->
-  <section class="py-12 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-municipal-blue text-center mb-10">PRÓXIMOS EVENTOS</h2>
-      <div id="home-events" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-      <div id="home-events-empty" class="text-center text-gray-500 mt-6 hidden">No hay eventos próximos.</div>
-    </div>
-  </section>
-
-  <!-- turismo -->
-  <section class="py-12 bg-white">
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="flex items-center justify-between mb-8">
-        <h2 class="text-3xl font-bold text-municipal-blue">LUGARES TURÍSTICOS DESTACADOS</h2>
-        <a id="turismo-link" href="#/turismo" class="text-municipal-blue hover:underline text-sm font-semibold">Ver todos</a>
-      </div>
-      <div id="home-turismo" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-      <div id="home-turismo-empty" class="text-center text-gray-500 mt-6 hidden">Aún no hay lugares turísticos.</div>
-    </div>
-  </section>
-
-  <!-- emergency numbers -->
+  <!-- SERVICES (compact chips + icons) -->
   <section class="py-12">
     <div class="max-w-7xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-red-600 text-center mb-8" id="emerg-title"></h2>
-      <div id="emerg-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-      <div id="emerg-empty" class="text-center text-gray-500 mt-6 hidden">No hay números de emergencia configurados.</div>
+      <div class="flex items-end justify-between mb-6">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Trámites y Servicios</h2>
+          <p class="text-slate-500 text-sm" id="services-sub">Accede rápido a lo más solicitado</p>
+        </div>
+        <div class="w-72 hidden md:block">
+          <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input id="services-search" type="text" placeholder="Buscar" class="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+      </div>
+      <div id="services-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3"></div>
+      <div id="services-empty" class="text-center text-slate-500 mt-6 hidden">Configura servicios en <code>localStorage.services</code>.</div>
     </div>
   </section>
+
+  <!-- FEATURED BAND: proyectos + transparencia KPIs -->
+  <section class="py-10 bg-gradient-to-r from-blue-50 to-teal-50 border-y">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Proyectos -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-slate-900">Proyectos Municipales</h3>
+            <a href="#/proyectos" class="text-sm text-blue-600 hover:underline">Ver todos</a>
+          </div>
+          <div id="proj-list" class="space-y-4"></div>
+        </div>
+        <!-- Transparencia -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-slate-900">Últimos Documentos de Transparencia</h3>
+            <a href="#/transparencia" class="text-sm text-blue-600 hover:underline">Ir a Transparencia</a>
+          </div>
+          <div id="tx-list" class="space-y-3"></div>
+        </div>
+        <!-- Negocios -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-slate-900">Directorio de Negocios</h3>
+            <a href="#/negocios" class="text-sm text-blue-600 hover:underline">Explorar</a>
+          </div>
+          <div id="biz-list" class="space-y-3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS + TURISMO (masonry-ish) -->
+  <section class="py-12">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Events -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Próximos Eventos</h2>
+            <a href="#/eventos" class="text-sm text-blue-600 hover:underline">Calendario</a>
+          </div>
+          <div id="events-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+          <div id="events-empty" class="text-slate-500 text-sm">No hay eventos próximos.</div>
+        </div>
+
+        <!-- Turismo -->
+        <div>
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Turismo</h2>
+            <a href="#/turismo" class="text-sm text-blue-600 hover:underline">Ver más</a>
+          </div>
+          <div id="turismo-stack" class="space-y-4"></div>
+          <div id="turismo-empty" class="text-slate-500 text-sm">Aún no hay lugares turísticos.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMERGENCY STRIP -->
+  <section class="py-10 bg-white border-t">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-end justify-between mb-6">
+        <h2 id="emerg-title" class="text-2xl md:text-3xl font-bold text-red-600">Números de Emergencia</h2>
+        <p class="text-sm text-slate-500">Atención 24/7</p>
+      </div>
+      <div id="emerg-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
+      <div id="emerg-empty" class="text-slate-500 text-sm">Añade en <code>localStorage.emergencyNumbers</code>.</div>
+    </div>
+  </section>
+
 </section>
 
 <script>
 (() => {
   const root = document.getElementById('HomeContent');
-
-  // ---------- helpers ----------
-  const byId = (id) => root.querySelector(`#${id}`);
+  const $ = (sel) => root.querySelector(sel);
   const fmt = new Intl.NumberFormat('es-MX');
-  const safe = (v, d='') => (v==null ? d : v);
-
-  // LS helpers
   const jget = (k, d) => { try { return JSON.parse(localStorage.getItem(k) ?? JSON.stringify(d)); } catch { return d; } };
+  const today = new Date(new Date().toDateString());
 
-  // IDB helpers (best effort; all functions resolve gracefully)
-  function idbOpen(dbName, version = 1){
-    return new Promise((resolve) => {
-      const req = indexedDB.open(dbName, version);
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = () => resolve(null);
-      req.onupgradeneeded = () => { /* do nothing; read-only here */ };
-    });
-  }
-  function idbGetByKey(db, store, key){
-    return new Promise((resolve)=> {
-      if(!db || !db.objectStoreNames.contains(store)) return resolve(null);
-      const tx = db.transaction(store,'readonly'); const os = tx.objectStore(store);
-      const rq = os.get(key);
-      rq.onsuccess = () => resolve(rq.result || null);
-      rq.onerror = () => resolve(null);
-    });
-  }
-  function idbGetByIndex(db, store, index, value){
-    return new Promise((resolve)=> {
-      if(!db || !db.objectStoreNames.contains(store)) return resolve([]);
-      const tx = db.transaction(store,'readonly'); const os = tx.objectStore(store);
-      if(!os.indexNames.contains(index)) return resolve([]);
-      const idx = os.index(index); const rq = idx.getAll(value);
-      rq.onsuccess = () => resolve(rq.result || []); rq.onerror = () => resolve([]);
-    });
-  }
+  // ---------- IndexedDB helpers (read-only, safe) ----------
+  function idbOpen(name, version=1){ return new Promise(res=>{ const r=indexedDB.open(name,version); r.onsuccess=()=>res(r.result); r.onerror=()=>res(null); r.onupgradeneeded=()=>res(r.result); }); }
+  function idbGet(db, store, key){ return new Promise(res=>{ if(!db||!db.objectStoreNames.contains(store)) return res(null); const tx=db.transaction(store,'readonly'); const os=tx.objectStore(store); const rq=os.get(key); rq.onsuccess=()=>res(rq.result||null); rq.onerror=()=>res(null); }); }
+  function idbIndexAll(db, store, index, value){ return new Promise(res=>{ if(!db||!db.objectStoreNames.contains(store)) return res([]); const os=db.transaction(store,'readonly').objectStore(store); if(!os.indexNames.contains(index)) return res([]); const rq=os.index(index).getAll(value); rq.onsuccess=()=>res(rq.result||[]); rq.onerror=()=>res([]); }); }
+  const blobUrls = new Set(); const asUrl = (b)=>{ const u=URL.createObjectURL(b); blobUrls.add(u); return u; };
+  window.addEventListener('beforeunload', ()=>{ blobUrls.forEach(URL.revokeObjectURL); });
 
-  // object URLs: track & revoke on unload
-  const blobUrls = new Set();
-  function urlFromBlob(b){
-    const u = URL.createObjectURL(b); blobUrls.add(u); return u;
-  }
-  window.addEventListener('beforeunload', ()=>{ blobUrls.forEach(u=>URL.revokeObjectURL(u)); blobUrls.clear(); });
+  // ---------- HERO ----------
+  async function renderHero(){
+    const cfg = jget('home.config', {});
+    const title = cfg.title || 'Gobierno Municipal';
+    const subtitle = cfg.subtitle || 'Servicios, proyectos y transparencia en un solo lugar.';
+    const cta = cfg.ctaText || 'Agenda tu visita';
+    const ctaHref = cfg.ctaHref || '#/agenda';
+    const cta2 = cfg.ctaAltText || 'Conoce más';
+    const cta2Href = cfg.ctaAltHref || '#/transparencia';
 
-  // ---------- HERO (home.config) ----------
-  function renderHero(){
-    const cfg = jget('home.config', {
-      title: 'MUSEO ARQUEOLÓGICO\nANTIGUOS MEXICANOS',
-      ctaText: 'Agenda tu visita',
-      ctaHref: '#/agenda',
-      bg: { type:'gradient', from:'from-municipal-blue', to:'to-municipal-teal' }
-    });
-
-    const titleEl = byId('hero-title');
-    const bgEl = byId('hero-bg');
-    const cta = byId('home-cta');
-
-    titleEl.innerHTML = (cfg.title || '').replace(/\n/g,'<br>');
-    cta.textContent = cfg.ctaText || '';
-    if(cfg.ctaText){ cta.classList.remove('hidden'); cta.onclick = () => { if(cfg.ctaHref) location.hash = cfg.ctaHref; }; }
-
-    // background: gradient or image url (supports LS config)
-    bgEl.className = 'absolute inset-0';
-    if (cfg.bg?.type === 'image' && cfg.bg.url){
-      bgEl.style.backgroundImage = `url("${cfg.bg.url}")`;
-      bgEl.style.backgroundSize = 'cover';
-      bgEl.style.backgroundPosition = 'center';
-    } else {
-      bgEl.classList.add('bg-gradient-to-r', cfg.bg?.from || 'from-municipal-blue', cfg.bg?.to || 'to-municipal-teal');
+    // try to use a tourism image or config.bg
+    let bgUrl = '';
+    if (cfg.bg?.type === 'image' && cfg.bg.url){ bgUrl = cfg.bg.url; }
+    else {
+      // take first tourism image in IDB or base64
+      const lugares = jget('lugaresTuristicos', []);
+      const first = lugares.find(l => (l.photoIds?.length || l.imagenes?.length));
+      if (first){
+        const tdb = await idbOpen('TurismoMedia', 1);
+        if (first.photoIds?.length && tdb) {
+          const rec = await idbGet(tdb,'imagenes',first.photoIds[0]);
+          if(rec?.blob) bgUrl = asUrl(rec.blob);
+        }
+        if (!bgUrl && first.imagenes?.length) bgUrl = first.imagenes[first.imagenPrincipal||0] || first.imagenes[0];
+      }
     }
+    $('#hero-img').style.backgroundImage = bgUrl ? `url("${bgUrl}")` : 'linear-gradient(90deg,#0ea5e9,#14b8a6)';
+
+    $('#hero-title').innerHTML = title.replace(/\n/g,'<br>');
+    $('#hero-sub').textContent = subtitle;
+    const c1 = $('#hero-cta'); c1.classList.remove('hidden'); c1.querySelector('span').textContent = cta; c1.href = ctaHref;
+    const c2 = $('#hero-cta-sec'); c2.classList.remove('hidden'); c2.querySelector('span').textContent = cta2; c2.href = cta2Href;
   }
 
-  // ---------- KPIs ----------
-  function renderKPIs(){
-    const wrap = byId('home-kpis'); wrap.innerHTML = '';
-    const negocios = jget('negocios', []);
+  // ---------- KPI STRIP ----------
+  function renderKpiStrip(){
     const proyectos = jget('municipio.proyectos.v1', []);
+    const negocios = jget('negocios', []);
+    const docs = jget('transparenciaDocs', []);
     const eventos = jget('eventos', []);
     const lugares = jget('lugaresTuristicos', []);
 
-    const activosProy = proyectos.filter(p => ['En Progreso','Planificación'].includes(p.estatusGeneral)).length;
+    const activosProy = proyectos.filter(p=>['En Progreso','Planificación'].includes(p.estatusGeneral)).length;
     const avanceProm = proyectos.length ? Math.round(proyectos.reduce((s,p)=>{
-      // same logic as Projects page (weighted by etapas)
-      const total = (p.etapas||[]).reduce((acc,e)=>{
-        const avance = (typeof e.avanceManual === 'number')
-          ? Math.max(0,Math.min(100,e.avanceManual))
-          : (e.tareas?.length ? Math.round((e.tareas.filter(t=>t.completada).length / e.tareas.length)*100) : 0);
+      const total=(p.etapas||[]).reduce((acc,e)=>{
+        const avance = (typeof e.avanceManual==='number') ? Math.max(0,Math.min(100,e.avanceManual))
+          : (e.tareas?.length ? Math.round((e.tareas.filter(t=>t.completada).length/e.tareas.length)*100) : 0);
         return acc + (e.peso/100)*avance;
       },0);
-      return s + Math.round(total);
+      return s+Math.round(total);
     },0)/proyectos.length) : 0;
 
-    const upcoming = (eventos||[]).filter(e=>{
-      const start = e.fechaInicio ? new Date(e.fechaInicio) : null;
-      return start ? (start >= new Date(new Date().toDateString())) : true;
-    }).length;
+    const upcoming = (eventos||[]).filter(e=>!e.fechaInicio || new Date(e.fechaInicio)>=today).length;
 
-    const items = [
-      { label:'Negocios Registrados', value: fmt.format(negocios.length), icon:'fas fa-store', color:'blue' },
-      { label:'Proyectos Activos', value: fmt.format(activosProy), icon:'fas fa-project-diagram', color:'indigo' },
-      { label:'Avance Promedio', value: `${avanceProm}%`, icon:'fas fa-chart-line', color:'green' },
-      { label:'Próximos Eventos', value: fmt.format(upcoming), icon:'fas fa-calendar-alt', color:'orange' },
+    const KPIS = [
+      { label:'Proyectos activos', val: fmt.format(activosProy), icon:'fa-diagram-project', tone:'indigo' },
+      { label:'Avance promedio', val: `${avanceProm}%`, icon:'fa-chart-line', tone:'green' },
+      { label:'Negocios', val: fmt.format(negocios.length), icon:'fa-store', tone:'blue' },
+      { label:'Documentos', val: fmt.format(docs.length), icon:'fa-file-pdf', tone:'rose' },
+      { label:'Eventos', val: fmt.format(upcoming), icon:'fa-calendar-days', tone:'orange' },
     ];
 
-    wrap.innerHTML = items.map(i=>`
-      <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-${i.color}-500">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-2xl font-bold text-gray-800">${i.value}</p>
-            <p class="text-gray-600 text-sm">${i.label}</p>
-          </div>
-          <div class="bg-${i.color}-100 p-3 rounded-lg">
-            <i class="${i.icon} text-${i.color}-600 text-xl"></i>
-          </div>
+    $('#kpi-strip').innerHTML = KPIS.map(k=>`
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-3">
+        <div class="w-11 h-11 rounded-lg bg-${k.tone}-100 flex items-center justify-center">
+          <i class="fas ${k.icon} text-${k.tone}-600"></i>
+        </div>
+        <div>
+          <div class="text-xl font-bold text-slate-900">${k.val}</div>
+          <div class="text-slate-500 text-xs">${k.label}</div>
         </div>
       </div>
     `).join('');
   }
 
-  // ---------- SERVICES (LS: services) ----------
+  // ---------- SERVICES ----------
   function renderServices(){
-    const title = byId('services-title');
-    const grid = byId('services-grid');
-    const empty = byId('services-empty');
-    const q = byId('services-search');
+    const grid = $('#services-grid');
+    const empty = $('#services-empty');
+    const sub = $('#services-sub');
+    const q = $('#services-search');
+    const services = jget('services', []); // [{title,desc,icon,href,bgClass}]
+    sub.textContent = services.length ? 'Accede rápido a lo más solicitado' : 'Aún no hay servicios configurados';
 
-    const cfg = jget('home.config', { servicesTitle: 'HOLA, ¿CÓMO TE PODEMOS AYUDAR?' });
-    title.textContent = cfg.servicesTitle || 'Servicios';
-
-    const services = jget('services', []); // [{title, desc, icon, bgClass, href}]
-    function draw(list){
+    const draw = (list)=>{
       grid.innerHTML = list.map(s=>`
-        <button data-href="${safe(s.href,'#')}"
-          class="svc-card ${safe(s.bgClass,'bg-gray-100')} p-6 rounded-lg text-center hover:shadow-lg transition duration-300 w-full text-left">
-          <div class="text-4xl mb-4"><i class="${safe(s.icon,'fas fa-circle')}"></i></div>
-          <h3 class="font-bold text-municipal-blue mb-1">${safe(s.title)}</h3>
-          <p class="text-gray-600 text-sm">${safe(s.desc)}</p>
+        <button data-href="${s.href||'#'}" class="group bg-white hover:bg-slate-50 border border-slate-200 rounded-xl px-3 py-4 text-left shadow-sm hover:shadow transition">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center">
+              <i class="${s.icon||'fas fa-circle'} text-slate-700"></i>
+            </div>
+            <div>
+              <div class="font-semibold text-slate-900 leading-tight">${s.title||''}</div>
+              <div class="text-slate-500 text-xs mt-1">${s.desc||''}</div>
+            </div>
+          </div>
         </button>
       `).join('');
       empty.classList.toggle('hidden', list.length>0);
-      grid.querySelectorAll('button[data-href]').forEach(b=>{
-        b.addEventListener('click', ()=>{ const href=b.dataset.href; if(href?.startsWith('#')) location.hash = href; else if(href) location.href = href; });
-      });
-    }
+      grid.querySelectorAll('[data-href]').forEach(b=>b.onclick=()=>{ const href=b.dataset.href; if(!href) return; if(href.startsWith('#')) location.hash=href; else location.href=href; });
+    };
     draw(services);
-    q.addEventListener('input', ()=>{
-      const term = q.value.trim().toLowerCase();
-      draw(services.filter(s => [s.title,s.desc].some(t => (t||'').toLowerCase().includes(term))));
-    });
+    q?.addEventListener('input', ()=>{ const t=q.value.trim().toLowerCase(); draw(services.filter(s=>[s.title,s.desc].some(v=>(v||'').toLowerCase().includes(t)))); });
   }
 
-  // ---------- WEDNESDAY (home.config.optional) ----------
-  function renderWednesday(){
-    const cfg = jget('home.config', {});
-    const show = !!cfg.wednesday;
-    const wrap = byId('wednesday-wrap');
-    wrap.classList.toggle('hidden', !show);
-    if(!show) return;
+  // ---------- FEATURED: Proyectos / Transparencia / Negocios ----------
+  function renderFeatured(){
+    const proyectos = jget('municipio.proyectos.v1', []);
+    const docs = jget('transparenciaDocs', []);
+    const negocios = jget('negocios', []);
 
-    byId('wednesday-title').textContent = cfg.wednesday.title || 'MIÉRCOLES CIUDADANO';
-    byId('wednesday-loc1').textContent = cfg.wednesday.loc1 || '';
-    byId('wednesday-loc2').textContent = cfg.wednesday.loc2 || '';
-    byId('wednesday-hours1').textContent = cfg.wednesday.hours1 || '';
-    byId('wednesday-hours2').textContent = cfg.wednesday.hours2 || '';
-    const list = Array.isArray(cfg.wednesday.services) ? cfg.wednesday.services : [];
-    byId('wednesday-services').innerHTML = list.map(s=>`<li>• ${s}</li>`).join('');
-  }
-
-  // ---------- HIGHLIGHTS (home.config) ----------
-  function renderHighlights(){
-    const cfg = jget('home.config', { highlightsTitle:'CONOCE SABINAS HIDALGO', highlights:[] });
-    byId('highlights-title').textContent = cfg.highlightsTitle || '';
-    byId('highlights-grid').innerHTML = (cfg.highlights||[]).map(h=>`
-      <div class="bg-gradient-to-br ${safe(h.bgGradient,'from-municipal-blue to-blue-600')} text-white p-6 rounded-lg">
-        <div class="text-4xl mb-4">${safe(h.emoji,'📍')}</div>
-        <h3 class="font-bold text-xl mb-3">${safe(h.title,'')}</h3>
-        <p class="opacity-90">${safe(h.desc,'')}</p>
-      </div>
-    `).join('');
-  }
-
-  // ---------- EVENTS (LS: eventos, IDB: EventosDB/imagenes) ----------
-  async function renderEvents(){
-    const grid = byId('home-events');
-    const empty = byId('home-events-empty');
-    const eventos = jget('eventos', []); // [{id, titulo, descripcion, fechaInicio, fechaFin, color, imageId?}]
-    const now = new Date(new Date().toDateString());
-    const upcoming = eventos
-      .filter(e => !e.fechaInicio || new Date(e.fechaInicio) >= now)
-      .sort((a,b)=> new Date(a.fechaInicio||'2100-01-01') - new Date(b.fechaInicio||'2100-01-01'))
-      .slice(0, 6);
-
-    let eDb = await idbOpen('EventosDB', 1);
-    async function eventThumb(ev){
-      if (ev.imageId && eDb){
-        const rec = await idbGetByKey(eDb, 'imagenes', ev.imageId);
-        if(rec && (rec.blob instanceof Blob)) return urlFromBlob(rec.blob);
-      }
-      return null;
-    }
-
-    const cards = await Promise.all(upcoming.map(async ev=>{
-      const img = await eventThumb(ev);
-      const badge = ev.color ? `bg-${ev.color}-600` : 'bg-municipal-blue';
-      const when = (ev.fechaInicio && ev.fechaFin)
-        ? `${ev.fechaInicio} – ${ev.fechaFin}`
-        : (ev.fechaInicio || '');
-      return `
-        <div class="ev-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300">
-          <div class="${badge} h-32 flex items-center justify-center">
-            ${img ? `<img src="${img}" class="w-full h-32 object-cover">` : `<span class="text-white text-5xl">🎪</span>`}
-          </div>
-          <div class="p-6">
-            <h3 class="font-bold text-municipal-blue mb-2">${safe(ev.titulo,'Evento')}</h3>
-            <p class="text-gray-600 mb-3">${safe(ev.descripcion,'')}</p>
-            <p class="text-sm text-municipal-blue font-semibold">${when}</p>
-          </div>
-        </div>`;
-    }));
-
-    grid.innerHTML = cards.join('');
-    empty.classList.toggle('hidden', cards.length>0);
-  }
-
-  // ---------- TURISMO (LS: lugaresTuristicos, IDB: TurismoMedia/imagenes) ----------
-  async function renderTurismo(){
-    const grid = byId('home-turismo');
-    const empty = byId('home-turismo-empty');
-    const lugares = jget('lugaresTuristicos', []); // current schema stores base64 in lugar.imagenes OR photo ids in lugar.photoIds (if migrated)
-
-    const tDb = await idbOpen('TurismoMedia', 1); // optional
-    async function mainImage(l){
-      // 1) migrated: photoIds[] in IDB
-      if (Array.isArray(l.photoIds) && l.photoIds.length && tDb){
-        // prefer first id
-        const rec = await idbGetByKey(tDb, 'imagenes', l.photoIds[0]);
-        if(rec && rec.blob instanceof Blob) return urlFromBlob(rec.blob);
-      }
-      // 2) legacy: base64 in lugar.imagenes[]
-      if (Array.isArray(l.imagenes) && l.imagenes.length) return l.imagenes[l.imagenPrincipal || 0] || l.imagenes[0];
-      return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23eef2ff'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='Arial' font-size='16'%3ESin imagen%3C/text%3E%3C/svg%3E";
-    }
-
-    // pick up to 6 featured (with images first)
-    const withImgFirst = [...lugares].sort((a,b)=>{
-      const ai = (a.photoIds?.length || a.imagenes?.length || 0);
-      const bi = (b.photoIds?.length || b.imagenes?.length || 0);
-      return bi - ai;
-    }).slice(0,6);
-
-    const cards = await Promise.all(withImgFirst.map(async l=>{
-      const main = await mainImage(l);
-      const icon = l.icono || 'fas fa-map-marked-alt';
-      return `
-        <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
-          <div class="relative">
-            <img src="${main}" alt="${safe(l.nombre,'Lugar turístico')}" class="w-full h-48 object-cover">
-            <span class="absolute top-4 left-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">${safe(l.categoria,'')}</span>
-          </div>
-          <div class="p-6">
-            <div class="flex items-start justify-between mb-3">
-              <h3 class="text-xl font-bold text-gray-800">${safe(l.nombre,'')}</h3>
-              <div class="bg-orange-100 p-2 rounded-lg ml-3"><i class="${icon} text-orange-600"></i></div>
+    // proyectos (top 3 by inversión)
+    $('#proj-list').innerHTML = [...proyectos]
+      .sort((a,b)=> (b.inversionTotal||0)-(a.inversionTotal||0)).slice(0,3)
+      .map(p=>{
+        const fin = p.etapas?.[p.etapas.length-1]?.fin || '';
+        return `
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-lg bg-blue-100 flex items-center justify-center"><i class="fas fa-helmet-safety text-blue-600"></i></div>
+            <div class="flex-1">
+              <div class="font-semibold text-slate-900">${p.nombre||''}</div>
+              <div class="text-slate-500 text-xs">${p.categoria||''} · Fin: ${fin||'—'}</div>
             </div>
-            <p class="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">${safe(l.descripcion,'')}</p>
-            <div class="flex gap-2">
-              <a href="#/turismo" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition text-sm font-medium">
-                Ver más
-              </a>
-              ${l.googleMaps ? `<a href="${l.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>` : ''}
+            <div class="text-right">
+              <div class="text-sm font-bold text-slate-900">$${(p.inversionTotal? p.inversionTotal.toLocaleString('es-MX'): '0')}</div>
+              <div class="text-xs text-slate-500">${p.estatusGeneral||''}</div>
             </div>
-          </div>
-        </div>`;
-    }));
+          </div>`;
+      }).join('') || `<div class="text-slate-500 text-sm">Aún no hay proyectos.</div>`;
 
-    grid.innerHTML = cards.join('');
-    empty.classList.toggle('hidden', cards.length>0);
-  }
-
-  // ---------- EMERGENCY (LS: emergencyNumbers) ----------
-  function renderEmergency(){
-    const title = byId('emerg-title');
-    const grid = byId('emerg-grid');
-    const empty = byId('emerg-empty');
-    const cfg = jget('home.config', { emergencyTitle:'NÚMEROS DE EMERGENCIA' });
-    title.textContent = cfg.emergencyTitle || 'Números de emergencia';
-
-    const nums = jget('emergencyNumbers', []); // [{title, number, subtitle, desc, iconBg, iconClass, color}]
-    grid.innerHTML = nums.map(n=>`
-      <div class="bg-white rounded-lg p-6 text-center hover:shadow-lg transition duration-300">
-        <div class="${safe(n.iconBg,'bg-gray-100')} rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-          <i class="${safe(n.iconClass,'fas fa-phone')} text-2xl ${safe(n.color,'text-gray-600')}"></i>
+    // transparencia (latest 4)
+    $('#tx-list').innerHTML = [...docs].sort((a,b)=>(b.createdAt||'')>(a.createdAt||'')?1:-1).slice(0,4).map(d=>`
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-medium text-slate-900">${d.titulo||''}</div>
+          <div class="text-slate-500 text-xs">${d.categoria||''} · ${d.dependencia||''} · ${d.anio}${d.mes?'-'+d.mes:''}</div>
         </div>
-        <h3 class="font-bold ${safe(n.color,'text-gray-800')} text-xl mb-2">${safe(n.number,'')}</h3>
-        <p class="text-gray-700 font-semibold">${safe(n.title,'')}</p>
-        <p class="text-gray-600 text-sm">${safe(n.desc, safe(n.subtitle,''))}</p>
+        <span class="text-xs px-2 py-0.5 rounded ${d.estado==='Publicado'?'bg-green-100 text-green-700':'bg-slate-100 text-slate-600'}">${d.estado||'—'}</span>
+      </div>
+    `).join('') || `<div class="text-slate-500 text-sm">Sin documentos.</div>`;
+
+    // negocios (latest 5)
+    $('#biz-list').innerHTML = [...negocios].slice(-5).reverse().map(n=>`
+      <div class="flex items-center justify-between">
+        <div class="truncate">
+          <div class="font-medium text-slate-900 truncate">${n.nombre||''}</div>
+          <div class="text-slate-500 text-xs truncate">${n.giroNombre||n.giro||''} · ${n.telefono||''}</div>
+        </div>
+        <span class="text-xs px-2 py-0.5 rounded ${n.estado==='activo'?'bg-green-100 text-green-700': n.estado==='pendiente'?'bg-yellow-100 text-yellow-700':'bg-slate-100 text-slate-600'}">
+          ${n.estado||'—'}
+        </span>
+      </div>
+    `).join('') || `<div class="text-slate-500 text-sm">Aún no hay negocios.</div>`;
+  }
+
+  // ---------- EVENTS ----------
+  async function renderEvents(){
+    const grid = $('#events-grid'); const empty = $('#events-empty');
+    const eventos = jget('eventos', []);
+    const db = await idbOpen('EventosDB',1);
+    const upcoming = eventos.filter(e=>!e.fechaInicio || new Date(e.fechaInicio)>=today)
+                            .sort((a,b)=>new Date(a.fechaInicio||'2100-01-01')-new Date(b.fechaInicio||'2100-01-01'))
+                            .slice(0,6);
+    async function imgFor(e){
+      if(e.imageId && db){ const rec = await idbGet(db,'imagenes', e.imageId); if(rec?.blob) return asUrl(rec.blob); }
+      return '';
+    }
+    const cards = await Promise.all(upcoming.map(async e=>{
+      const img = await imgFor(e);
+      const when = e.fechaInicio && e.fechaFin ? `${e.fechaInicio} · ${e.fechaFin}` : (e.fechaInicio||'Próximamente');
+      return `
+        <div class="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+          ${img ? `<img src="${img}" class="w-full h-32 object-cover">` : `<div class="h-32 w-full bg-slate-100 flex items-center justify-center text-4xl">🎉</div>`}
+          <div class="p-4">
+            <div class="font-semibold text-slate-900 line-clamp-2">${e.titulo||'Evento'}</div>
+            <div class="text-slate-500 text-sm line-clamp-2 mt-1">${e.descripcion||''}</div>
+            <div class="text-blue-700 text-xs font-semibold mt-2">${when}</div>
+          </div>
+        </div>`;
+    }));
+    grid.innerHTML = cards.join('');
+    empty.classList.toggle('hidden', cards.length>0);
+  }
+
+  // ---------- TURISMO (stacked editorial cards) ----------
+  async function renderTurismo(){
+    const stack = $('#turismo-stack'); const empty = $('#turismo-empty');
+    const lugares = jget('lugaresTuristicos', []);
+    const db = await idbOpen('TurismoMedia',1);
+
+    async function cover(l){
+      if (l.photoIds?.length && db){ const rec = await idbGet(db,'imagenes', l.photoIds[0]); if(rec?.blob) return asUrl(rec.blob); }
+      if (l.imagenes?.length) return l.imagenes[l.imagenPrincipal||0] || l.imagenes[0];
+      return '';
+    }
+
+    const picks = [...lugares].sort((a,b)=> (b.photoIds?.length||b.imagenes?.length||0)-(a.photoIds?.length||a.imagenes?.length||0)).slice(0,4);
+    const cards = await Promise.all(picks.map(async l=>{
+      const img = await cover(l);
+      return `
+        <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          ${img ? `<img src="${img}" class="w-full h-40 object-cover">` : `<div class="h-40 bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center text-3xl">📍</div>`}
+          <div class="p-4">
+            <div class="flex items-start justify-between">
+              <h4 class="font-bold text-slate-900">${l.nombre||''}</h4>
+              <i class="${l.icono||'fas fa-map-marked-alt'} text-orange-600"></i>
+            </div>
+            <div class="text-slate-500 text-xs mt-1">${l.categoria||''}</div>
+            <p class="text-slate-600 text-sm mt-2 line-clamp-3">${l.descripcion||''}</p>
+            <div class="mt-3 flex gap-2">
+              ${l.googleMaps? `<a target="_blank" href="${l.googleMaps}" class="px-3 py-1.5 rounded-lg text-white bg-blue-600 text-xs hover:bg-blue-700">Mapa</a>`:''}
+              <a href="#/turismo" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs hover:bg-slate-200">Ver más</a>
+            </div>
+          </div>
+        </div>`;
+    }));
+    stack.innerHTML = cards.join('');
+    empty.classList.toggle('hidden', cards.length>0);
+  }
+
+  // ---------- EMERGENCY ----------
+  function renderEmergency(){
+    const nums = jget('emergencyNumbers', []);
+    $('#emerg-grid').innerHTML = nums.map(n=>`
+      <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm text-center">
+        <div class="${n.iconBg||'bg-slate-100'} w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-2">
+          <i class="${n.iconClass||'fas fa-phone'} ${n.color||'text-slate-700'} text-xl"></i>
+        </div>
+        <div class="text-lg font-extrabold ${n.color||'text-slate-900'}">${n.number||''}</div>
+        <div class="text-slate-700 font-medium">${n.title||''}</div>
+        <div class="text-slate-500 text-xs">${n.desc||n.subtitle||''}</div>
       </div>
     `).join('');
-    empty.classList.toggle('hidden', nums.length>0);
+    $('#emerg-empty').classList.toggle('hidden', nums.length>0);
   }
 
-  // ---------- wire-ups & small UX ----------
-  function wireUX(){
-    // smooth scroll (only in this section)
-    root.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{
-        const id = a.getAttribute('href');
-        if(id && id !== '#'){ e.preventDefault(); const t = document.querySelector(id); if(t) t.scrollIntoView({behavior:'smooth'}); }
-      });
-    });
-  }
-
-  // ---------- init ----------
+  // ---------- INIT ----------
   (async function init(){
-    renderHero();
-    renderKPIs();
+    await renderHero();
+    renderKpiStrip();
     renderServices();
-    renderWednesday();
-    renderHighlights();
+    renderFeatured();
     await renderEvents();
     await renderTurismo();
     renderEmergency();
-    wireUX();
   })();
 })();
 </script>
