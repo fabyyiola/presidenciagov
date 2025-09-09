@@ -11,7 +11,7 @@
     </button>
   </div>
 
-  <div id="lugares-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div id="turismo" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <!-- Tarjetas se renderizan por JS -->
   </div>
 </section>
@@ -79,7 +79,7 @@
 
   // ====== Render ======
   function renderLugaresTuristicos() {
-    const grid = document.getElementById('lugares-grid');
+    const grid = document.getElementById('turismo');
     grid.innerHTML = lugaresTuristicos.map(createTouristCard).join('');
   }
 
