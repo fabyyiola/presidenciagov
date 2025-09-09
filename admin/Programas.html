@@ -1,73 +1,191 @@
-<!-- ServiciosAdmin.html (Admin module) -->
-<section class="section-content p-6" id="ServiciosAdmin">
+<!-- ProgramasAdmin.html (Admin module) -->
+<section class="section-content p-6" id="ProgramasAdmin">
   <div class="flex justify-between items-center mb-8">
     <div>
-      <h2 class="text-3xl font-bold text-gray-800 mb-2">Solicitudes de Apoyo</h2>
-      <p class="text-gov-gray">Gestión de solicitudes de programas sociales</p>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Programas Sociales</h2>
+      <p class="text-gov-gray">Crear, editar y administrar los programas disponibles para la ciudadanía</p>
     </div>
+    <button
+      onclick="ProgramasAdmin.openForm()"
+      class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-200 flex items-center"
+    >
+      <i class="fas fa-plus mr-2"></i> Nuevo Programa
+    </button>
   </div>
 
-  <!-- Filters -->
-  <div class="bg-white border border-gray-200 rounded-2xl p-4 mb-6 flex flex-col md:flex-row gap-3">
-    <div class="flex-1">
-      <div class="relative">
-        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-        <input
-          id="solicitudes-search"
-          type="text"
-          placeholder="Buscar por nombre, CURP o programa..."
-          class="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
-        />
+  <!-- Filtros -->
+  <div class="bg-white border border-gray-200 rounded-2xl p-4 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+      <div class="md:col-span-2">
+        <div class="relative">
+          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          <input id="prog-search" type="text" placeholder="Buscar por nombre, descripción o requisitos..."
+            class="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500">
+        </div>
       </div>
+      <select id="prog-dep" class="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500">
+        <option value="">Todas las dependencias</option>
+        <option>DIF</option>
+        <option>Presidencia</option>
+      </select>
+      <select id="prog-cat" class="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500">
+        <option value="">Todas las categorías</option>
+        <option>Alimentación</option>
+        <option>Salud</option>
+        <option>Economía</option>
+        <option>Vivienda</option>
+        <option>Educación</option>
+        <option>Limpieza/Servicios</option>
+        <option>Cultura/Deporte</option>
+        <option>Otros</option>
+      </select>
+      <select id="prog-status" class="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500">
+        <option value="">Todos los estados</option>
+        <option value="active">Activos</option>
+        <option value="inactive">Inactivos</option>
+      </select>
     </div>
-    <select id="solicitudes-status" class="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
-      <option value="">Todos los estados</option>
-      <option value="pending">Pendiente</option>
-      <option value="in-review">En Revisión</option>
-      <option value="approved">Aprobado</option>
-      <option value="rejected">Rechazado</option>
-    </select>
   </div>
 
-  <!-- Table -->
+  <!-- Tabla -->
   <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
     <div class="overflow-x-auto">
       <table class="w-full">
         <thead class="bg-gray-50 border-b">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">ID</th>
             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Nombre</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">CURP</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Programa</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Teléfono</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Dirección</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Fecha</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Dependencia</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Categoría</th>
             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Estado</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Actualizado</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Acciones</th>
           </tr>
         </thead>
-        <tbody id="solicitudes-body" class="divide-y divide-gray-200"></tbody>
+        <tbody id="prog-body" class="divide-y divide-gray-200"></tbody>
       </table>
     </div>
-    <div id="solicitudes-empty" class="text-gray-500 text-sm p-6 hidden">No hay solicitudes registradas.</div>
+    <div id="prog-empty" class="text-gray-500 text-sm p-6 hidden">No hay programas aún. Crea el primero.</div>
   </div>
 </section>
 
+<!-- Modal: Crear/Editar Programa -->
+<div id="prog-form-modal" class="fixed inset-0 bg-black/50 z-50 hidden">
+  <div class="absolute inset-0 backdrop-blur-sm"></div>
+  <div class="relative mx-auto my-8 max-w-3xl bg-white rounded-2xl shadow-xl overflow-hidden" style="height: 92vh; overflow:auto;">
+    <div class="flex items-center justify-between px-6 py-4 border-b">
+      <h3 id="prog-form-title" class="text-xl font-bold text-gray-800">Nuevo Programa</h3>
+      <button onclick="ProgramasAdmin.closeForm()" class="text-gray-500 hover:text-gray-800">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+
+    <form id="prog-form" class="p-6 space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
+          <input id="p-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Dependencia *</label>
+          <select id="p-dep" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+            <option value="">Seleccionar</option>
+            <option>DIF</option>
+            <option>Presidencia</option>
+          </select>
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
+          <select id="p-cat" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+            <option value="">Seleccionar</option>
+            <option>Alimentación</option>
+            <option>Salud</option>
+            <option>Economía</option>
+            <option>Vivienda</option>
+            <option>Educación</option>
+            <option>Limpieza/Servicios</option>
+            <option>Cultura/Deporte</option>
+            <option>Otros</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Descripción *</label>
+        <textarea id="p-desc" rows="3" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+          placeholder="Breve descripción del programa..."></textarea>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Requisitos (uno por línea) *</label>
+        <textarea id="p-req" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+          placeholder="INE vigente&#10;CURP&#10;Comprobante de domicilio"></textarea>
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <label class="inline-flex items-center gap-2">
+          <input type="checkbox" id="p-active" class="rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-200">
+          <span class="text-sm text-gray-700">Activo (visible al público)</span>
+        </label>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-2">
+        <button type="button" onclick="ProgramasAdmin.closeForm()" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">Cancelar</button>
+        <button type="submit" class="px-5 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
 (() => {
-  const STORAGE_KEY = 'municipio.solicitudes.v1';
-  let solicitudes = [];
+  const LS_KEY = 'municipio.programas.v1';
+
+  // ===== State =====
+  let programs = [];
   let filtered = [];
+  let editId = null;
 
-  const load = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(solicitudes));
+  // ===== Storage =====
+  const load = () => {
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; }
+  };
+  const save = () => localStorage.setItem(LS_KEY, JSON.stringify(programs));
+
+  // ===== Seed (optional) =====
+  function seedIfEmpty() {
+    if (programs.length) return;
+    programs = [
+      {
+        id: 1,
+        name: 'Desayunos Escolares',
+        desc: 'Alimentación para estudiantes de primaria y secundaria',
+        requisitos: ['CURP del menor','Comprobante escolar','INE del tutor'],
+        dependencia: 'DIF',
+        category: 'Alimentación',
+        active: true,
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: 2,
+        name: 'Apoyo Económico Familiar',
+        desc: 'Subsidio temporal para familias vulnerables',
+        requisitos: ['Estudio socioeconómico','CURP','Comprobante de domicilio'],
+        dependencia: 'Presidencia',
+        category: 'Economía',
+        active: true,
+        updatedAt: new Date().toISOString()
+      }
+    ];
+    save();
+  }
+
+  // ===== Rendering =====
   const fmtDate = d => new Date(d).toLocaleDateString('es-MX',{year:'numeric',month:'short',day:'numeric'});
-  const statusLabels = { pending:'Pendiente', 'in-review':'En Revisión', approved:'Aprobado', rejected:'Rechazado' };
 
-  // === Render ===
-  function render() {
-    const tbody = document.getElementById('solicitudes-body');
-    const empty = document.getElementById('solicitudes-empty');
-    tbody.innerHTML = '';
+  function renderTable() {
+    const body = document.getElementById('prog-body');
+    const empty = document.getElementById('prog-empty');
+    body.innerHTML = '';
 
     if (!filtered.length) {
       empty.classList.remove('hidden');
@@ -75,60 +193,155 @@
     }
     empty.classList.add('hidden');
 
-    for (const s of filtered) {
-      const row = document.createElement('tr');
-      row.className = "hover:bg-gray-50";
-      row.innerHTML = `
-        <td class="px-6 py-3 text-sm font-mono text-blue-600">${s.id}</td>
-        <td class="px-6 py-3 text-sm text-gray-800">${s.fullName}</td>
-        <td class="px-6 py-3 text-sm text-gray-600">${s.curp}</td>
-        <td class="px-6 py-3 text-sm text-gray-800">${s.program}</td>
-        <td class="px-6 py-3 text-sm text-gray-600">${s.phone}</td>
-        <td class="px-6 py-3 text-sm text-gray-600">${s.address}</td>
-        <td class="px-6 py-3 text-sm text-gray-600">${fmtDate(s.submissionDate)}</td>
+    for (const p of filtered) {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-gray-50';
+      tr.innerHTML = `
         <td class="px-6 py-3">
-          <select onchange="ServiciosAdmin.updateStatus('${s.id}', this.value)" class="text-sm border rounded px-2 py-1">
-            ${Object.entries(statusLabels).map(([val,label]) =>
-              `<option value="${val}" ${s.status===val?'selected':''}>${label}</option>`
-            ).join('')}
-          </select>
+          <div class="font-semibold text-gray-800">${p.name}</div>
+          <div class="text-xs text-gray-500 line-clamp-1">${p.desc || ''}</div>
+        </td>
+        <td class="px-6 py-3 text-sm text-gray-700">${p.dependencia || ''}</td>
+        <td class="px-6 py-3 text-sm text-gray-700">${p.category || ''}</td>
+        <td class="px-6 py-3">
+          <label class="inline-flex items-center gap-2 text-sm">
+            <input type="checkbox" ${p.active ? 'checked' : ''} onchange="ProgramasAdmin.toggleActive(${p.id}, this.checked)">
+            <span>${p.active ? 'Activo' : 'Inactivo'}</span>
+          </label>
+        </td>
+        <td class="px-6 py-3 text-sm text-gray-600">${fmtDate(p.updatedAt || p.createdAt || new Date())}</td>
+        <td class="px-6 py-3">
+          <div class="flex items-center gap-2">
+            <button class="bg-white border px-3 py-1 rounded hover:bg-gray-50 text-sm" onclick="ProgramasAdmin.edit(${p.id})">
+              <i class="fas fa-edit mr-1"></i>Editar
+            </button>
+            <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm" onclick="ProgramasAdmin.remove(${p.id})">
+              <i class="fas fa-trash mr-1"></i>Eliminar
+            </button>
+          </div>
         </td>
       `;
-      tbody.appendChild(row);
+      body.appendChild(tr);
     }
   }
 
-  // === Filters ===
+  // ===== Filters =====
   function applyFilters() {
-    const q = document.getElementById('solicitudes-search').value.toLowerCase();
-    const st = document.getElementById('solicitudes-status').value;
-    filtered = solicitudes.filter(s => {
-      if (q && !s.fullName.toLowerCase().includes(q) && !s.curp.toLowerCase().includes(q) && !s.program.toLowerCase().includes(q)) return false;
-      if (st && s.status !== st) return false;
-      return true;
+    const q = (document.getElementById('prog-search').value || '').toLowerCase().trim();
+    const dep = document.getElementById('prog-dep').value || '';
+    const cat = document.getElementById('prog-cat').value || '';
+    const st  = document.getElementById('prog-status').value || '';
+
+    filtered = programs.filter(p => {
+      const matchQ = !q || [p.name, p.desc, (p.requisitos||[]).join(' ')].join(' ').toLowerCase().includes(q);
+      const matchDep = !dep || p.dependencia === dep;
+      const matchCat = !cat || p.category === cat;
+      const matchSt  = !st || (st === 'active' ? p.active : !p.active);
+      return matchQ && matchDep && matchCat && matchSt;
     });
-    render();
+    renderTable();
   }
 
-  // === Public actions ===
-  function updateStatus(id, status) {
-    const s = solicitudes.find(x => x.id === id);
-    if (!s) return;
-    s.status = status;
+  // ===== Modal helpers =====
+  function openForm(id=null) {
+    editId = id;
+    document.getElementById('prog-form-modal').classList.remove('hidden');
+    document.getElementById('prog-form-title').textContent = id ? 'Editar Programa' : 'Nuevo Programa';
+    resetForm();
+
+    if (id) {
+      const p = programs.find(x => x.id === id);
+      if (!p) return;
+      setVal('p-name', p.name);
+      setVal('p-dep', p.dependencia);
+      setVal('p-cat', p.category);
+      setVal('p-desc', p.desc);
+      setVal('p-req', (p.requisitos || []).join('\n'));
+      document.getElementById('p-active').checked = !!p.active;
+    }
+  }
+  function closeForm() {
+    document.getElementById('prog-form-modal').classList.add('hidden');
+  }
+  function resetForm() {
+    ['p-name','p-dep','p-cat','p-desc','p-req'].forEach(id => setVal(id,''));
+    document.getElementById('p-active').checked = true;
+  }
+  function setVal(id,val){ const el=document.getElementById(id); if(el) el.value = val ?? ''; }
+
+  // ===== CRUD =====
+  document.getElementById('prog-form').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const data = {
+      name: document.getElementById('p-name').value.trim(),
+      dependencia: document.getElementById('p-dep').value.trim(),
+      category: document.getElementById('p-cat').value.trim(),
+      desc: document.getElementById('p-desc').value.trim(),
+      requisitos: (document.getElementById('p-req').value || '').split('\n').map(x=>x.trim()).filter(Boolean),
+      active: !!document.getElementById('p-active').checked,
+      updatedAt: new Date().toISOString()
+    };
+    if (!data.name || !data.dependencia || !data.category || !data.desc || !data.requisitos.length) {
+      alert('Completa los campos obligatorios (*)');
+      return;
+    }
+
+    if (editId) {
+      const i = programs.findIndex(x=>x.id===editId);
+      if (i !== -1) programs[i] = { ...programs[i], ...data };
+    } else {
+      const newId = (programs.length ? Math.max(...programs.map(x=>x.id)) : 0) + 1;
+      programs.push({ id:newId, createdAt:new Date().toISOString(), ...data });
+    }
+    save();
+    closeForm();
+    applyFilters();
+  });
+
+  function edit(id){ openForm(id); }
+  function removeProgram(id){
+    if (!confirm('¿Eliminar este programa?')) return;
+    programs = programs.filter(p=>p.id!==id);
+    save();
+    applyFilters();
+  }
+  function toggleActive(id, val){
+    const p = programs.find(x=>x.id===id);
+    if (!p) return;
+    p.active = !!val;
+    p.updatedAt = new Date().toISOString();
     save();
     applyFilters();
   }
 
-  // === Init ===
-  function init() {
-    solicitudes = load();
-    filtered = [...solicitudes];
+  // ===== Init =====
+  function init(){
+    programs = load();
+    seedIfEmpty();
+    programs = load(); // reload after seed
+    filtered = [...programs];
     applyFilters();
-    document.getElementById('solicitudes-search').addEventListener('input', applyFilters);
-    document.getElementById('solicitudes-status').addEventListener('change', applyFilters);
+
+    document.getElementById('prog-search').addEventListener('input', applyFilters);
+    document.getElementById('prog-dep').addEventListener('change', applyFilters);
+    document.getElementById('prog-cat').addEventListener('change', applyFilters);
+    document.getElementById('prog-status').addEventListener('change', applyFilters);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 
-  window.ServiciosAdmin = { updateStatus };
+  // ===== Public getters for Public page =====
+  // Use in the public module to render cards / dropdown:
+  // const programs = Programas.getPublic();
+  window.Programas = {
+    getAll: () => JSON.parse(localStorage.getItem(LS_KEY) || '[]'),
+    getPublic: () => (JSON.parse(localStorage.getItem(LS_KEY) || '[]')).filter(p=>p.active).map(p=>({
+      id: p.id, name: p.name, desc: p.desc, requisitos: p.requisitos, dependencia: p.dependencia, category: p.category
+    }))
+  };
+
+  // ===== Expose Admin actions =====
+  window.ProgramasAdmin = {
+    openForm, closeForm, edit, remove: removeProgram, toggleActive
+  };
 })();
 </script>

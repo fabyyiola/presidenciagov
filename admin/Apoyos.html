@@ -1,0 +1,134 @@
+<!-- ServiciosAdmin.html (Admin module) -->
+<section class="section-content p-6" id="ServiciosAdmin">
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Solicitudes de Apoyo</h2>
+      <p class="text-gov-gray">Gestión de solicitudes de programas sociales</p>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white border border-gray-200 rounded-2xl p-4 mb-6 flex flex-col md:flex-row gap-3">
+    <div class="flex-1">
+      <div class="relative">
+        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input
+          id="solicitudes-search"
+          type="text"
+          placeholder="Buscar por nombre, CURP o programa..."
+          class="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+    </div>
+    <select id="solicitudes-status" class="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
+      <option value="">Todos los estados</option>
+      <option value="pending">Pendiente</option>
+      <option value="in-review">En Revisión</option>
+      <option value="approved">Aprobado</option>
+      <option value="rejected">Rechazado</option>
+    </select>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gray-50 border-b">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">ID</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Nombre</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">CURP</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Programa</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Teléfono</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Dirección</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Fecha</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Estado</th>
+          </tr>
+        </thead>
+        <tbody id="solicitudes-body" class="divide-y divide-gray-200"></tbody>
+      </table>
+    </div>
+    <div id="solicitudes-empty" class="text-gray-500 text-sm p-6 hidden">No hay solicitudes registradas.</div>
+  </div>
+</section>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'municipio.solicitudes.v1';
+  let solicitudes = [];
+  let filtered = [];
+
+  const load = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(solicitudes));
+  const fmtDate = d => new Date(d).toLocaleDateString('es-MX',{year:'numeric',month:'short',day:'numeric'});
+  const statusLabels = { pending:'Pendiente', 'in-review':'En Revisión', approved:'Aprobado', rejected:'Rechazado' };
+
+  // === Render ===
+  function render() {
+    const tbody = document.getElementById('solicitudes-body');
+    const empty = document.getElementById('solicitudes-empty');
+    tbody.innerHTML = '';
+
+    if (!filtered.length) {
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+
+    for (const s of filtered) {
+      const row = document.createElement('tr');
+      row.className = "hover:bg-gray-50";
+      row.innerHTML = `
+        <td class="px-6 py-3 text-sm font-mono text-blue-600">${s.id}</td>
+        <td class="px-6 py-3 text-sm text-gray-800">${s.fullName}</td>
+        <td class="px-6 py-3 text-sm text-gray-600">${s.curp}</td>
+        <td class="px-6 py-3 text-sm text-gray-800">${s.program}</td>
+        <td class="px-6 py-3 text-sm text-gray-600">${s.phone}</td>
+        <td class="px-6 py-3 text-sm text-gray-600">${s.address}</td>
+        <td class="px-6 py-3 text-sm text-gray-600">${fmtDate(s.submissionDate)}</td>
+        <td class="px-6 py-3">
+          <select onchange="ServiciosAdmin.updateStatus('${s.id}', this.value)" class="text-sm border rounded px-2 py-1">
+            ${Object.entries(statusLabels).map(([val,label]) =>
+              `<option value="${val}" ${s.status===val?'selected':''}>${label}</option>`
+            ).join('')}
+          </select>
+        </td>
+      `;
+      tbody.appendChild(row);
+    }
+  }
+
+  // === Filters ===
+  function applyFilters() {
+    const q = document.getElementById('solicitudes-search').value.toLowerCase();
+    const st = document.getElementById('solicitudes-status').value;
+    filtered = solicitudes.filter(s => {
+      if (q && !s.fullName.toLowerCase().includes(q) && !s.curp.toLowerCase().includes(q) && !s.program.toLowerCase().includes(q)) return false;
+      if (st && s.status !== st) return false;
+      return true;
+    });
+    render();
+  }
+
+  // === Public actions ===
+  function updateStatus(id, status) {
+    const s = solicitudes.find(x => x.id === id);
+    if (!s) return;
+    s.status = status;
+    save();
+    applyFilters();
+  }
+
+  // === Init ===
+  function init() {
+    solicitudes = load();
+    filtered = [...solicitudes];
+    applyFilters();
+    document.getElementById('solicitudes-search').addEventListener('input', applyFilters);
+    document.getElementById('solicitudes-status').addEventListener('change', applyFilters);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+
+  window.ServiciosAdmin = { updateStatus };
+})();
+</script>
