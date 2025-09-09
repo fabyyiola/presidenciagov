@@ -1456,6 +1456,7 @@
       // Activate the newly created tab
       switchTabs("form-etapas", index);
       updatePesoTotal();
+      updateTareasUI(wrap);
     }
 
     function removeEtapaTab(etapaId) {
@@ -1482,26 +1483,30 @@
       const gal = wrapEl.querySelector('[data-field="gallery"]');
       gal.innerHTML = "";
       if (!db) db = await idbOpen();
+
       let photos = [];
       if (photoIds?.length) {
         photos = await Promise.all(
-          photoIds.map(async (pid) => await idbGetPhotoById(pid))
+          photoIds.map(async (pid) => {
+            const rec = await idbGetPhotoById(pid);
+            return rec ? rec : null;
+          })
         );
         photos = photos.filter(Boolean);
       } else {
         photos = await idbGetPhotos(etapaId);
       }
+
       photos.forEach((rec) => {
         const url = URL.createObjectURL(rec.blob);
         const cell = document.createElement("div");
         cell.className = "relative group";
         cell.innerHTML = `
-        <img src="${url}" alt="Foto etapa" style="cursor:pointer" class="w-full h-20 object-cover rounded">
-        <button class="absolute top-1 right-1 bg-black/60 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition" title="Eliminar">
-          <i class="fas fa-trash text-xs"></i>
-        </button>`;
+      <img src="${url}" alt="Foto etapa" class="w-full h-20 object-cover rounded">
+      <button class="absolute top-1 right-1 bg-black/60 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition" title="Eliminar">
+        <i class="fas fa-trash text-xs"></i>
+      </button>`;
         cell.querySelector("button").addEventListener("click", async () => {
-          evt.stopPropagation();
           await idbDeletePhoto(rec.id);
           const ids = (wrapEl.getAttribute("data-photo-ids") || "")
             .split(",")
@@ -1518,12 +1523,14 @@
           }
           renderEtapaGallery(etapaId, wrapEl, ids);
         });
-        cell.addEventListener("click", () => {
-          const index = Array.from(gal.children).indexOf(cell);
-          openEtapaLightbox(etapaId, index);
-        });
         gal.appendChild(cell);
       });
+
+      // NEW: update gallery count + empty state
+      const countEl = wrapEl.querySelector('[data-field="fotos-count"]');
+      const emptyGal = wrapEl.querySelector('[data-empty="gallery"]');
+      if (countEl) countEl.textContent = photos.length;
+      if (emptyGal) emptyGal.classList.toggle("hidden", photos.length > 0);
     }
 
     function updateTareasUI(etapaEl) {
@@ -1569,6 +1576,8 @@
     window.removeTarea = function (id) {
       const el = document.querySelector(`[data-tarea-id="${id}"]`);
       if (el) el.remove();
+      const etapaEl = el.closest("[data-etapa-id]");
+      if (etapaEl) updateTareasUI(etapaEl);
     };
 
     function updatePesoTotal() {
