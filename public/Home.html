@@ -479,19 +479,19 @@
     };
 
     $('#emerg-grid').innerHTML = contacts.map(c=>{
-  const [, toneText, toneBg] = toneByCategoria(c.categoria);
-  const icon = iconByCategoria(c.categoria);
-  return `
-    <div class="w-[260px] bg-white rounded-xl p-4 border border-slate-200 shadow-sm text-center">
-      <div class="${toneBg} w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-2">
-        <i class="${icon} ${toneText} text-xl"></i>
-      </div>
-      <div class="text-lg font-extrabold ${toneText}">${c.telefono||''}</div>
-      <div class="text-slate-800 font-medium">${c.nombre||''}</div>
-      <div class="text-slate-500 text-xs">${c.descripcion||c.disponibilidad||''}</div>
-    </div>
-  `;
-}).join('');
+      const [, toneText, toneBg] = toneByCategoria(c.categoria);
+      const icon = iconByCategoria(c.categoria);
+      return `
+        <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm text-center">
+          <div class="${toneBg} w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-2">
+            <i class="${icon} ${toneText} text-xl"></i>
+          </div>
+          <div class="text-lg font-extrabold ${toneText}">${c.telefono||''}</div>
+          <div class="text-slate-800 font-medium">${c.nombre||''}</div>
+          <div class="text-slate-500 text-xs">${c.descripcion||c.disponibilidad||''}</div>
+        </div>
+      `;
+    }).join('');
 
     $('#emerg-empty').classList.toggle('hidden', contacts.length>0);
   }
