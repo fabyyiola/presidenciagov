@@ -321,6 +321,45 @@
   let currentFotos = [];
   let editOriginalFotoIds = [];
   let editOriginalFotoUrls = [];
+const SEED_EVENTS = [
+    {
+        "id": 1,
+        "titulo": "Motorock",
+        "descripcion": "Motorock Sabinas Hidalgo",
+        "fechaInicio": "2025-09-09",
+        "fechaFin": "",
+        "hora": "18:00",
+        "lugar": "Ojo de Agua",
+        "colonia": "",
+        "organizador": "Municipio",
+        "contacto": "",
+        "precio": "350",
+        "categoria": "Cultural",
+        "destacado": true,
+        "googleMaps": "",
+        "recomendaciones": "",
+        "fotoIds": [],
+        "fotoUrls": [
+            "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/487769149_580011498388796_7825819156858778655_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGT_aD1GeifpyQpGqLC_ZBWSqfsCocKAs1Kp-wKhwoCzW7lM-sC6ZrSoUEvsmzN9s_btzcuHQ_PgIEsh4j0TX0j&_nc_ohc=K-9Gr8Vl1i8Q7kNvwFZI1xj&_nc_oc=Adlm_yNlFquxpmUfi7Say8q5jyMTeVJUJb7ZpdhW3FgSThNilDMTl5qJZ_Zid29_WzUg1LDs0n-OYAFnmqQqSdvx&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=e3J8pfg0GqIUDJetyxc0HA&oh=00_AfbPU29wemjRY5fDkWLdOcixup4A7TWKx7cOnOvHa3k64g&oe=68C68E70"
+        ],
+        "estado": "Pendiente"
+    }
+];
+
+function seedDefaults(force = false) {
+  if (force || !Array.isArray(eventos) || eventos.length === 0) {
+    // Si ya existen IDs, calcula el próximo ID base
+    const nextId =
+      Array.isArray(eventos) && eventos.length
+        ? Math.max(...eventos.map((e) => e.id || 0)) + 1
+        : 1;
+
+    const offset = nextId - 1;
+    const seeded = SEED_EVENTS.map((e) => ({ ...e, id: e.id + offset }));
+    eventos = seeded;
+    localStorage.setItem(LS_KEY, JSON.stringify(eventos));
+  }
+}
 
   // ====== IndexedDB (imagenes) ======
   let db;
@@ -333,6 +372,7 @@
   request.onsuccess = (e) => {
     db = e.target.result;
     populateOrganizadores();
+     seedDefaults(false);
     render(getFiltered()); // pintar con filtros actuales (inicialmente vacíos)
   };
 
