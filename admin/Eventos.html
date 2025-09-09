@@ -162,7 +162,7 @@
   </div>
 </div>
 
-<!-- Modal Detalle (tipo Lugares Turísticos) -->
+<!-- Modal Detalle -->
 <div id="evento-detalle-modal" class="fixed inset-0 bg-black/60 hidden z-50 p-4">
   <div class="bg-white rounded-xl max-w-5xl mx-auto h-full overflow-y-auto">
     <div class="flex justify-between items-center px-6 py-4 border-b sticky top-0 bg-white">
@@ -171,15 +171,11 @@
     </div>
 
     <div class="p-6">
-      <!-- Foto principal -->
       <div class="rounded-xl overflow-hidden bg-gray-100">
         <img id="carousel-image" class="w-full h-[360px] md:h-[440px] object-cover" alt="Imagen del evento">
       </div>
-
-      <!-- Miniaturas -->
       <div id="thumbs" class="flex gap-3 mt-4 overflow-x-auto pb-1"></div>
 
-      <!-- Info en dos columnas -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <div class="space-y-2">
           <div class="font-semibold" id="detalle-titulo"></div>
@@ -209,7 +205,12 @@
   const LS_KEY = "eventos";
   let eventos = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
   let editId = null;
-  let currentFotos = [];
+  let currentFotos = []; // [{blob, existingId?, _removed?, previewUrl}]
+  let editOriginalFotoIds = [];
+  // Helpers para limpiar URLs de previsualización
+  function cleanupPreviewUrls(){
+    currentFotos.forEach(f => { if (f.previewUrl) URL.revokeObjectURL(f.previewUrl); });
+  }
 
   // --- IndexedDB setup ---
   let db;
@@ -282,32 +283,70 @@
   function clearFilters(){ render(); }
 
   // --- Form ---
-  function openForm(id=null) {
+  async function openForm(id=null) {
+    // limpiar previews previas
+    cleanupPreviewUrls();
+    currentFotos = [];
+    editOriginalFotoIds = [];
+
     editId = id;
     document.getElementById("evento-modal").classList.remove("hidden");
     document.getElementById("evento-modal-title").textContent = id ? "Editar Evento" : "Agregar Evento";
     document.getElementById("evento-form").reset();
-    currentFotos = [];
     document.getElementById("foto-preview").innerHTML = "";
 
     if (id) {
       const ev = eventos.find(e => e.id === id);
       if (!ev) return;
+
       ["titulo","descripcion","fechaInicio","fechaFin","hora","lugar","colonia","organizador","contacto","precio","categoria","googleMaps","recomendaciones"]
         .forEach(f => { const el = document.getElementById(f); if (el) el.value = ev[f] || ""; });
       document.getElementById("destacado").checked = ev.destacado;
+
+      // Cargar fotos existentes al editor
+      editOriginalFotoIds = Array.isArray(ev.fotoIds) ? [...ev.fotoIds] : [];
+      for (const fid of editOriginalFotoIds){
+        const blob = await getImage(fid);
+        if (blob){
+          const url = URL.createObjectURL(blob);
+          currentFotos.push({ blob, existingId: fid, previewUrl: url });
+        }
+      }
+      renderPreviews();
     }
   }
-  function closeForm(){ document.getElementById("evento-modal").classList.add("hidden"); }
+  function closeForm(){
+    document.getElementById("evento-modal").classList.add("hidden");
+    cleanupPreviewUrls();
+    currentFotos = [];
+    editOriginalFotoIds = [];
+    editId = null;
+  }
 
   document.getElementById("evento-form").addEventListener("submit", async e => {
     e.preventDefault();
 
+    // Construir nueva lista de fotoIds manteniendo las existentes no removidas
     const fotoIds = [];
-    for (const foto of currentFotos) {
-      const id = Date.now() + "-" + Math.random().toString(16).slice(2);
-      fotoIds.push(id);
-      await saveImage(id, foto.blob);
+    const keptExisting = new Set();
+
+    for (const f of currentFotos) {
+      if (f._removed) continue;
+
+      if (f.existingId) {
+        fotoIds.push(f.existingId);
+        keptExisting.add(f.existingId);
+      } else if (f.blob) {
+        const id = Date.now() + "-" + Math.random().toString(16).slice(2);
+        await saveImage(id, f.blob);
+        fotoIds.push(id);
+      }
+    }
+
+    // Si es edición, borrar imágenes que fueron quitadas
+    if (editId && editOriginalFotoIds.length){
+      const removed = editOriginalFotoIds.filter(oldId => !keptExisting.has(oldId));
+      removed.forEach(deleteImage);
     }
 
     const data = {
@@ -337,26 +376,39 @@
       eventos.push(data);
     }
     localStorage.setItem(LS_KEY, JSON.stringify(eventos));
-    render();
+    await render();
     closeForm();
   });
 
   // --- Fotos (form) ---
   document.getElementById("fotos").addEventListener("change", e => {
     const files = Array.from(e.target.files);
-    files.forEach(f => currentFotos.push({blob:f}));
+    files.forEach(f => {
+      const previewUrl = URL.createObjectURL(f);
+      currentFotos.push({ blob:f, previewUrl });
+    });
     renderPreviews();
     e.target.value="";
   });
+
   function renderPreviews(){
     const c = document.getElementById("foto-preview");
-    c.innerHTML = currentFotos.map((f,i)=>`
+    c.innerHTML = currentFotos
+      .map((f,i)=> f._removed ? "" : `
       <div class="relative">
-        <img src="${URL.createObjectURL(f.blob)}" class="w-full h-20 object-cover rounded">
+        <img src="${f.previewUrl || URL.createObjectURL(f.blob)}" class="w-full h-20 object-cover rounded">
         <button type="button" onclick="Eventos.removeFoto(${i})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">×</button>
       </div>`).join("");
   }
-  function removeFoto(i){ currentFotos.splice(i,1); renderPreviews(); }
+
+  // Marcar como removida; si era nueva, solo se quita; si era existente, se borra al guardar
+  function removeFoto(i){
+    const f = currentFotos[i];
+    if (!f) return;
+    if (f.previewUrl) URL.revokeObjectURL(f.previewUrl);
+    f._removed = true;
+    renderPreviews();
+  }
 
   // --- CRUD ---
   function edit(id){ openForm(id); }
@@ -369,7 +421,7 @@
     render();
   }
 
-  // ====== DETALLE (hero + thumbs + botón Maps) ======
+  // ====== DETALLE ======
   let detalle = { ev:null, urls:[], idx:0 };
   function cleanupCarouselUrls(){ if (detalle.urls?.length) detalle.urls.forEach(u=>URL.revokeObjectURL(u)); detalle.urls=[]; }
 
@@ -380,7 +432,6 @@
     cleanupCarouselUrls();
     detalle = { ev, urls:[], idx:0 };
 
-    // Cargar imágenes
     if (ev.fotoIds?.length){
       for (const fid of ev.fotoIds){
         const blob = await getImage(fid);
@@ -388,7 +439,6 @@
       }
     }
 
-    // Datos
     document.getElementById("detalle-title").textContent = ev.titulo || "Detalle del Evento";
     document.getElementById("detalle-titulo").textContent = ev.titulo || "";
     document.getElementById("detalle-descripcion").textContent = ev.descripcion || "";
@@ -402,14 +452,11 @@
     if (ev.googleMaps) { mapsBtn.href = ev.googleMaps; mapsBtn.removeAttribute("disabled"); }
     else { mapsBtn.href="#"; mapsBtn.setAttribute("disabled","true"); }
 
-    // Imagen principal
     const hero = document.getElementById("carousel-image");
     if (detalle.urls.length){ hero.src = detalle.urls[0]; hero.alt = "Imagen 1"; }
     else { hero.src=""; hero.alt="Sin imágenes"; }
 
-    // Thumbs
     renderThumbs();
-
     document.getElementById("evento-detalle-modal").classList.remove("hidden");
     window.addEventListener("keydown", handleKeys);
   }
@@ -426,12 +473,10 @@
       c.appendChild(b);
     });
   }
-
   function handleKeys(e){ if (e.key==="Escape") closeDetalle(); if (e.key==="ArrowRight") nextFoto(); if (e.key==="ArrowLeft") prevFoto(); }
   function goFoto(i){ if (!detalle.urls.length) return; detalle.idx = (i+detalle.urls.length)%detalle.urls.length; document.getElementById("carousel-image").src = detalle.urls[detalle.idx]; renderThumbs(); }
   function nextFoto(){ goFoto(detalle.idx+1); }
   function prevFoto(){ goFoto(detalle.idx-1); }
-
   function closeDetalle(){
     document.getElementById("evento-detalle-modal").classList.add("hidden");
     window.removeEventListener("keydown", handleKeys);
