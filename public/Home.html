@@ -1,27 +1,45 @@
 <section id="HomeContent" class="min-h-screen bg-slate-50">
 
   <!-- HERO: blurred city/museum backdrop, headline & CTA -->
-  <section class="relative">
-    <div id="hero-img" class="h-[420px] w-full bg-center bg-cover"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
-    <div class="absolute inset-0 pointer-events-none backdrop-blur-[2px]"></div>
-    <div class="absolute inset-0 flex items-center">
-      <div class="max-w-7xl mx-auto px-4 w-full">
-        <div class="text-white max-w-3xl">
-          <h1 id="hero-title" class="text-4xl md:text-5xl font-extrabold leading-tight"></h1>
-          <p id="hero-sub" class="mt-4 text-white/90 text-lg"></p>
-          <div class="mt-6 flex gap-3">
-            <a id="hero-cta" class="hidden inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 font-semibold shadow-md transition">
-              <i class="fas fa-calendar-check"></i><span></span>
-            </a>
-            <a id="hero-cta-sec" class="hidden inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 font-semibold backdrop-blur transition">
-              <i class="fas fa-info-circle"></i><span></span>
-            </a>
-          </div>
-        </div>
-      </div>
+<section class="section-content">
+  <!-- HERO -->
+  <div id="hero-wrap" class="relative h-[60vh] md:h-[70vh] lg:h-[75vh] overflow-hidden">
+    <div id="hero-slides" class="absolute inset-0"></div>
+
+    <!-- Overlay (titulo/CTA opcional) -->
+    <div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
+    <div class="absolute inset-x-0 bottom-0 p-6 md:p-10 text-white">
+      <h1 class="text-2xl md:text-4xl font-extrabold drop-shadow">Sabinas Hidalgo — Lugares que inspiran</h1>
+      <p class="mt-2 text-sm md:text-base opacity-90">Descubre los rincones más representativos del municipio.</p>
     </div>
-  </section>
+  </div>
+
+  <!-- SHOW IN HOME -->
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold text-gray-800">Destacados</h2>
+      <div class="text-sm text-gov-gray">Explora nuestros lugares recomendados</div>
+    </div>
+
+    <!-- Grid simple (<=4) -->
+    <div id="home-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+    <!-- Reel (>4) -->
+    <div id="home-reel" class="relative hidden">
+      <button id="reel-prev"
+        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow p-3 rounded-full">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <div id="reel-track" class="overflow-hidden">
+        <div id="reel-inner" class="flex gap-4 will-change-transform"></div>
+      </div>
+      <button id="reel-next"
+        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow p-3 rounded-full">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</section>
 
   <!-- KPI STRIP -->
   <section class="-mt-10 relative z-10">
@@ -194,6 +212,260 @@
   </section>
 
 </section>
+
+
+<script>
+(() => {
+  // ====== Constantes de storage compartidas con Turismo ======
+  const LS_KEY   = 'lugaresTuristicos';
+  const IDB_NAME = 'TurismoDB';
+  const IDB_STORE= 'imagenes';
+
+  // ====== Estado ======
+  let db = null;
+  let blobUrls = [];         // para limpieza
+  let heroTimer = null;
+  let currentSlide = 0;
+
+  // ====== Helpers ======
+  const loadLugares = () => {
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
+    catch { return []; }
+  };
+
+  function idbOpen(){
+    return new Promise((resolve,reject)=>{
+      const req = indexedDB.open(IDB_NAME,1);
+      req.onupgradeneeded = (e)=>{
+        const db = e.target.result;
+        if(!db.objectStoreNames.contains(IDB_STORE)){
+          db.createObjectStore(IDB_STORE);
+        }
+      };
+      req.onsuccess = ()=>resolve(req.result);
+      req.onerror  = ()=>reject(req.error);
+    });
+  }
+
+  async function idbGet(id){
+    return new Promise((resolve,reject)=>{
+      const tx = db.transaction(IDB_STORE,'readonly');
+      const rq = tx.objectStore(IDB_STORE).get(id);
+      rq.onsuccess = ()=>resolve(rq.result||null);
+      rq.onerror   = ()=>reject(rq.error);
+    });
+  }
+
+  function makeBlobUrl(blob) {
+    if (!blob) return null;
+    const url = URL.createObjectURL(blob);
+    blobUrls.push(url);
+    return url;
+  }
+
+  function cleanupBlobs(){
+    blobUrls.forEach(u => { try { URL.revokeObjectURL(u); } catch{} });
+    blobUrls = [];
+  }
+
+  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+  // ====== HERO ======
+  async function buildHero(lugares){
+    const heroPlaces = lugares.filter(l => l.useAsHero).slice(0, 2);
+
+    // fallback: si no hay marcados, intenta usar los showInHome como respaldo
+    const candidates = heroPlaces.length ? heroPlaces : lugares.filter(l => l.showInHome).slice(0, 2);
+
+    // Recopila varias fotos (prioriza imagenPrincipal de cada lugar, luego el resto)
+    const heroImages = [];
+    for (const l of candidates){
+      const ids = Array.isArray(l.fotoIds) ? [...l.fotoIds] : [];
+      if (!ids.length) continue;
+      const mainIdx = clamp(l.imagenPrincipal || 0, 0, ids.length - 1);
+
+      // Subir primero la principal
+      const ordered = [ids[mainIdx], ...ids.filter((_, i) => i !== mainIdx)];
+      // Limita cuántas tomamos por lugar para no crear demasiadas
+      const take = ordered.slice(0, 6);
+
+      for (const fid of take){
+        const blob = await idbGet(fid);
+        const url  = makeBlobUrl(blob);
+        if (url) heroImages.push({ url, alt: l.nombre });
+      }
+    }
+
+    const hero = document.getElementById('hero-slides');
+    hero.innerHTML = '';
+
+    if (!heroImages.length){
+      // Sin imágenes: renderiza un placeholder estático
+      const ph = document.createElement('div');
+      ph.className = 'w-full h-full bg-gradient-to-br from-slate-200 to-slate-300';
+      hero.appendChild(ph);
+      return;
+    }
+
+    // Crea slides (imágenes absolutas con fade)
+    heroImages.forEach((img, idx) => {
+      const el = document.createElement('img');
+      el.src = img.url;
+      el.alt = img.alt || '';
+      el.className = [
+        'absolute inset-0 w-full h-full object-cover',
+        'opacity-0 transition-opacity duration-1000 ease-in-out'
+      ].join(' ');
+      if (idx === 0) el.classList.add('opacity-100');
+      hero.appendChild(el);
+    });
+
+    // Auto-slide
+    const slides = Array.from(hero.querySelectorAll('img'));
+    currentSlide = 0;
+    if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
+
+    heroTimer = setInterval(() => {
+      const prev = currentSlide;
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[prev].classList.remove('opacity-100');
+      slides[currentSlide].classList.add('opacity-100');
+    }, 5000); // cada 5s
+  }
+
+  // ====== CARDS ======
+  function cardTemplate({ url, lugar }) {
+    return `
+      <div class="bg-white rounded-2xl shadow-sm overflow-hidden min-w-[260px] max-w-[320px]">
+        <div class="relative">
+          <img src="${url}" alt="${lugar.nombre}" class="w-full h-40 object-cover">
+          <div class="absolute top-3 left-3 flex gap-2">
+            <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-medium">${lugar.categoria || ''}</span>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="flex items-start justify-between mb-2">
+            <h3 class="text-lg font-bold text-gray-800 line-clamp-2">${lugar.nombre}</h3>
+            <div class="bg-orange-100 p-2 rounded-lg ml-3"><i class="${lugar.icono || 'fas fa-map-marked-alt'} text-orange-600"></i></div>
+          </div>
+          <p class="text-gray-600 text-sm line-clamp-3 mb-3">${lugar.descripcion || ''}</p>
+          <div class="flex gap-2">
+            <button onclick="Home.viewPlace(${JSON.stringify(lugar.id)})"
+              class="flex-1 bg-orange-500 text-white py-2 px-3 rounded-lg hover:bg-orange-600 transition text-sm font-medium">
+              <i class="fas fa-images mr-2"></i>Ver
+            </button>
+            ${lugar.googleMaps ? `<a href="${lugar.googleMaps}" target="_blank"
+              class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function buildHomeCards(lugares){
+    const list = lugares.filter(l => l.showInHome);
+
+    const grid = document.getElementById('home-grid');
+    const reel = document.getElementById('home-reel');
+    const track= document.getElementById('reel-track');
+    const inner= document.getElementById('reel-inner');
+
+    // Limpia
+    grid.innerHTML = '';
+    inner.innerHTML = '';
+    reel.classList.add('hidden');
+
+    if (!list.length) return;
+
+    // Resolver imágenes principales
+    const cards = [];
+    for (const l of list){
+      let url = null;
+      if (Array.isArray(l.fotoIds) && l.fotoIds.length){
+        const mainIdx = clamp(l.imagenPrincipal || 0, 0, l.fotoIds.length - 1);
+        const blob = await idbGet(l.fotoIds[mainIdx]);
+        url = makeBlobUrl(blob);
+      }
+      // fallback visual
+      if (!url) {
+        url = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='360'%3E%3Crect width='100%25' height='100%25' fill='%23f5f5f5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='Arial' font-size='16'%3ESin imagen%3C/text%3E%3C/svg%3E";
+      }
+      cards.push({ url, lugar:l });
+    }
+
+    if (cards.length <= 4){
+      // Grid
+      cards.forEach(c => {
+        const wrap = document.createElement('div');
+        wrap.innerHTML = cardTemplate(c);
+        grid.appendChild(wrap.firstElementChild);
+      });
+    } else {
+      // Reel
+      reel.classList.remove('hidden');
+      // Estilos responsivos: 4 por "vista" aprox
+      inner.style.transition = 'transform 400ms ease';
+
+      cards.forEach(c => {
+        const item = document.createElement('div');
+        item.innerHTML = cardTemplate(c);
+        inner.appendChild(item.firstElementChild);
+      });
+
+      // Navegación
+      const prev = document.getElementById('reel-prev');
+      const next = document.getElementById('reel-next');
+
+      function scrollByAmount(dir){
+        const el = track; // overflow-hidden contenedor
+        const delta = Math.floor(el.clientWidth * 0.9) * (dir < 0 ? -1 : 1);
+        el.scrollBy({ left: delta, behavior: 'smooth' });
+      }
+
+      prev.onclick = () => scrollByAmount(-1);
+      next.onclick = () => scrollByAmount(1);
+    }
+  }
+
+  // ====== Integración / View de un lugar (reutiliza visor de Turismo si existe) ======
+  async function viewPlace(id){
+    // Si tienes el modal de Turismo cargado en el Layout, intenta reutilizarlo:
+    if (window.Turismo && typeof window.Turismo.view === 'function'){
+      window.Turismo.view(id);
+      return;
+    }
+    alert('Visor de imágenes no disponible en este contexto.');
+  }
+
+  // ====== Init ======
+  async function initHome(){
+    cleanupBlobs();
+    db = await idbOpen().catch(console.error);
+    const lugares = loadLugares();
+
+    await buildHero(lugares);
+    await buildHomeCards(lugares);
+  }
+
+  // Re-render cuando cambian los datos (si algún módulo los actualiza)
+  window.addEventListener('storage', (e) => {
+    if (e.key === LS_KEY) initHome();
+  });
+
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initHome);
+  } else {
+    initHome();
+  }
+
+  // Limpieza blobs al salir
+  window.addEventListener('beforeunload', cleanupBlobs);
+
+  // Expose para botones
+  window.Home = { viewPlace };
+})();
+</script>
+
 
 <script>
 (() => {
