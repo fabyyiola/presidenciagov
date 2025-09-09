@@ -341,9 +341,10 @@
 </script>
 
 <script>
-  // ======== Storage ========
+(()=>{
+    // ======== Storage ========
   LS_KEY = "tramites";
-  Storage = {
+  const Storage = {
     load() {
       const raw = localStorage.getItem(LS_KEY);
       if (!raw) {
@@ -751,4 +752,5 @@
   window.UI = UI;
   window.Form = Form;
   window.Actions = Actions;
+})()
 </script>
