@@ -975,14 +975,6 @@
               }')" class="text-red-600 hover:text-red-800" title="Eliminar"><i class="fas fa-trash"></i></button>
             </div>
           </td>
-          <td class="px-6 py-4">
-            <div class="font-medium text-gray-800 flex items-center gap-2">
-              ${p.nombre}
-              ${p.mostrarEnHome ? 
-                '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800"><i class="fas fa-home mr-1"></i>Home</span>' 
-                : ''}
-            </div>
-          </td>
         </tr>`;
           })
           .join("");
@@ -1106,7 +1098,6 @@
       function resetForm() {
         document.getElementById("projects-form").reset();
         document.getElementById("projects-etapas-container").innerHTML = "";
-        document.getElementById('projects-form-show-home').checked = false;
         updatePesoTotal();
         etapaCounter = 0;
         tareaCounter = 0;
@@ -1121,9 +1112,6 @@
           p.estatusGeneral;
         document.getElementById("projects-form-inversion").value =
           p.inversionTotal;
-        document.getElementById("projects-form-show-home").checked =
-          !!p.mostrarEnHome;
-
         document.getElementById("projects-form-beneficiarios").value =
           p.beneficiarios;
         const cont = document.getElementById("projects-etapas-container");
@@ -1147,8 +1135,6 @@
             10
           ),
           etapas: getEtapasFromForm(),
-          mostrarEnHome: document.getElementById("projects-form-show-home")
-            .checked,
         };
         const pesoTotal = data.etapas.reduce((s, e) => s + e.peso, 0);
         if (Math.abs(pesoTotal - 100) > 0.01) {
