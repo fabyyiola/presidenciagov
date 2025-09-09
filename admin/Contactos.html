@@ -1,21 +1,38 @@
-<section id="EmergencyContactsAdmin" class="p-6 bg-gradient-to-br from-slate-50 to-red-50 min-h-screen" data-bound="0">
+<section
+  id="EmergencyContactsAdmin"
+  class="p-6 bg-gradient-to-br from-slate-50 to-red-50 min-h-screen"
+  data-bound="0"
+>
   <!-- Top Controls -->
   <div class="mb-8">
     <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-6">
       <div>
-        <h1 class="text-2xl font-bold text-gray-800 mb-2">Contactos de Emergencia</h1>
-        <p class="text-gray-600">Gestión de números telefónicos y servicios de emergencia municipal</p>
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">
+          Contactos de Emergencia
+        </h1>
+        <p class="text-gray-600">
+          Gestión de números telefónicos y servicios de emergencia municipal
+        </p>
       </div>
       <div class="flex flex-wrap gap-3 mt-4 lg:mt-0">
-        <button id="contacts-add-btn" class="bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-2 rounded-lg hover:from-red-700 hover:to-red-800 transition-all duration-200 flex items-center shadow-sm">
+        <button
+          id="contacts-add-btn"
+          class="bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-2 rounded-lg hover:from-red-700 hover:to-red-800 transition-all duration-200 flex items-center shadow-sm"
+        >
           <i class="fas fa-plus mr-2"></i>
           Agregar Contacto
         </button>
-        <button id="contacts-export-btn" class="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 flex items-center shadow-sm">
+        <button
+          id="contacts-export-btn"
+          class="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 flex items-center shadow-sm"
+        >
           <i class="fas fa-download mr-2"></i>
           Exportar CSV
         </button>
-        <button id="contacts-import-btn" class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all duration-200 flex items-center shadow-sm">
+        <button
+          id="contacts-import-btn"
+          class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all duration-200 flex items-center shadow-sm"
+        >
           <i class="fas fa-upload mr-2"></i>
           Importar JSON
         </button>
@@ -28,17 +45,22 @@
         <div class="flex-1">
           <label for="contacts-search" class="sr-only">Buscar contactos</label>
           <div class="relative">
-            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-            <input 
-              type="text" 
-              id="contacts-search" 
+            <i
+              class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            ></i>
+            <input
+              type="text"
+              id="contacts-search"
               placeholder="Buscar contactos... (presiona / para enfocar)"
               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            >
+            />
           </div>
         </div>
         <div class="flex flex-wrap gap-2">
-          <select id="contacts-filter-categoria" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+          <select
+            id="contacts-filter-categoria"
+            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          >
             <option value="">Todas las categorías</option>
             <option value="Emergencias Médicas">Emergencias Médicas</option>
             <option value="Seguridad Pública">Seguridad Pública</option>
@@ -48,13 +70,19 @@
             <option value="Gobierno Municipal">Gobierno Municipal</option>
             <option value="Otros Servicios">Otros Servicios</option>
           </select>
-          <select id="contacts-filter-disponibilidad" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+          <select
+            id="contacts-filter-disponibilidad"
+            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          >
             <option value="">Toda disponibilidad</option>
             <option value="24/7">24 horas</option>
             <option value="Horario Laboral">Horario laboral</option>
             <option value="Emergencias">Solo emergencias</option>
           </select>
-          <select id="contacts-filter-activo" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+          <select
+            id="contacts-filter-activo"
+            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          >
             <option value="">Todos los estados</option>
             <option value="true">Activos</option>
             <option value="false">Inactivos</option>
@@ -70,7 +98,9 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-2xl font-bold text-gray-800" id="contacts-kpi-total">0</p>
+          <p class="text-2xl font-bold text-gray-800" id="contacts-kpi-total">
+            0
+          </p>
           <p class="text-gray-600 text-sm">Total Contactos</p>
         </div>
         <div class="bg-red-100 p-3 rounded-lg">
@@ -82,7 +112,9 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-2xl font-bold text-gray-800" id="contacts-kpi-activos">0</p>
+          <p class="text-2xl font-bold text-gray-800" id="contacts-kpi-activos">
+            0
+          </p>
           <p class="text-gray-600 text-sm">Activos</p>
         </div>
         <div class="bg-green-100 p-3 rounded-lg">
@@ -94,7 +126,9 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-2xl font-bold text-gray-800" id="contacts-kpi-24h">0</p>
+          <p class="text-2xl font-bold text-gray-800" id="contacts-kpi-24h">
+            0
+          </p>
           <p class="text-gray-600 text-sm">Disponibles 24h</p>
         </div>
         <div class="bg-blue-100 p-3 rounded-lg">
@@ -106,7 +140,12 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-2xl font-bold text-gray-800" id="contacts-kpi-categorias">0</p>
+          <p
+            class="text-2xl font-bold text-gray-800"
+            id="contacts-kpi-categorias"
+          >
+            0
+          </p>
           <p class="text-gray-600 text-sm">Categorías</p>
         </div>
         <div class="bg-purple-100 p-3 rounded-lg">
@@ -117,43 +156,85 @@
   </div>
 
   <!-- Contacts Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="contacts-grid"></div>
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+    id="contacts-grid"
+  ></div>
 
   <!-- Empty State -->
   <div id="contacts-empty-state" class="text-center py-12 hidden">
-    <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+    <div
+      class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+    >
       <i class="fas fa-phone text-gray-400 text-2xl"></i>
     </div>
-    <h3 class="text-lg font-medium text-gray-800 mb-2">No hay contactos registrados</h3>
-    <p class="text-gray-600 mb-4">Comienza agregando los primeros contactos de emergencia.</p>
-    <button id="contacts-empty-add-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200">
+    <h3 class="text-lg font-medium text-gray-800 mb-2">
+      No hay contactos registrados
+    </h3>
+    <p class="text-gray-600 mb-4">
+      Comienza agregando los primeros contactos de emergencia.
+    </p>
+    <button
+      id="contacts-empty-add-btn"
+      class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200"
+    >
       <i class="fas fa-plus mr-2"></i>
       Agregar Contacto
     </button>
   </div>
 
   <!-- Form Modal -->
-  <div id="contacts-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+  <div
+    id="contacts-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4"
+  >
+    <div
+      class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+    >
       <div class="p-6 border-b border-gray-200">
         <div class="flex justify-between items-center">
-          <h3 id="contacts-modal-title" class="text-2xl font-bold text-gray-800">Nuevo Contacto</h3>
-          <button id="contacts-modal-close" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+          <h3
+            id="contacts-modal-title"
+            class="text-2xl font-bold text-gray-800"
+          >
+            Nuevo Contacto
+          </h3>
+          <button
+            id="contacts-modal-close"
+            class="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+          >
             <i class="fas fa-times text-xl"></i>
           </button>
         </div>
       </div>
-      
+
       <form id="contacts-form" class="p-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <div class="lg:col-span-2">
-            <label for="contacts-form-nombre" class="block text-sm font-medium text-gray-700 mb-2">Nombre del Servicio *</label>
-            <input type="text" id="contacts-form-nombre" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            <label
+              for="contacts-form-nombre"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Nombre del Servicio *</label
+            >
+            <input
+              type="text"
+              id="contacts-form-nombre"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            />
           </div>
-          
+
           <div>
-            <label for="contacts-form-categoria" class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
-            <select id="contacts-form-categoria" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            <label
+              for="contacts-form-categoria"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Categoría *</label
+            >
+            <select
+              id="contacts-form-categoria"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            >
               <option value="">Seleccionar categoría</option>
               <option value="Emergencias Médicas">Emergencias Médicas</option>
               <option value="Seguridad Pública">Seguridad Pública</option>
@@ -164,67 +245,156 @@
               <option value="Otros Servicios">Otros Servicios</option>
             </select>
           </div>
-          
+
           <div>
-            <label for="contacts-form-telefono" class="block text-sm font-medium text-gray-700 mb-2">Número Telefónico *</label>
-            <input type="tel" id="contacts-form-telefono" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            <label
+              for="contacts-form-telefono"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Número Telefónico *</label
+            >
+            <input
+              type="tel"
+              id="contacts-form-telefono"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            />
           </div>
-          
+
           <div>
-            <label for="contacts-form-telefono-alt" class="block text-sm font-medium text-gray-700 mb-2">Teléfono Alternativo</label>
-            <input type="tel" id="contacts-form-telefono-alt" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            <label
+              for="contacts-form-telefono-alt"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Teléfono Alternativo</label
+            >
+            <input
+              type="tel"
+              id="contacts-form-telefono-alt"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            />
           </div>
-          
+
           <div>
-            <label for="contacts-form-disponibilidad" class="block text-sm font-medium text-gray-700 mb-2">Disponibilidad *</label>
-            <select id="contacts-form-disponibilidad" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            <label
+              for="contacts-form-disponibilidad"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Disponibilidad *</label
+            >
+            <select
+              id="contacts-form-disponibilidad"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            >
               <option value="24/7">24 horas / 7 días</option>
               <option value="Horario Laboral">Horario laboral</option>
               <option value="Emergencias">Solo emergencias</option>
             </select>
           </div>
-          
+
           <div>
-            <label for="contacts-form-prioridad" class="block text-sm font-medium text-gray-700 mb-2">Prioridad *</label>
-            <select id="contacts-form-prioridad" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            <label
+              for="contacts-form-prioridad"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Prioridad *</label
+            >
+            <select
+              id="contacts-form-prioridad"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            >
               <option value="1">Alta (Emergencias críticas)</option>
               <option value="2">Media (Servicios importantes)</option>
               <option value="3">Baja (Información general)</option>
             </select>
           </div>
-          
+
           <div class="lg:col-span-2">
-            <label for="contacts-form-descripcion" class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
-            <textarea id="contacts-form-descripcion" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="Descripción del servicio y cuándo contactar"></textarea>
+            <label
+              for="contacts-form-descripcion"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Descripción</label
+            >
+            <textarea
+              id="contacts-form-descripcion"
+              rows="3"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              placeholder="Descripción del servicio y cuándo contactar"
+            ></textarea>
           </div>
-          
+
           <div>
-            <label for="contacts-form-direccion" class="block text-sm font-medium text-gray-700 mb-2">Dirección</label>
-            <input type="text" id="contacts-form-direccion" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            <label
+              for="contacts-form-direccion"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Dirección</label
+            >
+            <input
+              type="text"
+              id="contacts-form-direccion"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            />
           </div>
-          
+
           <div>
-            <label for="contacts-form-email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-            <input type="email" id="contacts-form-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            <label
+              for="contacts-form-email"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="contacts-form-email"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            />
           </div>
-          
+
           <div class="lg:col-span-2">
             <label class="flex items-center">
-              <input type="checkbox" id="contacts-form-activo" checked class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50">
-              <span class="ml-2 text-sm text-gray-700">Contacto activo (visible en página pública)</span>
+              <input
+                type="checkbox"
+                id="contacts-form-activo"
+                checked
+                class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
+              />
+              <span class="ml-2 text-sm text-gray-700"
+                >Contacto activo (visible en página pública)</span
+              >
             </label>
           </div>
         </div>
+        <div class="lg:col-span-2">
+          <label class="flex items-center">
+            <input
+              type="checkbox"
+              id="contacts-form-show-home"
+              class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
+            />
+            <span class="ml-2 text-sm text-gray-700"
+              >Mostrar en página de inicio</span
+            >
+          </label>
+        </div>
 
         <div class="flex justify-end space-x-4">
-          <button type="button" id="contacts-form-cancel" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+          <button
+            type="button"
+            id="contacts-form-cancel"
+            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+          >
             Cancelar
           </button>
-          <button type="button" id="contacts-form-delete" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 hidden">
+          <button
+            type="button"
+            id="contacts-form-delete"
+            class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 hidden"
+          >
             <i class="fas fa-trash mr-2"></i>
             Eliminar
           </button>
-          <button type="submit" id="contacts-form-submit" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200">
+          <button
+            type="submit"
+            id="contacts-form-submit"
+            class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
+          >
             <i class="fas fa-save mr-2"></i>
             Guardar
           </button>
@@ -234,18 +404,32 @@
   </div>
 
   <!-- Import Modal -->
-  <div id="contacts-import-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+  <div
+    id="contacts-import-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4"
+  >
     <div class="bg-white rounded-xl max-w-md w-full">
       <div class="p-6 border-b border-gray-200">
         <h3 class="text-xl font-bold text-gray-800">Importar Contactos</h3>
       </div>
       <div class="p-6">
-        <input type="file" id="contacts-import-file" accept=".json" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent mb-4">
+        <input
+          type="file"
+          id="contacts-import-file"
+          accept=".json"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent mb-4"
+        />
         <div class="flex justify-end space-x-4">
-          <button id="contacts-import-cancel" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+          <button
+            id="contacts-import-cancel"
+            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+          >
             Cancelar
           </button>
-          <button id="contacts-import-confirm" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200">
+          <button
+            id="contacts-import-confirm"
+            class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
+          >
             Importar
           </button>
         </div>
@@ -254,12 +438,22 @@
   </div>
 
   <!-- Public Preview Modal -->
-  <div id="contacts-preview-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+  <div
+    id="contacts-preview-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4"
+  >
+    <div
+      class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+    >
       <div class="p-6 border-b border-gray-200">
         <div class="flex justify-between items-center">
-          <h3 class="text-2xl font-bold text-gray-800">Vista Pública - Contactos de Emergencia</h3>
-          <button id="contacts-preview-close" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+          <h3 class="text-2xl font-bold text-gray-800">
+            Vista Pública - Contactos de Emergencia
+          </h3>
+          <button
+            id="contacts-preview-close"
+            class="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+          >
             <i class="fas fa-times text-xl"></i>
           </button>
         </div>
@@ -269,11 +463,11 @@
   </div>
 
   <script>
-    (function() {
-      'use strict';
+    (function () {
+      "use strict";
 
       // Storage key
-      const STORAGE_KEY = 'municipio.contactos.emergencia.v1';
+      const STORAGE_KEY = "municipio.contactos.emergencia.v1";
 
       // Global state
       let contactos = [];
@@ -282,10 +476,10 @@
 
       // --- Idempotent init (works in SPA) ---
       function init() {
-        const root = document.getElementById('EmergencyContactsAdmin');
+        const root = document.getElementById("EmergencyContactsAdmin");
         if (!root) return;
-        if (root.dataset.bound === '1') return; // avoid double-binding when re-injected
-        root.dataset.bound = '1';
+        if (root.dataset.bound === "1") return; // avoid double-binding when re-injected
+        root.dataset.bound = "1";
 
         loadContactos();
         setupEventListeners();
@@ -297,8 +491,8 @@
         updateKPIs();
       }
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
       } else {
         // If this HTML is injected after DOMContentLoaded (SPA), run immediately
         init();
@@ -316,12 +510,98 @@
         } else {
           // Sample data
           contactos = [
-            { id: '1', nombre: 'Cruz Roja Mexicana', categoria: 'Emergencias Médicas', telefono: '911', telefonoAlt: '065', disponibilidad: '24/7', prioridad: 1, descripcion: 'Atención médica de emergencia, ambulancias y primeros auxilios', direccion: 'Av. Principal #123, Centro', email: 'emergencias@cruzroja.org.mx', activo: true, fechaCreacion: '2024-01-15' },
-            { id: '2', nombre: 'Policía Municipal', categoria: 'Seguridad Pública', telefono: '911', telefonoAlt: '(555) 123-4567', disponibilidad: '24/7', prioridad: 1, descripcion: 'Seguridad pública, emergencias y denuncia de delitos', direccion: 'Comandancia Municipal, Col. Centro', email: 'policia@municipio.gob.mx', activo: true, fechaCreacion: '2024-01-15' },
-            { id: '3', nombre: 'Bomberos', categoria: 'Bomberos', telefono: '911', telefonoAlt: '(555) 234-5678', disponibilidad: '24/7', prioridad: 1, descripcion: 'Combate de incendios, rescates y emergencias químicas', direccion: 'Estación Central de Bomberos', email: 'bomberos@municipio.gob.mx', activo: true, fechaCreacion: '2024-01-15' },
-            { id: '4', nombre: 'Protección Civil', categoria: 'Protección Civil', telefono: '(555) 345-6789', telefonoAlt: '', disponibilidad: '24/7', prioridad: 1, descripcion: 'Prevención y atención de desastres naturales', direccion: 'Coordinación Municipal de Protección Civil', email: 'proteccioncivil@municipio.gob.mx', activo: true, fechaCreacion: '2024-01-15' },
-            { id: '5', nombre: 'Servicios Públicos', categoria: 'Servicios Públicos', telefono: '(555) 456-7890', telefonoAlt: '', disponibilidad: 'Horario Laboral', prioridad: 2, descripcion: 'Reportes de fallas en agua, luz, drenaje y recolección de basura', direccion: 'Dirección de Servicios Públicos', email: 'servicios@municipio.gob.mx', activo: true, fechaCreacion: '2024-01-15' },
-            { id: '6', nombre: 'Presidencia Municipal', categoria: 'Gobierno Municipal', telefono: '(555) 567-8901', telefonoAlt: '', disponibilidad: 'Horario Laboral', prioridad: 3, descripcion: 'Información general y trámites municipales', direccion: 'Palacio Municipal', email: 'presidencia@municipio.gob.mx', activo: true, fechaCreacion: '2024-01-15' }
+            {
+              id: "1",
+              nombre: "Cruz Roja Mexicana",
+              categoria: "Emergencias Médicas",
+              telefono: "911",
+              telefonoAlt: "065",
+              disponibilidad: "24/7",
+              prioridad: 1,
+              descripcion:
+                "Atención médica de emergencia, ambulancias y primeros auxilios",
+              direccion: "Av. Principal #123, Centro",
+              email: "emergencias@cruzroja.org.mx",
+              activo: true,
+              fechaCreacion: "2024-01-15",
+              showInHome: true,
+            },
+            {
+              id: "2",
+              nombre: "Policía Municipal",
+              categoria: "Seguridad Pública",
+              telefono: "911",
+              telefonoAlt: "(555) 123-4567",
+              disponibilidad: "24/7",
+              prioridad: 1,
+              descripcion:
+                "Seguridad pública, emergencias y denuncia de delitos",
+              direccion: "Comandancia Municipal, Col. Centro",
+              email: "policia@municipio.gob.mx",
+              activo: true,
+              fechaCreacion: "2024-01-15",
+              showInHome: true,
+            },
+            {
+              id: "3",
+              nombre: "Bomberos",
+              categoria: "Bomberos",
+              telefono: "911",
+              telefonoAlt: "(555) 234-5678",
+              disponibilidad: "24/7",
+              prioridad: 1,
+              descripcion:
+                "Combate de incendios, rescates y emergencias químicas",
+              direccion: "Estación Central de Bomberos",
+              email: "bomberos@municipio.gob.mx",
+              activo: true,
+              fechaCreacion: "2024-01-15",
+            },
+            {
+              id: "4",
+              nombre: "Protección Civil",
+              categoria: "Protección Civil",
+              telefono: "(555) 345-6789",
+              telefonoAlt: "",
+              disponibilidad: "24/7",
+              prioridad: 1,
+              descripcion: "Prevención y atención de desastres naturales",
+              direccion: "Coordinación Municipal de Protección Civil",
+              email: "proteccioncivil@municipio.gob.mx",
+              activo: true,
+              fechaCreacion: "2024-01-15",
+              showInHome: true,
+            },
+            {
+              id: "5",
+              nombre: "Servicios Públicos",
+              categoria: "Servicios Públicos",
+              telefono: "(555) 456-7890",
+              telefonoAlt: "",
+              disponibilidad: "Horario Laboral",
+              prioridad: 2,
+              descripcion:
+                "Reportes de fallas en agua, luz, drenaje y recolección de basura",
+              direccion: "Dirección de Servicios Públicos",
+              email: "servicios@municipio.gob.mx",
+              activo: true,
+              fechaCreacion: "2024-01-15",
+            },
+            {
+              id: "6",
+              nombre: "Presidencia Municipal",
+              categoria: "Gobierno Municipal",
+              telefono: "(555) 567-8901",
+              telefonoAlt: "",
+              disponibilidad: "Horario Laboral",
+              prioridad: 3,
+              descripcion: "Información general y trámites municipales",
+              direccion: "Palacio Municipal",
+              email: "presidencia@municipio.gob.mx",
+              activo: true,
+              fechaCreacion: "2024-01-15",
+              showInHome: true,
+            },
           ];
           saveContactos();
         }
@@ -330,73 +610,109 @@
       // Event listeners
       function setupEventListeners() {
         // Top buttons
-        document.getElementById('contacts-add-btn').addEventListener('click', () => openModal());
-        document.getElementById('contacts-export-btn').addEventListener('click', exportCSV);
-        document.getElementById('contacts-import-btn').addEventListener('click', () => openImportModal());
-        document.getElementById('contacts-preview-btn').addEventListener('click', () => openPreviewModal());
+        document
+          .getElementById("contacts-add-btn")
+          .addEventListener("click", () => openModal());
+        document
+          .getElementById("contacts-export-btn")
+          .addEventListener("click", exportCSV);
+        document
+          .getElementById("contacts-import-btn")
+          .addEventListener("click", () => openImportModal());
+        document
+          .getElementById("contacts-preview-btn")
+          .addEventListener("click", () => openPreviewModal());
 
         // Empty state add button
-        const emptyAdd = document.getElementById('contacts-empty-add-btn');
-        if (emptyAdd) emptyAdd.addEventListener('click', () => openModal());
+        const emptyAdd = document.getElementById("contacts-empty-add-btn");
+        if (emptyAdd) emptyAdd.addEventListener("click", () => openModal());
 
         // Search and filters
-        document.getElementById('contacts-search').addEventListener('input', filterContactos);
-        document.getElementById('contacts-filter-categoria').addEventListener('change', filterContactos);
-        document.getElementById('contacts-filter-disponibilidad').addEventListener('change', filterContactos);
-        document.getElementById('contacts-filter-activo').addEventListener('change', filterContactos);
+        document
+          .getElementById("contacts-search")
+          .addEventListener("input", filterContactos);
+        document
+          .getElementById("contacts-filter-categoria")
+          .addEventListener("change", filterContactos);
+        document
+          .getElementById("contacts-filter-disponibilidad")
+          .addEventListener("change", filterContactos);
+        document
+          .getElementById("contacts-filter-activo")
+          .addEventListener("change", filterContactos);
 
         // Modal
-        document.getElementById('contacts-modal-close').addEventListener('click', closeModal);
-        document.getElementById('contacts-form-cancel').addEventListener('click', closeModal);
-        document.getElementById('contacts-form').addEventListener('submit', saveContacto);
-        document.getElementById('contacts-form-delete').addEventListener('click', deleteContacto);
+        document
+          .getElementById("contacts-modal-close")
+          .addEventListener("click", closeModal);
+        document
+          .getElementById("contacts-form-cancel")
+          .addEventListener("click", closeModal);
+        document
+          .getElementById("contacts-form")
+          .addEventListener("submit", saveContacto);
+        document
+          .getElementById("contacts-form-delete")
+          .addEventListener("click", deleteContacto);
 
         // Import modal
-        document.getElementById('contacts-import-cancel').addEventListener('click', closeImportModal);
-        document.getElementById('contacts-import-confirm').addEventListener('click', importJSON);
+        document
+          .getElementById("contacts-import-cancel")
+          .addEventListener("click", closeImportModal);
+        document
+          .getElementById("contacts-import-confirm")
+          .addEventListener("click", importJSON);
 
         // Preview modal
-        document.getElementById('contacts-preview-close').addEventListener('click', closePreviewModal);
+        document
+          .getElementById("contacts-preview-close")
+          .addEventListener("click", closePreviewModal);
 
         // Click outside to close
-        document.getElementById('contacts-modal').addEventListener('click', (e) => {
-          if (e.target.id === 'contacts-modal') closeModal();
-        });
-        document.getElementById('contacts-import-modal').addEventListener('click', (e) => {
-          if (e.target.id === 'contacts-import-modal') closeImportModal();
-        });
-        document.getElementById('contacts-preview-modal').addEventListener('click', (e) => {
-          if (e.target.id === 'contacts-preview-modal') closePreviewModal();
-        });
+        document
+          .getElementById("contacts-modal")
+          .addEventListener("click", (e) => {
+            if (e.target.id === "contacts-modal") closeModal();
+          });
+        document
+          .getElementById("contacts-import-modal")
+          .addEventListener("click", (e) => {
+            if (e.target.id === "contacts-import-modal") closeImportModal();
+          });
+        document
+          .getElementById("contacts-preview-modal")
+          .addEventListener("click", (e) => {
+            if (e.target.id === "contacts-preview-modal") closePreviewModal();
+          });
       }
 
       // Keyboard shortcuts
       function setupKeyboardShortcuts() {
-        document.addEventListener('keydown', (e) => {
+        document.addEventListener("keydown", (e) => {
           // Ignore when typing in inputs
-          if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
-            if (e.key === 'Escape') e.target.blur();
+          if (["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) {
+            if (e.key === "Escape") e.target.blur();
             return;
           }
 
           switch (e.key) {
-            case '/':
+            case "/":
               e.preventDefault();
-              document.getElementById('contacts-search').focus();
+              document.getElementById("contacts-search").focus();
               break;
-            case 'n':
+            case "n":
               if (!e.ctrlKey && !e.metaKey) {
                 e.preventDefault();
                 openModal();
               }
               break;
-            case 'p':
+            case "p":
               if (!e.ctrlKey && !e.metaKey) {
                 e.preventDefault();
                 openPreviewModal();
               }
               break;
-            case 'Escape':
+            case "Escape":
               closeModal();
               closeImportModal();
               closePreviewModal();
@@ -405,30 +721,48 @@
         });
 
         // Save shortcut in modal
-        document.getElementById('contacts-modal').addEventListener('keydown', (e) => {
-          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-            e.preventDefault();
-            document.getElementById('contacts-form').dispatchEvent(new Event('submit'));
-          }
-        });
+        document
+          .getElementById("contacts-modal")
+          .addEventListener("keydown", (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+              e.preventDefault();
+              document
+                .getElementById("contacts-form")
+                .dispatchEvent(new Event("submit"));
+            }
+          });
       }
 
       // Filtering
       function filterContactos() {
-        const search = document.getElementById('contacts-search').value.toLowerCase();
-        const categoria = document.getElementById('contacts-filter-categoria').value;
-        const disponibilidad = document.getElementById('contacts-filter-disponibilidad').value;
-        const activo = document.getElementById('contacts-filter-activo').value;
+        const search = document
+          .getElementById("contacts-search")
+          .value.toLowerCase();
+        const categoria = document.getElementById(
+          "contacts-filter-categoria"
+        ).value;
+        const disponibilidad = document.getElementById(
+          "contacts-filter-disponibilidad"
+        ).value;
+        const activo = document.getElementById("contacts-filter-activo").value;
 
-        filteredContactos = contactos.filter(contacto => {
-          if (search && !(
-            (contacto.nombre && contacto.nombre.toLowerCase().includes(search)) ||
-            (contacto.descripcion && contacto.descripcion.toLowerCase().includes(search)) ||
-            (contacto.telefono && contacto.telefono.includes(search))
-          )) return false;
+        filteredContactos = contactos.filter((contacto) => {
+          if (
+            search &&
+            !(
+              (contacto.nombre &&
+                contacto.nombre.toLowerCase().includes(search)) ||
+              (contacto.descripcion &&
+                contacto.descripcion.toLowerCase().includes(search)) ||
+              (contacto.telefono && contacto.telefono.includes(search))
+            )
+          )
+            return false;
           if (categoria && contacto.categoria !== categoria) return false;
-          if (disponibilidad && contacto.disponibilidad !== disponibilidad) return false;
-          if (activo !== '' && contacto.activo.toString() !== activo) return false;
+          if (disponibilidad && contacto.disponibilidad !== disponibilidad)
+            return false;
+          if (activo !== "" && contacto.activo.toString() !== activo)
+            return false;
           return true;
         });
 
@@ -437,74 +771,124 @@
       }
 
       function updateFilterChips() {
-        const container = document.getElementById('contacts-filter-chips');
+        const container = document.getElementById("contacts-filter-chips");
         const chips = [];
 
-        const search = document.getElementById('contacts-search').value;
-        const categoria = document.getElementById('contacts-filter-categoria').value;
-        const disponibilidad = document.getElementById('contacts-filter-disponibilidad').value;
-        const activo = document.getElementById('contacts-filter-activo').value;
+        const search = document.getElementById("contacts-search").value;
+        const categoria = document.getElementById(
+          "contacts-filter-categoria"
+        ).value;
+        const disponibilidad = document.getElementById(
+          "contacts-filter-disponibilidad"
+        ).value;
+        const activo = document.getElementById("contacts-filter-activo").value;
 
-        if (search) chips.push({ type: 'search', value: search, label: `Búsqueda: ${search}` });
-        if (categoria) chips.push({ type: 'categoria', value: categoria, label: `Categoría: ${categoria}` });
-        if (disponibilidad) chips.push({ type: 'disponibilidad', value: disponibilidad, label: `Disponibilidad: ${disponibilidad}` });
-        if (activo !== '') chips.push({ type: 'activo', value: activo, label: `Estado: ${activo === 'true' ? 'Activos' : 'Inactivos'}` });
+        if (search)
+          chips.push({
+            type: "search",
+            value: search,
+            label: `Búsqueda: ${search}`,
+          });
+        if (categoria)
+          chips.push({
+            type: "categoria",
+            value: categoria,
+            label: `Categoría: ${categoria}`,
+          });
+        if (disponibilidad)
+          chips.push({
+            type: "disponibilidad",
+            value: disponibilidad,
+            label: `Disponibilidad: ${disponibilidad}`,
+          });
+        if (activo !== "")
+          chips.push({
+            type: "activo",
+            value: activo,
+            label: `Estado: ${activo === "true" ? "Activos" : "Inactivos"}`,
+          });
 
-        container.innerHTML = chips.map(chip => `
+        container.innerHTML = chips
+          .map(
+            (chip) => `
           <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-red-100 text-red-800">
             ${chip.label}
             <button onclick="removeFilter('${chip.type}')" class="ml-2 text-red-600 hover:text-red-800">
               <i class="fas fa-times text-xs"></i>
             </button>
           </span>
-        `).join('');
+        `
+          )
+          .join("");
       }
 
-      window.removeFilter = function(type) {
-        switch(type) {
-          case 'search': document.getElementById('contacts-search').value = ''; break;
-          case 'categoria': document.getElementById('contacts-filter-categoria').value = ''; break;
-          case 'disponibilidad': document.getElementById('contacts-filter-disponibilidad').value = ''; break;
-          case 'activo': document.getElementById('contacts-filter-activo').value = ''; break;
+      window.removeFilter = function (type) {
+        switch (type) {
+          case "search":
+            document.getElementById("contacts-search").value = "";
+            break;
+          case "categoria":
+            document.getElementById("contacts-filter-categoria").value = "";
+            break;
+          case "disponibilidad":
+            document.getElementById("contacts-filter-disponibilidad").value =
+              "";
+            break;
+          case "activo":
+            document.getElementById("contacts-filter-activo").value = "";
+            break;
         }
         filterContactos();
       };
 
       // Rendering
       function renderContactos() {
-        const grid = document.getElementById('contacts-grid');
-        const emptyState = document.getElementById('contacts-empty-state');
+        const grid = document.getElementById("contacts-grid");
+        const emptyState = document.getElementById("contacts-empty-state");
 
         if (!filteredContactos || filteredContactos.length === 0) {
-          grid.innerHTML = '';
-          emptyState.classList.remove('hidden');
+          grid.innerHTML = "";
+          emptyState.classList.remove("hidden");
           return;
         }
 
-        emptyState.classList.add('hidden');
+        emptyState.classList.add("hidden");
 
         const sortedContactos = [...filteredContactos].sort((a, b) => {
           if (a.prioridad !== b.prioridad) return a.prioridad - b.prioridad;
           return a.nombre.localeCompare(b.nombre);
         });
 
-        grid.innerHTML = sortedContactos.map(contacto => {
-          const categoriaColor = getCategoriaColor(contacto.categoria);
-          const prioridadColor = getPrioridadColor(contacto.prioridad);
-          const disponibilidadIcon = getDisponibilidadIcon(contacto.disponibilidad);
+        grid.innerHTML = sortedContactos
+          .map((contacto) => {
+            const categoriaColor = getCategoriaColor(contacto.categoria);
+            const prioridadColor = getPrioridadColor(contacto.prioridad);
+            const disponibilidadIcon = getDisponibilidadIcon(
+              contacto.disponibilidad
+            );
 
-          // Nota: clases dinámicas de Tailwind como text-${...} pueden no generarse con CDN/JIT.
-          // Para evitarlo, ponemos clases estáticas por estado (orange/green) ya presentes en el bundle.
-          const toggleColor = contacto.activo ? 'text-orange-600 hover:text-orange-800' : 'text-green-600 hover:text-green-800';
+            // Nota: clases dinámicas de Tailwind como text-${...} pueden no generarse con CDN/JIT.
+            // Para evitarlo, ponemos clases estáticas por estado (orange/green) ya presentes en el bundle.
+            const toggleColor = contacto.activo
+              ? "text-orange-600 hover:text-orange-800"
+              : "text-green-600 hover:text-green-800";
 
-          return `
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 ${!contacto.activo ? 'opacity-60' : ''}">
+            return `
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 ${
+              !contacto.activo ? "opacity-60" : ""
+            }">
               <div class="p-6">
                 <div class="flex items-start justify-between mb-4">
                   <div class="flex-1">
                     <div class="flex items-center mb-2">
-                      <h3 class="text-lg font-semibold text-gray-800 mr-2">${contacto.nombre}</h3>
-                      ${!contacto.activo ? '<span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">Inactivo</span>' : ''}
+                      <h3 class="text-lg font-semibold text-gray-800 mr-2">${
+                        contacto.nombre
+                      }</h3>
+                      ${
+                        !contacto.activo
+                          ? '<span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">Inactivo</span>'
+                          : ""
+                      }
                     </div>
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${categoriaColor}">
                       ${contacto.categoria}
@@ -520,8 +904,14 @@
                 <div class="space-y-3 mb-4">
                   <div class="flex items-center text-gray-600">
                     <i class="fas fa-phone text-red-500 mr-3 w-4"></i>
-                    <span class="font-medium text-gray-800">${contacto.telefono}</span>
-                    ${contacto.telefonoAlt ? `<span class="text-sm text-gray-500 ml-2">/ ${contacto.telefonoAlt}</span>` : ''}
+                    <span class="font-medium text-gray-800">${
+                      contacto.telefono
+                    }</span>
+                    ${
+                      contacto.telefonoAlt
+                        ? `<span class="text-sm text-gray-500 ml-2">/ ${contacto.telefonoAlt}</span>`
+                        : ""
+                    }
                   </div>
 
                   <div class="flex items-center text-gray-600">
@@ -529,38 +919,62 @@
                     <span class="text-sm">${contacto.disponibilidad}</span>
                   </div>
 
-                  ${contacto.direccion ? `
+                  ${
+                    contacto.direccion
+                      ? `
                     <div class="flex items-center text-gray-600">
                       <i class="fas fa-map-marker-alt text-green-500 mr-3 w-4"></i>
                       <span class="text-sm">${contacto.direccion}</span>
                     </div>
-                  ` : ''}
+                  `
+                      : ""
+                  }
 
-                  ${contacto.email ? `
+                  ${
+                    contacto.email
+                      ? `
                     <div class="flex items-center text-gray-600">
                       <i class="fas fa-envelope text-purple-500 mr-3 w-4"></i>
                       <span class="text-sm">${contacto.email}</span>
                     </div>
-                  ` : ''}
+                  `
+                      : ""
+                  }
                 </div>
 
-                ${contacto.descripcion ? `
+                ${
+                  contacto.descripcion
+                    ? `
                   <p class="text-sm text-gray-600 mb-4">${contacto.descripcion}</p>
-                ` : ''}
+                `
+                    : ""
+                }
 
                 <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                   <div class="flex space-x-2">
-                    <button onclick="editContacto('${contacto.id}')" class="text-blue-600 hover:text-blue-800 transition-colors duration-200" title="Editar">
+                    <button onclick="editContacto('${
+                      contacto.id
+                    }')" class="text-blue-600 hover:text-blue-800 transition-colors duration-200" title="Editar">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button onclick="toggleContactoStatus('${contacto.id}')" class="${toggleColor} transition-colors duration-200" title="${contacto.activo ? 'Desactivar' : 'Activar'}">
-                      <i class="fas fa-${contacto.activo ? 'eye-slash' : 'eye'}"></i>
+                    <button onclick="toggleContactoStatus('${
+                      contacto.id
+                    }')" class="${toggleColor} transition-colors duration-200" title="${
+              contacto.activo ? "Desactivar" : "Activar"
+            }">
+                      <i class="fas fa-${
+                        contacto.activo ? "eye-slash" : "eye"
+                      }"></i>
                     </button>
-                    <button onclick="deleteContactoFromGrid('${contacto.id}')" class="text-red-600 hover:text-red-800 transition-colors duration-200" title="Eliminar">
+                    <button onclick="deleteContactoFromGrid('${
+                      contacto.id
+                    }')" class="text-red-600 hover:text-red-800 transition-colors duration-200" title="Eliminar">
                       <i class="fas fa-trash"></i>
                     </button>
                   </div>
-                  <a href="tel:${contacto.telefono}" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 transition-colors duration-200 text-sm">
+                  <a href="tel:${
+                    contacto.telefono
+                  }" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 transition-colors duration-200 text-sm">
                     <i class="fas fa-phone mr-1"></i>
                     Llamar
                   </a>
@@ -568,56 +982,61 @@
               </div>
             </div>
           `;
-        }).join('');
+          })
+          .join("");
       }
 
       function updateKPIs() {
         const total = contactos.length;
-        const activos = contactos.filter(c => c.activo).length;
-        const disponibles24h = contactos.filter(c => c.disponibilidad === '24/7' && c.activo).length;
-        const categorias = new Set(contactos.map(c => c.categoria)).size;
+        const activos = contactos.filter((c) => c.activo).length;
+        const disponibles24h = contactos.filter(
+          (c) => c.disponibilidad === "24/7" && c.activo
+        ).length;
+        const categorias = new Set(contactos.map((c) => c.categoria)).size;
 
-        document.getElementById('contacts-kpi-total').textContent = total;
-        document.getElementById('contacts-kpi-activos').textContent = activos;
-        document.getElementById('contacts-kpi-24h').textContent = disponibles24h;
-        document.getElementById('contacts-kpi-categorias').textContent = categorias;
+        document.getElementById("contacts-kpi-total").textContent = total;
+        document.getElementById("contacts-kpi-activos").textContent = activos;
+        document.getElementById("contacts-kpi-24h").textContent =
+          disponibles24h;
+        document.getElementById("contacts-kpi-categorias").textContent =
+          categorias;
       }
 
       // Utility functions
       function getCategoriaColor(categoria) {
         const colors = {
-          'Emergencias Médicas': 'bg-red-100 text-red-800',
-          'Seguridad Pública': 'bg-blue-100 text-blue-800',
-          'Bomberos': 'bg-orange-100 text-orange-800',
-          'Protección Civil': 'bg-yellow-100 text-yellow-800',
-          'Servicios Públicos': 'bg-green-100 text-green-800',
-          'Gobierno Municipal': 'bg-purple-100 text-purple-800',
-          'Otros Servicios': 'bg-gray-100 text-gray-800'
+          "Emergencias Médicas": "bg-red-100 text-red-800",
+          "Seguridad Pública": "bg-blue-100 text-blue-800",
+          Bomberos: "bg-orange-100 text-orange-800",
+          "Protección Civil": "bg-yellow-100 text-yellow-800",
+          "Servicios Públicos": "bg-green-100 text-green-800",
+          "Gobierno Municipal": "bg-purple-100 text-purple-800",
+          "Otros Servicios": "bg-gray-100 text-gray-800",
         };
-        return colors[categoria] || 'bg-gray-100 text-gray-800';
+        return colors[categoria] || "bg-gray-100 text-gray-800";
       }
 
       function getPrioridadColor(prioridad) {
         const colors = {
-          1: 'bg-red-100 text-red-800',
-          2: 'bg-yellow-100 text-yellow-800',
-          3: 'bg-green-100 text-green-800'
+          1: "bg-red-100 text-red-800",
+          2: "bg-yellow-100 text-yellow-800",
+          3: "bg-green-100 text-green-800",
         };
-        return colors[prioridad] || 'bg-gray-100 text-gray-800';
+        return colors[prioridad] || "bg-gray-100 text-gray-800";
       }
 
       function getPrioridadLabel(prioridad) {
-        const labels = { 1: 'Alta', 2: 'Media', 3: 'Baja' };
-        return labels[prioridad] || 'Normal';
+        const labels = { 1: "Alta", 2: "Media", 3: "Baja" };
+        return labels[prioridad] || "Normal";
       }
 
       function getDisponibilidadIcon(disponibilidad) {
         const icons = {
-          '24/7': 'fa-clock',
-          'Horario Laboral': 'fa-business-time',
-          'Emergencias': 'fa-exclamation-triangle'
+          "24/7": "fa-clock",
+          "Horario Laboral": "fa-business-time",
+          Emergencias: "fa-exclamation-triangle",
         };
-        return icons[disponibilidad] || 'fa-clock';
+        return icons[disponibilidad] || "fa-clock";
       }
 
       function generateId() {
@@ -627,73 +1046,94 @@
       // Modal functions
       function openModal(contactoId = null) {
         currentEditId = contactoId;
-        const modal = document.getElementById('contacts-modal');
-        const title = document.getElementById('contacts-modal-title');
-        const deleteBtn = document.getElementById('contacts-form-delete');
+        const modal = document.getElementById("contacts-modal");
+        const title = document.getElementById("contacts-modal-title");
+        const deleteBtn = document.getElementById("contacts-form-delete");
 
         if (contactoId) {
-          title.textContent = 'Editar Contacto';
-          deleteBtn.classList.remove('hidden');
+          title.textContent = "Editar Contacto";
+          deleteBtn.classList.remove("hidden");
           loadContactoToForm(contactoId);
         } else {
-          title.textContent = 'Nuevo Contacto';
-          deleteBtn.classList.add('hidden');
+          title.textContent = "Nuevo Contacto";
+          deleteBtn.classList.add("hidden");
           resetForm();
         }
 
-        modal.classList.remove('hidden');
-        document.getElementById('contacts-form-nombre').focus();
+        modal.classList.remove("hidden");
+        document.getElementById("contacts-form-nombre").focus();
       }
 
       function closeModal() {
-        document.getElementById('contacts-modal').classList.add('hidden');
+        document.getElementById("contacts-modal").classList.add("hidden");
         currentEditId = null;
         resetForm();
       }
 
       function resetForm() {
-        document.getElementById('contacts-form').reset();
-        document.getElementById('contacts-form-activo').checked = true;
+        document.getElementById("contacts-form").reset();
+        document.getElementById("contacts-form-activo").checked = true;
+        document.getElementById('contacts-form-show-home').checked = false;
       }
 
       function loadContactoToForm(contactoId) {
-        const contacto = contactos.find(c => c.id === contactoId);
+        const contacto = contactos.find((c) => c.id === contactoId);
         if (!contacto) return;
 
-        document.getElementById('contacts-form-nombre').value = contacto.nombre || '';
-        document.getElementById('contacts-form-categoria').value = contacto.categoria || '';
-        document.getElementById('contacts-form-telefono').value = contacto.telefono || '';
-        document.getElementById('contacts-form-telefono-alt').value = contacto.telefonoAlt || '';
-        document.getElementById('contacts-form-disponibilidad').value = contacto.disponibilidad || '24/7';
-        document.getElementById('contacts-form-prioridad').value = contacto.prioridad || 2;
-        document.getElementById('contacts-form-descripcion').value = contacto.descripcion || '';
-        document.getElementById('contacts-form-direccion').value = contacto.direccion || '';
-        document.getElementById('contacts-form-email').value = contacto.email || '';
-        document.getElementById('contacts-form-activo').checked = !!contacto.activo;
+        document.getElementById("contacts-form-nombre").value =
+          contacto.nombre || "";
+        document.getElementById("contacts-form-categoria").value =
+          contacto.categoria || "";
+        document.getElementById("contacts-form-telefono").value =
+          contacto.telefono || "";
+        document.getElementById("contacts-form-telefono-alt").value =
+          contacto.telefonoAlt || "";
+        document.getElementById("contacts-form-disponibilidad").value =
+          contacto.disponibilidad || "24/7";
+        document.getElementById("contacts-form-prioridad").value =
+          contacto.prioridad || 2;
+        document.getElementById("contacts-form-descripcion").value =
+          contacto.descripcion || "";
+        document.getElementById("contacts-form-direccion").value =
+          contacto.direccion || "";
+        document.getElementById("contacts-form-email").value =
+          contacto.email || "";
+        document.getElementById("contacts-form-activo").checked =
+          !!contacto.activo;
+        document.getElementById("contacts-form-show-home").checked =
+          !!contacto.showInHome;
       }
 
       function saveContacto(e) {
         e.preventDefault();
 
         const formData = {
-          nombre: document.getElementById('contacts-form-nombre').value,
-          categoria: document.getElementById('contacts-form-categoria').value,
-          telefono: document.getElementById('contacts-form-telefono').value,
-          telefonoAlt: document.getElementById('contacts-form-telefono-alt').value,
-          disponibilidad: document.getElementById('contacts-form-disponibilidad').value,
-          prioridad: parseInt(document.getElementById('contacts-form-prioridad').value),
-          descripcion: document.getElementById('contacts-form-descripcion').value,
-          direccion: document.getElementById('contacts-form-direccion').value,
-          email: document.getElementById('contacts-form-email').value,
-          activo: document.getElementById('contacts-form-activo').checked
+          nombre: document.getElementById("contacts-form-nombre").value,
+          categoria: document.getElementById("contacts-form-categoria").value,
+          telefono: document.getElementById("contacts-form-telefono").value,
+          telefonoAlt: document.getElementById("contacts-form-telefono-alt")
+            .value,
+          disponibilidad: document.getElementById(
+            "contacts-form-disponibilidad"
+          ).value,
+          prioridad: parseInt(
+            document.getElementById("contacts-form-prioridad").value
+          ),
+          descripcion: document.getElementById("contacts-form-descripcion")
+            .value,
+          direccion: document.getElementById("contacts-form-direccion").value,
+          email: document.getElementById("contacts-form-email").value,
+          activo: document.getElementById("contacts-form-activo").checked,
+          showInHome: document.getElementById('contacts-form-show-home').checked
         };
 
         if (currentEditId) {
-          const index = contactos.findIndex(c => c.id === currentEditId);
-          if (index !== -1) contactos[index] = { ...contactos[index], ...formData };
+          const index = contactos.findIndex((c) => c.id === currentEditId);
+          if (index !== -1)
+            contactos[index] = { ...contactos[index], ...formData };
         } else {
           formData.id = generateId();
-          formData.fechaCreacion = new Date().toISOString().split('T')[0];
+          formData.fechaCreacion = new Date().toISOString().split("T")[0];
           contactos.push(formData);
         }
 
@@ -704,10 +1144,12 @@
       }
 
       // CRUD helpers exposed to grid buttons
-      window.editContacto = function(contactoId) { openModal(contactoId); };
+      window.editContacto = function (contactoId) {
+        openModal(contactoId);
+      };
 
-      window.toggleContactoStatus = function(contactoId) {
-        const contacto = contactos.find(c => c.id === contactoId);
+      window.toggleContactoStatus = function (contactoId) {
+        const contacto = contactos.find((c) => c.id === contactoId);
         if (!contacto) return;
         contacto.activo = !contacto.activo;
         saveContactos();
@@ -717,11 +1159,15 @@
 
       function deleteContacto() {
         if (!currentEditId) return;
-        const contacto = contactos.find(c => c.id === currentEditId);
+        const contacto = contactos.find((c) => c.id === currentEditId);
         if (!contacto) return;
 
-        if (confirm(`¿Estás seguro de que deseas eliminar el contacto "${contacto.nombre}"?`)) {
-          contactos = contactos.filter(c => c.id !== currentEditId);
+        if (
+          confirm(
+            `¿Estás seguro de que deseas eliminar el contacto "${contacto.nombre}"?`
+          )
+        ) {
+          contactos = contactos.filter((c) => c.id !== currentEditId);
           saveContactos();
           filterContactos();
           updateKPIs();
@@ -729,12 +1175,16 @@
         }
       }
 
-      window.deleteContactoFromGrid = function(contactoId) {
-        const contacto = contactos.find(c => c.id === contactoId);
+      window.deleteContactoFromGrid = function (contactoId) {
+        const contacto = contactos.find((c) => c.id === contactoId);
         if (!contacto) return;
 
-        if (confirm(`¿Estás seguro de que deseas eliminar el contacto "${contacto.nombre}"?`)) {
-          contactos = contactos.filter(c => c.id !== contactoId);
+        if (
+          confirm(
+            `¿Estás seguro de que deseas eliminar el contacto "${contacto.nombre}"?`
+          )
+        ) {
+          contactos = contactos.filter((c) => c.id !== contactoId);
           saveContactos();
           filterContactos();
           updateKPIs();
@@ -743,62 +1193,97 @@
 
       // Import/Export
       function exportCSV() {
-        const headers = ['Nombre', 'Categoría', 'Teléfono', 'Teléfono Alt', 'Disponibilidad', 'Prioridad', 'Descripción', 'Dirección', 'Email', 'Activo'];
-        const rows = contactos.map(contacto => [
+        const headers = [
+          "Nombre",
+          "Categoría",
+          "Teléfono",
+          "Teléfono Alt",
+          "Disponibilidad",
+          "Prioridad",
+          "Descripción",
+          "Dirección",
+          "Email",
+          "Activo",
+        ];
+        const rows = contactos.map((contacto) => [
           contacto.nombre,
           contacto.categoria,
           contacto.telefono,
-          contacto.telefonoAlt || '',
+          contacto.telefonoAlt || "",
           contacto.disponibilidad,
           getPrioridadLabel(contacto.prioridad),
-          contacto.descripcion || '',
-          contacto.direccion || '',
-          contacto.email || '',
-          contacto.activo ? 'Sí' : 'No'
+          contacto.descripcion || "",
+          contacto.direccion || "",
+          contacto.email || "",
+          contacto.activo ? "Sí" : "No",
         ]);
 
-        const csvContent = [headers, ...rows].map(row => row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',')).join('\n');
+        const csvContent = [headers, ...rows]
+          .map((row) =>
+            row
+              .map((field) => `"${String(field).replace(/"/g, '""')}"`)
+              .join(",")
+          )
+          .join("\n");
 
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
+        const blob = new Blob([csvContent], {
+          type: "text/csv;charset=utf-8;",
+        });
+        const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `contactos_emergencia_${new Date().toISOString().split('T')[0]}.csv`;
+        link.download = `contactos_emergencia_${
+          new Date().toISOString().split("T")[0]
+        }.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       }
 
       function openImportModal() {
-        document.getElementById('contacts-import-modal').classList.remove('hidden');
+        document
+          .getElementById("contacts-import-modal")
+          .classList.remove("hidden");
       }
 
       function closeImportModal() {
-        document.getElementById('contacts-import-modal').classList.add('hidden');
-        document.getElementById('contacts-import-file').value = '';
+        document
+          .getElementById("contacts-import-modal")
+          .classList.add("hidden");
+        document.getElementById("contacts-import-file").value = "";
       }
 
       function importJSON() {
-        const fileInput = document.getElementById('contacts-import-file');
+        const fileInput = document.getElementById("contacts-import-file");
         const file = fileInput.files[0];
-        if (!file) { alert('Por favor selecciona un archivo JSON'); return; }
+        if (!file) {
+          alert("Por favor selecciona un archivo JSON");
+          return;
+        }
 
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           try {
             const importedData = JSON.parse(e.target.result);
-            if (!Array.isArray(importedData)) throw new Error('El archivo debe contener un array de contactos');
+            if (!Array.isArray(importedData))
+              throw new Error("El archivo debe contener un array de contactos");
 
             importedData.forEach((contacto, index) => {
-              if (!contacto.nombre || !contacto.categoria || !contacto.telefono) {
-                throw new Error(`Contacto en posición ${index + 1} tiene estructura inválida`);
+              if (
+                !contacto.nombre ||
+                !contacto.categoria ||
+                !contacto.telefono
+              ) {
+                throw new Error(
+                  `Contacto en posición ${index + 1} tiene estructura inválida`
+                );
               }
             });
 
-            const processedData = importedData.map(contacto => ({
+            const processedData = importedData.map((contacto) => ({
               ...contacto,
               id: generateId(),
-              fechaCreacion: new Date().toISOString().split('T')[0],
-              activo: contacto.activo !== undefined ? contacto.activo : true
+              fechaCreacion: new Date().toISOString().split("T")[0],
+              activo: contacto.activo !== undefined ? contacto.activo : true,
             }));
 
             contactos = [...contactos, ...processedData];
@@ -806,7 +1291,9 @@
             filterContactos();
             updateKPIs();
             closeImportModal();
-            alert(`Se importaron ${processedData.length} contactos exitosamente`);
+            alert(
+              `Se importaron ${processedData.length} contactos exitosamente`
+            );
           } catch (error) {
             alert(`Error al importar: ${error.message}`);
           }
@@ -816,19 +1303,21 @@
 
       // Public preview
       function openPreviewModal() {
-        const modal = document.getElementById('contacts-preview-modal');
-        const content = document.getElementById('contacts-preview-content');
+        const modal = document.getElementById("contacts-preview-modal");
+        const content = document.getElementById("contacts-preview-content");
         renderPublicView(content);
-        modal.classList.remove('hidden');
+        modal.classList.remove("hidden");
       }
 
       function closePreviewModal() {
-        document.getElementById('contacts-preview-modal').classList.add('hidden');
+        document
+          .getElementById("contacts-preview-modal")
+          .classList.add("hidden");
       }
 
       function renderPublicView(container) {
-        const activeContactos = contactos.filter(c => c.activo);
-        const groupedContactos = groupBy(activeContactos, 'categoria');
+        const activeContactos = contactos.filter((c) => c.activo);
+        const groupedContactos = groupBy(activeContactos, "categoria");
 
         container.innerHTML = `
           <div class="bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl p-8 mb-8 text-center">
@@ -841,8 +1330,13 @@
           </div>
 
           ${Object.entries(groupedContactos)
-            .sort(([,a], [,b]) => Math.min(...a.map(c => c.prioridad)) - Math.min(...b.map(c => c.prioridad)))
-            .map(([categoria, contactosCategoria]) => `
+            .sort(
+              ([, a], [, b]) =>
+                Math.min(...a.map((c) => c.prioridad)) -
+                Math.min(...b.map((c) => c.prioridad))
+            )
+            .map(
+              ([categoria, contactosCategoria]) => `
               <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
                   <div class="w-1 h-8 bg-red-500 rounded mr-4"></div>
@@ -850,20 +1344,33 @@
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   ${contactosCategoria
-                    .sort((a, b) => a.prioridad - b.prioridad || a.nombre.localeCompare(b.nombre))
-                    .map(contacto => `
+                    .sort(
+                      (a, b) =>
+                        a.prioridad - b.prioridad ||
+                        a.nombre.localeCompare(b.nombre)
+                    )
+                    .map(
+                      (contacto) => `
                       <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
                         <div class="flex items-start justify-between mb-4">
                           <div>
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2">${contacto.nombre}</h3>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">${
+                              contacto.nombre
+                            }</h3>
                             <div class="flex items-center mb-2">
-                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPrioridadColor(contacto.prioridad)}">
-                                Prioridad ${getPrioridadLabel(contacto.prioridad)}
+                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPrioridadColor(
+                                contacto.prioridad
+                              )}">
+                                Prioridad ${getPrioridadLabel(
+                                  contacto.prioridad
+                                )}
                               </span>
                             </div>
                           </div>
                           <div class="text-right">
-                            <a href="tel:${contacto.telefono}" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200 inline-flex items-center">
+                            <a href="tel:${
+                              contacto.telefono
+                            }" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200 inline-flex items-center">
                               <i class="fas fa-phone mr-2"></i>
                               Llamar
                             </a>
@@ -874,41 +1381,65 @@
                           <div class="flex items-center text-gray-700">
                             <i class="fas fa-phone text-red-500 mr-3 w-5"></i>
                             <div>
-                              <div class="font-semibold text-lg">${contacto.telefono}</div>
-                              ${contacto.telefonoAlt ? `<div class="text-sm text-gray-500">Alt: ${contacto.telefonoAlt}</div>` : ''}
+                              <div class="font-semibold text-lg">${
+                                contacto.telefono
+                              }</div>
+                              ${
+                                contacto.telefonoAlt
+                                  ? `<div class="text-sm text-gray-500">Alt: ${contacto.telefonoAlt}</div>`
+                                  : ""
+                              }
                             </div>
                           </div>
 
                           <div class="flex items-center text-gray-600">
-                            <i class="fas ${getDisponibilidadIcon(contacto.disponibilidad)} text-blue-500 mr-3 w-5"></i>
+                            <i class="fas ${getDisponibilidadIcon(
+                              contacto.disponibilidad
+                            )} text-blue-500 mr-3 w-5"></i>
                             <span>${contacto.disponibilidad}</span>
                           </div>
 
-                          ${contacto.direccion ? `
+                          ${
+                            contacto.direccion
+                              ? `
                             <div class="flex items-center text-gray-600">
                               <i class="fas fa-map-marker-alt text-green-500 mr-3 w-5"></i>
                               <span>${contacto.direccion}</span>
                             </div>
-                          ` : ''}
+                          `
+                              : ""
+                          }
 
-                          ${contacto.email ? `
+                          ${
+                            contacto.email
+                              ? `
                             <div class="flex items-center text-gray-600">
                               <i class="fas fa-envelope text-purple-500 mr-3 w-5"></i>
                               <a href="mailto:${contacto.email}" class="text-blue-600 hover:text-blue-800">${contacto.email}</a>
                             </div>
-                          ` : ''}
+                          `
+                              : ""
+                          }
                         </div>
 
-                        ${contacto.descripcion ? `
+                        ${
+                          contacto.descripcion
+                            ? `
                           <div class="mt-4 pt-4 border-t border-gray-100">
                             <p class="text-gray-600 text-sm">${contacto.descripcion}</p>
                           </div>
-                        ` : ''}
+                        `
+                            : ""
+                        }
                       </div>
-                    `).join('')}
+                    `
+                    )
+                    .join("")}
                 </div>
               </div>
-            `).join('')}
+            `
+            )
+            .join("")}
 
           <div class="mt-12 bg-gray-50 rounded-xl p-6 text-center">
             <h3 class="text-lg font-semibold text-gray-800 mb-2">¿Necesitas ayuda?</h3>
@@ -929,12 +1460,12 @@
       }
 
       // Public API for other pages
-      window.getEmergencyContacts = function() {
+      window.getEmergencyContacts = function () {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (!stored) return [];
         try {
           const allContacts = JSON.parse(stored);
-          return allContacts.filter(c => c.activo);
+          return allContacts.filter((c) => c.activo);
         } catch {
           return [];
         }
