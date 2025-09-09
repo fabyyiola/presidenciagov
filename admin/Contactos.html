@@ -606,12 +606,6 @@
         document
           .getElementById("contacts-add-btn")
           .addEventListener("click", () => openModal());
-        document
-          .getElementById("contacts-export-btn")
-          .addEventListener("click", exportCSV);
-        document
-          .getElementById("contacts-import-btn")
-          .addEventListener("click", () => openImportModal());
 
         // (fix) Preview button puede no existir en el DOM
         const previewBtn = document.getElementById("contacts-preview-btn");
