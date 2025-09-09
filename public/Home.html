@@ -265,11 +265,11 @@
     const upcoming = (eventos||[]).filter(e=>!e.fechaInicio || new Date(e.fechaInicio)>=today).length;
 
     const KPIS = [
-      { label:'Proyectos activos', val: fmt.format(activosProy), icon:'fa-diagram-project', tone:'indigo' },
-      { label:'Avance promedio', val: `${avanceProm}%`, icon:'fa-chart-line', tone:'green' },
-      { label:'Negocios', val: fmt.format(negocios.length), icon:'fa-store', tone:'blue' },
-      { label:'Documentos', val: fmt.format(docs.length), icon:'fa-file-pdf', tone:'rose' },
-      { label:'Eventos', val: fmt.format(upcoming), icon:'fa-calendar-days', tone:'orange' },
+      // { label:'Proyectos activos', val: fmt.format(activosProy), icon:'fa-diagram-project', tone:'indigo' },
+      // { label:'Avance promedio', val: `${avanceProm}%`, icon:'fa-chart-line', tone:'green' },
+      // { label:'Negocios', val: fmt.format(negocios.length), icon:'fa-store', tone:'blue' },
+      // { label:'Documentos', val: fmt.format(docs.length), icon:'fa-file-pdf', tone:'rose' },
+      // { label:'Eventos', val: fmt.format(upcoming), icon:'fa-calendar-days', tone:'orange' },
     ];
 
     $('#kpi-strip').innerHTML = KPIS.map(k=>`
