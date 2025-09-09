@@ -5,7 +5,10 @@
       <h2 class="text-3xl font-bold text-gray-800 mb-2">Eventos</h2>
       <p class="text-gov-gray">Gestión de eventos municipales y comunitarios</p>
     </div>
-    <button onclick="Eventos.openForm()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition flex items-center">
+    <button
+      onclick="Eventos.openForm()"
+      class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition flex items-center"
+    >
       <i class="fas fa-plus mr-2"></i> Agregar Evento
     </button>
   </div>
@@ -13,7 +16,11 @@
   <!-- Filtros -->
   <div class="bg-white p-4 rounded-xl shadow mb-6">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <select id="filterCategoria" onchange="Eventos.applyFilters()" class="px-4 py-2 border rounded-lg">
+      <select
+        id="filterCategoria"
+        onchange="Eventos.applyFilters()"
+        class="px-4 py-2 border rounded-lg"
+      >
         <option value="">Todas las categorías</option>
         <option value="Religioso">Religioso</option>
         <option value="Deportivo">Deportivo</option>
@@ -21,26 +28,128 @@
         <option value="Gastronomico">Gastronómico</option>
         <option value="Familiar">Familiar</option>
       </select>
-      <select id="filterOrganizador" onchange="Eventos.applyFilters()" class="px-4 py-2 border rounded-lg">
+      <select
+        id="filterOrganizador"
+        onchange="Eventos.applyFilters()"
+        class="px-4 py-2 border rounded-lg"
+      >
         <option value="">Todos los organizadores</option>
       </select>
-      <select id="filterMes" onchange="Eventos.applyFilters()" class="px-4 py-2 border rounded-lg">
+      <select
+        id="filterMes"
+        onchange="Eventos.applyFilters()"
+        class="px-4 py-2 border rounded-lg"
+      >
         <option value="">Todos los meses</option>
-        <option value="01">Enero</option><option value="02">Febrero</option>
-        <option value="03">Marzo</option><option value="04">Abril</option>
-        <option value="05">Mayo</option><option value="06">Junio</option>
-        <option value="07">Julio</option><option value="08">Agosto</option>
-        <option value="09">Septiembre</option><option value="10">Octubre</option>
-        <option value="11">Noviembre</option><option value="12">Diciembre</option>
+        <option value="01">Enero</option>
+        <option value="02">Febrero</option>
+        <option value="03">Marzo</option>
+        <option value="04">Abril</option>
+        <option value="05">Mayo</option>
+        <option value="06">Junio</option>
+        <option value="07">Julio</option>
+        <option value="08">Agosto</option>
+        <option value="09">Septiembre</option>
+        <option value="10">Octubre</option>
+        <option value="11">Noviembre</option>
+        <option value="12">Diciembre</option>
       </select>
-      <select id="filterEstado" onchange="Eventos.applyFilters()" class="px-4 py-2 border rounded-lg">
+      <select
+        id="filterEstado"
+        onchange="Eventos.applyFilters()"
+        class="px-4 py-2 border rounded-lg"
+      >
         <option value="">Todos</option>
         <option value="Pendiente">Pendiente</option>
         <option value="Finalizado">Finalizado</option>
       </select>
     </div>
-    <button onclick="Eventos.clearFilters()" class="mt-2 text-sm text-indigo-600 hover:underline">Limpiar filtros</button>
+    <button
+      onclick="Eventos.clearFilters()"
+      class="mt-2 text-sm text-indigo-600 hover:underline"
+    >
+      Limpiar filtros
+    </button>
   </div>
+
+  <!-- KPIs (Eventos) -->
+  <section class="mb-6">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6"
+      id="eventos-kpis"
+    >
+      <!-- Total (filtrados) -->
+      <div
+        class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-indigo-600"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p id="kpi-evt-total" class="text-2xl font-bold text-gray-800">0</p>
+            <p class="text-sm text-gray-600">Eventos (filtrados)</p>
+          </div>
+          <div class="p-3 rounded-lg bg-indigo-100">
+            <i class="fas fa-calendar-check text-indigo-700 text-xl"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Este mes -->
+      <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <p id="kpi-evt-mes" class="text-2xl font-bold text-gray-800">0</p>
+            <p class="text-sm text-gray-600">Este mes</p>
+          </div>
+          <div class="p-3 rounded-lg bg-blue-100">
+            <i class="fas fa-calendar-alt text-blue-600 text-xl"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Próx. 7 días -->
+      <div
+        class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-emerald-500"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p id="kpi-evt-prox" class="text-2xl font-bold text-gray-800">0</p>
+            <p class="text-sm text-gray-600">Próx. 7 días</p>
+          </div>
+          <div class="p-3 rounded-lg bg-emerald-100">
+            <i class="fas fa-clock text-emerald-700 text-xl"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Destacados -->
+      <div
+        class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-amber-500"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p id="kpi-evt-dest" class="text-2xl font-bold text-gray-800">0</p>
+            <p class="text-sm text-gray-600">Destacados</p>
+          </div>
+          <div class="p-3 rounded-lg bg-amber-100">
+            <i class="fas fa-star text-amber-600 text-xl"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Gratuitos -->
+      <div
+        class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p id="kpi-evt-gratis" class="text-2xl font-bold text-gray-800">
+              0
+            </p>
+            <p class="text-sm text-gray-600">Gratuitos</p>
+          </div>
+          <div class="p-3 rounded-lg bg-purple-100">
+            <i class="fas fa-hand-holding-usd text-purple-600 text-xl"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Tabla -->
   <div class="bg-white rounded-xl shadow overflow-hidden">
@@ -61,69 +170,131 @@
 </section>
 
 <!-- Modal Formulario -->
-<div id="evento-modal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
-  <div class="bg-white rounded-xl w-full max-w-2xl shadow-lg overflow-y-auto max-h-[90vh]">
+<div
+  id="evento-modal"
+  class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4"
+>
+  <div
+    class="bg-white rounded-xl w-full max-w-2xl shadow-lg overflow-y-auto max-h-[90vh]"
+  >
     <div class="flex justify-between items-center px-6 py-4 border-b">
       <h3 id="evento-modal-title" class="text-lg font-bold">Agregar Evento</h3>
-      <button onclick="Eventos.closeForm()" class="text-gray-500 hover:text-gray-800"><i class="fas fa-times"></i></button>
+      <button
+        onclick="Eventos.closeForm()"
+        class="text-gray-500 hover:text-gray-800"
+      >
+        <i class="fas fa-times"></i>
+      </button>
     </div>
 
     <form id="evento-form" class="p-6 space-y-4">
       <div>
         <label class="block text-sm font-medium">Título del Evento *</label>
-        <input type="text" id="titulo" required class="w-full px-3 py-2 border rounded-lg">
+        <input
+          type="text"
+          id="titulo"
+          required
+          class="w-full px-3 py-2 border rounded-lg"
+        />
       </div>
       <div>
         <label class="block text-sm font-medium">Descripción *</label>
-        <textarea id="descripcion" rows="3" required class="w-full px-3 py-2 border rounded-lg"></textarea>
+        <textarea
+          id="descripcion"
+          rows="3"
+          required
+          class="w-full px-3 py-2 border rounded-lg"
+        ></textarea>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium">Fecha de Inicio *</label>
-          <input type="date" id="fechaInicio" required class="w-full px-3 py-2 border rounded-lg">
+          <input
+            type="date"
+            id="fechaInicio"
+            required
+            class="w-full px-3 py-2 border rounded-lg"
+          />
         </div>
         <div>
           <label class="block text-sm font-medium">Fecha de Fin</label>
-          <input type="date" id="fechaFin" class="w-full px-3 py-2 border rounded-lg">
+          <input
+            type="date"
+            id="fechaFin"
+            class="w-full px-3 py-2 border rounded-lg"
+          />
         </div>
       </div>
 
       <div>
         <label class="block text-sm font-medium">Hora *</label>
-        <input type="text" id="hora" required placeholder="Ej. 18:00 hrs, Todo el día" class="w-full px-3 py-2 border rounded-lg">
+        <input
+          type="text"
+          id="hora"
+          required
+          placeholder="Ej. 18:00 hrs, Todo el día"
+          class="w-full px-3 py-2 border rounded-lg"
+        />
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium">Lugar *</label>
-          <input type="text" id="lugar" required class="w-full px-3 py-2 border rounded-lg">
+          <input
+            type="text"
+            id="lugar"
+            required
+            class="w-full px-3 py-2 border rounded-lg"
+          />
         </div>
         <div>
           <label class="block text-sm font-medium">Colonia</label>
-          <input type="text" id="colonia" class="w-full px-3 py-2 border rounded-lg">
+          <input
+            type="text"
+            id="colonia"
+            class="w-full px-3 py-2 border rounded-lg"
+          />
         </div>
       </div>
 
       <div>
         <label class="block text-sm font-medium">Organizador *</label>
-        <input type="text" id="organizador" required class="w-full px-3 py-2 border rounded-lg">
+        <input
+          type="text"
+          id="organizador"
+          required
+          class="w-full px-3 py-2 border rounded-lg"
+        />
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium">Contacto</label>
-          <input type="text" id="contacto" class="w-full px-3 py-2 border rounded-lg">
+          <input
+            type="text"
+            id="contacto"
+            class="w-full px-3 py-2 border rounded-lg"
+          />
         </div>
         <div>
           <label class="block text-sm font-medium">Precio *</label>
-          <input type="text" id="precio" required class="w-full px-3 py-2 border rounded-lg">
+          <input
+            type="text"
+            id="precio"
+            required
+            class="w-full px-3 py-2 border rounded-lg"
+          />
         </div>
       </div>
 
       <div>
         <label class="block text-sm font-medium">Categoría *</label>
-        <select id="categoria" required class="w-full px-3 py-2 border rounded-lg">
+        <select
+          id="categoria"
+          required
+          class="w-full px-3 py-2 border rounded-lg"
+        >
           <option value="">Seleccionar categoría</option>
           <option value="Religioso">Religioso</option>
           <option value="Deportivo">Deportivo</option>
@@ -134,45 +305,86 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <input type="checkbox" id="destacado">
+        <input type="checkbox" id="destacado" />
         <label for="destacado">Marcar como evento destacado</label>
       </div>
 
       <div>
         <label class="block text-sm font-medium">Fotos del Evento</label>
-        <input type="file" id="fotos" multiple accept="image/*" class="w-full px-3 py-2 border rounded-lg">
+        <input
+          type="file"
+          id="fotos"
+          multiple
+          accept="image/*"
+          class="w-full px-3 py-2 border rounded-lg"
+        />
         <div id="foto-preview" class="grid grid-cols-3 gap-2 mt-2"></div>
       </div>
 
       <!-- NUEVOS CAMPOS -->
       <div>
         <label class="block text-sm font-medium">Link de Google Maps</label>
-        <input type="url" id="googleMaps" placeholder="https://maps.google.com/..." class="w-full px-3 py-2 border rounded-lg">
+        <input
+          type="url"
+          id="googleMaps"
+          placeholder="https://maps.google.com/..."
+          class="w-full px-3 py-2 border rounded-lg"
+        />
       </div>
       <div>
         <label class="block text-sm font-medium">Recomendaciones</label>
-        <textarea id="recomendaciones" rows="2" placeholder="Ej. No llevar vidrio" class="w-full px-3 py-2 border rounded-lg"></textarea>
+        <textarea
+          id="recomendaciones"
+          rows="2"
+          placeholder="Ej. No llevar vidrio"
+          class="w-full px-3 py-2 border rounded-lg"
+        ></textarea>
       </div>
 
       <div class="flex justify-end gap-3 pt-4">
-        <button type="button" onclick="Eventos.closeForm()" class="px-4 py-2 border rounded-lg">Cancelar</button>
-        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Guardar</button>
+        <button
+          type="button"
+          onclick="Eventos.closeForm()"
+          class="px-4 py-2 border rounded-lg"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-indigo-600 text-white rounded-lg"
+        >
+          Guardar
+        </button>
       </div>
     </form>
   </div>
 </div>
 
 <!-- Modal Detalle -->
-<div id="evento-detalle-modal" class="fixed inset-0 bg-black/60 hidden z-50 p-4">
+<div
+  id="evento-detalle-modal"
+  class="fixed inset-0 bg-black/60 hidden z-50 p-4"
+>
   <div class="bg-white rounded-xl max-w-5xl mx-auto h-full overflow-y-auto">
-    <div class="flex justify-between items-center px-6 py-4 border-b sticky top-0 bg-white">
+    <div
+      class="flex justify-between items-center px-6 py-4 border-b sticky top-0 bg-white"
+    >
       <h3 class="text-lg font-bold" id="detalle-title">Detalle del Evento</h3>
-      <button onclick="Eventos.closeDetalle()" class="text-gray-500 hover:text-gray-800"><i class="fas fa-times"></i></button>
+      <button
+        onclick="Eventos.closeDetalle()"
+        class="text-gray-500 hover:text-gray-800"
+      >
+        <i class="fas fa-times"></i>
+      </button>
     </div>
 
     <div class="p-6">
       <div class="rounded-xl overflow-hidden bg-gray-100">
-        <img id="carousel-image" class="w-full h-[360px] md:h-[440px] object-cover" alt="Imagen del evento">
+        <img
+          id="carousel-image"
+          class="w-full h-[360px] md:h-[440px] object-cover"
+          alt="Imagen del evento"
+        />
       </div>
       <div id="thumbs" class="flex gap-3 mt-4 overflow-x-auto pb-1"></div>
 
@@ -181,17 +393,37 @@
           <div class="font-semibold" id="detalle-titulo"></div>
           <p id="detalle-descripcion" class="text-sm text-gray-700"></p>
 
-          <div class="flex items-start gap-2"><i class="fas fa-tags text-orange-500 mt-[2px]"></i><span class="font-medium" id="detalle-categoria"></span></div>
-          <div class="flex items-start gap-2"><i class="fas fa-map-marker-alt text-orange-500 mt-[2px]"></i><span class="font-medium" id="detalle-lugar"></span></div>
-          <div class="flex items-start gap-2"><i class="far fa-clock text-orange-500 mt-[2px]"></i><span class="font-medium" id="detalle-hora"></span></div>
-          <div class="flex items-start gap-2"><i class="fas fa-dollar-sign text-orange-500 mt-[2px]"></i><span class="font-medium" id="detalle-precio"></span></div>
+          <div class="flex items-start gap-2">
+            <i class="fas fa-tags text-orange-500 mt-[2px]"></i
+            ><span class="font-medium" id="detalle-categoria"></span>
+          </div>
+          <div class="flex items-start gap-2">
+            <i class="fas fa-map-marker-alt text-orange-500 mt-[2px]"></i
+            ><span class="font-medium" id="detalle-lugar"></span>
+          </div>
+          <div class="flex items-start gap-2">
+            <i class="far fa-clock text-orange-500 mt-[2px]"></i
+            ><span class="font-medium" id="detalle-hora"></span>
+          </div>
+          <div class="flex items-start gap-2">
+            <i class="fas fa-dollar-sign text-orange-500 mt-[2px]"></i
+            ><span class="font-medium" id="detalle-precio"></span>
+          </div>
         </div>
 
         <div class="bg-gray-50 rounded-xl p-5">
           <div class="font-semibold mb-1">Recomendaciones</div>
-          <div id="detalle-recomendaciones" class="text-sm text-gray-700 mb-4"></div>
-          <a id="detalle-gmaps-btn" href="#" target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg disabled:opacity-50 disabled:pointer-events-none">
+          <div
+            id="detalle-recomendaciones"
+            class="text-sm text-gray-700 mb-4"
+          ></div>
+          <a
+            id="detalle-gmaps-btn"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+          >
             <i class="fas fa-map-marked-alt"></i> Ver en Google Maps
           </a>
         </div>
@@ -201,292 +433,575 @@
 </div>
 
 <script>
-(() => {
-  LS_KEY = "eventos";
-  let eventos = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-  let editId = null;
-  let currentFotos = []; // [{blob, existingId?, _removed?, previewUrl}]
-  let editOriginalFotoIds = [];
-  // Helpers para limpiar URLs de previsualización
-  function cleanupPreviewUrls(){
-    currentFotos.forEach(f => { if (f.previewUrl) URL.revokeObjectURL(f.previewUrl); });
-  }
+  (() => {
+    LS_KEY = "eventos";
+    let eventos = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    let editId = null;
+    let currentFotos = []; // [{blob, existingId?, _removed?, previewUrl}]
+    let editOriginalFotoIds = [];
+    // Helpers para limpiar URLs de previsualización
+    function cleanupPreviewUrls() {
+      currentFotos.forEach((f) => {
+        if (f.previewUrl) URL.revokeObjectURL(f.previewUrl);
+      });
+    }
 
-  // --- IndexedDB setup ---
-  let db;
-  const request = indexedDB.open("EventosDB", 1);
-  request.onupgradeneeded = e => {
-    db = e.target.result;
-    if (!db.objectStoreNames.contains("imagenes")) db.createObjectStore("imagenes");
-  };
-  request.onsuccess = e => { db = e.target.result; render(); };
+    // --- IndexedDB setup ---
+    let db;
+    const request = indexedDB.open("EventosDB", 1);
+    request.onupgradeneeded = (e) => {
+      db = e.target.result;
+      if (!db.objectStoreNames.contains("imagenes"))
+        db.createObjectStore("imagenes");
+    };
+    request.onsuccess = (e) => {
+      db = e.target.result;
+      render();
+    };
 
-  function saveImage(id, blob) {
-    return new Promise((resolve,reject)=>{
+    function saveImage(id, blob) {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction("imagenes", "readwrite");
+        tx.objectStore("imagenes").put(blob, id);
+        tx.oncomplete = resolve;
+        tx.onerror = reject;
+      });
+    }
+    function getImage(id) {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction("imagenes", "readonly");
+        const req = tx.objectStore("imagenes").get(id);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = reject;
+      });
+    }
+    function deleteImage(id) {
       const tx = db.transaction("imagenes", "readwrite");
-      tx.objectStore("imagenes").put(blob, id);
-      tx.oncomplete = resolve;
-      tx.onerror = reject;
-    });
-  }
-  function getImage(id) {
-    return new Promise((resolve,reject)=>{
-      const tx = db.transaction("imagenes", "readonly");
-      const req = tx.objectStore("imagenes").get(id);
-      req.onsuccess = ()=> resolve(req.result);
-      req.onerror = reject;
-    });
-  }
-  function deleteImage(id){
-    const tx = db.transaction("imagenes", "readwrite");
-    tx.objectStore("imagenes").delete(id);
-  }
+      tx.objectStore("imagenes").delete(id);
+    }
 
-  // --- Render tabla ---
-  async function render() {
-    const body = document.getElementById("eventos-body");
-    if (!body) return;
-    body.innerHTML = "";
+    // --- Render tabla ---
+    async function render() {
+      const body = document.getElementById("eventos-body");
+      if (!body) return;
+      body.innerHTML = "";
 
-    for (const ev of eventos) {
-      let thumbHtml = "";
-      if (ev.fotoIds?.length) {
-        const blob = await getImage(ev.fotoIds[0]);
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          thumbHtml = `<img src="${url}" class="w-12 h-12 object-cover rounded">`;
+      for (const ev of eventos) {
+        let thumbHtml = "";
+        if (ev.fotoIds?.length) {
+          const blob = await getImage(ev.fotoIds[0]);
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            thumbHtml = `<img src="${url}" class="w-12 h-12 object-cover rounded">`;
+          }
         }
-      }
 
-      body.innerHTML += `
-        <tr class="border-t hover:bg-gray-50 cursor-pointer" onclick="Eventos.view(${ev.id})">
+        body.innerHTML += `
+        <tr class="border-t hover:bg-gray-50 cursor-pointer" onclick="Eventos.view(${
+          ev.id
+        })">
           <td class="px-4 py-3">
             <div class="font-semibold">${ev.titulo}</div>
-            <div class="text-gray-500 text-xs line-clamp-2">${ev.descripcion || ""}</div>
-            ${ev.destacado ? `<span class="inline-block mt-1 bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded">Destacado</span>` : ""}
+            <div class="text-gray-500 text-xs line-clamp-2">${
+              ev.descripcion || ""
+            }</div>
+            ${
+              ev.destacado
+                ? `<span class="inline-block mt-1 bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded">Destacado</span>`
+                : ""
+            }
           </td>
-          <td class="px-4 py-3">${ev.fechaInicio}${ev.fechaFin ? " - " + ev.fechaFin : ""}<br><span class="text-gray-500 text-xs">${ev.hora || ""}</span></td>
+          <td class="px-4 py-3">${ev.fechaInicio}${
+          ev.fechaFin ? " - " + ev.fechaFin : ""
+        }<br><span class="text-gray-500 text-xs">${ev.hora || ""}</span></td>
           <td class="px-4 py-3">${ev.lugar || ""}</td>
           <td class="px-4 py-3">${ev.organizador || ""}</td>
           <td class="px-4 py-3">${ev.categoria || ""}</td>
           <td class="px-4 py-3 flex items-center gap-2" onclick="event.stopPropagation()">
             
-            <button onclick="event.stopPropagation(); Eventos.edit(${ev.id})" class="text-yellow-600 hover:text-yellow-700" title="Editar"><i class="fas fa-edit"></i></button>
-            <button onclick="event.stopPropagation(); Eventos.remove(${ev.id})" class="text-red-600 hover:text-red-700" title="Eliminar"><i class="fas fa-trash"></i></button>
+            <button onclick="event.stopPropagation(); Eventos.edit(${
+              ev.id
+            })" class="text-yellow-600 hover:text-yellow-700" title="Editar"><i class="fas fa-edit"></i></button>
+            <button onclick="event.stopPropagation(); Eventos.remove(${
+              ev.id
+            })" class="text-red-600 hover:text-red-700" title="Eliminar"><i class="fas fa-trash"></i></button>
           </td>
         </tr>`;
-    }
-  }
-
-  // --- Filtros (placeholder) ---
-  function applyFilters(){ /* TODO */ }
-  function clearFilters(){ render(); }
-
-  // --- Form ---
-  async function openForm(id=null) {
-    // limpiar previews previas
-    cleanupPreviewUrls();
-    currentFotos = [];
-    editOriginalFotoIds = [];
-
-    editId = id;
-    document.getElementById("evento-modal").classList.remove("hidden");
-    document.getElementById("evento-modal-title").textContent = id ? "Editar Evento" : "Agregar Evento";
-    document.getElementById("evento-form").reset();
-    document.getElementById("foto-preview").innerHTML = "";
-
-    if (id) {
-      const ev = eventos.find(e => e.id === id);
-      if (!ev) return;
-
-      ["titulo","descripcion","fechaInicio","fechaFin","hora","lugar","colonia","organizador","contacto","precio","categoria","googleMaps","recomendaciones"]
-        .forEach(f => { const el = document.getElementById(f); if (el) el.value = ev[f] || ""; });
-      document.getElementById("destacado").checked = ev.destacado;
-
-      // Cargar fotos existentes al editor
-      editOriginalFotoIds = Array.isArray(ev.fotoIds) ? [...ev.fotoIds] : [];
-      for (const fid of editOriginalFotoIds){
-        const blob = await getImage(fid);
-        if (blob){
-          const url = URL.createObjectURL(blob);
-          currentFotos.push({ blob, existingId: fid, previewUrl: url });
-        }
       }
+    }
+
+    // --- Filtros (placeholder) ---
+    function applyFilters() {
+      /* TODO */
+    }
+    function clearFilters() {
+      render();
+    }
+
+    // --- Form ---
+    async function openForm(id = null) {
+      // limpiar previews previas
+      cleanupPreviewUrls();
+      currentFotos = [];
+      editOriginalFotoIds = [];
+
+      editId = id;
+      document.getElementById("evento-modal").classList.remove("hidden");
+      document.getElementById("evento-modal-title").textContent = id
+        ? "Editar Evento"
+        : "Agregar Evento";
+      document.getElementById("evento-form").reset();
+      document.getElementById("foto-preview").innerHTML = "";
+
+      if (id) {
+        const ev = eventos.find((e) => e.id === id);
+        if (!ev) return;
+
+        [
+          "titulo",
+          "descripcion",
+          "fechaInicio",
+          "fechaFin",
+          "hora",
+          "lugar",
+          "colonia",
+          "organizador",
+          "contacto",
+          "precio",
+          "categoria",
+          "googleMaps",
+          "recomendaciones",
+        ].forEach((f) => {
+          const el = document.getElementById(f);
+          if (el) el.value = ev[f] || "";
+        });
+        document.getElementById("destacado").checked = ev.destacado;
+
+        // Cargar fotos existentes al editor
+        editOriginalFotoIds = Array.isArray(ev.fotoIds) ? [...ev.fotoIds] : [];
+        for (const fid of editOriginalFotoIds) {
+          const blob = await getImage(fid);
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            currentFotos.push({ blob, existingId: fid, previewUrl: url });
+          }
+        }
+        renderPreviews();
+      }
+    }
+    function closeForm() {
+      document.getElementById("evento-modal").classList.add("hidden");
+      cleanupPreviewUrls();
+      currentFotos = [];
+      editOriginalFotoIds = [];
+      editId = null;
+    }
+
+    document
+      .getElementById("evento-form")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Construir nueva lista de fotoIds manteniendo las existentes no removidas
+        const fotoIds = [];
+        const keptExisting = new Set();
+
+        for (const f of currentFotos) {
+          if (f._removed) continue;
+
+          if (f.existingId) {
+            fotoIds.push(f.existingId);
+            keptExisting.add(f.existingId);
+          } else if (f.blob) {
+            const id = Date.now() + "-" + Math.random().toString(16).slice(2);
+            await saveImage(id, f.blob);
+            fotoIds.push(id);
+          }
+        }
+
+        // Si es edición, borrar imágenes que fueron quitadas
+        if (editId && editOriginalFotoIds.length) {
+          const removed = editOriginalFotoIds.filter(
+            (oldId) => !keptExisting.has(oldId)
+          );
+          removed.forEach(deleteImage);
+        }
+
+        const data = {
+          id:
+            editId ||
+            (eventos.length ? Math.max(...eventos.map((e) => e.id)) + 1 : 1),
+          titulo: titulo.value.trim(),
+          descripcion: descripcion.value.trim(),
+          fechaInicio: fechaInicio.value,
+          fechaFin: fechaFin.value,
+          hora: hora.value,
+          lugar: lugar.value,
+          colonia: colonia.value,
+          organizador: organizador.value,
+          contacto: contacto.value,
+          precio: precio.value,
+          categoria: categoria.value,
+          destacado: document.getElementById("destacado").checked,
+          googleMaps: document.getElementById("googleMaps").value.trim(),
+          recomendaciones: document
+            .getElementById("recomendaciones")
+            .value.trim(),
+          fotoIds,
+          estado: "Pendiente",
+        };
+
+        if (editId) {
+          const i = eventos.findIndex((e) => e.id === editId);
+          if (i !== -1) eventos[i] = data;
+        } else {
+          eventos.push(data);
+        }
+        localStorage.setItem(LS_KEY, JSON.stringify(eventos));
+        await render();
+        closeForm();
+      });
+
+    // --- Fotos (form) ---
+    document.getElementById("fotos").addEventListener("change", (e) => {
+      const files = Array.from(e.target.files);
+      files.forEach((f) => {
+        const previewUrl = URL.createObjectURL(f);
+        currentFotos.push({ blob: f, previewUrl });
+      });
+      renderPreviews();
+      e.target.value = "";
+    });
+
+    function renderPreviews() {
+      const c = document.getElementById("foto-preview");
+      c.innerHTML = currentFotos
+        .map((f, i) =>
+          f._removed
+            ? ""
+            : `
+      <div class="relative">
+        <img src="${
+          f.previewUrl || URL.createObjectURL(f.blob)
+        }" class="w-full h-20 object-cover rounded">
+        <button type="button" onclick="Eventos.removeFoto(${i})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">×</button>
+      </div>`
+        )
+        .join("");
+    }
+
+    // Marcar como removida; si era nueva, solo se quita; si era existente, se borra al guardar
+    function removeFoto(i) {
+      const f = currentFotos[i];
+      if (!f) return;
+      if (f.previewUrl) URL.revokeObjectURL(f.previewUrl);
+      f._removed = true;
       renderPreviews();
     }
-  }
-  function closeForm(){
-    document.getElementById("evento-modal").classList.add("hidden");
-    cleanupPreviewUrls();
-    currentFotos = [];
-    editOriginalFotoIds = [];
-    editId = null;
-  }
 
-  document.getElementById("evento-form").addEventListener("submit", async e => {
-    e.preventDefault();
+    // --- CRUD ---
+    function edit(id) {
+      openForm(id);
+    }
+    function remove(id) {
+      if (!confirm("¿Eliminar este evento?")) return;
+      const ev = eventos.find((e) => e.id === id);
+      if (ev?.fotoIds) ev.fotoIds.forEach(deleteImage);
+      eventos = eventos.filter((e) => e.id !== id);
+      localStorage.setItem(LS_KEY, JSON.stringify(eventos));
+      render();
+    }
 
-    // Construir nueva lista de fotoIds manteniendo las existentes no removidas
-    const fotoIds = [];
-    const keptExisting = new Set();
+    // ====== DETALLE ======
+    let detalle = { ev: null, urls: [], idx: 0 };
+    function cleanupCarouselUrls() {
+      if (detalle.urls?.length)
+        detalle.urls.forEach((u) => URL.revokeObjectURL(u));
+      detalle.urls = [];
+    }
 
-    for (const f of currentFotos) {
-      if (f._removed) continue;
+    async function view(id) {
+      const ev = eventos.find((e) => e.id === id);
+      if (!ev) return;
 
-      if (f.existingId) {
-        fotoIds.push(f.existingId);
-        keptExisting.add(f.existingId);
-      } else if (f.blob) {
-        const id = Date.now() + "-" + Math.random().toString(16).slice(2);
-        await saveImage(id, f.blob);
-        fotoIds.push(id);
+      cleanupCarouselUrls();
+      detalle = { ev, urls: [], idx: 0 };
+
+      if (ev.fotoIds?.length) {
+        for (const fid of ev.fotoIds) {
+          const blob = await getImage(fid);
+          if (blob) detalle.urls.push(URL.createObjectURL(blob));
+        }
       }
+
+      document.getElementById("detalle-title").textContent =
+        ev.titulo || "Detalle del Evento";
+      document.getElementById("detalle-titulo").textContent = ev.titulo || "";
+      document.getElementById("detalle-descripcion").textContent =
+        ev.descripcion || "";
+      document.getElementById("detalle-categoria").textContent =
+        ev.categoria || "";
+      document.getElementById("detalle-lugar").textContent = [
+        ev.lugar,
+        ev.colonia,
+      ]
+        .filter(Boolean)
+        .join(", ");
+      document.getElementById("detalle-hora").textContent = `${
+        ev.fechaInicio || ""
+      }${ev.fechaFin ? " – " + ev.fechaFin : ""} · ${ev.hora || ""}`;
+      document.getElementById("detalle-precio").textContent = ev.precio || "";
+      document.getElementById("detalle-recomendaciones").textContent =
+        ev.recomendaciones || "—";
+
+      const mapsBtn = document.getElementById("detalle-gmaps-btn");
+      if (ev.googleMaps) {
+        mapsBtn.href = ev.googleMaps;
+        mapsBtn.removeAttribute("disabled");
+      } else {
+        mapsBtn.href = "#";
+        mapsBtn.setAttribute("disabled", "true");
+      }
+
+      const hero = document.getElementById("carousel-image");
+      if (detalle.urls.length) {
+        hero.src = detalle.urls[0];
+        hero.alt = "Imagen 1";
+      } else {
+        hero.src = "";
+        hero.alt = "Sin imágenes";
+      }
+
+      renderThumbs();
+      document
+        .getElementById("evento-detalle-modal")
+        .classList.remove("hidden");
+      window.addEventListener("keydown", handleKeys);
     }
 
-    // Si es edición, borrar imágenes que fueron quitadas
-    if (editId && editOriginalFotoIds.length){
-      const removed = editOriginalFotoIds.filter(oldId => !keptExisting.has(oldId));
-      removed.forEach(deleteImage);
+    function renderThumbs() {
+      const c = document.getElementById("thumbs");
+      c.innerHTML = "";
+      detalle.urls.forEach((u, i) => {
+        const b = document.createElement("button");
+        b.className =
+          "w-28 h-20 rounded overflow-hidden border transition ring-0";
+        if (i === detalle.idx)
+          b.classList.add("border-orange-500", "ring-2", "ring-orange-500");
+        b.onclick = () => {
+          goFoto(i);
+        };
+        b.innerHTML = `<img src="${u}" class="w-full h-full object-cover">`;
+        c.appendChild(b);
+      });
+    }
+    function handleKeys(e) {
+      if (e.key === "Escape") closeDetalle();
+      if (e.key === "ArrowRight") nextFoto();
+      if (e.key === "ArrowLeft") prevFoto();
+    }
+    function goFoto(i) {
+      if (!detalle.urls.length) return;
+      detalle.idx = (i + detalle.urls.length) % detalle.urls.length;
+      document.getElementById("carousel-image").src = detalle.urls[detalle.idx];
+      renderThumbs();
+    }
+    function nextFoto() {
+      goFoto(detalle.idx + 1);
+    }
+    function prevFoto() {
+      goFoto(detalle.idx - 1);
+    }
+    function closeDetalle() {
+      document.getElementById("evento-detalle-modal").classList.add("hidden");
+      window.removeEventListener("keydown", handleKeys);
+      cleanupCarouselUrls();
     }
 
-    const data = {
-      id: editId || (eventos.length ? Math.max(...eventos.map(e=>e.id))+1 : 1),
-      titulo: titulo.value.trim(),
-      descripcion: descripcion.value.trim(),
-      fechaInicio: fechaInicio.value,
-      fechaFin: fechaFin.value,
-      hora: hora.value,
-      lugar: lugar.value,
-      colonia: colonia.value,
-      organizador: organizador.value,
-      contacto: contacto.value,
-      precio: precio.value,
-      categoria: categoria.value,
-      destacado: document.getElementById("destacado").checked,
-      googleMaps: document.getElementById("googleMaps").value.trim(),
-      recomendaciones: document.getElementById("recomendaciones").value.trim(),
-      fotoIds,
-      estado: "Pendiente"
+    // --- Expose ---
+    window.Eventos = {
+      openForm,
+      closeForm,
+      edit,
+      remove,
+      applyFilters,
+      clearFilters,
+      removeFoto,
+      view,
+      closeDetalle,
+      nextFoto,
+      prevFoto,
     };
 
-    if (editId) {
-      const i = eventos.findIndex(e => e.id===editId);
-      if (i!==-1) eventos[i]=data;
-    } else {
-      eventos.push(data);
+    // ====== Helpers de fecha y precio ======
+    function parseISO(d) {
+      return d ? new Date(d + "T00:00:00") : null;
     }
-    localStorage.setItem(LS_KEY, JSON.stringify(eventos));
-    await render();
-    closeForm();
-  });
+    function isFreePrecio(p) {
+      const v = (p || "").toString().trim().toLowerCase();
+      return v.includes("gratuito") || v === "0" || v === "$0";
+    }
 
-  // --- Fotos (form) ---
-  document.getElementById("fotos").addEventListener("change", e => {
-    const files = Array.from(e.target.files);
-    files.forEach(f => {
-      const previewUrl = URL.createObjectURL(f);
-      currentFotos.push({ blob:f, previewUrl });
-    });
-    renderPreviews();
-    e.target.value="";
-  });
+    // ====== KPIs ======
+    const KPIs = {
+      el: {
+        total: document.getElementById("kpi-evt-total"),
+        mes: document.getElementById("kpi-evt-mes"),
+        prox: document.getElementById("kpi-evt-prox"),
+        dest: document.getElementById("kpi-evt-dest"),
+        gratis: document.getElementById("kpi-evt-gratis"),
+      },
+      anim(el, to, ms = 450) {
+        if (!el) return;
+        const start = performance.now();
+        const from = 0;
+        const end = Number(to) || 0;
+        function frame(now) {
+          const t = Math.min(1, (now - start) / ms);
+          el.textContent = Math.round(from + (end - from) * t).toLocaleString(
+            "es-MX"
+          );
+          if (t < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      },
+      update(list) {
+        const today = new Date();
+        const y = today.getFullYear();
+        const m = today.getMonth();
+        const inThisMonth = list.filter((e) => {
+          const d = parseISO(e.fechaInicio);
+          return d && d.getFullYear() === y && d.getMonth() === m;
+        }).length;
 
-  function renderPreviews(){
-    const c = document.getElementById("foto-preview");
-    c.innerHTML = currentFotos
-      .map((f,i)=> f._removed ? "" : `
-      <div class="relative">
-        <img src="${f.previewUrl || URL.createObjectURL(f.blob)}" class="w-full h-20 object-cover rounded">
-        <button type="button" onclick="Eventos.removeFoto(${i})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">×</button>
-      </div>`).join("");
-  }
+        const next7 = list.filter((e) => {
+          const d = parseISO(e.fechaInicio);
+          if (!d) return false;
+          const diff = (d - today) / (1000 * 60 * 60 * 24);
+          return diff >= 0 && diff <= 7;
+        }).length;
 
-  // Marcar como removida; si era nueva, solo se quita; si era existente, se borra al guardar
-  function removeFoto(i){
-    const f = currentFotos[i];
-    if (!f) return;
-    if (f.previewUrl) URL.revokeObjectURL(f.previewUrl);
-    f._removed = true;
-    renderPreviews();
-  }
+        const destacados = list.filter((e) => !!e.destacado).length;
+        const gratis = list.filter((e) => isFreePrecio(e.precio)).length;
 
-  // --- CRUD ---
-  function edit(id){ openForm(id); }
-  function remove(id){
-    if (!confirm("¿Eliminar este evento?")) return;
-    const ev = eventos.find(e=>e.id===id);
-    if (ev?.fotoIds) ev.fotoIds.forEach(deleteImage);
-    eventos = eventos.filter(e=>e.id!==id);
-    localStorage.setItem(LS_KEY, JSON.stringify(eventos));
-    render();
-  }
+        this.anim(this.el.total, list.length);
+        this.anim(this.el.mes, inThisMonth);
+        this.anim(this.el.prox, next7);
+        this.anim(this.el.dest, destacados);
+        this.anim(this.el.gratis, gratis);
+      },
+    };
 
-  // ====== DETALLE ======
-  let detalle = { ev:null, urls:[], idx:0 };
-  function cleanupCarouselUrls(){ if (detalle.urls?.length) detalle.urls.forEach(u=>URL.revokeObjectURL(u)); detalle.urls=[]; }
+    // ====== Filtros ======
+    function getFiltered() {
+      const cat = document.getElementById("filterCategoria").value;
+      const org = document.getElementById("filterOrganizador").value;
+      const mes = document.getElementById("filterMes").value; // "01".."12"
+      const est = document.getElementById("filterEstado").value; // Pendiente/Finalizado
 
-  async function view(id){
-    const ev = eventos.find(e=>e.id===id);
-    if (!ev) return;
+      return eventos.filter((ev) => {
+        if (cat && ev.categoria !== cat) return false;
+        if (org && ev.organizador !== org) return false;
 
-    cleanupCarouselUrls();
-    detalle = { ev, urls:[], idx:0 };
+        if (mes) {
+          const d = parseISO(ev.fechaInicio);
+          if (!(d && String(d.getMonth() + 1).padStart(2, "0") === mes))
+            return false;
+        }
 
-    if (ev.fotoIds?.length){
-      for (const fid of ev.fotoIds){
-        const blob = await getImage(fid);
-        if (blob) detalle.urls.push(URL.createObjectURL(blob));
+        if (est && (ev.estado || "Pendiente") !== est) return false;
+        return true;
+      });
+    }
+
+    function applyFilters() {
+      const list = getFiltered();
+      render(list); // render con lista filtrada
+    }
+    function clearFilters() {
+      document.getElementById("filterCategoria").value = "";
+      document.getElementById("filterOrganizador").value = "";
+      document.getElementById("filterMes").value = "";
+      document.getElementById("filterEstado").value = "";
+      render(eventos);
+    }
+
+    // (opcional) llenar combo de organizadores desde los registros
+    function populateOrganizadores() {
+      const sel = document.getElementById("filterOrganizador");
+      if (!sel) return;
+      const current = sel.value;
+      const opts = ['<option value="">Todos los organizadores</option>'];
+      const names = Array.from(
+        new Set(eventos.map((e) => e.organizador).filter(Boolean))
+      ).sort();
+      names.forEach((n) => opts.push(`<option value="${n}">${n}</option>`));
+      sel.innerHTML = opts.join("");
+      if (names.includes(current)) sel.value = current;
+    }
+
+    // ====== render(): aceptar lista opcional ======
+    async function render(list) {
+      const body = document.getElementById("eventos-body");
+      if (!body) return;
+      const rows = Array.isArray(list) ? list : eventos;
+      body.innerHTML = "";
+
+      for (const ev of rows) {
+        let thumbHtml = "";
+        if (ev.fotoIds?.length) {
+          const blob = await getImage(ev.fotoIds[0]);
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            thumbHtml = `<img src="${url}" class="w-12 h-12 object-cover rounded">`;
+          }
+        }
+
+        body.innerHTML += `
+      <tr class="border-t hover:bg-gray-50 cursor-pointer" onclick="Eventos.view(${
+        ev.id
+      })">
+        <td class="px-4 py-3">
+          <div class="font-semibold">${ev.titulo}</div>
+          <div class="text-gray-500 text-xs line-clamp-2">${
+            ev.descripcion || ""
+          }</div>
+          ${
+            ev.destacado
+              ? `<span class="inline-block mt-1 bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded">Destacado</span>`
+              : ""
+          }
+        </td>
+        <td class="px-4 py-3">${ev.fechaInicio || ""}${
+          ev.fechaFin ? " - " + ev.fechaFin : ""
+        }<br><span class="text-gray-500 text-xs">${ev.hora || ""}</span></td>
+        <td class="px-4 py-3">${ev.lugar || ""}</td>
+        <td class="px-4 py-3">${ev.organizador || ""}</td>
+        <td class="px-4 py-3">${ev.categoria || ""}</td>
+        <td class="px-4 py-3 flex items-center gap-2" onclick="event.stopPropagation()">
+          <button onclick="event.stopPropagation(); Eventos.edit(${
+            ev.id
+          })" class="text-yellow-600 hover:text-yellow-700" title="Editar"><i class="fas fa-edit"></i></button>
+          <button onclick="event.stopPropagation(); Eventos.remove(${
+            ev.id
+          })" class="text-red-600 hover:text-red-700" title="Eliminar"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>`;
       }
+
+      // KPIs con la misma lista mostrada
+      KPIs.update(rows);
     }
 
-    document.getElementById("detalle-title").textContent = ev.titulo || "Detalle del Evento";
-    document.getElementById("detalle-titulo").textContent = ev.titulo || "";
-    document.getElementById("detalle-descripcion").textContent = ev.descripcion || "";
-    document.getElementById("detalle-categoria").textContent = ev.categoria || "";
-    document.getElementById("detalle-lugar").textContent = [ev.lugar, ev.colonia].filter(Boolean).join(", ");
-    document.getElementById("detalle-hora").textContent = `${ev.fechaInicio || ""}${ev.fechaFin ? " – "+ev.fechaFin : ""} · ${ev.hora || ""}`;
-    document.getElementById("detalle-precio").textContent = ev.precio || "";
-    document.getElementById("detalle-recomendaciones").textContent = ev.recomendaciones || "—";
+    // ====== Integra con tu objeto expuesto ======
+    window.Eventos = {
+      ...(window.Eventos || {}),
+      applyFilters,
+      clearFilters,
+    };
 
-    const mapsBtn = document.getElementById("detalle-gmaps-btn");
-    if (ev.googleMaps) { mapsBtn.href = ev.googleMaps; mapsBtn.removeAttribute("disabled"); }
-    else { mapsBtn.href="#"; mapsBtn.setAttribute("disabled","true"); }
-
-    const hero = document.getElementById("carousel-image");
-    if (detalle.urls.length){ hero.src = detalle.urls[0]; hero.alt = "Imagen 1"; }
-    else { hero.src=""; hero.alt="Sin imágenes"; }
-
-    renderThumbs();
-    document.getElementById("evento-detalle-modal").classList.remove("hidden");
-    window.addEventListener("keydown", handleKeys);
-  }
-
-  function renderThumbs(){
-    const c = document.getElementById("thumbs");
-    c.innerHTML = "";
-    detalle.urls.forEach((u,i)=>{
-      const b = document.createElement("button");
-      b.className = "w-28 h-20 rounded overflow-hidden border transition ring-0";
-      if (i===detalle.idx) b.classList.add("border-orange-500","ring-2","ring-orange-500");
-      b.onclick = ()=> { goFoto(i); };
-      b.innerHTML = `<img src="${u}" class="w-full h-full object-cover">`;
-      c.appendChild(b);
-    });
-  }
-  function handleKeys(e){ if (e.key==="Escape") closeDetalle(); if (e.key==="ArrowRight") nextFoto(); if (e.key==="ArrowLeft") prevFoto(); }
-  function goFoto(i){ if (!detalle.urls.length) return; detalle.idx = (i+detalle.urls.length)%detalle.urls.length; document.getElementById("carousel-image").src = detalle.urls[detalle.idx]; renderThumbs(); }
-  function nextFoto(){ goFoto(detalle.idx+1); }
-  function prevFoto(){ goFoto(detalle.idx-1); }
-  function closeDetalle(){
-    document.getElementById("evento-detalle-modal").classList.add("hidden");
-    window.removeEventListener("keydown", handleKeys);
-    cleanupCarouselUrls();
-  }
-
-  // --- Expose ---
-  window.Eventos = {
-    openForm, closeForm, edit, remove, applyFilters, clearFilters,
-    removeFoto, view, closeDetalle, nextFoto, prevFoto
-  };
-})();
+    // Llama a esto cuando cargue la página y también tras guardar/eliminar:
+    populateOrganizadores();
+    render(eventos); // primera pintura + KPIs
+  })();
 </script>
