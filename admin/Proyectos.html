@@ -507,7 +507,88 @@
     &#10095;
   </button>
 </div>
+<script>
+  // ===== Lightbox state & helpers =====
+    let lightboxState = { etapaId: null, urls: [], index: 0 };
 
+    async function openEtapaLightbox(etapaId, startIndex = 0) {
+      if (!db) db = await idbOpen();
+      // Pull all photos for this etapa
+      const recs = await idbGetPhotos(etapaId);
+      const urls = recs.map((r) => URL.createObjectURL(r.blob));
+      if (!urls.length) return;
+
+      lightboxState = {
+        etapaId,
+        urls,
+        index: Math.max(0, Math.min(startIndex, urls.length - 1)),
+      };
+
+      document.getElementById("photo-lightbox").classList.remove("hidden");
+      updateLightbox();
+    }
+
+    function updateLightbox() {
+      const img = document.getElementById("lightbox-image");
+      img.src = lightboxState.urls[lightboxState.index];
+
+      // Hide arrows on edges
+      document
+        .getElementById("lightbox-prev")
+        .classList.toggle("hidden", lightboxState.index === 0);
+      document
+        .getElementById("lightbox-next")
+        .classList.toggle(
+          "hidden",
+          lightboxState.index === lightboxState.urls.length - 1
+        );
+    }
+
+    function closeLightbox() {
+      const box = document.getElementById("photo-lightbox");
+      if (box.classList.contains("hidden")) return;
+      box.classList.add("hidden");
+      // Revoke created object URLs to free memory
+      lightboxState.urls.forEach((u) => URL.revokeObjectURL(u));
+      lightboxState = { etapaId: null, urls: [], index: 0 };
+    }
+
+    function stepLightbox(delta) {
+      if (!lightboxState.urls.length) return;
+      const next = Math.max(
+        0,
+        Math.min(lightboxState.index + delta, lightboxState.urls.length - 1)
+      );
+      if (next === lightboxState.index) return;
+      lightboxState.index = next;
+      updateLightbox();
+    }
+
+    // Wire lightbox controls once during setup
+    function setupLightboxControls() {
+      const box = document.getElementById("photo-lightbox");
+      document
+        .getElementById("lightbox-close")
+        .addEventListener("click", closeLightbox);
+      document
+        .getElementById("lightbox-prev")
+        .addEventListener("click", () => stepLightbox(-1));
+      document
+        .getElementById("lightbox-next")
+        .addEventListener("click", () => stepLightbox(1));
+      // Click on backdrop closes
+      box.addEventListener("click", (e) => {
+        if (e.target === box) closeLightbox();
+      });
+      // Keyboard: Esc, ←, →
+      document.addEventListener("keydown", (e) => {
+        if (box.classList.contains("hidden")) return;
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowLeft") stepLightbox(-1);
+        if (e.key === "ArrowRight") stepLightbox(1);
+      });
+    }
+</script>
 <script>
   (function () {
     "use strict";
@@ -1716,86 +1797,4 @@
       a.remove();
     }
   })();
-</script>
-<script>
-  // ===== Lightbox state & helpers =====
-    let lightboxState = { etapaId: null, urls: [], index: 0 };
-
-    async function openEtapaLightbox(etapaId, startIndex = 0) {
-      if (!db) db = await idbOpen();
-      // Pull all photos for this etapa
-      const recs = await idbGetPhotos(etapaId);
-      const urls = recs.map((r) => URL.createObjectURL(r.blob));
-      if (!urls.length) return;
-
-      lightboxState = {
-        etapaId,
-        urls,
-        index: Math.max(0, Math.min(startIndex, urls.length - 1)),
-      };
-
-      document.getElementById("photo-lightbox").classList.remove("hidden");
-      updateLightbox();
-    }
-
-    function updateLightbox() {
-      const img = document.getElementById("lightbox-image");
-      img.src = lightboxState.urls[lightboxState.index];
-
-      // Hide arrows on edges
-      document
-        .getElementById("lightbox-prev")
-        .classList.toggle("hidden", lightboxState.index === 0);
-      document
-        .getElementById("lightbox-next")
-        .classList.toggle(
-          "hidden",
-          lightboxState.index === lightboxState.urls.length - 1
-        );
-    }
-
-    function closeLightbox() {
-      const box = document.getElementById("photo-lightbox");
-      if (box.classList.contains("hidden")) return;
-      box.classList.add("hidden");
-      // Revoke created object URLs to free memory
-      lightboxState.urls.forEach((u) => URL.revokeObjectURL(u));
-      lightboxState = { etapaId: null, urls: [], index: 0 };
-    }
-
-    function stepLightbox(delta) {
-      if (!lightboxState.urls.length) return;
-      const next = Math.max(
-        0,
-        Math.min(lightboxState.index + delta, lightboxState.urls.length - 1)
-      );
-      if (next === lightboxState.index) return;
-      lightboxState.index = next;
-      updateLightbox();
-    }
-
-    // Wire lightbox controls once during setup
-    function setupLightboxControls() {
-      const box = document.getElementById("photo-lightbox");
-      document
-        .getElementById("lightbox-close")
-        .addEventListener("click", closeLightbox);
-      document
-        .getElementById("lightbox-prev")
-        .addEventListener("click", () => stepLightbox(-1));
-      document
-        .getElementById("lightbox-next")
-        .addEventListener("click", () => stepLightbox(1));
-      // Click on backdrop closes
-      box.addEventListener("click", (e) => {
-        if (e.target === box) closeLightbox();
-      });
-      // Keyboard: Esc, ←, →
-      document.addEventListener("keydown", (e) => {
-        if (box.classList.contains("hidden")) return;
-        if (e.key === "Escape") closeLightbox();
-        if (e.key === "ArrowLeft") stepLightbox(-1);
-        if (e.key === "ArrowRight") stepLightbox(1);
-      });
-    }
 </script>
