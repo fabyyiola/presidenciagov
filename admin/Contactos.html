@@ -1,7 +1,4 @@
-<section
-  id="EmergencyContactsAdmin"
-  data-bound="0"
->
+<section id="EmergencyContactsAdmin" data-bound="0">
   <!-- Top Controls -->
   <div class="mb-8">
     <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-6">
@@ -21,93 +18,93 @@
           <i class="fas fa-plus mr-2"></i>
           Agregar Contacto
         </button>
-        
-       
-        <!-- (opcional) Botón para preview público -->
-        <!-- <button id="contacts-preview-btn" class="bg-white text-gray-800 px-4 py-2 rounded-lg border hover:bg-gray-50 transition">Vista pública</button> -->
       </div>
     </div>
   </div>
 
-
-    <!-- Search and Filters -->
-    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-      <div class="flex flex-col lg:flex-row gap-4 mb-4">
-        <div class="flex-1">
-          <label for="contacts-search" class="sr-only">Buscar contactos</label>
-          <div class="relative">
-            <i
-              class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            ></i>
-            <input
-              type="text"
-              id="contacts-search"
-              placeholder="Buscar contactos... (presiona / para enfocar)"
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            />
-          </div>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <select
-            id="contacts-filter-categoria"
-            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          >
-            <option value="">Todas las categorías</option>
-            <option value="Emergencias Médicas">Emergencias Médicas</option>
-            <option value="Seguridad Pública">Seguridad Pública</option>
-            <option value="Bomberos">Bomberos</option>
-            <option value="Protección Civil">Protección Civil</option>
-            <option value="Servicios Públicos">Servicios Públicos</option>
-            <option value="Gobierno Municipal">Gobierno Municipal</option>
-            <option value="Otros Servicios">Otros Servicios</option>
-          </select>
-          <select
-            id="contacts-filter-disponibilidad"
-            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          >
-            <option value="">Toda disponibilidad</option>
-            <option value="24/7">24 horas</option>
-            <option value="Horario Laboral">Horario laboral</option>
-            <option value="Emergencias">Solo emergencias</option>
-          </select>
-          <select
-            id="contacts-filter-activo"
-            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          >
-            <option value="">Todos los estados</option>
-            <option value="true">Activos</option>
-            <option value="false">Inactivos</option>
-          </select>
+  <!-- Search and Filters -->
+  <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+    <div class="flex flex-col lg:flex-row gap-4 mb-4">
+      <div class="flex-1">
+        <label for="contacts-search" class="sr-only">Buscar contactos</label>
+        <div class="relative">
+          <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+          <input
+            type="text"
+            id="contacts-search"
+            placeholder="Buscar contactos... (presiona / para enfocar)"
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          />
         </div>
       </div>
-      <div id="contacts-filter-chips" class="flex flex-wrap gap-2"></div>
+      <div class="flex flex-wrap gap-2">
+        <select
+          id="contacts-filter-categoria"
+          class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+        >
+          <option value="">Todas las categorías</option>
+          <option value="Emergencias Médicas">Emergencias Médicas</option>
+          <option value="Seguridad Pública">Seguridad Pública</option>
+          <option value="Bomberos">Bomberos</option>
+          <option value="Protección Civil">Protección Civil</option>
+          <option value="Servicios Públicos">Servicios Públicos</option>
+          <option value="Gobierno Municipal">Gobierno Municipal</option>
+          <option value="Otros Servicios">Otros Servicios</option>
+        </select>
+        <select
+          id="contacts-filter-disponibilidad"
+          class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+        >
+          <option value="">Toda disponibilidad</option>
+          <option value="24/7">24 horas</option>
+          <option value="Horario Laboral">Horario laboral</option>
+          <option value="Emergencias">Solo emergencias</option>
+        </select>
+        <select
+          id="contacts-filter-activo"
+          class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+        >
+          <option value="">Todos los estados</option>
+          <option value="true">Activos</option>
+          <option value="false">Inactivos</option>
+        </select>
+      </div>
     </div>
-  <!-- Contacts Grid -->
-  <div
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
-    id="contacts-grid"
-  ></div>
+    <div id="contacts-filter-chips" class="flex flex-wrap gap-2"></div>
+  </div>
 
-  <!-- Empty State -->
-  <div id="contacts-empty-state" class="text-center py-12 hidden">
-    <div
-      class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
-    >
-      <i class="fas fa-phone text-gray-400 text-2xl"></i>
+  <!-- Contacts Table -->
+  <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono(s)</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disponibilidad</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prioridad</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activo</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inicio</th>
+            <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="contacts-table-body" class="bg-white divide-y divide-gray-200"></tbody>
+      </table>
     </div>
-    <h3 class="text-lg font-medium text-gray-800 mb-2">
-      No hay contactos registrados
-    </h3>
-    <p class="text-gray-600 mb-4">
-      Comienza agregando los primeros contactos de emergencia.
-    </p>
-    <button
-      id="contacts-empty-add-btn"
-      class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200"
-    >
-      <i class="fas fa-plus mr-2"></i>
-      Agregar Contacto
-    </button>
+
+    <!-- Empty State -->
+    <div id="contacts-empty-state" class="text-center py-12 hidden">
+      <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-phone text-gray-400 text-2xl"></i>
+      </div>
+      <h3 class="text-lg font-medium text-gray-800 mb-2">No hay contactos registrados</h3>
+      <p class="text-gray-600 mb-4">Comienza agregando los primeros contactos de emergencia.</p>
+      <button id="contacts-empty-add-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200">
+        <i class="fas fa-plus mr-2"></i>
+        Agregar Contacto
+      </button>
+    </div>
   </div>
 
   <!-- Form Modal -->
@@ -115,21 +112,11 @@
     id="contacts-modal"
     class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4"
   >
-    <div
-      class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-    >
+    <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
       <div class="p-6 border-b border-gray-200">
         <div class="flex justify-between items-center">
-          <h3
-            id="contacts-modal-title"
-            class="text-2xl font-bold text-gray-800"
-          >
-            Nuevo Contacto
-          </h3>
-          <button
-            id="contacts-modal-close"
-            class="text-gray-400 hover:text-gray-600 transition-colors duration-200"
-          >
+          <h3 id="contacts-modal-title" class="text-2xl font-bold text-gray-800">Nuevo Contacto</h3>
+          <button id="contacts-modal-close" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
             <i class="fas fa-times text-xl"></i>
           </button>
         </div>
@@ -138,30 +125,13 @@
       <form id="contacts-form" class="p-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <div class="lg:col-span-2">
-            <label
-              for="contacts-form-nombre"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Nombre del Servicio *</label
-            >
-            <input
-              type="text"
-              id="contacts-form-nombre"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            />
+            <label for="contacts-form-nombre" class="block text-sm font-medium text-gray-700 mb-2">Nombre del Servicio *</label>
+            <input type="text" id="contacts-form-nombre" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"/>
           </div>
 
           <div>
-            <label
-              for="contacts-form-categoria"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Categoría *</label
-            >
-            <select
-              id="contacts-form-categoria"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            >
+            <label for="contacts-form-categoria" class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
+            <select id="contacts-form-categoria" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
               <option value="">Seleccionar categoría</option>
               <option value="Emergencias Médicas">Emergencias Médicas</option>
               <option value="Seguridad Pública">Seguridad Pública</option>
@@ -174,43 +144,18 @@
           </div>
 
           <div>
-            <label
-              for="contacts-form-telefono"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Número Telefónico *</label
-            >
-            <input
-              type="tel"
-              id="contacts-form-telefono"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            />
+            <label for="contacts-form-telefono" class="block text-sm font-medium text-gray-700 mb-2">Número Telefónico *</label>
+            <input type="tel" id="contacts-form-telefono" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"/>
           </div>
 
           <div>
-            <label
-              for="contacts-form-telefono-alt"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Teléfono Alternativo</label
-            >
-            <input
-              type="tel"
-              id="contacts-form-telefono-alt"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            />
+            <label for="contacts-form-telefono-alt" class="block text-sm font-medium text-gray-700 mb-2">Teléfono Alternativo</label>
+            <input type="tel" id="contacts-form-telefono-alt" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"/>
           </div>
 
           <div>
-            <label
-              for="contacts-form-disponibilidad"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Disponibilidad *</label
-            >
-            <select
-              id="contacts-form-disponibilidad"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            >
+            <label for="contacts-form-disponibilidad" class="block text-sm font-medium text-gray-700 mb-2">Disponibilidad *</label>
+            <select id="contacts-form-disponibilidad" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
               <option value="24/7">24 horas / 7 días</option>
               <option value="Horario Laboral">Horario laboral</option>
               <option value="Emergencias">Solo emergencias</option>
@@ -218,16 +163,8 @@
           </div>
 
           <div>
-            <label
-              for="contacts-form-prioridad"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Prioridad *</label
-            >
-            <select
-              id="contacts-form-prioridad"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            >
+            <label for="contacts-form-prioridad" class="block text-sm font-medium text-gray-700 mb-2">Prioridad *</label>
+            <select id="contacts-form-prioridad" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
               <option value="1">Alta (Emergencias críticas)</option>
               <option value="2">Media (Servicios importantes)</option>
               <option value="3">Baja (Información general)</option>
@@ -235,1195 +172,368 @@
           </div>
 
           <div class="lg:col-span-2">
-            <label
-              for="contacts-form-descripcion"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Descripción</label
-            >
-            <textarea
-              id="contacts-form-descripcion"
-              rows="3"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              placeholder="Descripción del servicio y cuándo contactar"
-            ></textarea>
+            <label for="contacts-form-descripcion" class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+            <textarea id="contacts-form-descripcion" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="Descripción del servicio y cuándo contactar"></textarea>
           </div>
 
           <div>
-            <label
-              for="contacts-form-direccion"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Dirección</label
-            >
-            <input
-              type="text"
-              id="contacts-form-direccion"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            />
+            <label for="contacts-form-direccion" class="block text-sm font-medium text-gray-700 mb-2">Dirección</label>
+            <input type="text" id="contacts-form-direccion" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"/>
           </div>
 
           <div>
-            <label
-              for="contacts-form-email"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Email</label
-            >
-            <input
-              type="email"
-              id="contacts-form-email"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            />
+            <label for="contacts-form-email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <input type="email" id="contacts-form-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"/>
           </div>
 
           <div class="lg:col-span-2">
             <label class="flex items-center">
-              <input
-                type="checkbox"
-                id="contacts-form-activo"
-                checked
-                class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
-              />
-              <span class="ml-2 text-sm text-gray-700"
-                >Contacto activo (visible en página pública)</span
-              >
+              <input type="checkbox" id="contacts-form-activo" checked class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"/>
+              <span class="ml-2 text-sm text-gray-700">Contacto activo (visible en página pública)</span>
             </label>
           </div>
 
           <div class="lg:col-span-2">
             <label class="flex items-center">
-              <input
-                type="checkbox"
-                id="contacts-form-show-home"
-                class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
-              />
-              <span class="ml-2 text-sm text-gray-700"
-                >Mostrar en página de inicio</span
-              >
+              <input type="checkbox" id="contacts-form-show-home" class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"/>
+              <span class="ml-2 text-sm text-gray-700">Mostrar en página de inicio</span>
             </label>
           </div>
         </div>
 
         <div class="flex justify-end space-x-4">
-          <button
-            type="button"
-            id="contacts-form-cancel"
-            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-          >
-            Cancelar
+          <button type="button" id="contacts-form-cancel" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200">Cancelar</button>
+          <button type="button" id="contacts-form-delete" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 hidden">
+            <i class="fas fa-trash mr-2"></i>Eliminar
           </button>
-          <button
-            type="button"
-            id="contacts-form-delete"
-            class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 hidden"
-          >
-            <i class="fas fa-trash mr-2"></i>
-            Eliminar
-          </button>
-          <button
-            type="submit"
-            id="contacts-form-submit"
-            class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
-          >
-            <i class="fas fa-save mr-2"></i>
-            Guardar
+          <button type="submit" id="contacts-form-submit" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200">
+            <i class="fas fa-save mr-2"></i>Guardar
           </button>
         </div>
       </form>
     </div>
   </div>
-
-  <!-- Import Modal -->
-  <div
-    id="contacts-import-modal"
-    class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4"
-  >
-    <div class="bg-white rounded-xl max-w-md w-full">
-      <div class="p-6 border-b border-gray-200">
-        <h3 class="text-xl font-bold text-gray-800">Importar Contactos</h3>
-      </div>
-      <div class="p-6">
-        <input
-          type="file"
-          id="contacts-import-file"
-          accept=".json"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent mb-4"
-        />
-        <div class="flex justify-end space-x-4">
-          <button
-            id="contacts-import-cancel"
-            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-          >
-            Cancelar
-          </button>
-          <button
-            id="contacts-import-confirm"
-            class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duración-200"
-          >
-            Importar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Public Preview Modal -->
-  <div
-    id="contacts-preview-modal"
-    class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4"
-  >
-    <div
-      class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-    >
-      <div class="p-6 border-b border-gray-200">
-        <div class="flex justify-between items-center">
-          <h3 class="text-2xl font-bold text-gray-800">
-            Vista Pública - Contactos de Emergencia
-          </h3>
-          <button
-            id="contacts-preview-close"
-            class="text-gray-400 hover:text-gray-600 transition-colors duration-200"
-          >
-            <i class="fas fa-times text-xl"></i>
-          </button>
-        </div>
-      </div>
-      <div id="contacts-preview-content" class="p-6"></div>
-    </div>
-  </div>
-
-  <script>
-    (function () {
-      "use strict";
-
-      // Storage key
-      const STORAGE_KEY = "municipio.contactos.emergencia.v1";
-
-      // Global state
-      let contactos = [];
-      let filteredContactos = [];
-      let currentEditId = null;
-
-      // --- Idempotent init (works in SPA) ---
-      function init() {
-        const root = document.getElementById("EmergencyContactsAdmin");
-        if (!root) return;
-        if (root.dataset.bound === "1") return; // avoid double-binding when re-injected
-        root.dataset.bound = "1";
-
-        loadContactos();
-        setupEventListeners();
-        setupKeyboardShortcuts();
-
-        // initialize filtered list, render & KPIs
-        filteredContactos = [...contactos];
-        renderContactos();
-        updateKPIs();
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init);
-      } else {
-        // If this HTML is injected after DOMContentLoaded (SPA), run immediately
-        init();
-      }
-
-      // Data persistence
-      function saveContactos() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(contactos));
-      }
-
-      function loadContactos() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          contactos = JSON.parse(stored);
-        } else {
-          // Sample data
-          contactos = [
-            {
-              id: "1",
-              nombre: "Cruz Roja Mexicana",
-              categoria: "Emergencias Médicas",
-              telefono: "911",
-              telefonoAlt: "065",
-              disponibilidad: "24/7",
-              prioridad: 1,
-              descripcion:
-                "Atención médica de emergencia, ambulancias y primeros auxilios",
-              direccion: "Av. Principal #123, Centro",
-              email: "emergencias@cruzroja.org.mx",
-              activo: true,
-              fechaCreacion: "2024-01-15",
-              showInHome: true,
-            },
-            {
-              id: "2",
-              nombre: "Policía Municipal",
-              categoria: "Seguridad Pública",
-              telefono: "911",
-              telefonoAlt: "(555) 123-4567",
-              disponibilidad: "24/7",
-              prioridad: 1,
-              descripcion:
-                "Seguridad pública, emergencias y denuncia de delitos",
-              direccion: "Comandancia Municipal, Col. Centro",
-              email: "policia@municipio.gob.mx",
-              activo: true,
-              fechaCreacion: "2024-01-15",
-              showInHome: true,
-            },
-            {
-              id: "3",
-              nombre: "Bomberos",
-              categoria: "Bomberos",
-              telefono: "911",
-              telefonoAlt: "(555) 234-5678",
-              disponibilidad: "24/7",
-              prioridad: 1,
-              descripcion:
-                "Combate de incendios, rescates y emergencias químicas",
-              direccion: "Estación Central de Bomberos",
-              email: "bomberos@municipio.gob.mx",
-              activo: true,
-              fechaCreacion: "2024-01-15",
-              showInHome: false,
-            },
-            {
-              id: "4",
-              nombre: "Protección Civil",
-              categoria: "Protección Civil",
-              telefono: "(555) 345-6789",
-              telefonoAlt: "",
-              disponibilidad: "24/7",
-              prioridad: 1,
-              descripcion: "Prevención y atención de desastres naturales",
-              direccion: "Coordinación Municipal de Protección Civil",
-              email: "proteccioncivil@municipio.gob.mx",
-              activo: true,
-              fechaCreacion: "2024-01-15",
-              showInHome: true,
-            },
-            {
-              id: "5",
-              nombre: "Servicios Públicos",
-              categoria: "Servicios Públicos",
-              telefono: "(555) 456-7890",
-              telefonoAlt: "",
-              disponibilidad: "Horario Laboral",
-              prioridad: 2,
-              descripcion:
-                "Reportes de fallas en agua, luz, drenaje y recolección de basura",
-              direccion: "Dirección de Servicios Públicos",
-              email: "servicios@municipio.gob.mx",
-              activo: true,
-              fechaCreacion: "2024-01-15",
-              showInHome: false,
-            },
-            {
-              id: "6",
-              nombre: "Presidencia Municipal",
-              categoria: "Gobierno Municipal",
-              telefono: "(555) 567-8901",
-              telefonoAlt: "",
-              disponibilidad: "Horario Laboral",
-              prioridad: 3,
-              descripcion: "Información general y trámites municipales",
-              direccion: "Palacio Municipal",
-              email: "presidencia@municipio.gob.mx",
-              activo: true,
-              fechaCreacion: "2024-01-15",
-              showInHome: true,
-            },
-          ];
-          saveContactos();
-        }
-      }
-
-      // Event listeners
-      function setupEventListeners() {
-        // Top buttons
-        document
-          .getElementById("contacts-add-btn")
-          .addEventListener("click", () => openModal());
-
-        // (fix) Preview button puede no existir en el DOM
-        const previewBtn = document.getElementById("contacts-preview-btn");
-        if (previewBtn) {
-          previewBtn.addEventListener("click", () => openPreviewModal());
-        }
-
-        // Empty state add button
-        const emptyAdd = document.getElementById("contacts-empty-add-btn");
-        if (emptyAdd) emptyAdd.addEventListener("click", () => openModal());
-
-        // Search and filters
-        document
-          .getElementById("contacts-search")
-          .addEventListener("input", filterContactos);
-        document
-          .getElementById("contacts-filter-categoria")
-          .addEventListener("change", filterContactos);
-        document
-          .getElementById("contacts-filter-disponibilidad")
-          .addEventListener("change", filterContactos);
-        document
-          .getElementById("contacts-filter-activo")
-          .addEventListener("change", filterContactos);
-
-        // Modal
-        document
-          .getElementById("contacts-modal-close")
-          .addEventListener("click", closeModal);
-        document
-          .getElementById("contacts-form-cancel")
-          .addEventListener("click", closeModal);
-        document
-          .getElementById("contacts-form")
-          .addEventListener("submit", saveContacto);
-        document
-          .getElementById("contacts-form-delete")
-          .addEventListener("click", deleteContacto);
-
-        // Import modal
-        document
-          .getElementById("contacts-import-cancel")
-          .addEventListener("click", closeImportModal);
-        document
-          .getElementById("contacts-import-confirm")
-          .addEventListener("click", importJSON);
-
-        // Preview modal
-        document
-          .getElementById("contacts-preview-close")
-          .addEventListener("click", closePreviewModal);
-
-        // Click outside to close
-        document
-          .getElementById("contacts-modal")
-          .addEventListener("click", (e) => {
-            if (e.target.id === "contacts-modal") closeModal();
-          });
-        document
-          .getElementById("contacts-import-modal")
-          .addEventListener("click", (e) => {
-            if (e.target.id === "contacts-import-modal") closeImportModal();
-          });
-        document
-          .getElementById("contacts-preview-modal")
-          .addEventListener("click", (e) => {
-            if (e.target.id === "contacts-preview-modal") closePreviewModal();
-          });
-      }
-
-      // Keyboard shortcuts
-      function setupKeyboardShortcuts() {
-        document.addEventListener("keydown", (e) => {
-          // Ignore when typing in inputs
-          if (["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) {
-            if (e.key === "Escape") e.target.blur();
-            return;
-          }
-
-          switch (e.key) {
-            case "/":
-              e.preventDefault();
-              document.getElementById("contacts-search").focus();
-              break;
-            case "n":
-              if (!e.ctrlKey && !e.metaKey) {
-                e.preventDefault();
-                openModal();
-              }
-              break;
-            case "p":
-              if (!e.ctrlKey && !e.metaKey) {
-                e.preventDefault();
-                openPreviewModal();
-              }
-              break;
-            case "Escape":
-              closeModal();
-              closeImportModal();
-              closePreviewModal();
-              break;
-          }
-        });
-
-        // Save shortcut in modal
-        document
-          .getElementById("contacts-modal")
-          .addEventListener("keydown", (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === "s") {
-              e.preventDefault();
-              document
-                .getElementById("contacts-form")
-                .dispatchEvent(new Event("submit"));
-            }
-          });
-      }
-
-      // Filtering
-      function filterContactos() {
-        const search = document
-          .getElementById("contacts-search")
-          .value.toLowerCase();
-        const categoria = document.getElementById(
-          "contacts-filter-categoria"
-        ).value;
-        const disponibilidad = document.getElementById(
-          "contacts-filter-disponibilidad"
-        ).value;
-        const activo = document.getElementById("contacts-filter-activo").value;
-
-        filteredContactos = contactos.filter((contacto) => {
-          if (
-            search &&
-            !(
-              (contacto.nombre &&
-                contacto.nombre.toLowerCase().includes(search)) ||
-              (contacto.descripcion &&
-                contacto.descripcion.toLowerCase().includes(search)) ||
-              (contacto.telefono && String(contacto.telefono).includes(search))
-            )
-          )
-            return false;
-          if (categoria && contacto.categoria !== categoria) return false;
-          if (disponibilidad && contacto.disponibilidad !== disponibilidad)
-            return false;
-          if (activo !== "" && contacto.activo.toString() !== activo)
-            return false;
-          return true;
-        });
-
-        renderContactos();
-        updateFilterChips();
-      }
-
-      function updateFilterChips() {
-        const container = document.getElementById("contacts-filter-chips");
-        const chips = [];
-
-        const search = document.getElementById("contacts-search").value;
-        const categoria = document.getElementById(
-          "contacts-filter-categoria"
-        ).value;
-        const disponibilidad = document.getElementById(
-          "contacts-filter-disponibilidad"
-        ).value;
-        const activo = document.getElementById("contacts-filter-activo").value;
-
-        if (search)
-          chips.push({
-            type: "search",
-            value: search,
-            label: `Búsqueda: ${search}`,
-          });
-        if (categoria)
-          chips.push({
-            type: "categoria",
-            value: categoria,
-            label: `Categoría: ${categoria}`,
-          });
-        if (disponibilidad)
-          chips.push({
-            type: "disponibilidad",
-            value: disponibilidad,
-            label: `Disponibilidad: ${disponibilidad}`,
-          });
-        if (activo !== "")
-          chips.push({
-            type: "activo",
-            value: activo,
-            label: `Estado: ${activo === "true" ? "Activos" : "Inactivos"}`,
-          });
-
-        container.innerHTML = chips
-          .map(
-            (chip) => `
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-red-100 text-red-800">
-            ${chip.label}
-            <button onclick="removeFilter('${chip.type}')" class="ml-2 text-red-600 hover:text-red-800">
-              <i class="fas fa-times text-xs"></i>
-            </button>
-          </span>
-        `
-          )
-          .join("");
-      }
-
-      window.removeFilter = function (type) {
-        switch (type) {
-          case "search":
-            document.getElementById("contacts-search").value = "";
-            break;
-          case "categoria":
-            document.getElementById("contacts-filter-categoria").value = "";
-            break;
-          case "disponibilidad":
-            document.getElementById("contacts-filter-disponibilidad").value =
-              "";
-            break;
-          case "activo":
-            document.getElementById("contacts-filter-activo").value = "";
-            break;
-        }
-        filterContactos();
-      };
-
-      // Rendering
-      function renderContactos() {
-        const grid = document.getElementById("contacts-grid");
-        const emptyState = document.getElementById("contacts-empty-state");
-
-        if (!filteredContactos || filteredContactos.length === 0) {
-          grid.innerHTML = "";
-          emptyState.classList.remove("hidden");
-          return;
-        }
-
-        emptyState.classList.add("hidden");
-
-        const sortedContactos = [...filteredContactos].sort((a, b) => {
-          if (a.prioridad !== b.prioridad) return a.prioridad - b.prioridad;
-          return a.nombre.localeCompare(b.nombre);
-        });
-
-        grid.innerHTML = sortedContactos
-          .map((contacto) => {
-            const categoriaColor = getCategoriaColor(contacto.categoria);
-            const prioridadColor = getPrioridadColor(contacto.prioridad);
-            const disponibilidadIcon = getDisponibilidadIcon(
-              contacto.disponibilidad
-            );
-
-            const toggleColor = contacto.activo
-              ? "text-orange-600 hover:text-orange-800"
-              : "text-green-600 hover:text-green-800";
-
-            return `
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 ${
-              !contacto.activo ? "opacity-60" : ""
-            }">
-              <div class="p-6">
-                <div class="flex items-start justify-between mb-4">
-                  <div class="flex-1">
-                    <div class="flex items-center mb-2">
-                      <h3 class="text-lg font-semibold text-gray-800 mr-2">${
-                        contacto.nombre
-                      }</h3>
-                      ${
-                        !contacto.activo
-                          ? '<span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">Inactivo</span>'
-                          : ""
-                      }
-                      ${
-                        contacto.showInHome
-                          ? '<span class="ml-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full"><i class="fas fa-star mr-1"></i>Inicio</span>'
-                          : ""
-                      }
-                    </div>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${categoriaColor}">
-                      ${contacto.categoria}
-                    </span>
-                  </div>
-                  <div class="flex items-center space-x-1">
-                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${prioridadColor}">
-                      ${getPrioridadLabel(contacto.prioridad)}
-                    </span>
-                  </div>
-                </div>
-
-                <div class="space-y-3 mb-4">
-                  <div class="flex items-center text-gray-600">
-                    <i class="fas fa-phone text-red-500 mr-3 w-4"></i>
-                    <span class="font-medium text-gray-800">${
-                      contacto.telefono
-                    }</span>
-                    ${
-                      contacto.telefonoAlt
-                        ? `<span class="text-sm text-gray-500 ml-2">/ ${contacto.telefonoAlt}</span>`
-                        : ""
-                    }
-                  </div>
-
-                  <div class="flex items-center text-gray-600">
-                    <i class="fas ${disponibilidadIcon} text-blue-500 mr-3 w-4"></i>
-                    <span class="text-sm">${contacto.disponibilidad}</span>
-                  </div>
-
-                  ${
-                    contacto.direccion
-                      ? `
-                    <div class="flex items-center text-gray-600">
-                      <i class="fas fa-map-marker-alt text-green-500 mr-3 w-4"></i>
-                      <span class="text-sm">${contacto.direccion}</span>
-                    </div>
-                  `
-                      : ""
-                  }
-
-                  ${
-                    contacto.email
-                      ? `
-                    <div class="flex items-center text-gray-600">
-                      <i class="fas fa-envelope text-purple-500 mr-3 w-4"></i>
-                      <span class="text-sm">${contacto.email}</span>
-                    </div>
-                  `
-                      : ""
-                  }
-                </div>
-
-                ${
-                  contacto.descripcion
-                    ? `
-                  <p class="text-sm text-gray-600 mb-4">${contacto.descripcion}</p>
-                `
-                    : ""
-                }
-
-                <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                  <div class="flex space-x-2">
-                    <button onclick="editContacto('${
-                      contacto.id
-                    }')" class="text-blue-600 hover:text-blue-800 transition-colors duration-200" title="Editar">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button onclick="toggleContactoStatus('${
-                      contacto.id
-                    }')" class="${toggleColor} transition-colors duración-200" title="${
-              contacto.activo ? "Desactivar" : "Activar"
-            }">
-                      <i class="fas fa-${
-                        contacto.activo ? "eye-slash" : "eye"
-                      }"></i>
-                    </button>
-                    <button onclick="deleteContactoFromGrid('${
-                      contacto.id
-                    }')" class="text-red-600 hover:text-red-800 transition-colors duración-200" title="Eliminar">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                  <a href="tel:${
-                    contacto.telefono
-                  }" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 transition-colors duración-200 text-sm">
-                    <i class="fas fa-phone mr-1"></i>
-                    Llamar
-                  </a>
-                </div>
-              </div>
-            </div>
-          `;
-          })
-          .join("");
-      }
-
-      function updateKPIs() {
-        const total = contactos.length;
-        const activos = contactos.filter((c) => c.activo).length;
-        const disponibles24h = contactos.filter(
-          (c) => c.disponibilidad === "24/7" && c.activo
-        ).length;
-        const categorias = new Set(contactos.map((c) => c.categoria)).size;
-
-        document.getElementById("contacts-kpi-total").textContent = total;
-        document.getElementById("contacts-kpi-activos").textContent = activos;
-        document.getElementById("contacts-kpi-24h").textContent =
-          disponibles24h;
-        document.getElementById("contacts-kpi-categorias").textContent =
-          categorias;
-      }
-
-      // Utility functions
-      function getCategoriaColor(categoria) {
-        const colors = {
-          "Emergencias Médicas": "bg-red-100 text-red-800",
-          "Seguridad Pública": "bg-blue-100 text-blue-800",
-          Bomberos: "bg-orange-100 text-orange-800",
-          "Protección Civil": "bg-yellow-100 text-yellow-800",
-          "Servicios Públicos": "bg-green-100 text-green-800",
-          "Gobierno Municipal": "bg-purple-100 text-purple-800",
-          "Otros Servicios": "bg-gray-100 text-gray-800",
-        };
-        return colors[categoria] || "bg-gray-100 text-gray-800";
-      }
-
-      function getPrioridadColor(prioridad) {
-        const colors = {
-          1: "bg-red-100 text-red-800",
-          2: "bg-yellow-100 text-yellow-800",
-          3: "bg-green-100 text-green-800",
-        };
-        return colors[prioridad] || "bg-gray-100 text-gray-800";
-      }
-
-      function getPrioridadLabel(prioridad) {
-        const labels = { 1: "Alta", 2: "Media", 3: "Baja" };
-        return labels[prioridad] || "Normal";
-      }
-
-      function getDisponibilidadIcon(disponibilidad) {
-        const icons = {
-          "24/7": "fa-clock",
-          "Horario Laboral": "fa-business-time",
-          Emergencias: "fa-exclamation-triangle",
-        };
-        return icons[disponibilidad] || "fa-clock";
-      }
-
-      function generateId() {
-        return Date.now().toString(36) + Math.random().toString(36).substr(2);
-      }
-
-      // Modal functions
-      function openModal(contactoId = null) {
-        currentEditId = contactoId;
-        const modal = document.getElementById("contacts-modal");
-        const title = document.getElementById("contacts-modal-title");
-        const deleteBtn = document.getElementById("contacts-form-delete");
-
-        if (contactoId) {
-          title.textContent = "Editar Contacto";
-          deleteBtn.classList.remove("hidden");
-          loadContactoToForm(contactoId);
-        } else {
-          title.textContent = "Nuevo Contacto";
-          deleteBtn.classList.add("hidden");
-          resetForm();
-        }
-
-        modal.classList.remove("hidden");
-        document.getElementById("contacts-form-nombre").focus();
-      }
-
-      function closeModal() {
-        document.getElementById("contacts-modal").classList.add("hidden");
-        currentEditId = null;
-        resetForm();
-      }
-
-      function resetForm() {
-        document.getElementById("contacts-form").reset();
-        document.getElementById("contacts-form-activo").checked = true;
-        document.getElementById("contacts-form-show-home").checked = false;
-      }
-
-      function loadContactoToForm(contactoId) {
-        const contacto = contactos.find((c) => c.id === contactoId);
-        if (!contacto) return;
-
-        document.getElementById("contacts-form-nombre").value =
-          contacto.nombre || "";
-        document.getElementById("contacts-form-categoria").value =
-          contacto.categoria || "";
-        document.getElementById("contacts-form-telefono").value =
-          contacto.telefono || "";
-        document.getElementById("contacts-form-telefono-alt").value =
-          contacto.telefonoAlt || "";
-        document.getElementById("contacts-form-disponibilidad").value =
-          contacto.disponibilidad || "24/7";
-        document.getElementById("contacts-form-prioridad").value =
-          contacto.prioridad || 2;
-        document.getElementById("contacts-form-descripcion").value =
-          contacto.descripcion || "";
-        document.getElementById("contacts-form-direccion").value =
-          contacto.direccion || "";
-        document.getElementById("contacts-form-email").value =
-          contacto.email || "";
-        document.getElementById("contacts-form-activo").checked =
-          !!contacto.activo;
-        document.getElementById("contacts-form-show-home").checked =
-          !!contacto.showInHome;
-      }
-
-      function saveContacto(e) {
-        e.preventDefault();
-
-        const formData = {
-          nombre: document.getElementById("contacts-form-nombre").value,
-          categoria: document.getElementById("contacts-form-categoria").value,
-          telefono: document.getElementById("contacts-form-telefono").value,
-          telefonoAlt: document.getElementById("contacts-form-telefono-alt")
-            .value,
-          disponibilidad: document.getElementById(
-            "contacts-form-disponibilidad"
-          ).value,
-          prioridad: parseInt(
-            document.getElementById("contacts-form-prioridad").value
-          ),
-          descripcion: document.getElementById("contacts-form-descripcion")
-            .value,
-          direccion: document.getElementById("contacts-form-direccion").value,
-          email: document.getElementById("contacts-form-email").value,
-          activo: document.getElementById("contacts-form-activo").checked,
-          showInHome: document.getElementById("contacts-form-show-home")
-            .checked,
-        };
-
-        if (currentEditId) {
-          const index = contactos.findIndex((c) => c.id === currentEditId);
-          if (index !== -1)
-            contactos[index] = { ...contactos[index], ...formData };
-        } else {
-          formData.id = generateId();
-          formData.fechaCreacion = new Date().toISOString().split("T")[0];
-          contactos.push(formData);
-        }
-
-        saveContactos();
-        filterContactos();
-        updateKPIs();
-        closeModal();
-      }
-
-      // CRUD helpers exposed to grid buttons
-      window.editContacto = function (contactoId) {
-        openModal(contactoId);
-      };
-
-      window.toggleContactoStatus = function (contactoId) {
-        const contacto = contactos.find((c) => c.id === contactoId);
-        if (!contacto) return;
-        contacto.activo = !contacto.activo;
-        saveContactos();
-        filterContactos();
-        updateKPIs();
-      };
-
-      function deleteContacto() {
-        if (!currentEditId) return;
-        const contacto = contactos.find((c) => c.id === currentEditId);
-        if (!contacto) return;
-
-        if (
-          confirm(
-            `¿Estás seguro de que deseas eliminar el contacto "${contacto.nombre}"?`
-          )
-        ) {
-          contactos = contactos.filter((c) => c.id !== currentEditId);
-          saveContactos();
-          filterContactos();
-          updateKPIs();
-          closeModal();
-        }
-      }
-
-      window.deleteContactoFromGrid = function (contactoId) {
-        const contacto = contactos.find((c) => c.id === contactoId);
-        if (!contacto) return;
-
-        if (
-          confirm(
-            `¿Estás seguro de que deseas eliminar el contacto "${contacto.nombre}"?`
-          )
-        ) {
-          contactos = contactos.filter((c) => c.id !== contactoId);
-          saveContactos();
-          filterContactos();
-          updateKPIs();
-        }
-      };
-
-      // Import/Export
-      function exportCSV() {
-        const headers = [
-          "Nombre",
-          "Categoría",
-          "Teléfono",
-          "Teléfono Alt",
-          "Disponibilidad",
-          "Prioridad",
-          "Descripción",
-          "Dirección",
-          "Email",
-          "Activo",
-          "Mostrar en inicio", // NEW
-        ];
-        const rows = contactos.map((contacto) => [
-          contacto.nombre,
-          contacto.categoria,
-          contacto.telefono,
-          contacto.telefonoAlt || "",
-          contacto.disponibilidad,
-          getPrioridadLabel(contacto.prioridad),
-          contacto.descripcion || "",
-          contacto.direccion || "",
-          contacto.email || "",
-          contacto.activo ? "Sí" : "No",
-          contacto.showInHome ? "Sí" : "No", // NEW
-        ]);
-
-        const csvContent = [headers, ...rows]
-          .map((row) =>
-            row
-              .map((field) => `"${String(field).replace(/"/g, '""')}"`)
-              .join(",")
-          )
-          .join("\n");
-
-        const blob = new Blob([csvContent], {
-          type: "text/csv;charset=utf-8;",
-        });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `contactos_emergencia_${
-          new Date().toISOString().split("T")[0]
-        }.csv`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-
-      function openImportModal() {
-        document
-          .getElementById("contacts-import-modal")
-          .classList.remove("hidden");
-      }
-
-      function closeImportModal() {
-        document
-          .getElementById("contacts-import-modal")
-          .classList.add("hidden");
-        document.getElementById("contacts-import-file").value = "";
-      }
-
-      function importJSON() {
-        const fileInput = document.getElementById("contacts-import-file");
-        const file = fileInput.files[0];
-        if (!file) {
-          alert("Por favor selecciona un archivo JSON");
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          try {
-            const importedData = JSON.parse(e.target.result);
-            if (!Array.isArray(importedData))
-              throw new Error("El archivo debe contener un array de contactos");
-
-            importedData.forEach((contacto, index) => {
-              if (
-                !contacto.nombre ||
-                !contacto.categoria ||
-                !contacto.telefono
-              ) {
-                throw new Error(
-                  `Contacto en posición ${index + 1} tiene estructura inválida`
-                );
-              }
-            });
-
-            const processedData = importedData.map((contacto) => ({
-              ...contacto,
-              id: generateId(),
-              fechaCreacion: new Date().toISOString().split("T")[0],
-              activo: contacto.activo !== undefined ? !!contacto.activo : true,
-              showInHome:
-                contacto.showInHome !== undefined
-                  ? !!contacto.showInHome
-                  : false, // NEW default
-            }));
-
-            contactos = [...contactos, ...processedData];
-            saveContactos();
-            filterContactos();
-            updateKPIs();
-            closeImportModal();
-            alert(
-              `Se importaron ${processedData.length} contactos exitosamente`
-            );
-          } catch (error) {
-            alert(`Error al importar: ${error.message}`);
-          }
-        };
-        reader.readAsText(file);
-      }
-
-      // Public preview
-      function openPreviewModal() {
-        const modal = document.getElementById("contacts-preview-modal");
-        const content = document.getElementById("contacts-preview-content");
-        renderPublicView(content);
-        modal.classList.remove("hidden");
-      }
-
-      function closePreviewModal() {
-        document
-          .getElementById("contacts-preview-modal")
-          .classList.add("hidden");
-      }
-
-      function renderPublicView(container) {
-        const activeContactos = contactos.filter((c) => c.activo);
-        const groupedContactos = groupBy(activeContactos, "categoria");
-
-        container.innerHTML = `
-          <div class="bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl p-8 mb-8 text-center">
-            <h1 class="text-3xl font-bold mb-4">🚨 Contactos de Emergencia</h1>
-            <p class="text-red-100 text-lg">En caso de emergencia, marca estos números</p>
-            <div class="mt-6 bg-white bg-opacity-20 rounded-lg p-4 inline-block">
-              <div class="text-4xl font-bold">911</div>
-              <div class="text-sm">Número de Emergencia Nacional</div>
-            </div>
-          </div>
-
-          ${Object.entries(groupedContactos)
-            .sort(
-              ([, a], [, b]) =>
-                Math.min(...a.map((c) => c.prioridad)) -
-                Math.min(...b.map((c) => c.prioridad))
-            )
-            .map(
-              ([categoria, contactosCategoria]) => `
-              <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  <div class="w-1 h-8 bg-red-500 rounded mr-4"></div>
-                  ${categoria}
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  ${contactosCategoria
-                    .sort(
-                      (a, b) =>
-                        a.prioridad - b.prioridad ||
-                        a.nombre.localeCompare(b.nombre)
-                    )
-                    .map(
-                      (contacto) => `
-                      <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
-                        <div class="flex items-start justify-between mb-4">
-                          <div>
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2">${
-                              contacto.nombre
-                            }</h3>
-                            <div class="flex items-center mb-2">
-                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPrioridadColor(
-                                contacto.prioridad
-                              )}">
-                                Prioridad ${getPrioridadLabel(
-                                  contacto.prioridad
-                                )}
-                              </span>
-                              ${
-                                contacto.showInHome
-                                  ? '<span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-green-100 text-green-700"><i class="fas fa-star mr-1"></i>Inicio</span>'
-                                  : ""
-                              }
-                            </div>
-                          </div>
-                          <div class="text-right">
-                            <a href="tel:${
-                              contacto.telefono
-                            }" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200 inline-flex items-center">
-                              <i class="fas fa-phone mr-2"></i>
-                              Llamar
-                            </a>
-                          </div>
-                        </div>
-
-                        <div class="space-y-3">
-                          <div class="flex items-center text-gray-700">
-                            <i class="fas fa-phone text-red-500 mr-3 w-5"></i>
-                            <div>
-                              <div class="font-semibold text-lg">${
-                                contacto.telefono
-                              }</div>
-                              ${
-                                contacto.telefonoAlt
-                                  ? `<div class="text-sm text-gray-500">Alt: ${contacto.telefonoAlt}</div>`
-                                  : ""
-                              }
-                            </div>
-                          </div>
-
-                          <div class="flex items-center text-gray-600">
-                            <i class="fas ${getDisponibilidadIcon(
-                              contacto.disponibilidad
-                            )} text-blue-500 mr-3 w-5"></i>
-                            <span>${contacto.disponibilidad}</span>
-                          </div>
-
-                          ${
-                            contacto.direccion
-                              ? `
-                            <div class="flex items-center text-gray-600">
-                              <i class="fas fa-map-marker-alt text-green-500 mr-3 w-5"></i>
-                              <span>${contacto.direccion}</span>
-                            </div>
-                          `
-                              : ""
-                          }
-
-                          ${
-                            contacto.email
-                              ? `
-                            <div class="flex items-center text-gray-600">
-                              <i class="fas fa-envelope text-purple-500 mr-3 w-5"></i>
-                              <a href="mailto:${contacto.email}" class="text-blue-600 hover:text-blue-800">${contacto.email}</a>
-                            </div>
-                          `
-                              : ""
-                          }
-                        </div>
-
-                        ${
-                          contacto.descripcion
-                            ? `
-                          <div class="mt-4 pt-4 border-t border-gray-100">
-                            <p class="text-gray-600 text-sm">${contacto.descripcion}</p>
-                          </div>
-                        `
-                            : ""
-                        }
-                      </div>
-                    `
-                    )
-                    .join("")}
-                </div>
-              </div>
-            `
-            )
-            .join("")}
-
-          <div class="mt-12 bg-gray-50 rounded-xl p-6 text-center">
-            <h3 class="text-lg font-semibold text-gray-800 mb-2">¿Necesitas ayuda?</h3>
-            <p class="text-gray-600 mb-4">Si no encuentras el servicio que buscas, contacta a la Presidencia Municipal</p>
-            <div class="text-2xl font-bold text-gray-800">📞 En emergencias siempre marca 911</div>
-          </div>
-        `;
-      }
-
-      // Helpers
-      function groupBy(array, property) {
-        return array.reduce((groups, item) => {
-          const group = item[property];
-          if (!groups[group]) groups[group] = [];
-          groups[group].push(item);
-          return groups;
-        }, {});
-      }
-
-      // Public API for other pages
-      window.getEmergencyContacts = function () {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) return [];
-        try {
-          const allContacts = JSON.parse(stored);
-          return allContacts.filter((c) => c.activo);
-        } catch {
-          return [];
-        }
-      };
-
-      // NEW: Solo los activos marcados para inicio
-      window.getEmergencyContactsForHome = function () {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) return [];
-        try {
-          const allContacts = JSON.parse(stored);
-          return allContacts.filter((c) => c.activo && c.showInHome === true);
-        } catch {
-          return [];
-        }
-      };
-    })();
-  </script>
 </section>
+
+<script>
+(function () {
+  "use strict";
+
+  const STORAGE_KEY = "municipio.contactos.emergencia.v1";
+  let contactos = [];
+  let filteredContactos = [];
+  let currentEditId = null;
+
+  // -------- Init ----------
+  function init() {
+    const root = document.getElementById("EmergencyContactsAdmin");
+    if (!root) return;
+    if (root.dataset.bound === "1") return;
+    root.dataset.bound = "1";
+
+    loadContactos();
+    setupEventListeners();
+    setupKeyboardShortcuts();
+
+    filteredContactos = [...contactos];
+    renderContactos();
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+  // -------- Storage ----------
+  function saveContactos() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(contactos));
+  }
+  function loadContactos() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      contactos = JSON.parse(stored);
+      return;
+    }
+    // Seed data
+    contactos = [
+      { id:"1", nombre:"Cruz Roja Mexicana", categoria:"Emergencias Médicas", telefono:"911", telefonoAlt:"065", disponibilidad:"24/7", prioridad:1, descripcion:"Atención médica de emergencia", direccion:"Av. Principal #123", email:"emergencias@cruzroja.org.mx", activo:true, showInHome:true },
+      { id:"2", nombre:"Policía Municipal", categoria:"Seguridad Pública", telefono:"911", telefonoAlt:"(555) 123-4567", disponibilidad:"24/7", prioridad:1, descripcion:"Seguridad pública", direccion:"Comandancia Municipal", email:"policia@municipio.gob.mx", activo:true, showInHome:true },
+      { id:"3", nombre:"Bomberos", categoria:"Bomberos", telefono:"911", telefonoAlt:"(555) 234-5678", disponibilidad:"24/7", prioridad:1, descripcion:"Incendios y rescates", direccion:"Estación Central", email:"bomberos@municipio.gob.mx", activo:true, showInHome:false }
+    ];
+    saveContactos();
+  }
+
+  // -------- Events ----------
+  function setupEventListeners() {
+    document.getElementById("contacts-add-btn").addEventListener("click", () => openModal());
+    const emptyAdd = document.getElementById("contacts-empty-add-btn");
+    if (emptyAdd) emptyAdd.addEventListener("click", () => openModal());
+
+    // Filters
+    document.getElementById("contacts-search").addEventListener("input", filterContactos);
+    document.getElementById("contacts-filter-categoria").addEventListener("change", filterContactos);
+    document.getElementById("contacts-filter-disponibilidad").addEventListener("change", filterContactos);
+    document.getElementById("contacts-filter-activo").addEventListener("change", filterContactos);
+
+    // Modal buttons
+    document.getElementById("contacts-modal-close").addEventListener("click", closeModal);
+    document.getElementById("contacts-form-cancel").addEventListener("click", closeModal);
+    document.getElementById("contacts-form").addEventListener("submit", saveContacto);
+    document.getElementById("contacts-form-delete").addEventListener("click", deleteContacto);
+
+    // Close on backdrop
+    document.getElementById("contacts-modal").addEventListener("click", (e) => {
+      if (e.target.id === "contacts-modal") closeModal();
+    });
+  }
+
+  function setupKeyboardShortcuts() {
+    document.addEventListener("keydown", (e) => {
+      if (["INPUT","TEXTAREA","SELECT"].includes(e.target.tagName)) {
+        if (e.key === "Escape") e.target.blur();
+        return;
+      }
+      if (e.key === "/") { e.preventDefault(); document.getElementById("contacts-search").focus(); }
+      if (e.key === "n" && !e.ctrlKey && !e.metaKey) { e.preventDefault(); openModal(); }
+      if (e.key === "Escape") closeModal();
+    });
+    document.getElementById("contacts-modal").addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+        e.preventDefault();
+        document.getElementById("contacts-form").dispatchEvent(new Event("submit"));
+      }
+    });
+  }
+
+  // -------- Filters ----------
+  function filterContactos() {
+    const search = document.getElementById("contacts-search").value.toLowerCase();
+    const categoria = document.getElementById("contacts-filter-categoria").value;
+    const disponibilidad = document.getElementById("contacts-filter-disponibilidad").value;
+    const activo = document.getElementById("contacts-filter-activo").value;
+
+    filteredContactos = contactos.filter((c) => {
+      if (search && !(
+        (c.nombre && c.nombre.toLowerCase().includes(search)) ||
+        (c.descripcion && c.descripcion.toLowerCase().includes(search)) ||
+        (c.telefono && String(c.telefono).includes(search))
+      )) return false;
+      if (categoria && c.categoria !== categoria) return false;
+      if (disponibilidad && c.disponibilidad !== disponibilidad) return false;
+      if (activo !== "" && String(c.activo) !== activo) return false;
+      return true;
+    });
+
+    renderContactos();
+    updateFilterChips();
+  }
+
+  function updateFilterChips() {
+    const container = document.getElementById("contacts-filter-chips");
+    const chips = [];
+    const s = document.getElementById("contacts-search").value;
+    const cat = document.getElementById("contacts-filter-categoria").value;
+    const disp = document.getElementById("contacts-filter-disponibilidad").value;
+    const act = document.getElementById("contacts-filter-activo").value;
+    if (s) chips.push({t:"search", label:`Búsqueda: ${s}`});
+    if (cat) chips.push({t:"categoria", label:`Categoría: ${cat}`});
+    if (disp) chips.push({t:"disponibilidad", label:`Disponibilidad: ${disp}`});
+    if (act !== "") chips.push({t:"activo", label:`Estado: ${act==="true"?"Activos":"Inactivos"}`});
+    container.innerHTML = chips.map(c => `
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-red-100 text-red-800">
+        ${c.label}
+        <button onclick="removeFilter('${c.t}')" class="ml-2 text-red-600 hover:text-red-800"><i class="fas fa-times text-xs"></i></button>
+      </span>
+    `).join("");
+  }
+  window.removeFilter = function (type) {
+    if (type==="search") document.getElementById("contacts-search").value = "";
+    if (type==="categoria") document.getElementById("contacts-filter-categoria").value = "";
+    if (type==="disponibilidad") document.getElementById("contacts-filter-disponibilidad").value = "";
+    if (type==="activo") document.getElementById("contacts-filter-activo").value = "";
+    filterContactos();
+  };
+
+  // -------- Render TABLE ----------
+  function renderContactos() {
+    const tbody = document.getElementById("contacts-table-body");
+    const emptyState = document.getElementById("contacts-empty-state");
+
+    if (!filteredContactos.length) {
+      tbody.innerHTML = "";
+      emptyState.classList.remove("hidden");
+      return;
+    }
+    emptyState.classList.add("hidden");
+
+    const sorted = [...filteredContactos].sort((a,b) => (a.prioridad-b.prioridad) || a.nombre.localeCompare(b.nombre));
+
+    tbody.innerHTML = sorted.map((c) => {
+      const prioridadBadge =
+        c.prioridad===1 ? "bg-red-100 text-red-800"
+        : c.prioridad===2 ? "bg-yellow-100 text-yellow-800"
+        : "bg-green-100 text-green-800";
+      const activoBadge = c.activo ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-700";
+      const homeBadge = c.showInHome ? "bg-amber-100 text-amber-800" : "bg-gray-100 text-gray-600";
+      return `
+        <tr class="hover:bg-gray-50 cursor-pointer" data-row-id="${c.id}">
+          <td class="px-6 py-4 text-sm text-gray-800">${c.nombre}</td>
+          <td class="px-6 py-4 text-sm"><span class="px-2 py-0.5 rounded-full ${getCategoriaColor(c.categoria)}">${c.categoria}</span></td>
+          <td class="px-6 py-4 text-sm text-gray-700">
+            <div class="font-medium">${c.telefono}</div>
+            ${c.telefonoAlt ? `<div class="text-xs text-gray-500">Alt: ${c.telefonoAlt}</div>` : ""}
+          </td>
+          <td class="px-6 py-4 text-sm text-gray-700">${c.disponibilidad}</td>
+          <td class="px-6 py-4 text-sm"><span class="px-2 py-0.5 rounded-full ${prioridadBadge}">${getPrioridadLabel(c.prioridad)}</span></td>
+          <td class="px-6 py-4 text-sm"><span class="px-2 py-0.5 rounded-full ${activoBadge}">${c.activo ? "Sí" : "No"}</span></td>
+          <td class="px-6 py-4 text-sm"><span class="px-2 py-0.5 rounded-full ${homeBadge}">${c.showInHome ? "Sí" : "No"}</span></td>
+          <td class="px-6 py-4 text-right">
+            <button class="text-blue-600 hover:text-blue-800 mr-3" data-action="edit" title="Editar"><i class="fas fa-edit"></i></button>
+            <button class="${c.activo ? "text-orange-600 hover:text-orange-800" : "text-green-600 hover:text-green-800"} mr-3" data-action="toggle" title="${c.activo ? "Desactivar" : "Activar"}"><i class="fas fa-${c.activo ? "eye-slash" : "eye"}"></i></button>
+            <button class="text-red-600 hover:text-red-800" data-action="delete" title="Eliminar"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+
+    // Row click -> edit; but keep action buttons working
+    tbody.querySelectorAll("tr").forEach((tr) => {
+      const id = tr.getAttribute("data-row-id");
+      tr.addEventListener("click", () => openModal(id));
+      tr.querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const action = btn.getAttribute("data-action");
+          if (action === "edit") openModal(id);
+          if (action === "toggle") toggleContactoStatus(id);
+          if (action === "delete") deleteContactoFromTable(id);
+        });
+      });
+    });
+  }
+
+  // -------- Utils (colors/labels) ----------
+  function getCategoriaColor(categoria) {
+    const colors = {
+      "Emergencias Médicas": "bg-red-100 text-red-800",
+      "Seguridad Pública": "bg-blue-100 text-blue-800",
+      "Bomberos": "bg-orange-100 text-orange-800",
+      "Protección Civil": "bg-yellow-100 text-yellow-800",
+      "Servicios Públicos": "bg-green-100 text-green-800",
+      "Gobierno Municipal": "bg-purple-100 text-purple-800",
+      "Otros Servicios": "bg-gray-100 text-gray-800",
+    };
+    return colors[categoria] || "bg-gray-100 text-gray-800";
+  }
+  function getPrioridadLabel(p) { return ({1:"Alta",2:"Media",3:"Baja"})[p] || "Normal"; }
+  function generateId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+  // -------- Modal / CRUD ----------
+  function openModal(contactoId = null) {
+    currentEditId = contactoId;
+    const title = document.getElementById("contacts-modal-title");
+    const del = document.getElementById("contacts-form-delete");
+
+    if (contactoId) {
+      title.textContent = "Editar Contacto";
+      del.classList.remove("hidden");
+      loadContactoToForm(contactoId);
+    } else {
+      title.textContent = "Nuevo Contacto";
+      del.classList.add("hidden");
+      resetForm();
+    }
+    document.getElementById("contacts-modal").classList.remove("hidden");
+    document.getElementById("contacts-form-nombre").focus();
+  }
+  function closeModal() {
+    document.getElementById("contacts-modal").classList.add("hidden");
+    currentEditId = null;
+    resetForm();
+  }
+  function resetForm() {
+    document.getElementById("contacts-form").reset();
+    document.getElementById("contacts-form-activo").checked = true;
+    document.getElementById("contacts-form-show-home").checked = false;
+  }
+  function loadContactoToForm(id) {
+    const c = contactos.find(x => x.id === id);
+    if (!c) return;
+    document.getElementById("contacts-form-nombre").value = c.nombre || "";
+    document.getElementById("contacts-form-categoria").value = c.categoria || "";
+    document.getElementById("contacts-form-telefono").value = c.telefono || "";
+    document.getElementById("contacts-form-telefono-alt").value = c.telefonoAlt || "";
+    document.getElementById("contacts-form-disponibilidad").value = c.disponibilidad || "24/7";
+    document.getElementById("contacts-form-prioridad").value = c.prioridad || 2;
+    document.getElementById("contacts-form-descripcion").value = c.descripcion || "";
+    document.getElementById("contacts-form-direccion").value = c.direccion || "";
+    document.getElementById("contacts-form-email").value = c.email || "";
+    document.getElementById("contacts-form-activo").checked = !!c.activo;
+    document.getElementById("contacts-form-show-home").checked = !!c.showInHome;
+  }
+
+  function saveContacto(e) {
+    e.preventDefault();
+    const formData = {
+      nombre: document.getElementById("contacts-form-nombre").value,
+      categoria: document.getElementById("contacts-form-categoria").value,
+      telefono: document.getElementById("contacts-form-telefono").value,
+      telefonoAlt: document.getElementById("contacts-form-telefono-alt").value,
+      disponibilidad: document.getElementById("contacts-form-disponibilidad").value,
+      prioridad: parseInt(document.getElementById("contacts-form-prioridad").value, 10),
+      descripcion: document.getElementById("contacts-form-descripcion").value,
+      direccion: document.getElementById("contacts-form-direccion").value,
+      email: document.getElementById("contacts-form-email").value,
+      activo: document.getElementById("contacts-form-activo").checked,
+      showInHome: document.getElementById("contacts-form-show-home").checked,
+    };
+
+    if (currentEditId) {
+      const i = contactos.findIndex(c => c.id === currentEditId);
+      if (i > -1) contactos[i] = { ...contactos[i], ...formData };
+    } else {
+      formData.id = generateId();
+      contactos.push(formData);
+    }
+
+    saveContactos();
+    filterContactos();
+    closeModal();
+  }
+
+  window.editContacto = (id) => openModal(id); // (kept for compatibility)
+
+  window.toggleContactoStatus = function (id) {
+    const c = contactos.find(x => x.id === id);
+    if (!c) return;
+    c.activo = !c.activo;
+    saveContactos();
+    filterContactos();
+  };
+
+  function deleteContacto() {
+    if (!currentEditId) return;
+    const c = contactos.find(x => x.id === currentEditId);
+    if (!c) return;
+    if (confirm(`¿Eliminar "${c.nombre}"?`)) {
+      contactos = contactos.filter(x => x.id !== currentEditId);
+      saveContactos();
+      filterContactos();
+      closeModal();
+    }
+  }
+
+  function deleteContactoFromTable(id) {
+    const c = contactos.find(x => x.id === id);
+    if (!c) return;
+    if (confirm(`¿Eliminar "${c.nombre}"?`)) {
+      contactos = contactos.filter(x => x.id !== id);
+      saveContactos();
+      filterContactos();
+    }
+  }
+  // expose for row actions
+  window.deleteContactoFromTable = deleteContactoFromTable;
+
+})();
+</script>
