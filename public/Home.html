@@ -187,7 +187,9 @@
         <p class="text-sm text-slate-500">Atención 24/7</p>
       </div>
       <div id="emerg-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
-      <div id="emerg-empty" class="text-slate-500 text-sm">Añade en <code>localStorage.emergencyNumbers</code>.</div>
+      <div id="emerg-empty" class="text-slate-500 text-sm">
+        Marca “Mostrar en página de inicio” en <em>Contactos de Emergencia</em> para verlos aquí.
+      </div>
     </div>
   </section>
 
@@ -290,9 +292,10 @@
     const sub = $('#services-sub');
     const q = $('#services-search');
     const services = jget('services', []); // [{title,desc,icon,href,bgClass}]
-    sub.textContent = services.length ? 'Accede rápido a lo más solicitado' : 'Aún no hay servicios configurados';
+    if (sub) sub.textContent = services.length ? 'Accede rápido a lo más solicitado' : 'Aún no hay servicios configurados';
 
     const draw = (list)=>{
+      if (!grid) return;
       grid.innerHTML = list.map(s=>`
         <button data-href="${s.href||'#'}" class="group bg-white hover:bg-slate-50 border border-slate-200 rounded-xl px-3 py-4 text-left shadow-sm hover:shadow transition">
           <div class="flex items-start gap-3">
@@ -306,7 +309,7 @@
           </div>
         </button>
       `).join('');
-      empty.classList.toggle('hidden', list.length>0);
+      empty?.classList.toggle('hidden', list.length>0);
       grid.querySelectorAll('[data-href]').forEach(b=>b.onclick=()=>{ const href=b.dataset.href; if(!href) return; if(href.startsWith('#')) location.hash=href; else location.href=href; });
     };
     draw(services);
@@ -428,20 +431,69 @@
     empty.classList.toggle('hidden', cards.length>0);
   }
 
-  // ---------- EMERGENCY ----------
+  // ---------- EMERGENCY (reads from contactos with showInHome=true) ----------
+  function getEmergencyContactsForHome() {
+    // If admin script exposed a helper, use it; otherwise read storage directly
+    if (typeof window.getEmergencyContactsForHome === 'function') {
+      try { return window.getEmergencyContactsForHome(); } catch { /* fall through */ }
+    }
+    const stored = localStorage.getItem('municipio.contactos.emergencia.v1');
+    if (!stored) return [];
+    try {
+      const all = JSON.parse(stored);
+      return all.filter(c => c && c.activo === true && c.showInHome === true);
+    } catch {
+      return [];
+    }
+  }
+
   function renderEmergency(){
-    const nums = jget('emergencyNumbers', []);
-    $('#emerg-grid').innerHTML = nums.map(n=>`
-      <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm text-center">
-        <div class="${n.iconBg||'bg-slate-100'} w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-2">
-          <i class="${n.iconClass||'fas fa-phone'} ${n.color||'text-slate-700'} text-xl"></i>
+    const contacts = getEmergencyContactsForHome()
+      .sort((a,b)=> (a.prioridad||99)-(b.prioridad||99) || (a.nombre||'').localeCompare(b.nombre||''))
+      .slice(0, 12); // show up to 12 (fits 2 rows on lg)
+
+    const iconByCategoria = (cat)=>{
+      const map = {
+        'Emergencias Médicas': 'fas fa-kit-medical',
+        'Seguridad Pública': 'fas fa-shield-halved',
+        'Bomberos': 'fas fa-fire-extinguisher',
+        'Protección Civil': 'fas fa-triangle-exclamation',
+        'Servicios Públicos': 'fas fa-wrench',
+        'Gobierno Municipal': 'fas fa-landmark',
+        'Otros Servicios': 'fas fa-phone'
+      };
+      return map[cat] || 'fas fa-phone';
+    };
+
+    const toneByCategoria = (cat)=>{
+      const map = {
+        'Emergencias Médicas': ['rose','text-rose-600','bg-rose-100'],
+        'Seguridad Pública': ['blue','text-blue-600','bg-blue-100'],
+        'Bomberos': ['orange','text-orange-600','bg-orange-100'],
+        'Protección Civil': ['amber','text-amber-700','bg-amber-100'],
+        'Servicios Públicos': ['green','text-green-600','bg-green-100'],
+        'Gobierno Municipal': ['purple','text-purple-600','bg-purple-100'],
+        'Otros Servicios': ['slate','text-slate-700','bg-slate-100']
+      };
+      return map[cat] || ['slate','text-slate-700','bg-slate-100'];
+    };
+
+    $('#emerg-grid').innerHTML = contacts.map(c=>{
+      const [, toneText, toneBg] = toneByCategoria(c.categoria);
+      const icon = iconByCategoria(c.categoria);
+      return `
+        <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm text-center">
+          <div class="${toneBg} w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-2">
+            <i class="${icon} ${toneText} text-xl"></i>
+          </div>
+          <div class="text-lg font-extrabold ${toneText}">${c.telefono||''}</div>
+          <div class="text-slate-800 font-medium">${c.nombre||''}</div>
+          <div class="text-slate-500 text-xs">${c.descripcion||c.disponibilidad||''}</div>
         </div>
-        <div class="text-lg font-extrabold ${n.color||'text-slate-900'}">${n.number||''}</div>
-        <div class="text-slate-700 font-medium">${n.title||''}</div>
-        <div class="text-slate-500 text-xs">${n.desc||n.subtitle||''}</div>
-      </div>
-    `).join('');
-    $('#emerg-empty').classList.toggle('hidden', nums.length>0);
+      `;
+    }).join('');
+
+    $('#emerg-empty').classList.toggle('hidden', contacts.length>0);
   }
 
   // ---------- INIT ----------
