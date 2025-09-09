@@ -202,7 +202,7 @@
 
 <script>
 (() => {
-  let LS_KEY = "eventos";
+  LS_KEY = "eventos";
   let eventos = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
   let editId = null;
   let currentFotos = []; // [{blob, existingId?, _removed?, previewUrl}]
