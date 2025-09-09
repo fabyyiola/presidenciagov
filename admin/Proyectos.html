@@ -507,8 +507,22 @@
     &#10095;
   </button>
 </div>
+
 <script>
-  // ===== Lightbox state & helpers =====
+  (function () {
+    "use strict";
+
+    const STORAGE_KEY = "municipio.proyectos.v1";
+    const IDB_NAME = "proyectos_media";
+    const IDB_STORE = "etapa_fotos";
+
+    let proyectos = [];
+    let filteredProyectos = [];
+    let currentEditId = null;
+    let etapaCounter = 0;
+    let tareaCounter = 0;
+    let db = null;
+// ===== Lightbox state & helpers =====
     let lightboxState = { etapaId: null, urls: [], index: 0 };
 
     async function openEtapaLightbox(etapaId, startIndex = 0) {
@@ -588,22 +602,6 @@
         if (e.key === "ArrowRight") stepLightbox(1);
       });
     }
-</script>
-<script>
-  (function () {
-    "use strict";
-
-    const STORAGE_KEY = "municipio.proyectos.v1";
-    const IDB_NAME = "proyectos_media";
-    const IDB_STORE = "etapa_fotos";
-
-    let proyectos = [];
-    let filteredProyectos = [];
-    let currentEditId = null;
-    let etapaCounter = 0;
-    let tareaCounter = 0;
-    let db = null;
-
     // ---------------- IndexedDB helpers ----------------
     function idbOpen() {
       return new Promise((resolve, reject) => {
