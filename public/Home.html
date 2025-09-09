@@ -1,44 +1,426 @@
-<!-- Home.html (fragment only) -->
-<section id="HomeContent">
+<section id="HomeContent" class="min-h-screen">
+  <!-- hero (dynamic) -->
+  <section class="relative h-96 flex items-center justify-center" id="home-hero">
+    <div class="absolute inset-0" id="hero-bg"></div>
+    <div class="absolute inset-0 bg-black/30"></div>
+    <div class="relative text-center text-white z-10">
+      <h1 id="hero-title" class="text-4xl md:text-5xl font-bold mb-6"></h1>
+      <button id="home-cta"
+        class="hidden bg-municipal-blue hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300">
+      </button>
+    </div>
+  </section>
 
+  <!-- KPIs -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <div id="home-kpis" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+    </div>
+  </section>
+
+  <!-- services -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-municipal-blue text-center mb-8" id="services-title"></h2>
+      <div class="max-w-md mx-auto mb-10">
+        <input id="services-search" type="text" placeholder="Buscar"
+          class="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+      </div>
+      <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+      <div id="services-empty" class="text-center text-gray-500 mt-6 hidden">No hay servicios configurados.</div>
+    </div>
+  </section>
+
+  <!-- citizen wednesday (optional from config) -->
+  <section id="wednesday-wrap" class="py-12 bg-orange-100 hidden">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-8">
+        <h2 id="wednesday-title" class="text-3xl font-bold text-municipal-blue mb-6"></h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="font-bold text-municipal-blue mb-2">UBICACIÓN</h3>
+            <p id="wednesday-loc1" class="text-gray-700"></p>
+            <p id="wednesday-loc2" class="text-gray-700"></p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="font-bold text-municipal-blue mb-2">HORARIO</h3>
+            <p id="wednesday-hours1" class="text-gray-700"></p>
+            <p id="wednesday-hours2" class="text-gray-700"></p>
+          </div>
+        </div>
+        <div class="mt-8 bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto">
+          <h3 class="font-bold text-municipal-blue mb-4">SERVICIOS DISPONIBLES</h3>
+          <ul id="wednesday-services" class="text-gray-700 space-y-2"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- municipality highlights (from config) -->
+  <section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 id="highlights-title" class="text-3xl font-bold text-municipal-blue text-center mb-10"></h2>
+      <div id="highlights-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+    </div>
+  </section>
+
+  <!-- events -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-municipal-blue text-center mb-10">PRÓXIMOS EVENTOS</h2>
+      <div id="home-events" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <div id="home-events-empty" class="text-center text-gray-500 mt-6 hidden">No hay eventos próximos.</div>
+    </div>
+  </section>
+
+  <!-- turismo -->
+  <section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-3xl font-bold text-municipal-blue">LUGARES TURÍSTICOS DESTACADOS</h2>
+        <a id="turismo-link" href="#/turismo" class="text-municipal-blue hover:underline text-sm font-semibold">Ver todos</a>
+      </div>
+      <div id="home-turismo" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <div id="home-turismo-empty" class="text-center text-gray-500 mt-6 hidden">Aún no hay lugares turísticos.</div>
+    </div>
+  </section>
+
+  <!-- emergency numbers -->
+  <section class="py-12">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-red-600 text-center mb-8" id="emerg-title"></h2>
+      <div id="emerg-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+      <div id="emerg-empty" class="text-center text-gray-500 mt-6 hidden">No hay números de emergencia configurados.</div>
+    </div>
+  </section>
 </section>
 
 <script>
-  // Scoped behaviors for HomeContent only
-  (function(){
-    const root = document.getElementById('HomeContent');
+(() => {
+  const root = document.getElementById('HomeContent');
 
-    // Smooth scroll for in-section anchors only
-    root.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{
-        e.preventDefault();
-        const target = root.querySelector(a.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior:'smooth' });
-      });
+  // ---------- helpers ----------
+  const byId = (id) => root.querySelector(`#${id}`);
+  const fmt = new Intl.NumberFormat('es-MX');
+  const safe = (v, d='') => (v==null ? d : v);
+
+  // LS helpers
+  const jget = (k, d) => { try { return JSON.parse(localStorage.getItem(k) ?? JSON.stringify(d)); } catch { return d; } };
+
+  // IDB helpers (best effort; all functions resolve gracefully)
+  function idbOpen(dbName, version = 1){
+    return new Promise((resolve) => {
+      const req = indexedDB.open(dbName, version);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(null);
+      req.onupgradeneeded = () => { /* do nothing; read-only here */ };
+    });
+  }
+  function idbGetByKey(db, store, key){
+    return new Promise((resolve)=> {
+      if(!db || !db.objectStoreNames.contains(store)) return resolve(null);
+      const tx = db.transaction(store,'readonly'); const os = tx.objectStore(store);
+      const rq = os.get(key);
+      rq.onsuccess = () => resolve(rq.result || null);
+      rq.onerror = () => resolve(null);
+    });
+  }
+  function idbGetByIndex(db, store, index, value){
+    return new Promise((resolve)=> {
+      if(!db || !db.objectStoreNames.contains(store)) return resolve([]);
+      const tx = db.transaction(store,'readonly'); const os = tx.objectStore(store);
+      if(!os.indexNames.contains(index)) return resolve([]);
+      const idx = os.index(index); const rq = idx.getAll(value);
+      rq.onsuccess = () => resolve(rq.result || []); rq.onerror = () => resolve([]);
+    });
+  }
+
+  // object URLs: track & revoke on unload
+  const blobUrls = new Set();
+  function urlFromBlob(b){
+    const u = URL.createObjectURL(b); blobUrls.add(u); return u;
+  }
+  window.addEventListener('beforeunload', ()=>{ blobUrls.forEach(u=>URL.revokeObjectURL(u)); blobUrls.clear(); });
+
+  // ---------- HERO (home.config) ----------
+  function renderHero(){
+    const cfg = jget('home.config', {
+      title: 'MUSEO ARQUEOLÓGICO\nANTIGUOS MEXICANOS',
+      ctaText: 'Agenda tu visita',
+      ctaHref: '#/agenda',
+      bg: { type:'gradient', from:'from-municipal-blue', to:'to-municipal-teal' }
     });
 
-    // Service cards click
-    root.querySelectorAll('.svc-card').forEach(card=>{
-      card.addEventListener('click', ()=>{
-        const title = card.querySelector('.svc-title')?.textContent?.trim() || 'Servicio';
-        alert(`Redirigiendo a: ${title}`);
-      });
-    });
+    const titleEl = byId('hero-title');
+    const bgEl = byId('hero-bg');
+    const cta = byId('home-cta');
 
-    // CTA button
-    const cta = root.querySelector('#home-cta');
-    if (cta){
-      cta.addEventListener('click', ()=>{
-        alert('¡Gracias por tu interés! Te contactaremos pronto para agendar tu visita al Museo Arqueológico.');
+    titleEl.innerHTML = (cfg.title || '').replace(/\n/g,'<br>');
+    cta.textContent = cfg.ctaText || '';
+    if(cfg.ctaText){ cta.classList.remove('hidden'); cta.onclick = () => { if(cfg.ctaHref) location.hash = cfg.ctaHref; }; }
+
+    // background: gradient or image url (supports LS config)
+    bgEl.className = 'absolute inset-0';
+    if (cfg.bg?.type === 'image' && cfg.bg.url){
+      bgEl.style.backgroundImage = `url("${cfg.bg.url}")`;
+      bgEl.style.backgroundSize = 'cover';
+      bgEl.style.backgroundPosition = 'center';
+    } else {
+      bgEl.classList.add('bg-gradient-to-r', cfg.bg?.from || 'from-municipal-blue', cfg.bg?.to || 'to-municipal-teal');
+    }
+  }
+
+  // ---------- KPIs ----------
+  function renderKPIs(){
+    const wrap = byId('home-kpis'); wrap.innerHTML = '';
+    const negocios = jget('negocios', []);
+    const proyectos = jget('municipio.proyectos.v1', []);
+    const eventos = jget('eventos', []);
+    const lugares = jget('lugaresTuristicos', []);
+
+    const activosProy = proyectos.filter(p => ['En Progreso','Planificación'].includes(p.estatusGeneral)).length;
+    const avanceProm = proyectos.length ? Math.round(proyectos.reduce((s,p)=>{
+      // same logic as Projects page (weighted by etapas)
+      const total = (p.etapas||[]).reduce((acc,e)=>{
+        const avance = (typeof e.avanceManual === 'number')
+          ? Math.max(0,Math.min(100,e.avanceManual))
+          : (e.tareas?.length ? Math.round((e.tareas.filter(t=>t.completada).length / e.tareas.length)*100) : 0);
+        return acc + (e.peso/100)*avance;
+      },0);
+      return s + Math.round(total);
+    },0)/proyectos.length) : 0;
+
+    const upcoming = (eventos||[]).filter(e=>{
+      const start = e.fechaInicio ? new Date(e.fechaInicio) : null;
+      return start ? (start >= new Date(new Date().toDateString())) : true;
+    }).length;
+
+    const items = [
+      { label:'Negocios Registrados', value: fmt.format(negocios.length), icon:'fas fa-store', color:'blue' },
+      { label:'Proyectos Activos', value: fmt.format(activosProy), icon:'fas fa-project-diagram', color:'indigo' },
+      { label:'Avance Promedio', value: `${avanceProm}%`, icon:'fas fa-chart-line', color:'green' },
+      { label:'Próximos Eventos', value: fmt.format(upcoming), icon:'fas fa-calendar-alt', color:'orange' },
+    ];
+
+    wrap.innerHTML = items.map(i=>`
+      <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-${i.color}-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-2xl font-bold text-gray-800">${i.value}</p>
+            <p class="text-gray-600 text-sm">${i.label}</p>
+          </div>
+          <div class="bg-${i.color}-100 p-3 rounded-lg">
+            <i class="${i.icon} text-${i.color}-600 text-xl"></i>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ---------- SERVICES (LS: services) ----------
+  function renderServices(){
+    const title = byId('services-title');
+    const grid = byId('services-grid');
+    const empty = byId('services-empty');
+    const q = byId('services-search');
+
+    const cfg = jget('home.config', { servicesTitle: 'HOLA, ¿CÓMO TE PODEMOS AYUDAR?' });
+    title.textContent = cfg.servicesTitle || 'Servicios';
+
+    const services = jget('services', []); // [{title, desc, icon, bgClass, href}]
+    function draw(list){
+      grid.innerHTML = list.map(s=>`
+        <button data-href="${safe(s.href,'#')}"
+          class="svc-card ${safe(s.bgClass,'bg-gray-100')} p-6 rounded-lg text-center hover:shadow-lg transition duration-300 w-full text-left">
+          <div class="text-4xl mb-4"><i class="${safe(s.icon,'fas fa-circle')}"></i></div>
+          <h3 class="font-bold text-municipal-blue mb-1">${safe(s.title)}</h3>
+          <p class="text-gray-600 text-sm">${safe(s.desc)}</p>
+        </button>
+      `).join('');
+      empty.classList.toggle('hidden', list.length>0);
+      grid.querySelectorAll('button[data-href]').forEach(b=>{
+        b.addEventListener('click', ()=>{ const href=b.dataset.href; if(href?.startsWith('#')) location.hash = href; else if(href) location.href = href; });
       });
     }
+    draw(services);
+    q.addEventListener('input', ()=>{
+      const term = q.value.trim().toLowerCase();
+      draw(services.filter(s => [s.title,s.desc].some(t => (t||'').toLowerCase().includes(term))));
+    });
+  }
 
-    // Small fade-in utility (scoped)
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes fade-in { from {opacity:0; transform: translateY(20px)} to {opacity:1; transform:translateY(0)} }
-      #HomeContent .animate-fade-in { animation: fade-in 1s ease-out; }
-    `;
-    document.head.appendChild(style);
+  // ---------- WEDNESDAY (home.config.optional) ----------
+  function renderWednesday(){
+    const cfg = jget('home.config', {});
+    const show = !!cfg.wednesday;
+    const wrap = byId('wednesday-wrap');
+    wrap.classList.toggle('hidden', !show);
+    if(!show) return;
+
+    byId('wednesday-title').textContent = cfg.wednesday.title || 'MIÉRCOLES CIUDADANO';
+    byId('wednesday-loc1').textContent = cfg.wednesday.loc1 || '';
+    byId('wednesday-loc2').textContent = cfg.wednesday.loc2 || '';
+    byId('wednesday-hours1').textContent = cfg.wednesday.hours1 || '';
+    byId('wednesday-hours2').textContent = cfg.wednesday.hours2 || '';
+    const list = Array.isArray(cfg.wednesday.services) ? cfg.wednesday.services : [];
+    byId('wednesday-services').innerHTML = list.map(s=>`<li>• ${s}</li>`).join('');
+  }
+
+  // ---------- HIGHLIGHTS (home.config) ----------
+  function renderHighlights(){
+    const cfg = jget('home.config', { highlightsTitle:'CONOCE SABINAS HIDALGO', highlights:[] });
+    byId('highlights-title').textContent = cfg.highlightsTitle || '';
+    byId('highlights-grid').innerHTML = (cfg.highlights||[]).map(h=>`
+      <div class="bg-gradient-to-br ${safe(h.bgGradient,'from-municipal-blue to-blue-600')} text-white p-6 rounded-lg">
+        <div class="text-4xl mb-4">${safe(h.emoji,'📍')}</div>
+        <h3 class="font-bold text-xl mb-3">${safe(h.title,'')}</h3>
+        <p class="opacity-90">${safe(h.desc,'')}</p>
+      </div>
+    `).join('');
+  }
+
+  // ---------- EVENTS (LS: eventos, IDB: EventosDB/imagenes) ----------
+  async function renderEvents(){
+    const grid = byId('home-events');
+    const empty = byId('home-events-empty');
+    const eventos = jget('eventos', []); // [{id, titulo, descripcion, fechaInicio, fechaFin, color, imageId?}]
+    const now = new Date(new Date().toDateString());
+    const upcoming = eventos
+      .filter(e => !e.fechaInicio || new Date(e.fechaInicio) >= now)
+      .sort((a,b)=> new Date(a.fechaInicio||'2100-01-01') - new Date(b.fechaInicio||'2100-01-01'))
+      .slice(0, 6);
+
+    let eDb = await idbOpen('EventosDB', 1);
+    async function eventThumb(ev){
+      if (ev.imageId && eDb){
+        const rec = await idbGetByKey(eDb, 'imagenes', ev.imageId);
+        if(rec && (rec.blob instanceof Blob)) return urlFromBlob(rec.blob);
+      }
+      return null;
+    }
+
+    const cards = await Promise.all(upcoming.map(async ev=>{
+      const img = await eventThumb(ev);
+      const badge = ev.color ? `bg-${ev.color}-600` : 'bg-municipal-blue';
+      const when = (ev.fechaInicio && ev.fechaFin)
+        ? `${ev.fechaInicio} – ${ev.fechaFin}`
+        : (ev.fechaInicio || '');
+      return `
+        <div class="ev-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+          <div class="${badge} h-32 flex items-center justify-center">
+            ${img ? `<img src="${img}" class="w-full h-32 object-cover">` : `<span class="text-white text-5xl">🎪</span>`}
+          </div>
+          <div class="p-6">
+            <h3 class="font-bold text-municipal-blue mb-2">${safe(ev.titulo,'Evento')}</h3>
+            <p class="text-gray-600 mb-3">${safe(ev.descripcion,'')}</p>
+            <p class="text-sm text-municipal-blue font-semibold">${when}</p>
+          </div>
+        </div>`;
+    }));
+
+    grid.innerHTML = cards.join('');
+    empty.classList.toggle('hidden', cards.length>0);
+  }
+
+  // ---------- TURISMO (LS: lugaresTuristicos, IDB: TurismoMedia/imagenes) ----------
+  async function renderTurismo(){
+    const grid = byId('home-turismo');
+    const empty = byId('home-turismo-empty');
+    const lugares = jget('lugaresTuristicos', []); // current schema stores base64 in lugar.imagenes OR photo ids in lugar.photoIds (if migrated)
+
+    const tDb = await idbOpen('TurismoMedia', 1); // optional
+    async function mainImage(l){
+      // 1) migrated: photoIds[] in IDB
+      if (Array.isArray(l.photoIds) && l.photoIds.length && tDb){
+        // prefer first id
+        const rec = await idbGetByKey(tDb, 'imagenes', l.photoIds[0]);
+        if(rec && rec.blob instanceof Blob) return urlFromBlob(rec.blob);
+      }
+      // 2) legacy: base64 in lugar.imagenes[]
+      if (Array.isArray(l.imagenes) && l.imagenes.length) return l.imagenes[l.imagenPrincipal || 0] || l.imagenes[0];
+      return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23eef2ff'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='Arial' font-size='16'%3ESin imagen%3C/text%3E%3C/svg%3E";
+    }
+
+    // pick up to 6 featured (with images first)
+    const withImgFirst = [...lugares].sort((a,b)=>{
+      const ai = (a.photoIds?.length || a.imagenes?.length || 0);
+      const bi = (b.photoIds?.length || b.imagenes?.length || 0);
+      return bi - ai;
+    }).slice(0,6);
+
+    const cards = await Promise.all(withImgFirst.map(async l=>{
+      const main = await mainImage(l);
+      const icon = l.icono || 'fas fa-map-marked-alt';
+      return `
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div class="relative">
+            <img src="${main}" alt="${safe(l.nombre,'Lugar turístico')}" class="w-full h-48 object-cover">
+            <span class="absolute top-4 left-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">${safe(l.categoria,'')}</span>
+          </div>
+          <div class="p-6">
+            <div class="flex items-start justify-between mb-3">
+              <h3 class="text-xl font-bold text-gray-800">${safe(l.nombre,'')}</h3>
+              <div class="bg-orange-100 p-2 rounded-lg ml-3"><i class="${icon} text-orange-600"></i></div>
+            </div>
+            <p class="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">${safe(l.descripcion,'')}</p>
+            <div class="flex gap-2">
+              <a href="#/turismo" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition text-sm font-medium">
+                Ver más
+              </a>
+              ${l.googleMaps ? `<a href="${l.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>` : ''}
+            </div>
+          </div>
+        </div>`;
+    }));
+
+    grid.innerHTML = cards.join('');
+    empty.classList.toggle('hidden', cards.length>0);
+  }
+
+  // ---------- EMERGENCY (LS: emergencyNumbers) ----------
+  function renderEmergency(){
+    const title = byId('emerg-title');
+    const grid = byId('emerg-grid');
+    const empty = byId('emerg-empty');
+    const cfg = jget('home.config', { emergencyTitle:'NÚMEROS DE EMERGENCIA' });
+    title.textContent = cfg.emergencyTitle || 'Números de emergencia';
+
+    const nums = jget('emergencyNumbers', []); // [{title, number, subtitle, desc, iconBg, iconClass, color}]
+    grid.innerHTML = nums.map(n=>`
+      <div class="bg-white rounded-lg p-6 text-center hover:shadow-lg transition duration-300">
+        <div class="${safe(n.iconBg,'bg-gray-100')} rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+          <i class="${safe(n.iconClass,'fas fa-phone')} text-2xl ${safe(n.color,'text-gray-600')}"></i>
+        </div>
+        <h3 class="font-bold ${safe(n.color,'text-gray-800')} text-xl mb-2">${safe(n.number,'')}</h3>
+        <p class="text-gray-700 font-semibold">${safe(n.title,'')}</p>
+        <p class="text-gray-600 text-sm">${safe(n.desc, safe(n.subtitle,''))}</p>
+      </div>
+    `).join('');
+    empty.classList.toggle('hidden', nums.length>0);
+  }
+
+  // ---------- wire-ups & small UX ----------
+  function wireUX(){
+    // smooth scroll (only in this section)
+    root.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href');
+        if(id && id !== '#'){ e.preventDefault(); const t = document.querySelector(id); if(t) t.scrollIntoView({behavior:'smooth'}); }
+      });
+    });
+  }
+
+  // ---------- init ----------
+  (async function init(){
+    renderHero();
+    renderKPIs();
+    renderServices();
+    renderWednesday();
+    renderHighlights();
+    await renderEvents();
+    await renderTurismo();
+    renderEmergency();
+    wireUX();
   })();
+})();
 </script>
