@@ -383,9 +383,9 @@ document.getElementById('turismo-form').addEventListener('submit', async (e) => 
     googleMaps: document.getElementById('googleMaps').value.trim(),
     recomendaciones: document.getElementById('recomendaciones').value.trim(),
     icono: document.getElementById('icono').value || 'fas fa-map-marked-alt',
-    // NEW: flags
-    showInHome: !!document.getElementById('showInHome')?.checked,
-    useAsHero: !!document.getElementById('useAsHero')?.checked,
+    // flags
+    showInHome: !!document.getElementById('showInHome')?.checked, // can be MANY
+    useAsHero:  !!document.getElementById('useAsHero')?.checked   // must be UNIQUE
   };
 
   // --- Basic validations ---
@@ -418,15 +418,12 @@ document.getElementById('turismo-form').addEventListener('submit', async (e) => 
   // Main image index (safety clamp)
   const imagenPrincipal = Math.min(mainIdx, Math.max(fotoIds.length - 1, 0));
 
-  // --- Enforce uniqueness of flags BEFORE writing current record ---
+  // --- Enforce UNIQUE "useAsHero" (do NOT touch showInHome) ---
   if (data.useAsHero) {
     lugares = lugares.map(l => ({ ...l, useAsHero: false }));
   }
-  if (data.showInHome) {
-    lugares = lugares.map(l => ({ ...l, showInHome: false }));
-  }
 
-  // --- Upsert ---
+  // --- Upsert record ---
   if (editId) {
     const i = lugares.findIndex(x => x.id === editId);
     if (i !== -1) {
