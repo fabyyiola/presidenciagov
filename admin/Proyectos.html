@@ -1368,7 +1368,7 @@
           <i class="fas fa-trash text-xs"></i>
         </button>`;
         cell.querySelector("button").addEventListener("click", async () => {
-           evt.stopPropagation();
+          evt.stopPropagation();
           await idbDeletePhoto(rec.id);
           const ids = (wrapEl.getAttribute("data-photo-ids") || "")
             .split(",")
@@ -1544,7 +1544,11 @@
             .map((rec) => URL.createObjectURL(rec.blob));
           const thumbs = urls
             .map(
-              (u) => `<img src="${u}" class="w-full h-16 object-cover rounded">`
+              (u, idx) => `
+    <button type="button" onclick="openEtapaLightbox('${e.id}', ${idx})" class="focus:outline-none">
+      <img src="${u}" class="w-full h-16 object-cover rounded" />
+    </button>
+  `
             )
             .join("");
 
