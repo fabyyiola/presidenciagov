@@ -1,4 +1,3 @@
-
 <section id="ProjectsAdmin" class="p-6 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
   <!-- Top Controls -->
   <div class="mb-8">
@@ -143,12 +142,9 @@
             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
           </tr>
         </thead>
-        <tbody id="projects-table-body" class="bg-white divide-y divide-gray-200">
-          <!-- Projects will be rendered here -->
-        </tbody>
+        <tbody id="projects-table-body" class="bg-white divide-y divide-gray-200"></tbody>
       </table>
     </div>
-    
     <!-- Empty State -->
     <div id="projects-empty-state" class="text-center py-12 hidden">
       <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
@@ -156,7 +152,7 @@
       </div>
       <h3 class="text-lg font-medium text-gray-800 mb-2">No hay proyectos registrados</h3>
       <p class="text-gray-600 mb-4">Comienza agregando tu primer proyecto municipal.</p>
-      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+      <button id="projects-empty-add" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
         <i class="fas fa-plus mr-2"></i>
         Agregar Proyecto
       </button>
@@ -172,10 +168,7 @@
           <i class="fas fa-times text-xl"></i>
         </button>
       </div>
-      
-      <div id="projects-drawer-content">
-        <!-- Content will be populated dynamically -->
-      </div>
+      <div id="projects-drawer-content"></div>
     </div>
   </div>
 
@@ -197,7 +190,6 @@
             <label for="projects-form-nombre" class="block text-sm font-medium text-gray-700 mb-2">Nombre del Proyecto *</label>
             <input type="text" id="projects-form-nombre" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
           </div>
-          
           <div>
             <label for="projects-form-categoria" class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
             <select id="projects-form-categoria" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -210,7 +202,6 @@
               <option value="Salud">Salud</option>
             </select>
           </div>
-          
           <div>
             <label for="projects-form-estatus" class="block text-sm font-medium text-gray-700 mb-2">Estatus *</label>
             <select id="projects-form-estatus" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -221,12 +212,10 @@
               <option value="Cancelado">Cancelado</option>
             </select>
           </div>
-          
           <div>
             <label for="projects-form-inversion" class="block text-sm font-medium text-gray-700 mb-2">Inversión Total *</label>
             <input type="number" id="projects-form-inversion" required min="0" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
           </div>
-          
           <div>
             <label for="projects-form-beneficiarios" class="block text-sm font-medium text-gray-700 mb-2">Beneficiarios *</label>
             <input type="number" id="projects-form-beneficiarios" required min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -242,11 +231,7 @@
               Agregar Etapa
             </button>
           </div>
-          
-          <div id="projects-etapas-container" class="space-y-4">
-            <!-- Etapas will be rendered here -->
-          </div>
-          
+          <div id="projects-etapas-container" class="space-y-4"></div>
           <div class="mt-4 p-4 bg-gray-50 rounded-lg">
             <div class="flex justify-between items-center">
               <span class="text-sm font-medium text-gray-700">Total de pesos:</span>
@@ -300,1111 +285,694 @@
   </div>
 
   <script>
-    (function() {
-      'use strict';
-      
-      // Storage key
-      const STORAGE_KEY = 'municipio.proyectos.v1';
-      
-      // Global state
-      let proyectos = [];
-      let filteredProyectos = [];
-      let currentEditId = null;
-      let etapaCounter = 0;
-      let tareaCounter = 0;
-      
-      // Initialize
-      document.addEventListener('DOMContentLoaded', function() {
-        loadProyectos();
-        setupEventListeners();
-        setupKeyboardShortcuts();
-        renderProyectos();
-        updateKPIs();
+  (function(){
+    'use strict';
+
+    const STORAGE_KEY = 'municipio.proyectos.v1';
+    const IDB_NAME = 'proyectos_media';
+    const IDB_STORE = 'etapa_fotos';
+
+    let proyectos = [];
+    let filteredProyectos = [];
+    let currentEditId = null;
+    let etapaCounter = 0;
+    let tareaCounter = 0;
+    let db = null;
+
+    // ------------ IndexedDB helpers -------------
+    function idbOpen(){
+      return new Promise((resolve,reject)=>{
+        const req = indexedDB.open(IDB_NAME,1);
+        req.onupgradeneeded = (e)=>{
+          const db = e.target.result;
+          if(!db.objectStoreNames.contains(IDB_STORE)){
+            const store = db.createObjectStore(IDB_STORE,{ keyPath:'id' });
+            store.createIndex('byEtapa','etapaId',{unique:false});
+          }
+        };
+        req.onsuccess = ()=>resolve(req.result);
+        req.onerror = ()=>reject(req.error);
       });
-      
-      // Data persistence
-      function saveProyectos() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(proyectos));
-      }
-      
-      function loadProyectos() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          proyectos = JSON.parse(stored);
-        } else {
-          // Sample data
-          proyectos = [
-            {
-              id: '1',
-              nombre: 'Renovación del Parque Central',
-              categoria: 'Infraestructura',
-              inversionTotal: 2500000,
-              beneficiarios: 15000,
-              estatusGeneral: 'En Progreso',
-              etapas: [
-                {
-                  id: 'e1',
-                  nombre: 'Diseño y Planificación',
-                  peso: 20,
-                  inicio: '2024-01-15',
-                  fin: '2024-02-15',
-                  tareas: [
-                    { id: 't1', nombre: 'Levantamiento topográfico', completada: true, responsable: 'Ing. García' },
-                    { id: 't2', nombre: 'Diseño arquitectónico', completada: true, responsable: 'Arq. López' },
-                    { id: 't3', nombre: 'Estudios ambientales', completada: false, responsable: 'Biol. Martín' }
-                  ]
-                },
-                {
-                  id: 'e2',
-                  nombre: 'Construcción Fase 1',
-                  peso: 40,
-                  inicio: '2024-02-16',
-                  fin: '2024-05-15',
-                  tareas: [
-                    { id: 't4', nombre: 'Demolición estructuras existentes', completada: true, responsable: 'Constructora ABC' },
-                    { id: 't5', nombre: 'Preparación del terreno', completada: false, responsable: 'Constructora ABC' }
-                  ]
-                },
-                {
-                  id: 'e3',
-                  nombre: 'Construcción Fase 2',
-                  peso: 30,
-                  inicio: '2024-05-16',
-                  fin: '2024-08-15',
-                  tareas: []
-                },
-                {
-                  id: 'e4',
-                  nombre: 'Finalización y Entrega',
-                  peso: 10,
-                  inicio: '2024-08-16',
-                  fin: '2024-09-15',
-                  tareas: []
-                }
-              ]
-            },
-            {
-              id: '2',
-              nombre: 'Sistema de Gestión Digital',
-              categoria: 'Tecnología',
-              inversionTotal: 800000,
-              beneficiarios: 50000,
-              estatusGeneral: 'Planificación',
-              etapas: [
-                {
-                  id: 'e5',
-                  nombre: 'Análisis de Requerimientos',
-                  peso: 25,
-                  inicio: '2024-03-01',
-                  fin: '2024-03-31',
-                  tareas: []
-                },
-                {
-                  id: 'e6',
-                  nombre: 'Desarrollo del Sistema',
-                  peso: 50,
-                  inicio: '2024-04-01',
-                  fin: '2024-07-31',
-                  tareas: []
-                },
-                {
-                  id: 'e7',
-                  nombre: 'Implementación y Capacitación',
-                  peso: 25,
-                  inicio: '2024-08-01',
-                  fin: '2024-09-30',
-                  tareas: []
-                }
-              ]
-            }
-          ];
-          saveProyectos();
-        }
-      }
-      
-      // Event listeners
-      function setupEventListeners() {
-        // Top buttons
-        document.getElementById('projects-add-btn').addEventListener('click', () => openModal());
-        document.getElementById('projects-export-btn').addEventListener('click', exportCSV);
-        document.getElementById('projects-import-btn').addEventListener('click', () => openImportModal());
-        
-        // Search and filters
-        document.getElementById('projects-search').addEventListener('input', filterProyectos);
-        document.getElementById('projects-filter-categoria').addEventListener('change', filterProyectos);
-        document.getElementById('projects-filter-estatus').addEventListener('change', filterProyectos);
-        document.getElementById('projects-filter-fecha-inicio').addEventListener('change', filterProyectos);
-        document.getElementById('projects-filter-fecha-fin').addEventListener('change', filterProyectos);
-        
-        // Modal
-        document.getElementById('projects-modal-close').addEventListener('click', closeModal);
-        document.getElementById('projects-form-cancel').addEventListener('click', closeModal);
-        document.getElementById('projects-form').addEventListener('submit', saveProyecto);
-        document.getElementById('projects-form-duplicate').addEventListener('click', duplicateProyecto);
-        document.getElementById('projects-form-delete').addEventListener('click', deleteProyecto);
-        
-        // Drawer
-        document.getElementById('projects-drawer-close').addEventListener('click', closeDrawer);
-        
-        // Etapas
-        document.getElementById('projects-add-etapa').addEventListener('click', addEtapa);
-        
-        // Import modal
-        document.getElementById('projects-import-cancel').addEventListener('click', closeImportModal);
-        document.getElementById('projects-import-confirm').addEventListener('click', importJSON);
-        
-        // Click outside to close
-        document.getElementById('projects-modal').addEventListener('click', (e) => {
-          if (e.target.id === 'projects-modal') closeModal();
-        });
-        
-        document.getElementById('projects-import-modal').addEventListener('click', (e) => {
-          if (e.target.id === 'projects-import-modal') closeImportModal();
-        });
-      }
-      
-      // Keyboard shortcuts
-      function setupKeyboardShortcuts() {
-        document.addEventListener('keydown', (e) => {
-          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
-            if (e.key === 'Escape') {
-              e.target.blur();
-            }
-            return;
-          }
-          
-          switch(e.key) {
-            case '/':
-              e.preventDefault();
-              document.getElementById('projects-search').focus();
-              break;
-            case 'n':
-              if (!e.ctrlKey && !e.metaKey) {
-                e.preventDefault();
-                openModal();
-              }
-              break;
-            case 'Escape':
-              closeModal();
-              closeDrawer();
-              closeImportModal();
-              break;
-          }
-        });
-        
-        // Save shortcut in modal
-        document.getElementById('projects-modal').addEventListener('keydown', (e) => {
-          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-            e.preventDefault();
-            document.getElementById('projects-form').dispatchEvent(new Event('submit'));
-          }
-        });
-      }
-      
-      // Filtering
-      function filterProyectos() {
-        const search = document.getElementById('projects-search').value.toLowerCase();
-        const categoria = document.getElementById('projects-filter-categoria').value;
-        const estatus = document.getElementById('projects-filter-estatus').value;
-        const fechaInicio = document.getElementById('projects-filter-fecha-inicio').value;
-        const fechaFin = document.getElementById('projects-filter-fecha-fin').value;
-        
-        filteredProyectos = proyectos.filter(proyecto => {
-          if (search && !proyecto.nombre.toLowerCase().includes(search)) return false;
-          if (categoria && proyecto.categoria !== categoria) return false;
-          if (estatus && proyecto.estatusGeneral !== estatus) return false;
-          
-          if (fechaInicio || fechaFin) {
-            const proyectoInicio = proyecto.etapas.length > 0 ? proyecto.etapas[0].inicio : null;
-            const proyectoFin = proyecto.etapas.length > 0 ? proyecto.etapas[proyecto.etapas.length - 1].fin : null;
-            
-            if (fechaInicio && proyectoInicio && proyectoInicio < fechaInicio) return false;
-            if (fechaFin && proyectoFin && proyectoFin > fechaFin) return false;
-          }
-          
-          return true;
-        });
-        
-        renderProyectos();
-        updateFilterChips();
-      }
-      
-      function updateFilterChips() {
-        const container = document.getElementById('projects-filter-chips');
-        const chips = [];
-        
-        const search = document.getElementById('projects-search').value;
-        const categoria = document.getElementById('projects-filter-categoria').value;
-        const estatus = document.getElementById('projects-filter-estatus').value;
-        const fechaInicio = document.getElementById('projects-filter-fecha-inicio').value;
-        const fechaFin = document.getElementById('projects-filter-fecha-fin').value;
-        
-        if (search) chips.push({ type: 'search', value: search, label: `Búsqueda: ${search}` });
-        if (categoria) chips.push({ type: 'categoria', value: categoria, label: `Categoría: ${categoria}` });
-        if (estatus) chips.push({ type: 'estatus', value: estatus, label: `Estatus: ${estatus}` });
-        if (fechaInicio) chips.push({ type: 'fecha-inicio', value: fechaInicio, label: `Desde: ${fechaInicio}` });
-        if (fechaFin) chips.push({ type: 'fecha-fin', value: fechaFin, label: `Hasta: ${fechaFin}` });
-        
-        container.innerHTML = chips.map(chip => `
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-            ${chip.label}
-            <button onclick="removeFilter('${chip.type}')" class="ml-2 text-blue-600 hover:text-blue-800">
-              <i class="fas fa-times text-xs"></i>
-            </button>
-          </span>
-        `).join('');
-      }
-      
-      window.removeFilter = function(type) {
-        switch(type) {
-          case 'search':
-            document.getElementById('projects-search').value = '';
-            break;
-          case 'categoria':
-            document.getElementById('projects-filter-categoria').value = '';
-            break;
-          case 'estatus':
-            document.getElementById('projects-filter-estatus').value = '';
-            break;
-          case 'fecha-inicio':
-            document.getElementById('projects-filter-fecha-inicio').value = '';
-            break;
-          case 'fecha-fin':
-            document.getElementById('projects-filter-fecha-fin').value = '';
-            break;
-        }
-        filterProyectos();
-      };
-      
-      // Rendering
-      function renderProyectos() {
-        const tbody = document.getElementById('projects-table-body');
-        const emptyState = document.getElementById('projects-empty-state');
-        
-        if (filteredProyectos.length === 0) {
-          tbody.innerHTML = '';
-          emptyState.classList.remove('hidden');
-          return;
-        }
-        
-        emptyState.classList.add('hidden');
-        
-        tbody.innerHTML = filteredProyectos.map(proyecto => {
-          const progreso = calcularProgreso(proyecto);
-          const variacionTiempo = calcularVariacionTiempo(proyecto);
-          const estatusColor = getEstatusColor(proyecto.estatusGeneral);
-          const tiempoColor = getTiempoColor(variacionTiempo);
-          
-          return `
-            <tr class="hover:bg-gray-50 cursor-pointer transition-colors duration-200" onclick="openDrawer('${proyecto.id}')">
-              <td class="px-6 py-4">
-                <div class="font-medium text-gray-800">${proyecto.nombre}</div>
-              </td>
-              <td class="px-6 py-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                  ${proyecto.categoria}
-                </span>
-              </td>
-              <td class="px-6 py-4">
-                <div class="text-sm font-medium text-gray-800">$${formatNumber(proyecto.inversionTotal)}</div>
-              </td>
-              <td class="px-6 py-4">
-                <div class="text-sm text-gray-800">${formatNumber(proyecto.beneficiarios)}</div>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center">
-                  <div class="w-16 bg-gray-200 rounded-full h-2 mr-3">
-                    <div class="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full" style="width: ${progreso}%"></div>
-                  </div>
-                  <span class="text-sm font-medium text-gray-800">${progreso}%</span>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${estatusColor}">
-                  ${proyecto.estatusGeneral}
-                </span>
-              </td>
-              <td class="px-6 py-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${tiempoColor}">
-                  ${variacionTiempo.label}
-                </span>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex space-x-2">
-                  <button onclick="event.stopPropagation(); editProyecto('${proyecto.id}')" class="text-blue-600 hover:text-blue-800 transition-colors duration-200" title="Editar">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button onclick="event.stopPropagation(); duplicateProyectoFromTable('${proyecto.id}')" class="text-purple-600 hover:text-purple-800 transition-colors duration-200" title="Duplicar">
-                    <i class="fas fa-copy"></i>
-                  </button>
-                  <button onclick="event.stopPropagation(); deleteProyectoFromTable('${proyecto.id}')" class="text-red-600 hover:text-red-800 transition-colors duration-200" title="Eliminar">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      }
-      
-      function updateKPIs() {
-        const activos = proyectos.filter(p => p.estatusGeneral === 'En Progreso' || p.estatusGeneral === 'Planificación').length;
-        const avancePromedio = proyectos.length > 0 ? 
-          Math.round(proyectos.reduce((sum, p) => sum + calcularProgreso(p), 0) / proyectos.length) : 0;
-        const inversionTotal = proyectos.reduce((sum, p) => sum + p.inversionTotal, 0);
-        const beneficiarios = proyectos.reduce((sum, p) => sum + p.beneficiarios, 0);
-        const enRiesgo = proyectos.filter(p => {
-          const variacion = calcularVariacionTiempo(p);
-          return variacion.status === 'critico';
-        }).length;
-        
-        document.getElementById('projects-kpi-activos').textContent = activos;
-        document.getElementById('projects-kpi-avance').textContent = `${avancePromedio}%`;
-        document.getElementById('projects-kpi-inversion').textContent = `$${formatNumber(inversionTotal)}`;
-        document.getElementById('projects-kpi-beneficiarios').textContent = formatNumber(beneficiarios);
-        document.getElementById('projects-kpi-riesgo').textContent = enRiesgo;
-      }
-      
-      // Calculations
-      function calcularProgreso(proyecto) {
-        if (!proyecto.etapas || proyecto.etapas.length === 0) return 0;
-        
-        let progresoTotal = 0;
-        proyecto.etapas.forEach(etapa => {
-          const avanceEtapa = calcularAvanceEtapa(etapa);
-          progresoTotal += (etapa.peso / 100) * avanceEtapa;
-        });
-        
-        return Math.round(progresoTotal);
-      }
-      
-      function calcularAvanceEtapa(etapa) {
-        if (etapa.avanceManual !== undefined) {
-          return etapa.avanceManual;
-        }
-        
-        if (!etapa.tareas || etapa.tareas.length === 0) return 0;
-        
-        const completadas = etapa.tareas.filter(t => t.completada).length;
-        return Math.round((completadas / etapa.tareas.length) * 100);
-      }
-      
-      function calcularVariacionTiempo(proyecto) {
-        if (!proyecto.etapas || proyecto.etapas.length === 0) {
-          return { status: 'sin-datos', label: 'Sin datos' };
-        }
-        
-        const progreso = calcularProgreso(proyecto);
-        const ultimaEtapa = proyecto.etapas[proyecto.etapas.length - 1];
-        const fechaFin = new Date(ultimaEtapa.fin);
-        const hoy = new Date();
-        
-        if (progreso === 100) {
-          return { status: 'completado', label: 'Completado' };
-        }
-        
-        if (hoy <= fechaFin) {
-          return { status: 'a-tiempo', label: 'A tiempo' };
-        }
-        
-        const diasRetraso = Math.floor((hoy - fechaFin) / (1000 * 60 * 60 * 24));
-        
-        if (diasRetraso <= 7) {
-          return { status: 'retraso-leve', label: `${diasRetraso}d retraso` };
-        } else {
-          return { status: 'critico', label: `${diasRetraso}d crítico` };
-        }
-      }
-      
-      // Utility functions
-      function formatNumber(num) {
-        return new Intl.NumberFormat('es-MX').format(num);
-      }
-      
-      function getEstatusColor(estatus) {
-        const colors = {
-          'Planificación': 'bg-yellow-100 text-yellow-800',
-          'En Progreso': 'bg-blue-100 text-blue-800',
-          'Pausado': 'bg-orange-100 text-orange-800',
-          'Completado': 'bg-green-100 text-green-800',
-          'Cancelado': 'bg-red-100 text-red-800'
-        };
-        return colors[estatus] || 'bg-gray-100 text-gray-800';
-      }
-      
-      function getTiempoColor(variacion) {
-        const colors = {
-          'completado': 'bg-green-100 text-green-800',
-          'a-tiempo': 'bg-green-100 text-green-800',
-          'retraso-leve': 'bg-yellow-100 text-yellow-800',
-          'critico': 'bg-red-100 text-red-800',
-          'sin-datos': 'bg-gray-100 text-gray-800'
-        };
-        return colors[variacion.status] || 'bg-gray-100 text-gray-800';
-      }
-      
-      function generateId() {
-        return Date.now().toString(36) + Math.random().toString(36).substr(2);
-      }
-      
-      // Modal functions
-      function openModal(proyectoId = null) {
-        currentEditId = proyectoId;
-        const modal = document.getElementById('projects-modal');
-        const title = document.getElementById('projects-modal-title');
-        const duplicateBtn = document.getElementById('projects-form-duplicate');
-        const deleteBtn = document.getElementById('projects-form-delete');
-        
-        if (proyectoId) {
-          title.textContent = 'Editar Proyecto';
-          duplicateBtn.classList.remove('hidden');
-          deleteBtn.classList.remove('hidden');
-          loadProyectoToForm(proyectoId);
-        } else {
-          title.textContent = 'Nuevo Proyecto';
-          duplicateBtn.classList.add('hidden');
-          deleteBtn.classList.add('hidden');
-          resetForm();
-        }
-        
-        modal.classList.remove('hidden');
-        document.getElementById('projects-form-nombre').focus();
-      }
-      
-      function closeModal() {
-        document.getElementById('projects-modal').classList.add('hidden');
-        currentEditId = null;
-        resetForm();
-      }
-      
-      function resetForm() {
-        document.getElementById('projects-form').reset();
-        document.getElementById('projects-etapas-container').innerHTML = '';
-        updatePesoTotal();
-        etapaCounter = 0;
-        tareaCounter = 0;
-      }
-      
-      function loadProyectoToForm(proyectoId) {
-        const proyecto = proyectos.find(p => p.id === proyectoId);
-        if (!proyecto) return;
-        
-        document.getElementById('projects-form-nombre').value = proyecto.nombre;
-        document.getElementById('projects-form-categoria').value = proyecto.categoria;
-        document.getElementById('projects-form-estatus').value = proyecto.estatusGeneral;
-        document.getElementById('projects-form-inversion').value = proyecto.inversionTotal;
-        document.getElementById('projects-form-beneficiarios').value = proyecto.beneficiarios;
-        
-        // Load etapas
-        const container = document.getElementById('projects-etapas-container');
-        container.innerHTML = '';
-        
-        proyecto.etapas.forEach(etapa => {
-          addEtapa(etapa);
-        });
-        
-        updatePesoTotal();
-      }
-      
-      function saveProyecto(e) {
-        e.preventDefault();
-        
-        const formData = {
-          nombre: document.getElementById('projects-form-nombre').value,
-          categoria: document.getElementById('projects-form-categoria').value,
-          estatusGeneral: document.getElementById('projects-form-estatus').value,
-          inversionTotal: parseFloat(document.getElementById('projects-form-inversion').value),
-          beneficiarios: parseInt(document.getElementById('projects-form-beneficiarios').value),
-          etapas: getEtapasFromForm()
-        };
-        
-        // Validate peso total
-        const pesoTotal = formData.etapas.reduce((sum, etapa) => sum + etapa.peso, 0);
-        if (Math.abs(pesoTotal - 100) > 0.01) {
-          alert('La suma de los pesos de las etapas debe ser exactamente 100%');
-          return;
-        }
-        
-        if (currentEditId) {
-          const index = proyectos.findIndex(p => p.id === currentEditId);
-          if (index !== -1) {
-            proyectos[index] = { ...proyectos[index], ...formData };
-          }
-        } else {
-          formData.id = generateId();
-          proyectos.push(formData);
-        }
-        
-        saveProyectos();
-        filterProyectos();
-        updateKPIs();
-        closeModal();
-      }
-      
-      function getEtapasFromForm() {
-        const etapas = [];
-        const etapaElements = document.querySelectorAll('[data-etapa-id]');
-        
-        etapaElements.forEach(element => {
-          const etapaId = element.getAttribute('data-etapa-id');
-          const nombre = element.querySelector('[data-field="nombre"]').value;
-          const peso = parseFloat(element.querySelector('[data-field="peso"]').value) || 0;
-          const inicio = element.querySelector('[data-field="inicio"]').value;
-          const fin = element.querySelector('[data-field="fin"]').value;
-          
-          const tareas = [];
-          const tareaElements = element.querySelectorAll('[data-tarea-id]');
-          
-          tareaElements.forEach(tareaElement => {
-            const tareaId = tareaElement.getAttribute('data-tarea-id');
-            const tareas_nombre = tareaElement.querySelector('[data-field="tarea-nombre"]').value;
-            const completada = tareaElement.querySelector('[data-field="completada"]').checked;
-            const responsable = tareaElement.querySelector('[data-field="responsable"]').value;
-            const costo = parseFloat(tareaElement.querySelector('[data-field="costo"]').value) || 0;
-            
-            if (tareas_nombre) {
-              tareas.push({
-                id: tareaId,
-                nombre: tareas_nombre,
-                completada,
-                responsable,
-                costo: costo > 0 ? costo : undefined
-              });
-            }
-          });
-          
-          if (nombre) {
-            etapas.push({
-              id: etapaId,
-              nombre,
-              peso,
-              inicio,
-              fin,
-              tareas
-            });
-          }
-        });
-        
-        return etapas;
-      }
-      
-      // Etapas management
-      function addEtapa(etapaData = null) {
-        const container = document.getElementById('projects-etapas-container');
-        const etapaId = etapaData ? etapaData.id : `etapa-${++etapaCounter}`;
-        
-        const etapaElement = document.createElement('div');
-        etapaElement.className = 'border border-gray-200 rounded-lg p-4 bg-gray-50';
-        etapaElement.setAttribute('data-etapa-id', etapaId);
-        
-        etapaElement.innerHTML = `
-          <div class="flex items-center justify-between mb-4">
-            <h5 class="font-semibold text-gray-800">Etapa</h5>
-            <div class="flex space-x-2">
-              <button type="button" onclick="addTarea('${etapaId}')" class="text-blue-600 hover:text-blue-800 text-sm">
-                <i class="fas fa-plus mr-1"></i>Tarea
-              </button>
-              <button type="button" onclick="removeEtapa('${etapaId}')" class="text-red-600 hover:text-red-800">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </div>
-          
-          <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
-            <div class="lg:col-span-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
-              <input type="text" data-field="nombre" value="${etapaData ? etapaData.nombre : ''}" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Peso (%) *</label>
-              <input type="number" data-field="peso" value="${etapaData ? etapaData.peso : ''}" required min="0" max="100" step="0.1" onchange="updatePesoTotal()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Avance Manual (%)</label>
-              <input type="number" data-field="avance-manual" value="${etapaData && etapaData.avanceManual !== undefined ? etapaData.avanceManual : ''}" min="0" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
-            </div>
-          </div>
-          
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
-              <input type="date" data-field="inicio" value="${etapaData ? etapaData.inicio : ''}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>
-              <input type="date" data-field="fin" value="${etapaData ? etapaData.fin : ''}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
-            </div>
-          </div>
-          
-          <div class="tareas-container space-y-2">
-            <!-- Tareas will be added here -->
-          </div>
-        `;
-        
-        container.appendChild(etapaElement);
-        
-        // Add existing tareas if any
-        if (etapaData && etapaData.tareas) {
-          etapaData.tareas.forEach(tarea => {
-            addTarea(etapaId, tarea);
-          });
-        }
-        
-        updatePesoTotal();
-      }
-      
-      window.removeEtapa = function(etapaId) {
-        if (confirm('¿Estás seguro de que deseas eliminar esta etapa?')) {
-          const element = document.querySelector(`[data-etapa-id="${etapaId}"]`);
-          if (element) {
-            element.remove();
-            updatePesoTotal();
-          }
-        }
-      };
-      
-      window.addTarea = function(etapaId, tareaData = null) {
-        const etapaElement = document.querySelector(`[data-etapa-id="${etapaId}"]`);
-        const tareasContainer = etapaElement.querySelector('.tareas-container');
-        const tareaId = tareaData ? tareaData.id : `tarea-${++tareaCounter}`;
-        
-        const tareaElement = document.createElement('div');
-        tareaElement.className = 'bg-white border border-gray-200 rounded p-3';
-        tareaElement.setAttribute('data-tarea-id', tareaId);
-        
-        tareaElement.innerHTML = `
-          <div class="grid grid-cols-1 lg:grid-cols-5 gap-3 items-center">
-            <div class="lg:col-span-2">
-              <input type="text" data-field="tarea-nombre" value="${tareaData ? tareaData.nombre : ''}" placeholder="Nombre de la tarea" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500 focus:border-transparent">
-            </div>
-            <div>
-              <input type="text" data-field="responsable" value="${tareaData ? tareaData.responsable || '' : ''}" placeholder="Responsable" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500 focus:border-transparent">
-            </div>
-            <div>
-              <input type="number" data-field="costo" value="${tareaData && tareaData.costo ? tareaData.costo : ''}" placeholder="Costo" min="0" step="0.01" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500 focus:border-transparent">
-            </div>
-            <div class="flex items-center justify-between">
-              <label class="flex items-center">
-                <input type="checkbox" data-field="completada" ${tareaData && tareaData.completada ? 'checked' : ''} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                <span class="ml-2 text-sm text-gray-700">Completada</span>
-              </label>
-              <button type="button" onclick="removeTarea('${tareaId}')" class="text-red-600 hover:text-red-800 ml-2">
-                <i class="fas fa-trash text-sm"></i>
-              </button>
-            </div>
-          </div>
-        `;
-        
-        tareasContainer.appendChild(tareaElement);
-      };
-      
-      window.removeTarea = function(tareaId) {
-        const element = document.querySelector(`[data-tarea-id="${tareaId}"]`);
-        if (element) {
-          element.remove();
-        }
-      };
-      
-      function updatePesoTotal() {
-        const pesoInputs = document.querySelectorAll('[data-field="peso"]');
-        let total = 0;
-        
-        pesoInputs.forEach(input => {
-          total += parseFloat(input.value) || 0;
-        });
-        
-        const totalElement = document.getElementById('projects-peso-total');
-        const errorElement = document.getElementById('projects-peso-error');
-        
-        totalElement.textContent = `${total.toFixed(1)}%`;
-        
-        if (Math.abs(total - 100) > 0.01) {
-          totalElement.className = 'text-sm font-bold text-red-600';
-          errorElement.classList.remove('hidden');
-        } else {
-          totalElement.className = 'text-sm font-bold text-green-600';
-          errorElement.classList.add('hidden');
-        }
-      }
-      
-      window.updatePesoTotal = updatePesoTotal;
-      
-      // CRUD operations
-      window.editProyecto = function(proyectoId) {
-        openModal(proyectoId);
-      };
-      
-      function duplicateProyecto() {
-        if (!currentEditId) return;
-        
-        const proyecto = proyectos.find(p => p.id === currentEditId);
-        if (!proyecto) return;
-        
-        const duplicated = {
-          ...proyecto,
-          id: generateId(),
-          nombre: `${proyecto.nombre} (Copia)`,
-          etapas: proyecto.etapas.map(etapa => ({
-            ...etapa,
-            id: generateId(),
-            tareas: etapa.tareas ? etapa.tareas.map(tarea => ({
-              ...tarea,
-              id: generateId(),
-              completada: false
-            })) : []
-          }))
-        };
-        
-        proyectos.push(duplicated);
-        saveProyectos();
-        filterProyectos();
-        updateKPIs();
-        closeModal();
-      }
-      
-      window.duplicateProyectoFromTable = function(proyectoId) {
-        const proyecto = proyectos.find(p => p.id === proyectoId);
-        if (!proyecto) return;
-        
-        if (confirm(`¿Deseas duplicar el proyecto "${proyecto.nombre}"?`)) {
-          const duplicated = {
-            ...proyecto,
-            id: generateId(),
-            nombre: `${proyecto.nombre} (Copia)`,
-            etapas: proyecto.etapas.map(etapa => ({
-              ...etapa,
-              id: generateId(),
-              tareas: etapa.tareas ? etapa.tareas.map(tarea => ({
-                ...tarea,
-                id: generateId(),
-                completada: false
-              })) : []
-            }))
-          };
-          
-          proyectos.push(duplicated);
-          saveProyectos();
-          filterProyectos();
-          updateKPIs();
-        }
-      };
-      
-      function deleteProyecto() {
-        if (!currentEditId) return;
-        
-        const proyecto = proyectos.find(p => p.id === currentEditId);
-        if (!proyecto) return;
-        
-        if (confirm(`¿Estás seguro de que deseas eliminar el proyecto "${proyecto.nombre}"?`)) {
-          proyectos = proyectos.filter(p => p.id !== currentEditId);
-          saveProyectos();
-          filterProyectos();
-          updateKPIs();
-          closeModal();
-        }
-      }
-      
-      window.deleteProyectoFromTable = function(proyectoId) {
-        const proyecto = proyectos.find(p => p.id === proyectoId);
-        if (!proyecto) return;
-        
-        if (confirm(`¿Estás seguro de que deseas eliminar el proyecto "${proyecto.nombre}"?`)) {
-          proyectos = proyectos.filter(p => p.id !== proyectoId);
-          saveProyectos();
-          filterProyectos();
-          updateKPIs();
-        }
-      };
-      
-      // Drawer functions
-      window.openDrawer = function(proyectoId) {
-        const proyecto = proyectos.find(p => p.id === proyectoId);
-        if (!proyecto) return;
-        
-        const drawer = document.getElementById('projects-details-drawer');
-        const title = document.getElementById('projects-drawer-title');
-        const content = document.getElementById('projects-drawer-content');
-        
-        title.textContent = proyecto.nombre;
-        
-        const progreso = calcularProgreso(proyecto);
-        const variacionTiempo = calcularVariacionTiempo(proyecto);
-        
-        content.innerHTML = `
-          <div class="space-y-6">
-            <!-- Resumen -->
-            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
-              <h3 class="font-semibold text-gray-800 mb-3">Resumen del Proyecto</h3>
-              <div class="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span class="text-gray-600">Categoría:</span>
-                  <span class="font-medium text-gray-800 ml-2">${proyecto.categoria}</span>
-                </div>
-                <div>
-                  <span class="text-gray-600">Estatus:</span>
-                  <span class="font-medium text-gray-800 ml-2">${proyecto.estatusGeneral}</span>
-                </div>
-                <div>
-                  <span class="text-gray-600">Inversión:</span>
-                  <span class="font-medium text-gray-800 ml-2">$${formatNumber(proyecto.inversionTotal)}</span>
-                </div>
-                <div>
-                  <span class="text-gray-600">Beneficiarios:</span>
-                  <span class="font-medium text-gray-800 ml-2">${formatNumber(proyecto.beneficiarios)}</span>
-                </div>
-              </div>
-              
-              <div class="mt-4">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-sm font-medium text-gray-700">Progreso General</span>
-                  <span class="text-sm font-bold text-gray-800">${progreso}%</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-3">
-                  <div class="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full transition-all duration-300" style="width: ${progreso}%"></div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Mini Gantt -->
-            <div>
-              <h3 class="font-semibold text-gray-800 mb-3">Cronograma de Etapas</h3>
-              <div class="space-y-3">
-                ${proyecto.etapas.map(etapa => {
-                  const avanceEtapa = calcularAvanceEtapa(etapa);
-                  const fechaInicio = etapa.inicio ? new Date(etapa.inicio) : null;
-                  const fechaFin = etapa.fin ? new Date(etapa.fin) : null;
-                  const hoy = new Date();
-                  
-                  let estadoColor = 'bg-gray-200';
-                  if (avanceEtapa === 100) {
-                    estadoColor = 'bg-green-500';
-                  } else if (fechaFin && hoy > fechaFin) {
-                    estadoColor = 'bg-red-500';
-                  } else if (avanceEtapa > 0) {
-                    estadoColor = 'bg-blue-500';
-                  }
-                  
-                  return `
-                    <div class="border border-gray-200 rounded-lg p-3">
-                      <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center">
-                          <div class="w-3 h-3 rounded-full ${estadoColor} mr-3"></div>
-                          <span class="font-medium text-gray-800">${etapa.nombre}</span>
-                          <span class="text-xs text-gray-500 ml-2">(${etapa.peso}%)</span>
-                        </div>
-                        <span class="text-sm font-medium text-gray-700">${avanceEtapa}%</span>
-                      </div>
-                      
-                      <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
-                        <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-2 rounded-full" style="width: ${avanceEtapa}%"></div>
-                      </div>
-                      
-                      <div class="flex justify-between text-xs text-gray-500">
-                        <span>${fechaInicio ? fechaInicio.toLocaleDateString('es-MX') : 'Sin fecha'}</span>
-                        <span>${fechaFin ? fechaFin.toLocaleDateString('es-MX') : 'Sin fecha'}</span>
-                      </div>
-                      
-                      ${etapa.tareas && etapa.tareas.length > 0 ? `
-                        <div class="mt-3 space-y-1">
-                          <div class="text-xs font-medium text-gray-600 mb-1">Tareas (${etapa.tareas.filter(t => t.completada).length}/${etapa.tareas.length})</div>
-                          ${etapa.tareas.slice(0, 3).map(tarea => `
-                            <div class="flex items-center text-xs">
-                              <i class="fas fa-${tarea.completada ? 'check-circle text-green-500' : 'circle text-gray-400'} mr-2"></i>
-                              <span class="${tarea.completada ? 'line-through text-gray-500' : 'text-gray-700'}">${tarea.nombre}</span>
-                              ${tarea.responsable ? `<span class="text-gray-500 ml-auto">${tarea.responsable}</span>` : ''}
-                            </div>
-                          `).join('')}
-                          ${etapa.tareas.length > 3 ? `<div class="text-xs text-gray-400">+${etapa.tareas.length - 3} tareas más</div>` : ''}
-                        </div>
-                      ` : ''}
-                    </div>
-                  `;
-                }).join('')}
-              </div>
-            </div>
-            
-            <!-- Últimas Actividades -->
-            <div>
-              <h3 class="font-semibold text-gray-800 mb-3">Últimas Actividades</h3>
-              <div class="space-y-2 text-sm">
-                <div class="flex items-center text-gray-600">
-                  <i class="fas fa-clock mr-2"></i>
-                  <span>Proyecto creado</span>
-                </div>
-                ${proyecto.etapas.filter(e => e.tareas && e.tareas.some(t => t.completada)).map(etapa => 
-                  etapa.tareas.filter(t => t.completada).slice(-2).map(tarea => `
-                    <div class="flex items-center text-gray-600">
-                      <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                      <span>Tarea completada: ${tarea.nombre}</span>
-                    </div>
-                  `).join('')
-                ).join('')}
-              </div>
-            </div>
-            
-            <!-- Quick Actions -->
-            <div>
-              <h3 class="font-semibold text-gray-800 mb-3">Acciones Rápidas</h3>
-              <div class="flex flex-wrap gap-2">
-                <button onclick="editProyecto('${proyecto.id}'); closeDrawer();" class="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm">
-                  <i class="fas fa-edit mr-1"></i>
-                  Editar
-                </button>
-                <button onclick="toggleProyectoStatus('${proyecto.id}')" class="bg-${proyecto.estatusGeneral === 'Pausado' ? 'green' : 'orange'}-600 text-white px-3 py-2 rounded-lg hover:bg-${proyecto.estatusGeneral === 'Pausado' ? 'green' : 'orange'}-700 transition-colors duration-200 text-sm">
-                  <i class="fas fa-${proyecto.estatusGeneral === 'Pausado' ? 'play' : 'pause'} mr-1"></i>
-                  ${proyecto.estatusGeneral === 'Pausado' ? 'Reanudar' : 'Pausar'}
-                </button>
-                ${progreso < 100 ? `
-                  <button onclick="completeProyecto('${proyecto.id}')" class="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm">
-                    <i class="fas fa-check mr-1"></i>
-                    Completar
-                  </button>
-                ` : ''}
-              </div>
-            </div>
-          </div>
-        `;
-        
-        drawer.classList.remove('translate-x-full');
-      };
-      
-      function closeDrawer() {
-        const drawer = document.getElementById('projects-details-drawer');
-        drawer.classList.add('translate-x-full');
-      }
-      
-      window.toggleProyectoStatus = function(proyectoId) {
-        const proyecto = proyectos.find(p => p.id === proyectoId);
-        if (!proyecto) return;
-        
-        if (proyecto.estatusGeneral === 'Pausado') {
-          proyecto.estatusGeneral = 'En Progreso';
-        } else if (proyecto.estatusGeneral === 'En Progreso') {
-          proyecto.estatusGeneral = 'Pausado';
-        }
-        
-        saveProyectos();
-        filterProyectos();
-        updateKPIs();
-        openDrawer(proyectoId); // Refresh drawer
-      };
-      
-      window.completeProyecto = function(proyectoId) {
-        if (confirm('¿Marcar este proyecto como completado?')) {
-          const proyecto = proyectos.find(p => p.id === proyectoId);
-          if (proyecto) {
-            proyecto.estatusGeneral = 'Completado';
-            // Mark all tasks as completed
-            proyecto.etapas.forEach(etapa => {
-              if (etapa.tareas) {
-                etapa.tareas.forEach(tarea => {
-                  tarea.completada = true;
-                });
-              }
-            });
-            
-            saveProyectos();
-            filterProyectos();
-            updateKPIs();
-            openDrawer(proyectoId); // Refresh drawer
-          }
-        }
-      };
-      
-      // Import/Export functions
-      function exportCSV() {
-        const headers = ['Nombre', 'Categoría', 'Inversión Total', 'Beneficiarios', 'Estatus', 'Progreso %'];
-        const rows = proyectos.map(proyecto => [
-          proyecto.nombre,
-          proyecto.categoria,
-          proyecto.inversionTotal,
-          proyecto.beneficiarios,
-          proyecto.estatusGeneral,
-          calcularProgreso(proyecto)
-        ]);
-        
-        const csvContent = [headers, ...rows]
-          .map(row => row.map(field => `"${field}"`).join(','))
-          .join('\n');
-        
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `proyectos_municipales_${new Date().toISOString().split('T')[0]}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-      
-      function openImportModal() {
-        document.getElementById('projects-import-modal').classList.remove('hidden');
-      }
-      
-      function closeImportModal() {
-        document.getElementById('projects-import-modal').classList.add('hidden');
-        document.getElementById('projects-import-file').value = '';
-      }
-      
-      function importJSON() {
-        const fileInput = document.getElementById('projects-import-file');
-        const file = fileInput.files[0];
-        
-        if (!file) {
-          alert('Por favor selecciona un archivo JSON');
-          return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          try {
-            const importedData = JSON.parse(e.target.result);
-            
-            if (!Array.isArray(importedData)) {
-              throw new Error('El archivo debe contener un array de proyectos');
-            }
-            
-            // Validate structure
-            importedData.forEach((proyecto, index) => {
-              if (!proyecto.nombre || !proyecto.categoria || typeof proyecto.inversionTotal !== 'number') {
-                throw new Error(`Proyecto en posición ${index + 1} tiene estructura inválida`);
-              }
-            });
-            
-            // Assign new IDs to avoid conflicts
-            const processedData = importedData.map(proyecto => ({
-              ...proyecto,
-              id: generateId(),
-              etapas: proyecto.etapas ? proyecto.etapas.map(etapa => ({
-                ...etapa,
-                id: generateId(),
-                tareas: etapa.tareas ? etapa.tareas.map(tarea => ({
-                  ...tarea,
-                  id: generateId()
-                })) : []
-              })) : []
-            }));
-            
-            proyectos = [...proyectos, ...processedData];
-            saveProyectos();
-            filterProyectos();
-            updateKPIs();
-            closeImportModal();
-            
-            alert(`Se importaron ${processedData.length} proyectos exitosamente`);
-            
-          } catch (error) {
-            alert(`Error al importar: ${error.message}`);
-          }
-        };
-        
-        reader.readAsText(file);
-      }
-      
-      // Initialize filtered projects
+    }
+    async function idbSavePhoto(etapaId, file){
+      const id = generateId();
+      const blob = file instanceof Blob ? file : new Blob([file], {type:file.type||'application/octet-stream'});
+      return new Promise((resolve,reject)=>{
+        const tx = db.transaction(IDB_STORE,'readwrite');
+        tx.objectStore(IDB_STORE).put({ id, etapaId, blob, mime: blob.type, filename: file.name||'imagen', createdAt: new Date().toISOString() });
+        tx.oncomplete = ()=>resolve(id);
+        tx.onerror = ()=>reject(tx.error);
+      });
+    }
+    async function idbGetPhotos(etapaId){
+      return new Promise((resolve,reject)=>{
+        const tx = db.transaction(IDB_STORE,'readonly');
+        const idx = tx.objectStore(IDB_STORE).index('byEtapa');
+        const req = idx.getAll(etapaId);
+        req.onsuccess = ()=>resolve(req.result||[]);
+        req.onerror = ()=>reject(req.error);
+      });
+    }
+    async function idbGetPhotoById(photoId){
+      return new Promise((resolve,reject)=>{
+        const tx = db.transaction(IDB_STORE,'readonly');
+        const req = tx.objectStore(IDB_STORE).get(photoId);
+        req.onsuccess = ()=>resolve(req.result||null);
+        req.onerror = ()=>reject(req.error);
+      });
+    }
+    async function idbDeletePhoto(photoId){
+      return new Promise((resolve,reject)=>{
+        const tx = db.transaction(IDB_STORE,'readwrite');
+        tx.objectStore(IDB_STORE).delete(photoId);
+        tx.oncomplete = ()=>resolve(true);
+        tx.onerror = ()=>reject(tx.error);
+      });
+    }
+
+    // -------------- Init / Load ----------------
+    function init(){
+      idbOpen().then(r=>{ db = r; }).catch(console.error);
+      loadProyectos();
+      setupEventListeners();
+      setupKeyboardShortcuts();
       filteredProyectos = [...proyectos];
-      
-    })();
+      renderProyectos();
+      updateKPIs();
+    }
+    // If injected after DOMContentLoaded, run now:
+    if (document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+    function saveProyectos(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(proyectos)); }
+    function loadProyectos(){
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored){ proyectos = JSON.parse(stored); return; }
+      proyectos = [
+        { id:'1', nombre:'Renovación del Parque Central', categoria:'Infraestructura', inversionTotal:2500000, beneficiarios:15000, estatusGeneral:'En Progreso',
+          etapas:[
+            { id:'e1', nombre:'Diseño y Planificación', peso:20, inicio:'2024-01-15', fin:'2024-02-15', tareas:[
+              {id:'t1',nombre:'Levantamiento topográfico',completada:true,responsable:'Ing. García'},
+              {id:'t2',nombre:'Diseño arquitectónico',completada:true,responsable:'Arq. López'},
+              {id:'t3',nombre:'Estudios ambientales',completada:false,responsable:'Biol. Martín'}], photoIds:[] },
+            { id:'e2', nombre:'Construcción Fase 1', peso:40, inicio:'2024-02-16', fin:'2024-05-15', tareas:[
+              {id:'t4',nombre:'Demolición',completada:true,responsable:'Constructora ABC'},
+              {id:'t5',nombre:'Preparación del terreno',completada:false,responsable:'Constructora ABC'}], photoIds:[] },
+            { id:'e3', nombre:'Construcción Fase 2', peso:30, inicio:'2024-05-16', fin:'2024-08-15', tareas:[], photoIds:[] },
+            { id:'e4', nombre:'Finalización y Entrega', peso:10, inicio:'2024-08-16', fin:'2024-09-15', tareas:[], photoIds:[] }
+          ]
+        },
+        { id:'2', nombre:'Sistema de Gestión Digital', categoria:'Tecnología', inversionTotal:800000, beneficiarios:50000, estatusGeneral:'Planificación',
+          etapas:[
+            {id:'e5',nombre:'Análisis de Requerimientos',peso:25,inicio:'2024-03-01',fin:'2024-03-31',tareas:[], photoIds:[]},
+            {id:'e6',nombre:'Desarrollo del Sistema',peso:50,inicio:'2024-04-01',fin:'2024-07-31',tareas:[], photoIds:[]},
+            {id:'e7',nombre:'Implementación y Capacitación',peso:25,inicio:'2024-08-01',fin:'2024-09-30',tareas:[], photoIds:[]}
+          ]
+        }
+      ];
+      saveProyectos();
+    }
+
+    // -------------- Events --------------------
+    function setupEventListeners(){
+      // Top
+      document.getElementById('projects-add-btn').addEventListener('click', ()=>openModal());
+      document.getElementById('projects-export-btn').addEventListener('click', exportCSV);
+      document.getElementById('projects-import-btn').addEventListener('click', openImportModal);
+      const emptyAdd = document.getElementById('projects-empty-add');
+      if (emptyAdd) emptyAdd.addEventListener('click', ()=>openModal());
+
+      // Filters
+      ['projects-search','projects-filter-categoria','projects-filter-estatus','projects-filter-fecha-inicio','projects-filter-fecha-fin']
+        .forEach(id=>document.getElementById(id).addEventListener('input', filterProyectos));
+      document.getElementById('projects-filter-categoria').addEventListener('change', filterProyectos);
+      document.getElementById('projects-filter-estatus').addEventListener('change', filterProyectos);
+
+      // Modal
+      document.getElementById('projects-modal-close').addEventListener('click', closeModal);
+      document.getElementById('projects-form-cancel').addEventListener('click', closeModal);
+      document.getElementById('projects-form').addEventListener('submit', saveProyecto);
+      document.getElementById('projects-form-duplicate').addEventListener('click', duplicateProyecto);
+      document.getElementById('projects-form-delete').addEventListener('click', deleteProyecto);
+      document.getElementById('projects-add-etapa').addEventListener('click', ()=>addEtapa());
+
+      // Drawer
+      document.getElementById('projects-drawer-close').addEventListener('click', closeDrawer);
+
+      // Import
+      document.getElementById('projects-import-cancel').addEventListener('click', closeImportModal);
+      document.getElementById('projects-import-confirm').addEventListener('click', importJSON);
+
+      // Close modals by backdrop
+      document.getElementById('projects-modal').addEventListener('click', (e)=>{ if(e.target.id==='projects-modal') closeModal(); });
+      document.getElementById('projects-import-modal').addEventListener('click', (e)=>{ if(e.target.id==='projects-import-modal') closeImportModal(); });
+    }
+
+    function setupKeyboardShortcuts(){
+      document.addEventListener('keydown',(e)=>{
+        if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) {
+          if (e.key==='Escape') e.target.blur();
+          return;
+        }
+        if (e.key === '/') { e.preventDefault(); document.getElementById('projects-search').focus(); }
+        if (e.key === 'n' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); openModal(); }
+        if (e.key === 'Escape'){ closeModal(); closeDrawer(); closeImportModal(); }
+      });
+      document.getElementById('projects-modal').addEventListener('keydown',(e)=>{
+        if ((e.ctrlKey||e.metaKey) && e.key==='s'){ e.preventDefault(); document.getElementById('projects-form').dispatchEvent(new Event('submit')); }
+      });
+    }
+
+    // -------------- Filters / Render ----------
+    function filterProyectos(){
+      const search = document.getElementById('projects-search').value.toLowerCase();
+      const categoria = document.getElementById('projects-filter-categoria').value;
+      const estatus = document.getElementById('projects-filter-estatus').value;
+      const fechaInicio = document.getElementById('projects-filter-fecha-inicio').value;
+      const fechaFin = document.getElementById('projects-filter-fecha-fin').value;
+
+      filteredProyectos = proyectos.filter(p=>{
+        if (search && !p.nombre.toLowerCase().includes(search)) return false;
+        if (categoria && p.categoria !== categoria) return false;
+        if (estatus && p.estatusGeneral !== estatus) return false;
+
+        if (fechaInicio || fechaFin){
+          const pInicio = p.etapas[0]?.inicio || null;
+          const pFin = p.etapas[p.etapas.length-1]?.fin || null;
+          if (fechaInicio && pInicio && pInicio < fechaInicio) return false;
+          if (fechaFin && pFin && pFin > fechaFin) return false;
+        }
+        return true;
+      });
+      renderProyectos();
+      updateFilterChips();
+    }
+
+    function updateFilterChips(){
+      const container = document.getElementById('projects-filter-chips');
+      const chips=[];
+      const search = document.getElementById('projects-search').value;
+      const categoria = document.getElementById('projects-filter-categoria').value;
+      const estatus = document.getElementById('projects-filter-estatus').value;
+      const fi = document.getElementById('projects-filter-fecha-inicio').value;
+      const ff = document.getElementById('projects-filter-fecha-fin').value;
+      if (search) chips.push({t:'search',v:search,l:`Búsqueda: ${search}`});
+      if (categoria) chips.push({t:'categoria',v:categoria,l:`Categoría: ${categoria}`});
+      if (estatus) chips.push({t:'estatus',v:estatus,l:`Estatus: ${estatus}`});
+      if (fi) chips.push({t:'fi',v:fi,l:`Desde: ${fi}`});
+      if (ff) chips.push({t:'ff',v:ff,l:`Hasta: ${ff}`});
+      container.innerHTML = chips.map(c=>`
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+          ${c.l}
+          <button onclick="removeFilter('${c.t}')" class="ml-2 text-blue-600 hover:text-blue-800">
+            <i class="fas fa-times text-xs"></i>
+          </button>
+        </span>`).join('');
+    }
+    window.removeFilter = function(type){
+      const ids = {search:'projects-search',categoria:'projects-filter-categoria',estatus:'projects-filter-estatus',fi:'projects-filter-fecha-inicio',ff:'projects-filter-fecha-fin'};
+      const el = document.getElementById(ids[type]); if (el){ el.value=''; filterProyectos(); }
+    };
+
+    function renderProyectos(){
+      const tbody = document.getElementById('projects-table-body');
+      const emptyState = document.getElementById('projects-empty-state');
+      if (!filteredProyectos.length){
+        tbody.innerHTML=''; emptyState.classList.remove('hidden'); return;
+      }
+      emptyState.classList.add('hidden');
+      tbody.innerHTML = filteredProyectos.map(p=>{
+        const progreso = calcularProgreso(p);
+        const variacion = calcularVariacionTiempo(p);
+        return `
+        <tr class="hover:bg-gray-50 cursor-pointer transition-colors duration-200" onclick="openDrawer('${p.id}')">
+          <td class="px-6 py-4"><div class="font-medium text-gray-800">${p.nombre}</div></td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">${p.categoria}</span></td>
+          <td class="px-6 py-4"><div class="text-sm font-medium text-gray-800">$${formatNumber(p.inversionTotal)}</div></td>
+          <td class="px-6 py-4"><div class="text-sm text-gray-800">${formatNumber(p.beneficiarios)}</div></td>
+          <td class="px-6 py-4">
+            <div class="flex items-center">
+              <div class="w-16 bg-gray-200 rounded-full h-2 mr-3">
+                <div class="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full" style="width:${progreso}%"></div>
+              </div>
+              <span class="text-sm font-medium text-gray-800">${progreso}%</span>
+            </div>
+          </td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getEstatusColor(p.estatusGeneral)}">${p.estatusGeneral}</span></td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTiempoColor(variacion)}">${variacion.label}</span></td>
+          <td class="px-6 py-4">
+            <div class="flex space-x-2">
+              <button onclick="event.stopPropagation(); editProyecto('${p.id}')" class="text-blue-600 hover:text-blue-800" title="Editar"><i class="fas fa-edit"></i></button>
+              <button onclick="event.stopPropagation(); duplicateProyectoFromTable('${p.id}')" class="text-purple-600 hover:text-purple-800" title="Duplicar"><i class="fas fa-copy"></i></button>
+              <button onclick="event.stopPropagation(); deleteProyectoFromTable('${p.id}')" class="text-red-600 hover:text-red-800" title="Eliminar"><i class="fas fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    function updateKPIs(){
+      const activos = proyectos.filter(p=>['En Progreso','Planificación'].includes(p.estatusGeneral)).length;
+      const avanceProm = proyectos.length? Math.round(proyectos.reduce((s,p)=>s+calcularProgreso(p),0)/proyectos.length):0;
+      const inversion = proyectos.reduce((s,p)=>s+p.inversionTotal,0);
+      const beneficiarios = proyectos.reduce((s,p)=>s+p.beneficiarios,0);
+      const riesgo = proyectos.filter(p=>calcularVariacionTiempo(p).status==='critico').length;
+      document.getElementById('projects-kpi-activos').textContent = activos;
+      document.getElementById('projects-kpi-avance').textContent = `${avanceProm}%`;
+      document.getElementById('projects-kpi-inversion').textContent = `$${formatNumber(inversion)}`;
+      document.getElementById('projects-kpi-beneficiarios').textContent = formatNumber(beneficiarios);
+      document.getElementById('projects-kpi-riesgo').textContent = riesgo;
+    }
+
+    // -------------- Calculations --------------
+    function calcularProgreso(p){
+      if(!p.etapas?.length) return 0;
+      let total = 0;
+      p.etapas.forEach(e=>{ total += (e.peso/100) * calcularAvanceEtapa(e); });
+      return Math.round(total);
+    }
+    function calcularAvanceEtapa(e){
+      if (typeof e.avanceManual === 'number') return Math.max(0, Math.min(100, e.avanceManual));
+      if(!e.tareas?.length) return 0;
+      const done = e.tareas.filter(t=>t.completada).length;
+      return Math.round((done / e.tareas.length) * 100);
+    }
+    function calcularVariacionTiempo(p){
+      if(!p.etapas?.length) return {status:'sin-datos',label:'Sin datos'};
+      const prog = calcularProgreso(p);
+      const fin = new Date(p.etapas[p.etapas.length-1].fin);
+      const hoy = new Date();
+      if (prog===100) return {status:'completado',label:'Completado'};
+      if (hoy<=fin) return {status:'a-tiempo',label:'A tiempo'};
+      const dias = Math.floor((hoy - fin)/(1000*60*60*24));
+      return dias<=7 ? {status:'retraso-leve',label:`${dias}d retraso`} : {status:'critico',label:`${dias}d crítico`};
+    }
+
+    // -------------- Utils ---------------------
+    function formatNumber(n){ return new Intl.NumberFormat('es-MX').format(n); }
+    function getEstatusColor(s){ return ({'Planificación':'bg-yellow-100 text-yellow-800','En Progreso':'bg-blue-100 text-blue-800','Pausado':'bg-orange-100 text-orange-800','Completado':'bg-green-100 text-green-800','Cancelado':'bg-red-100 text-red-800'})[s] || 'bg-gray-100 text-gray-800'; }
+    function getTiempoColor(v){ return ({'completado':'bg-green-100 text-green-800','a-tiempo':'bg-green-100 text-green-800','retraso-leve':'bg-yellow-100 text-yellow-800','critico':'bg-red-100 text-red-800','sin-datos':'bg-gray-100 text-gray-800'})[v.status] || 'bg-gray-100 text-gray-800'; }
+    function generateId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+
+    // -------------- Modal ---------------------
+    function openModal(id=null){
+      currentEditId = id;
+      const title = document.getElementById('projects-modal-title');
+      const dup = document.getElementById('projects-form-duplicate');
+      const del = document.getElementById('projects-form-delete');
+      if (id){ title.textContent='Editar Proyecto'; dup.classList.remove('hidden'); del.classList.remove('hidden'); loadProyectoToForm(id); }
+      else { title.textContent='Nuevo Proyecto'; dup.classList.add('hidden'); del.classList.add('hidden'); resetForm(); }
+      document.getElementById('projects-modal').classList.remove('hidden');
+      document.getElementById('projects-form-nombre').focus();
+    }
+    function closeModal(){ document.getElementById('projects-modal').classList.add('hidden'); currentEditId=null; resetForm(); }
+    function resetForm(){ document.getElementById('projects-form').reset(); document.getElementById('projects-etapas-container').innerHTML=''; updatePesoTotal(); etapaCounter=0; tareaCounter=0; }
+
+    function loadProyectoToForm(id){
+      const p = proyectos.find(x=>x.id===id); if(!p) return;
+      document.getElementById('projects-form-nombre').value = p.nombre;
+      document.getElementById('projects-form-categoria').value = p.categoria;
+      document.getElementById('projects-form-estatus').value = p.estatusGeneral;
+      document.getElementById('projects-form-inversion').value = p.inversionTotal;
+      document.getElementById('projects-form-beneficiarios').value = p.beneficiarios;
+      const cont = document.getElementById('projects-etapas-container'); cont.innerHTML='';
+      p.etapas.forEach(e=>addEtapa(e));
+      updatePesoTotal();
+    }
+
+    function saveProyecto(e){
+      e.preventDefault();
+      const data = {
+        nombre: document.getElementById('projects-form-nombre').value,
+        categoria: document.getElementById('projects-form-categoria').value,
+        estatusGeneral: document.getElementById('projects-form-estatus').value,
+        inversionTotal: parseFloat(document.getElementById('projects-form-inversion').value),
+        beneficiarios: parseInt(document.getElementById('projects-form-beneficiarios').value,10),
+        etapas: getEtapasFromForm()
+      };
+      const pesoTotal = data.etapas.reduce((s,e)=>s+e.peso,0);
+      if (Math.abs(pesoTotal-100)>0.01){ alert('La suma de los pesos de las etapas debe ser exactamente 100%'); return; }
+
+      if (currentEditId){
+        const i = proyectos.findIndex(p=>p.id===currentEditId);
+        if (i>-1) proyectos[i] = {...proyectos[i], ...data};
+      } else {
+        data.id = generateId();
+        proyectos.push(data);
+      }
+      saveProyectos(); filterProyectos(); updateKPIs(); closeModal();
+    }
+
+    function getEtapasFromForm(){
+      const res = [];
+      document.querySelectorAll('[data-etapa-id]').forEach(el=>{
+        const id = el.getAttribute('data-etapa-id');
+        const nombre = el.querySelector('[data-field="nombre"]').value;
+        const peso = parseFloat(el.querySelector('[data-field="peso"]').value)||0;
+        const inicio = el.querySelector('[data-field="inicio"]').value;
+        const fin = el.querySelector('[data-field="fin"]').value;
+        const avanceManualInput = el.querySelector('[data-field="avance-manual"]').value;
+        const avanceManual = avanceManualInput === '' ? undefined : parseFloat(avanceManualInput);
+        // collect photoIds kept in data attribute
+        const photoIds = (el.getAttribute('data-photo-ids')||'').split(',').filter(Boolean);
+
+        const tareas=[];
+        el.querySelectorAll('[data-tarea-id]').forEach(tEl=>{
+          const tid = tEl.getAttribute('data-tarea-id');
+          const nombre = tEl.querySelector('[data-field="tarea-nombre"]').value;
+          const completada = tEl.querySelector('[data-field="completada"]').checked;
+          const responsable = tEl.querySelector('[data-field="responsable"]').value;
+          const costoVal = tEl.querySelector('[data-field="costo"]').value;
+          const costo = costoVal ? parseFloat(costoVal) : undefined;
+          if (nombre){ tareas.push({id:tid, nombre, completada, responsable, ...(costo?{costo}:{} )}); }
+        });
+
+        if (nombre){ res.push({ id, nombre, peso, inicio, fin, tareas, ...(typeof avanceManual==='number'?{avanceManual}:{}), photoIds }); }
+      });
+      return res;
+    }
+
+    // -------------- Etapas & Fotos -----------
+    function addEtapa(etapa=null){
+      const container = document.getElementById('projects-etapas-container');
+      const id = etapa ? etapa.id : `etapa-${++etapaCounter}`;
+      const photoIds = (etapa?.photoIds)||[];
+      const wrap = document.createElement('div');
+      wrap.className='border border-gray-200 rounded-lg p-4 bg-gray-50';
+      wrap.setAttribute('data-etapa-id', id);
+      wrap.setAttribute('data-photo-ids', photoIds.join(','));
+
+      wrap.innerHTML = `
+        <div class="flex items-center justify-between mb-4">
+          <h5 class="font-semibold text-gray-800">Etapa</h5>
+          <div class="flex space-x-2">
+            <label class="text-sm bg-indigo-600 text-white px-2 py-1 rounded cursor-pointer hover:bg-indigo-700">
+              <i class="fas fa-image mr-1"></i> Fotos
+              <input type="file" accept="image/*" multiple class="hidden" data-field="etapa-fotos">
+            </label>
+            <button type="button" class="text-blue-600 hover:text-blue-800 text-sm" data-action="add-tarea"><i class="fas fa-plus mr-1"></i>Tarea</button>
+            <button type="button" class="text-red-600 hover:text-red-800" data-action="remove-etapa"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
+          <div class="lg:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
+            <input type="text" data-field="nombre" value="${etapa?etapa.nombre:''}" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Peso (%) *</label>
+            <input type="number" data-field="peso" value="${etapa?etapa.peso:''}" required min="0" max="100" step="0.1" onchange="updatePesoTotal()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Avance Manual (%)</label>
+            <input type="number" data-field="avance-manual" value="${(etapa && typeof etapa.avanceManual==='number')?etapa.avanceManual:''}" min="0" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
+            <input type="date" data-field="inicio" value="${etapa?etapa.inicio:''}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>
+            <input type="date" data-field="fin" value="${etapa?etapa.fin:''}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-sm font-medium text-gray-700 mb-2">Galería</div>
+          <div class="grid grid-cols-3 md:grid-cols-6 gap-2" data-field="gallery"></div>
+        </div>
+
+        <div class="tareas-container space-y-2"></div>
+      `;
+      container.appendChild(wrap);
+
+      // Wire buttons
+      wrap.querySelector('[data-action="remove-etapa"]').addEventListener('click', ()=>removeEtapa(id));
+      wrap.querySelector('[data-action="add-tarea"]').addEventListener('click', ()=>addTarea(id));
+      wrap.querySelector('[data-field="etapa-fotos"]').addEventListener('change', async (e)=>{
+        const files = Array.from(e.target.files||[]);
+        if (!files.length) return;
+        const currIds = (wrap.getAttribute('data-photo-ids')||'').split(',').filter(Boolean);
+        for (const f of files){
+          const photoId = await idbSavePhoto(id, f);
+          currIds.push(photoId);
+          await renderEtapaGallery(id, wrap, currIds);
+        }
+        wrap.setAttribute('data-photo-ids', currIds.join(','));
+        // reflect immediately in localStorage if editing existing project
+        if (currentEditId){
+          const p = proyectos.find(x=>x.id===currentEditId);
+          const et = p?.etapas.find(e=>e.id===id);
+          if (et){ et.photoIds = currIds; saveProyectos(); }
+        }
+        e.target.value = '';
+      });
+
+      // Existing tareas
+      if (etapa?.tareas?.length){ etapa.tareas.forEach(t=>addTarea(id,t)); }
+      // Existing gallery
+      renderEtapaGallery(id, wrap, photoIds).catch(console.error);
+      updatePesoTotal();
+    }
+
+    async function renderEtapaGallery(etapaId, wrapEl, photoIds){
+      const gal = wrapEl.querySelector('[data-field="gallery"]');
+      gal.innerHTML = '';
+      if (!db) db = await idbOpen();
+      // If photoIds provided, fetch those by id; else by etapaId index
+      let photos = [];
+      if (photoIds?.length){
+        photos = await Promise.all(photoIds.map(async pid => {
+          const rec = await idbGetPhotoById(pid);
+          return rec ? rec : null;
+        }));
+        photos = photos.filter(Boolean);
+      } else {
+        photos = await idbGetPhotos(etapaId);
+      }
+      photos.forEach(rec=>{
+        const url = URL.createObjectURL(rec.blob);
+        const cell = document.createElement('div');
+        cell.className='relative group';
+        cell.innerHTML = `
+          <img src="${url}" alt="Foto etapa" class="w-full h-20 object-cover rounded">
+          <button class="absolute top-1 right-1 bg-black/60 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition" title="Eliminar">
+            <i class="fas fa-trash text-xs"></i>
+          </button>`;
+        cell.querySelector('button').addEventListener('click', async ()=>{
+          await idbDeletePhoto(rec.id);
+          const ids = (wrapEl.getAttribute('data-photo-ids')||'').split(',').filter(Boolean).filter(x=>x!==rec.id);
+          wrapEl.setAttribute('data-photo-ids', ids.join(','));
+          if (currentEditId){
+            const p = proyectos.find(x=>x.id===currentEditId);
+            const et = p?.etapas.find(e=>e.id===etapaId);
+            if (et){ et.photoIds = ids; saveProyectos(); }
+          }
+          renderEtapaGallery(etapaId, wrapEl, ids);
+        });
+        gal.appendChild(cell);
+      });
+    }
+
+    window.removeEtapa = function(etapaId){
+      if (!confirm('¿Eliminar esta etapa?')) return;
+      const el = document.querySelector(`[data-etapa-id="${etapaId}"]`);
+      if (el){ el.remove(); updatePesoTotal(); }
+    };
+
+    window.addTarea = function(etapaId, tarea=null){
+      const etapaEl = document.querySelector(`[data-etapa-id="${etapaId}"]`);
+      const cont = etapaEl.querySelector('.tareas-container');
+      const id = tarea ? tarea.id : `tarea-${++tareaCounter}`;
+      const div = document.createElement('div');
+      div.className='bg-white border border-gray-200 rounded p-3';
+      div.setAttribute('data-tarea-id', id);
+      div.innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-3 items-center">
+          <div class="lg:col-span-2"><input type="text" data-field="tarea-nombre" value="${tarea?tarea.nombre:''}" placeholder="Nombre de la tarea" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500"></div>
+          <div><input type="text" data-field="responsable" value="${tarea?.responsable||''}" placeholder="Responsable" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500"></div>
+          <div><input type="number" data-field="costo" value="${tarea?.costo||''}" placeholder="Costo" min="0" step="0.01" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500"></div>
+          <div class="flex items-center justify-between">
+            <label class="flex items-center">
+              <input type="checkbox" data-field="completada" ${tarea?.completada?'checked':''} class="rounded border-gray-300 text-blue-600">
+              <span class="ml-2 text-sm text-gray-700">Completada</span>
+            </label>
+            <button type="button" onclick="removeTarea('${id}')" class="text-red-600 hover:text-red-800 ml-2"><i class="fas fa-trash text-sm"></i></button>
+          </div>
+        </div>`;
+      cont.appendChild(div);
+    };
+    window.removeTarea = function(id){ const el = document.querySelector(`[data-tarea-id="${id}"]`); if (el) el.remove(); };
+
+    function updatePesoTotal(){
+      let total = 0;
+      document.querySelectorAll('[data-field="peso"]').forEach(i=>{ total += parseFloat(i.value)||0; });
+      const t = document.getElementById('projects-peso-total');
+      const e = document.getElementById('projects-peso-error');
+      t.textContent = `${total.toFixed(1)}%`;
+      if (Math.abs(total-100)>0.01){ t.className='text-sm font-bold text-red-600'; e.classList.remove('hidden'); }
+      else { t.className='text-sm font-bold text-green-600'; e.classList.add('hidden'); }
+    }
+    window.updatePesoTotal = updatePesoTotal;
+
+    // -------------- CRUD table helpers -------
+    window.editProyecto = id => openModal(id);
+
+    function duplicateProyecto(){
+      if (!currentEditId) return;
+      const p = proyectos.find(x=>x.id===currentEditId); if(!p) return;
+      const copy = JSON.parse(JSON.stringify(p));
+      copy.id = generateId();
+      copy.nombre = `${p.nombre} (Copia)`;
+      copy.etapas.forEach(e=>{ e.id = generateId(); e.tareas?.forEach(t=>{ t.id=generateId(); t.completada=false; }); });
+      proyectos.push(copy); saveProyectos(); filterProyectos(); updateKPIs(); closeModal();
+    }
+    window.duplicateProyectoFromTable = function(id){
+      const p = proyectos.find(x=>x.id===id); if(!p) return;
+      if (!confirm(`¿Duplicar "${p.nombre}"?`)) return;
+      const copy = JSON.parse(JSON.stringify(p));
+      copy.id = generateId(); copy.nombre = `${p.nombre} (Copia)`;
+      copy.etapas.forEach(e=>{ e.id = generateId(); e.tareas?.forEach(t=>{ t.id=generateId(); t.completada=false; }); });
+      proyectos.push(copy); saveProyectos(); filterProyectos(); updateKPIs();
+    };
+
+    function deleteProyecto(){
+      if (!currentEditId) return;
+      const p = proyectos.find(x=>x.id===currentEditId); if(!p) return;
+      if (!confirm(`¿Eliminar "${p.nombre}"?`)) return;
+      proyectos = proyectos.filter(x=>x.id!==currentEditId);
+      saveProyectos(); filterProyectos(); updateKPIs(); closeModal();
+    }
+    window.deleteProyectoFromTable = function(id){
+      const p = proyectos.find(x=>x.id===id); if(!p) return;
+      if (!confirm(`¿Eliminar "${p.nombre}"?`)) return;
+      proyectos = proyectos.filter(x=>x.id!==id);
+      saveProyectos(); filterProyectos(); updateKPIs();
+    };
+
+    // -------------- Drawer -------------------
+    window.openDrawer = async function(id){
+      const p = proyectos.find(x=>x.id===id); if(!p) return;
+      const drawer = document.getElementById('projects-details-drawer');
+      const title = document.getElementById('projects-drawer-title');
+      const content = document.getElementById('projects-drawer-content');
+      title.textContent = p.nombre;
+
+      const progreso = calcularProgreso(p);
+      const variacion = calcularVariacionTiempo(p);
+
+      // Build etapa cards with photo gallery (thumbnails)
+      const etapaHTML = await Promise.all(p.etapas.map(async e=>{
+        let photos = [];
+        try{ if (!db) db = await idbOpen(); photos = e.photoIds?.length ? await Promise.all(e.photoIds.map(id=>idbGetPhotoById(id))) : await idbGetPhotos(e.id); }
+        catch(err){ photos = []; }
+        const urls = photos.filter(Boolean).slice(0,6).map(rec=>URL.createObjectURL(rec.blob));
+        const thumbs = urls.map(u=>`<img src="${u}" class="w-full h-14 object-cover rounded">`).join('');
+        const avance = calcularAvanceEtapa(e);
+        const fi = e.inicio? new Date(e.inicio).toLocaleDateString('es-MX'):'Sin fecha';
+        const ff = e.fin? new Date(e.fin).toLocaleDateString('es-MX'):'Sin fecha';
+        return `
+          <div class="border border-gray-200 rounded-lg p-3">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center">
+                <span class="font-medium text-gray-800">${e.nombre}</span>
+                <span class="text-xs text-gray-500 ml-2">(${e.peso}%)</span>
+              </div>
+              <span class="text-sm font-medium text-gray-700">${avance}%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+              <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-2 rounded-full" style="width:${avance}%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500 mb-2"><span>${fi}</span><span>${ff}</span></div>
+            ${thumbs? `<div class="grid grid-cols-3 md:grid-cols-6 gap-2">${thumbs}</div>`:''}
+          </div>`;
+      }));
+
+      content.innerHTML = `
+        <div class="space-y-6">
+          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+            <h3 class="font-semibold text-gray-800 mb-3">Resumen del Proyecto</h3>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div><span class="text-gray-600">Categoría:</span><span class="font-medium text-gray-800 ml-2">${p.categoria}</span></div>
+              <div><span class="text-gray-600">Estatus:</span><span class="font-medium text-gray-800 ml-2">${p.estatusGeneral}</span></div>
+              <div><span class="text-gray-600">Inversión:</span><span class="font-medium text-gray-800 ml-2">$${formatNumber(p.inversionTotal)}</span></div>
+              <div><span class="text-gray-600">Beneficiarios:</span><span class="font-medium text-gray-800 ml-2">${formatNumber(p.beneficiarios)}</span></div>
+            </div>
+            <div class="mt-4">
+              <div class="flex items-center justify-between mb-2"><span class="text-sm font-medium text-gray-700">Progreso General</span><span class="text-sm font-bold text-gray-800">${progreso}%</span></div>
+              <div class="w-full bg-gray-200 rounded-full h-3"><div class="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full" style="width:${progreso}%"></div></div>
+            </div>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-800 mb-3">Cronograma de Etapas</h3>
+            <div class="space-y-3">${etapaHTML.join('')}</div>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-800 mb-3">Acciones Rápidas</h3>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="editProyecto('${p.id}'); closeDrawer();" class="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 text-sm"><i class="fas fa-edit mr-1"></i>Editar</button>
+              <button onclick="toggleProyectoStatus('${p.id}')" class="bg-${p.estatusGeneral==='Pausado'?'green':'orange'}-600 text-white px-3 py-2 rounded-lg hover:bg-${p.estatusGeneral==='Pausado'?'green':'orange'}-700 text-sm">
+                <i class="fas fa-${p.estatusGeneral==='Pausado'?'play':'pause'} mr-1"></i>${p.estatusGeneral==='Pausado'?'Reanudar':'Pausar'}
+              </button>
+              ${progreso<100?`<button onclick="completeProyecto('${p.id}')" class="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 text-sm"><i class="fas fa-check mr-1"></i>Completar</button>`:''}
+            </div>
+          </div>
+        </div>`;
+      drawer.classList.remove('translate-x-full');
+    };
+    function closeDrawer(){ document.getElementById('projects-details-drawer').classList.add('translate-x-full'); }
+
+    window.toggleProyectoStatus = function(id){
+      const p = proyectos.find(x=>x.id===id); if(!p) return;
+      p.estatusGeneral = (p.estatusGeneral==='Pausado')?'En Progreso':'Pausado';
+      saveProyectos(); filterProyectos(); updateKPIs(); openDrawer(id);
+    };
+    window.completeProyecto = function(id){
+      if (!confirm('¿Marcar como completado?')) return;
+      const p = proyectos.find(x=>x.id===id); if(!p) return;
+      p.estatusGeneral='Completado';
+      p.etapas.forEach(e=>{ e.tareas?.forEach(t=>t.completada=true); e.avanceManual=100; });
+      saveProyectos(); filterProyectos(); updateKPIs(); openDrawer(id);
+    };
+
+    // -------------- Import/Export ------------
+    function exportCSV(){
+      const headers = ['Nombre','Categoría','Inversión Total','Beneficiarios','Estatus','Progreso %'];
+      const rows = proyectos.map(p=>[p.nombre,p.categoria,p.inversionTotal,p.beneficiarios,p.estatusGeneral,calcularProgreso(p)]);
+      const csv = [headers,...rows].map(r=>r.map(f=>`"${String(f).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'}); const url = URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download=`proyectos_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); a.remove();
+    }
+    function openImportModal(){ document.getElementById('projects-import-modal').classList.remove('hidden'); }
+    function closeImportModal(){ document.getElementById('projects-import-modal').classList.add('hidden'); document.getElementById('projects-import-file').value=''; }
+    function importJSON(){
+      const file = document.getElementById('projects-import-file').files[0];
+      if(!file){ alert('Selecciona un archivo JSON'); return; }
+      const reader = new FileReader();
+      reader.onload = (e)=>{
+        try{
+          const data = JSON.parse(e.target.result);
+          if(!Array.isArray(data)) throw new Error('El JSON debe ser un arreglo de proyectos');
+          const processed = data.map(p=>({
+            ...p, id: generateId(),
+            etapas: (p.etapas||[]).map(e=>({
+              ...e, id: generateId(), tareas: (e.tareas||[]).map(t=>({...t,id:generateId()})), photoIds: e.photoIds||[]
+            }))
+          }));
+          proyectos=[...proyectos,...processed]; saveProyectos(); filterProyectos(); updateKPIs(); closeImportModal();
+          alert(`Se importaron ${processed.length} proyectos`);
+        }catch(err){ alert('Error al importar: '+err.message); }
+      };
+      reader.readAsText(file);
+    }
+
+  })();
   </script>
 </section>
