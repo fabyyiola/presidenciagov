@@ -77,92 +77,37 @@
     </div>
 
     <!-- All services grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Pagos -->
-      <a href="/pagos/predial" class="svc-card group bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:-translate-y-0.5 transition">
-        <div class="mx-auto h-14 w-14 rounded-xl bg-municipal-blue/10 flex items-center justify-center mb-4">
-          <i class="fas fa-home text-municipal-blue text-2xl"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-municipal-blue">Predial</h3>
-        <p class="text-sm text-gray-600 text-center mt-2">Consulta y paga tu impuesto predial.</p>
+<!-- Services Quick Links -->
+<section id="Servicios" class="py-16 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-municipal-blue text-center mb-12">
+      Accesos Rápidos
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <a href="/pagos/multas" class="group bg-white p-10 rounded-2xl shadow hover:shadow-lg hover:-translate-y-1 transition flex flex-col items-center text-center">
+        <i class="fas fa-car text-5xl text-municipal-blue mb-6"></i>
+        <h3 class="text-xl font-semibold text-gray-800 group-hover:text-municipal-blue">Multas de Tránsito</h3>
       </a>
 
-      <a href="/pagos/agua" class="svc-card group bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:-translate-y-0.5 transition">
-        <div class="mx-auto h-14 w-14 rounded-xl bg-municipal-teal/10 flex items-center justify-center mb-4">
-          <i class="fas fa-tint text-municipal-teal text-2xl"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-municipal-teal">Agua y Drenaje</h3>
-        <p class="text-sm text-gray-600 text-center mt-2">Saldo, historial y pagos.</p>
+      <a href="/tramites" class="group bg-white p-10 rounded-2xl shadow hover:shadow-lg hover:-translate-y-1 transition flex flex-col items-center text-center">
+        <i class="fas fa-file-alt text-5xl text-municipal-teal mb-6"></i>
+        <h3 class="text-xl font-semibold text-gray-800 group-hover:text-municipal-teal">Trámites Municipales</h3>
       </a>
 
-      <!-- Trámites -->
-      <a href="/tramites/uso-de-suelo" class="svc-card group bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:-translate-y-0.5 transition">
-        <div class="mx-auto h-14 w-14 rounded-xl bg-municipal-green/10 flex items-center justify-center mb-4">
-          <i class="fas fa-map-signs text-municipal-green text-2xl"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-municipal-green">Uso de Suelo</h3>
-        <p class="text-sm text-gray-600 text-center mt-2">Compatibilidad y requisitos.</p>
+      <a href="/eventos" class="group bg-white p-10 rounded-2xl shadow hover:shadow-lg hover:-translate-y-1 transition flex flex-col items-center text-center">
+        <i class="fas fa-calendar-alt text-5xl text-municipal-green mb-6"></i>
+        <h3 class="text-xl font-semibold text-gray-800 group-hover:text-municipal-green">Eventos</h3>
       </a>
 
-      <a href="/tramites/construccion" class="svc-card group bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:-translate-y-0.5 transition">
-        <div class="mx-auto h-14 w-14 rounded-xl bg-orange-100 flex items-center justify-center mb-4">
-          <i class="fas fa-hard-hat text-orange-600 text-2xl"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-orange-600">Permiso de Construcción</h3>
-        <p class="text-sm text-gray-600 text-center mt-2">Solicitud y seguimiento.</p>
-      </a>
-
-      <!-- Reportes / Atención -->
-      <a href="/reportes/baches" class="svc-card group bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:-translate-y-0.5 transition">
-        <div class="mx-auto h-14 w-14 rounded-xl bg-slate-100 flex items-center justify-center mb-4">
-          <i class="fas fa-road text-slate-700 text-2xl"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-slate-700">Reportar Bache</h3>
-        <p class="text-sm text-gray-600 text-center mt-2">Atención en tu colonia.</p>
-      </a>
-
-      <a href="/citas" class="svc-card group bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:-translate-y-0.5 transition">
-        <div class="mx-auto h-14 w-14 rounded-xl bg-municipal-pink/10 flex items-center justify-center mb-4">
-          <i class="fas fa-calendar-check text-municipal-pink text-2xl"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-municipal-pink">Agenda de Citas</h3>
-        <p class="text-sm text-gray-600 text-center mt-2">Con Presidencia y dependencias.</p>
-      </a>
-
-      <!-- Cultura / Economía -->
-      <a href="/eventos" class="svc-card group bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:-translate-y-0.5 transition">
-        <div class="mx-auto h-14 w-14 rounded-xl bg-purple-100 flex items-center justify-center mb-4">
-          <i class="fas fa-theater-masks text-purple-600 text-2xl"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-purple-600">Eventos y Cultura</h3>
-        <p class="text-sm text-gray-600 text-center mt-2">Cartelera y actividades.</p>
-      </a>
-
-      <a href="/negocios" class="svc-card group bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:-translate-y-0.5 transition">
-        <div class="mx-auto h-14 w-14 rounded-xl bg-emerald-100 flex items-center justify-center mb-4">
-          <i class="fas fa-briefcase text-emerald-600 text-2xl"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-emerald-600">Directorio de Negocios</h3>
-        <p class="text-sm text-gray-600 text-center mt-2">Comercios locales.</p>
-      </a>
-
-      <!-- Transparencia / Contacto -->
-      <a href="/transparencia" class="svc-card group bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:-translate-y-0.5 transition">
-        <div class="mx-auto h-14 w-14 rounded-xl bg-indigo-100 flex items-center justify-center mb-4">
-          <i class="fas fa-file-alt text-indigo-600 text-2xl"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-indigo-600">Transparencia</h3>
-        <p class="text-sm text-gray-600 text-center mt-2">Presupuesto, nómina y más.</p>
-      </a>
-
-      <a href="/contacto" class="svc-card group bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:-translate-y-0.5 transition">
-        <div class="mx-auto h-14 w-14 rounded-xl bg-yellow-100 flex items-center justify-center mb-4">
-          <i class="fas fa-envelope-open-text text-yellow-600 text-2xl"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-yellow-600">Contacto</h3>
-        <p class="text-sm text-gray-600 text-center mt-2">Escríbenos o visítanos.</p>
+      <a href="/transparencia" class="group bg-white p-10 rounded-2xl shadow hover:shadow-lg hover:-translate-y-1 transition flex flex-col items-center text-center">
+        <i class="fas fa-balance-scale text-5xl text-municipal-pink mb-6"></i>
+        <h3 class="text-xl font-semibold text-gray-800 group-hover:text-municipal-pink">Transparencia</h3>
       </a>
     </div>
+  </div>
+</section>
+
 
     <!-- CTA -->
     <div class="mt-12 text-center">
