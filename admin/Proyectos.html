@@ -592,7 +592,7 @@
       loadProyectos();
       setupEventListeners();
       setupKeyboardShortcuts();
-      setupLightboxControls(); 
+      setupLightboxControls();
       filteredProyectos = [...proyectos];
       renderProyectos();
       updateKPIs();
@@ -1368,6 +1368,7 @@
           <i class="fas fa-trash text-xs"></i>
         </button>`;
         cell.querySelector("button").addEventListener("click", async () => {
+           evt.stopPropagation();
           await idbDeletePhoto(rec.id);
           const ids = (wrapEl.getAttribute("data-photo-ids") || "")
             .split(",")
@@ -1383,6 +1384,10 @@
             }
           }
           renderEtapaGallery(etapaId, wrapEl, ids);
+        });
+        cell.addEventListener("click", () => {
+          const index = Array.from(gal.children).indexOf(cell);
+          openEtapaLightbox(etapaId, index);
         });
         gal.appendChild(cell);
       });
