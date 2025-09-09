@@ -21,7 +21,9 @@
     <div class="flex flex-col md:flex-row gap-3 items-center">
       <div class="flex-1 w-full">
         <div class="relative">
-          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          <i
+            class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+          ></i>
           <input
             id="news-search"
             type="text"
@@ -55,7 +57,10 @@
   </div>
 
   <!-- Grid -->
-  <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  <div
+    id="news-grid"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+  ></div>
   <div id="news-empty" class="text-gray-500 text-sm">
     Aún no hay noticias. Agrega la primera.
   </div>
@@ -64,10 +69,18 @@
 <!-- Modal: Crear/Editar Noticia -->
 <div id="news-form-modal" class="fixed inset-0 bg-black/50 z-50 hidden">
   <div class="absolute inset-0 backdrop-blur-sm"></div>
-  <div class="relative mx-auto my-8 max-w-3xl bg-white rounded-2xl shadow-xl overflow-hidden" style="height: 92vh; overflow: auto">
+  <div
+    class="relative mx-auto my-8 max-w-3xl bg-white rounded-2xl shadow-xl overflow-hidden"
+    style="height: 92vh; overflow: auto"
+  >
     <div class="flex items-center justify-between px-6 py-4 border-b">
-      <h3 id="news-form-title" class="text-xl font-bold text-gray-800">Nueva Noticia</h3>
-      <button onclick="Noticias.closeForm()" class="text-gray-500 hover:text-gray-800">
+      <h3 id="news-form-title" class="text-xl font-bold text-gray-800">
+        Nueva Noticia
+      </h3>
+      <button
+        onclick="Noticias.closeForm()"
+        class="text-gray-500 hover:text-gray-800"
+      >
         <i class="fas fa-times text-lg"></i>
       </button>
     </div>
@@ -75,12 +88,25 @@
     <form id="news-form" class="p-6 space-y-5">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Título *</label>
-          <input id="n-title" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ej. Nuevo programa de becas municipales" />
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Título *</label
+          >
+          <input
+            id="n-title"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Ej. Nuevo programa de becas municipales"
+          />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
-          <select id="n-category" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Categoría *</label
+          >
+          <select
+            id="n-category"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
             <option value="">Seleccionar</option>
             <option>Comunicados</option>
             <option>Eventos</option>
@@ -92,67 +118,156 @@
           </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Fecha *</label>
-          <input id="n-date" type="date" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Fecha *</label
+          >
+          <input
+            id="n-date"
+            type="date"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Autor *</label>
-          <input id="n-author" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Comunicación Social" />
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Autor *</label
+          >
+          <input
+            id="n-author"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Comunicación Social"
+          />
         </div>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Resumen (1–2 líneas)</label>
-        <textarea id="n-summary" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Breve descripción de la noticia..."></textarea>
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Resumen (1–2 líneas)</label
+        >
+        <textarea
+          id="n-summary"
+          rows="2"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="Breve descripción de la noticia..."
+        ></textarea>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Contenido (Markdown o texto) *</label>
-        <textarea id="n-body" rows="8" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Escribe el contenido completo..."></textarea>
-        <p class="text-xs text-gray-500 mt-1">Tip: Puedes usar Markdown básico (títulos, listas, <strong>negritas</strong>, enlaces, etc.).</p>
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Contenido (Markdown o texto) *</label
+        >
+        <textarea
+          id="n-body"
+          rows="8"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="Escribe el contenido completo..."
+        ></textarea>
+        <p class="text-xs text-gray-500 mt-1">
+          Tip: Puedes usar Markdown básico (títulos, listas,
+          <strong>negritas</strong>, enlaces, etc.).
+        </p>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Enlaces externos (opcional)</label>
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Enlaces externos (opcional)</label
+        >
         <div id="n-links" class="space-y-2"></div>
-        <button type="button" onclick="Noticias.addLink()" class="mt-2 text-blue-600 text-sm hover:underline">
+        <button
+          type="button"
+          onclick="Noticias.addLink()"
+          class="mt-2 text-blue-600 text-sm hover:underline"
+        >
           <i class="fas fa-plus mr-1"></i>Agregar enlace
         </button>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Imágenes</label>
-        <input type="file" id="n-images" multiple accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Imágenes</label
+        >
+        <input
+          type="file"
+          id="n-images"
+          multiple
+          accept="image/*"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
         <!-- NUEVO: URLs + caché -->
         <div class="mt-3">
-          <label class="block text-sm font-medium">Agregar imágenes por URL</label>
+          <label class="block text-sm font-medium"
+            >Agregar imágenes por URL</label
+          >
           <div class="flex gap-2">
-            <input type="url" id="n-image-url-input" class="flex-1 px-3 py-2 border rounded-lg" placeholder="https://sitio.com/imagen.jpg (varias separadas por coma o por renglones)" />
-            <button type="button" onclick="Noticias.addImageUrl()" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Agregar URL</button>
+            <input
+              type="url"
+              id="n-image-url-input"
+              class="flex-1 px-3 py-2 border rounded-lg"
+              placeholder="https://sitio.com/imagen.jpg (varias separadas por coma o por renglones)"
+            />
+            <button
+              type="button"
+              onclick="Noticias.addImageUrl()"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg"
+            >
+              Agregar URL
+            </button>
           </div>
           <label class="mt-2 inline-flex items-center gap-2 text-sm">
-            <input type="checkbox" id="n-cache-url" class="rounded border-gray-300 text-blue-600" />
-            <span>Intentar copiar a almacenamiento local (si el servidor permite CORS)</span>
+            <input
+              type="checkbox"
+              id="n-cache-url"
+              class="rounded border-gray-300 text-blue-600"
+            />
+            <span
+              >Intentar copiar a almacenamiento local (si el servidor permite
+              CORS)</span
+            >
           </label>
         </div>
-        <p class="text-xs text-gray-500 mt-2">La primera imagen será la portada.</p>
+        <p class="text-xs text-gray-500 mt-2">
+          La primera imagen será la portada.
+        </p>
         <div id="n-image-preview" class="grid grid-cols-3 gap-2 mt-3"></div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <label class="flex items-center gap-2">
-          <input type="checkbox" id="n-show-home" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+          <input
+            type="checkbox"
+            id="n-show-home"
+            class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+          />
           <span class="text-sm text-gray-700">Mostrar en inicio</span>
         </label>
         <label class="flex items-center gap-2">
-          <input type="checkbox" id="n-archived" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
-          <span class="text-sm text-gray-700">Archivar (ocultar del público)</span>
+          <input
+            type="checkbox"
+            id="n-archived"
+            class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+          />
+          <span class="text-sm text-gray-700"
+            >Archivar (ocultar del público)</span
+          >
         </label>
       </div>
 
       <div class="flex justify-end gap-3 pt-2">
-        <button type="button" onclick="Noticias.closeForm()" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">Cancelar</button>
-        <button type="submit" class="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">Guardar</button>
+        <button
+          type="button"
+          onclick="Noticias.closeForm()"
+          class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+        >
+          Guardar
+        </button>
       </div>
     </form>
   </div>
@@ -160,15 +275,27 @@
 
 <!-- Modal Visor rápido de Noticia -->
 <div id="news-viewer-modal" class="fixed inset-0 bg-black/80 hidden z-50 p-4">
-  <div class="max-w-4xl mx-auto bg-white rounded-xl overflow-hidden" style="height: 95vh; overflow: auto">
+  <div
+    class="max-w-4xl mx-auto bg-white rounded-xl overflow-hidden"
+    style="height: 95vh; overflow: auto"
+  >
     <div class="p-4 border-b flex justify-between items-center">
-      <h3 id="news-viewer-title" class="text-xl font-bold text-gray-800">Vista previa</h3>
-      <button onclick="Noticias.closeViewer()" class="text-gray-500 hover:text-gray-800">
+      <h3 id="news-viewer-title" class="text-xl font-bold text-gray-800">
+        Vista previa
+      </h3>
+      <button
+        onclick="Noticias.closeViewer()"
+        class="text-gray-500 hover:text-gray-800"
+      >
         <i class="fas fa-times text-lg"></i>
       </button>
     </div>
     <div class="p-6 space-y-4">
-      <img id="news-viewer-cover" alt="" class="w-full h-64 object-cover rounded-lg hidden" />
+      <img
+        id="news-viewer-cover"
+        alt=""
+        class="w-full h-64 object-cover rounded-lg hidden"
+      />
       <div id="news-viewer-body" class="prose prose-sm max-w-none"></div>
       <div id="news-viewer-links" class="mt-4"></div>
     </div>
@@ -176,237 +303,319 @@
 </div>
 
 <script>
-(() => {
-  // ===== Keys / DB =====
-  const LS_KEY = "noticias.v1";
-  const IDB_NAME = "NoticiasDB";
-  const IDB_STORE = "imagenes";
+  (() => {
+    // ===== Keys / DB =====
+    const LS_KEY = "noticias.v1";
+    const IDB_NAME = "NoticiasDB";
+    const IDB_STORE = "imagenes";
 
-  // ===== State =====
-  let items = [];
-  let editId = null;
-  let db = null;
+    // ===== State =====
+    let items = [];
+    let editId = null;
+    let db = null;
 
-  // Form state
-  // Cada foto en edición: { blob?, url?, existingId?, existingUrl?, previewUrl, sourceUrl?, _removed? }
-  let currentFotos = [];
-  let originalFotoIds = [];
-  let originalFotoUrls = [];
-  let portadaIdx = 0;
-  let links = []; // [{title,url}]
+    // Form state
+    // Cada foto en edición: { blob?, url?, existingId?, existingUrl?, previewUrl, sourceUrl?, _removed? }
+    let currentFotos = [];
+    let originalFotoIds = [];
+    let originalFotoUrls = [];
+    let portadaIdx = 0;
+    let links = []; // [{title,url}]
 
-  // ===== Helpers: localStorage =====
-  const load = () => {
-    try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]" ); } catch { return []; }
-  };
-  const save = (arr) => localStorage.setItem(LS_KEY, JSON.stringify(arr));
+    // ===== Helpers: localStorage =====
+    const load = () => {
+      try {
+        return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+      } catch {
+        return [];
+      }
+    };
+    const save = (arr) => localStorage.setItem(LS_KEY, JSON.stringify(arr));
 
-  // ===== IndexedDB =====
-  function idbOpen() {
-    return new Promise((resolve, reject) => {
-      const req = indexedDB.open(IDB_NAME, 1);
-      req.onupgradeneeded = (e) => {
-        const db = e.target.result;
-        if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
-      };
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = () => reject(req.error);
-    });
-  }
-  function idbPut(id, blob) {
-    return new Promise((resolve, reject) => {
+    // ===== IndexedDB =====
+    function idbOpen() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(IDB_NAME, 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(IDB_STORE))
+            db.createObjectStore(IDB_STORE);
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    function idbPut(id, blob) {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(IDB_STORE, "readwrite");
+        tx.objectStore(IDB_STORE).put(blob, id);
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+      });
+    }
+    function idbGet(id) {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(IDB_STORE, "readonly");
+        const rq = tx.objectStore(IDB_STORE).get(id);
+        rq.onsuccess = () => resolve(rq.result || null);
+        rq.onerror = () => reject(rq.error);
+      });
+    }
+    function idbDelete(id) {
       const tx = db.transaction(IDB_STORE, "readwrite");
-      tx.objectStore(IDB_STORE).put(blob, id);
-      tx.oncomplete = resolve;
-      tx.onerror = () => reject(tx.error);
-    });
-  }
-  function idbGet(id) {
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction(IDB_STORE, "readonly");
-      const rq = tx.objectStore(IDB_STORE).get(id);
-      rq.onsuccess = () => resolve(rq.result || null);
-      rq.onerror = () => reject(rq.error);
-    });
-  }
-  function idbDelete(id) {
-    const tx = db.transaction(IDB_STORE, "readwrite");
-    tx.objectStore(IDB_STORE).delete(id);
-  }
+      tx.objectStore(IDB_STORE).delete(id);
+    }
 
-  // ===== Utils =====
-  function generateId() {
-    return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
-  }
-  function dataUrlToBlob(dataURL) {
-    const [meta, b64] = dataURL.split(",");
-    const mime = (meta.match(/data:(.*?);/) || [])[1] || "application/octet-stream";
-    const bin = atob(b64);
-    const len = bin.length;
-    const ua = new Uint8Array(len);
-    for (let i = 0; i < len; i++) ua[i] = bin.charCodeAt(i);
-    return new Blob([ua], { type: mime });
-  }
-  function fmtDate(d) {
-    try { return new Date(d).toISOString().slice(0, 10); } catch { return d || ""; }
-  }
-  function isValidHttpUrl(str) {
-    try { const u = new URL(str); return u.protocol === "http:" || u.protocol === "https:"; } catch { return false; }
-  }
-  async function fetchUrlAsBlob(url) {
-    const res = await fetch(url, { mode: "cors" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.blob();
-  }
+    // ===== Utils =====
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    }
+    function dataUrlToBlob(dataURL) {
+      const [meta, b64] = dataURL.split(",");
+      const mime =
+        (meta.match(/data:(.*?);/) || [])[1] || "application/octet-stream";
+      const bin = atob(b64);
+      const len = bin.length;
+      const ua = new Uint8Array(len);
+      for (let i = 0; i < len; i++) ua[i] = bin.charCodeAt(i);
+      return new Blob([ua], { type: mime });
+    }
+    function fmtDate(d) {
+      try {
+        return new Date(d).toISOString().slice(0, 10);
+      } catch {
+        return d || "";
+      }
+    }
+    function isValidHttpUrl(str) {
+      try {
+        const u = new URL(str);
+        return u.protocol === "http:" || u.protocol === "https:";
+      } catch {
+        return false;
+      }
+    }
+    async function fetchUrlAsBlob(url) {
+      const res = await fetch(url, { mode: "cors" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.blob();
+    }
 
-  // ===== Migration (opcional) imagenes[] (dataURL) -> imageIds[] =====
-  async function migrateIfNeeded() {
-    let changed = false;
-    for (const it of items) {
-      if (Array.isArray(it.imagenes) && it.imagenes.length) {
-        const ids = [];
-        for (const url of it.imagenes) {
-          try {
-            const blob = dataUrlToBlob(url);
-            const id = generateId();
-            await idbPut(id, blob);
-            ids.push(id);
-          } catch {}
+    // ===== Migration (opcional) imagenes[] (dataURL) -> imageIds[] =====
+    async function migrateIfNeeded() {
+      let changed = false;
+      for (const it of items) {
+        if (Array.isArray(it.imagenes) && it.imagenes.length) {
+          const ids = [];
+          for (const url of it.imagenes) {
+            try {
+              const blob = dataUrlToBlob(url);
+              const id = generateId();
+              await idbPut(id, blob);
+              ids.push(id);
+            } catch {}
+          }
+          it.imageIds = ids;
+          delete it.imagenes;
+          if (typeof it.coverIndex !== "number") it.coverIndex = 0;
+          if (typeof it.coverIsUrl !== "boolean") it.coverIsUrl = false;
+          changed = true;
+        } else {
+          if (!Array.isArray(it.imageIds)) {
+            it.imageIds = [];
+            changed = true;
+          }
+          if (!Array.isArray(it.imageUrls)) {
+            it.imageUrls = [];
+            changed = true;
+          }
+          if (typeof it.coverIndex !== "number") {
+            it.coverIndex = 0;
+            changed = true;
+          }
+          if (typeof it.coverIsUrl !== "boolean") {
+            it.coverIsUrl = false;
+            changed = true;
+          }
         }
-        it.imageIds = ids;
-        delete it.imagenes;
-        if (typeof it.coverIndex !== "number") it.coverIndex = 0;
-        if (typeof it.coverIsUrl !== "boolean") it.coverIsUrl = false;
-        changed = true;
+      }
+      if (changed) save(items);
+    }
+
+    // ===== Init =====
+    async function init() {
+      db = await idbOpen().catch(console.error);
+      items = load();
+      if (!items.length) {
+        items = [
+          {
+            id: 1,
+            title: "Inauguración de obra en la Colonia Centro",
+            category: "Obras Públicas",
+            date: "2025-09-09",
+            author: "Comunicación Social",
+            summary:
+              "Se entregó la remodelación de la plaza con áreas verdes y juegos infantiles.",
+            body: "Hoy se inauguró la obra en la Colonia Centro.\n\n- Nueva iluminación\n- Jardineras y bancas\n\n**Invitamos** a las familias a disfrutar del espacio.",
+            links: [
+              {
+                title: "Nota en prensa local",
+                url: "https://example.com/nota-prensa",
+              },
+            ],
+            imageIds: [],
+            coverIndex: 0,
+            showInHome: true,
+            archived: false,
+            imageUrls: [
+              "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/542768493_18293228686264631_8828376503230313082_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeH5sL9E-gf4gOaS1W8pRiOoyIag-AqoNRzIhqD4Cqg1HHVBAr70JY02AVdIncBKk1I63vtDqCMkk3ZEladT_um6&_nc_ohc=fUbFjb0pgUoQ7kNvwFb3SBY&_nc_oc=AdmKBXYSMU8EJBjFU0t2Sq1N8rqsibBBxdF7fOGYqokS-P3HAEi020JmA91gvu1qVH-PgU1jALMPcLuTiLjgz0EQ&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=ak2avFcnlu_ww3gEs_BIjw&oh=00_Afa_SXgl2W8Mi1S207y7KV_kAZLm71GqHdCvSQclVacIdA&oe=68C6A3F0",
+            ],
+            coverIsUrl: true,
+          },
+          {
+            id: 2,
+            title: "Firma de Convenio para la vida silvestre",
+            category: "Comunicados",
+            date: "2025-09-10",
+            author: "Comunicación Social",
+            summary:
+              "Sabinas siempre firme con el cuidado de la vida silvestre.",
+            body: "El día de hoy junto a Parques y Vida Silvestre de N.L., firmamos un Convenio de Colaboración con varios municipios para la transferencia de lobina negra (Micropterus salmoides) desde la Presa “El Cuchillo-Solidaridad” hacia presas receptoras en distintas regiones del estado.\nLas presas receptoras son:\n • José López Portillo “Cerro Prieto”, Linares.\n • General Mariano Escobedo “Sombreretillo”, Sabinas Hidalgo.\n • Rodrigo Gómez “La Boca”, Santiago.\n • José S. Noriega “Los Mimbres”, General Terán.\nCon este convenio, trabajamos para repoblar y conservar esta especie, promoviendo la biodiversidad, la pesca responsable y espacios de recreación que beneficien a las familias de Nuevo León.",
+            showInHome: true,
+            archived: false,
+            links: [],
+            imageIds: [],
+            coverIndex: 0,
+            imageUrls: [
+              "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/542309182_18293107060264631_7707407202290637380_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHhnYhEjfY9SBD-a25Xw8W31n49Gil4Ej3Wfj0aKXgSPWK7xqVeg4hAVqWPtqMFnp_2wWLeDTONbdAhEjSBJ4Lk&_nc_ohc=lVi5KOcJ2VwQ7kNvwGs6pER&_nc_oc=AdlkzCNOUgRbYlNQPu7H7Z2L9sDYHK4-6BnTuTyeJlq8FHIoyggvjfH-RM00gJSOWLtwbjvC-ITLrc1IAUb4iSjk&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=aRj-jQSmdEGSJ4Yu_RisgA&oh=00_AfZG6OwGlTtepsFYIY-aa7ro8hZ-0dBYMepqABzdxbZgfg&oe=68C68C36",
+            ],
+            coverIsUrl: true,
+          },
+          {
+            id: 3,
+            title:
+              "Pavimentación de la Ampliación de Vialidad en el Parque La Turbina",
+            category: "Obras Públicas",
+            date: "2025-09-09",
+            author: "Comunicación Social",
+            summary:
+              "El Gobierno Municipal informa que este día se realizó la pavimentación de la Ampliación de Vialidad en el Parque La Turbina.",
+            body: "El Gobierno Municipal informa que este día se realizó la pavimentación de la Ampliación de Vialidad en el Parque La Turbina, obra que forma parte de la primera etapa de mejoramientos anunciados hace algunas semanas.\nEste proyecto incluye además la construcción de un nuevo estacionamiento y una vialidad que permitirá un tránsito más ágil y seguro, beneficiando a todas y todos los visitantes de este importante espacio público.",
+            showInHome: true,
+            archived: false,
+            links: [],
+            imageIds: [],
+            coverIndex: 0,
+            imageUrls: [
+              "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/544417000_1094678186173737_6109100192931889123_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGQ2Cc3XyEkwTvu-7tkTUF_PqTyAqUqERw-pPICpSoRHB3Px_vvHmIAFF4J9uHEUwHdRUKRsaA_60-k0lMq8XeL&_nc_ohc=UxuL2vQ9_qMQ7kNvwFqzXj1&_nc_oc=Adnq9vn7xbgz0srTw6hGS735ZxmOOibeL2k8O34qRF8UUOoobFv5ab-cqVjPHI0tesMDmCwBpWiAsLhPYc2WVSvB&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=Or4Wk6ZN_qCf5Uce0cGhBA&oh=00_AfZP6SctqWFZZQSrdBaXYb3wqyiPjPt1IR_Aii8LtHEzIQ&oe=68C673E0",
+              "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/543422568_1094678496173706_6354471204268581763_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeE2OzMRBsKvHR_WWfuWluo3qVJpQvDMzQqpUmlC8MzNCj8xCMt4NUF9r_VWRKHfSG2dbL8RLJ5MXQt40izA2nPX&_nc_ohc=ipHSqLGVG48Q7kNvwHlcY1u&_nc_oc=AdlCgK2ueJdJriEmIV2WUr9zCGQmE8fPacUb6sqlKXliDy7Hf-Gx-kuyeyqsyjPwExy0mysCbe_AP56o6ZEjX1c5&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=Or4Wk6ZN_qCf5Uce0cGhBA&oh=00_AfYTsiBL-AHR76hnEGl-LWa5a8uIXviYntIa3sDzlZVzqg&oe=68C685EE",
+              "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/542742180_1094678476173708_2818499899245729483_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEjz21vWu0u35s8sEpDzRxnKfIk3tS4DL8p8iTe1LgMvwVi7p_G4TFz4uJYrIV-8YMQ2EXZj9jCd9aE_1wrWUq7&_nc_ohc=PpolpEkIl78Q7kNvwGxWrIU&_nc_oc=Adm78crDqfMPuj6sJD7ljd017B6DHWKDbNgBnujkwQGzQdxA6MHNW1HmRLT2VLruMcT7_tH-ILpGx9urnFfpzJ0J&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=Or4Wk6ZN_qCf5Uce0cGhBA&oh=00_AfaKmlf9EL5PKx0RqIOYB4S30NJvmJAYRGkIPYMGs8JGww&oe=68C69B66",
+            ],
+            coverIsUrl: true,
+          },
+        ];
+        save(items);
+      }
+      await migrateIfNeeded();
+
+      // Bind filters
+      document
+        .getElementById("news-search")
+        ?.addEventListener("input", renderList);
+      document
+        .getElementById("news-filter-cat")
+        ?.addEventListener("change", renderList);
+      document
+        .getElementById("news-filter-arch")
+        ?.addEventListener("change", renderList);
+
+      renderList();
+    }
+    if (document.readyState === "loading")
+      document.addEventListener("DOMContentLoaded", init);
+    else init();
+
+    // ===== Helpers de portada (resolver blob o URL) =====
+    async function resolveCoverUrl(it) {
+      // Si hay marca de portada, respétala (coverIsUrl decide de qué arreglo leer)
+      if (it.coverIsUrl) {
+        const u = it.imageUrls?.[it.coverIndex];
+        if (isValidHttpUrl(u)) return u;
       } else {
-        if (!Array.isArray(it.imageIds)) { it.imageIds = []; changed = true; }
-        if (!Array.isArray(it.imageUrls)) { it.imageUrls = []; changed = true; }
-        if (typeof it.coverIndex !== "number") { it.coverIndex = 0; changed = true; }
-        if (typeof it.coverIsUrl !== "boolean") { it.coverIsUrl = false; changed = true; }
+        const id = it.imageIds?.[it.coverIndex];
+        if (id && db) {
+          const blob = await idbGet(id);
+          if (blob) return URL.createObjectURL(blob);
+        }
       }
-    }
-    if (changed) save(items);
-  }
-
-  // ===== Init =====
-  async function init() {
-    db = await idbOpen().catch(console.error);
-    items = load();
-    if (!items.length) {
-      items = [
-        {
-          id: 1,
-          title: "Inauguración de obra en la Colonia Centro",
-          category: "Obras Públicas",
-          date: fmtDate(new Date()),
-          author: "Comunicación Social",
-          summary: "Se entregó la remodelación de la plaza con áreas verdes y juegos infantiles.",
-          body: "Hoy se inauguró la obra en la Colonia Centro.\n\n- Nueva iluminación\n- Jardineras y bancas\n\n**Invitamos** a las familias a disfrutar del espacio.",
-          links: [{ title: "Nota en prensa local", url: "https://example.com/nota-prensa" }],
-          imageIds: [],
-          imageUrls: [],
-          coverIndex: 0,
-          coverIsUrl: false,
-          showInHome: true,
-          archived: false,
-        },
-        {
-          id: 2,
-          title: "Actos cívicos por el 215° Aniversario de Independencia",
-          category: "Eventos",
-          date: "2025-09-15",
-          author: "Secretaría de Educación y Cultura",
-          summary: "Invitación a los actos cívicos del 15 de septiembre en la Plaza Venustiano Carranza.",
-          body: "# Programa\n- **8:00 a.m.** Izamiento de Bandera\n- **6:00 p.m.** Inicio del desfile\n\n**Sede:** Plaza *Venustiano Carranza*.",
-          links: [{ title: "Ubicación", url: "https://maps.google.com/?q=Plaza+Venustiano+Carranza+Sabinas+Hidalgo" }],
-          imageIds: [],
-          imageUrls: [],
-          coverIndex: 0,
-          coverIsUrl: false,
-          showInHome: true,
-          archived: false,
-        },
-      ];
-      save(items);
-    }
-    await migrateIfNeeded();
-
-    // Bind filters
-    document.getElementById("news-search")?.addEventListener("input", renderList);
-    document.getElementById("news-filter-cat")?.addEventListener("change", renderList);
-    document.getElementById("news-filter-arch")?.addEventListener("change", renderList);
-
-    renderList();
-  }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
-  else init();
-
-  // ===== Helpers de portada (resolver blob o URL) =====
-  async function resolveCoverUrl(it) {
-    // Si hay marca de portada, respétala (coverIsUrl decide de qué arreglo leer)
-    if (it.coverIsUrl) {
-      const u = it.imageUrls?.[it.coverIndex];
-      if (isValidHttpUrl(u)) return u;
-    } else {
-      const id = it.imageIds?.[it.coverIndex];
-      if (id && db) {
-        const blob = await idbGet(id);
-        if (blob) return URL.createObjectURL(blob);
+      // Fallbacks
+      if (it.imageIds?.length && db) {
+        const b = await idbGet(it.imageIds[0]);
+        if (b) return URL.createObjectURL(b);
       }
+      const u2 = (it.imageUrls || []).find(isValidHttpUrl);
+      return u2 || "";
     }
-    // Fallbacks
-    if (it.imageIds?.length && db) {
-      const b = await idbGet(it.imageIds[0]);
-      if (b) return URL.createObjectURL(b);
-    }
-    const u2 = (it.imageUrls || []).find(isValidHttpUrl);
-    return u2 || "";
-  }
 
-  // ===== List =====
-  async function renderList() {
-    const grid = document.getElementById("news-grid");
-    const empty = document.getElementById("news-empty");
-    grid.innerHTML = "";
+    // ===== List =====
+    async function renderList() {
+      const grid = document.getElementById("news-grid");
+      const empty = document.getElementById("news-empty");
+      grid.innerHTML = "";
 
-    // Filters
-    const q = (document.getElementById("news-search")?.value || "").toLowerCase().trim();
-    const cat = document.getElementById("news-filter-cat")?.value || "";
-    const arch = document.getElementById("news-filter-arch")?.value || "active";
+      // Filters
+      const q = (document.getElementById("news-search")?.value || "")
+        .toLowerCase()
+        .trim();
+      const cat = document.getElementById("news-filter-cat")?.value || "";
+      const arch =
+        document.getElementById("news-filter-arch")?.value || "active";
 
-    let list = [...items];
-    if (q) {
-      list = list.filter(
-        (n) =>
-          (n.title || "").toLowerCase().includes(q) ||
-          (n.author || "").toLowerCase().includes(q) ||
-          (n.category || "").toLowerCase().includes(q)
+      let list = [...items];
+      if (q) {
+        list = list.filter(
+          (n) =>
+            (n.title || "").toLowerCase().includes(q) ||
+            (n.author || "").toLowerCase().includes(q) ||
+            (n.category || "").toLowerCase().includes(q)
+        );
+      }
+      if (cat) list = list.filter((n) => (n.category || "") === cat);
+      if (arch === "active") list = list.filter((n) => !n.archived);
+      else if (arch === "archived") list = list.filter((n) => !!n.archived);
+
+      // sort by date desc
+      list.sort(
+        (a, b) =>
+          new Date(b.date || "1970-01-01") - new Date(a.date || "1970-01-01")
       );
-    }
-    if (cat) list = list.filter((n) => (n.category || "") === cat);
-    if (arch === "active") list = list.filter((n) => !n.archived);
-    else if (arch === "archived") list = list.filter((n) => !!n.archived);
 
-    // sort by date desc
-    list.sort((a, b) => new Date(b.date || "1970-01-01") - new Date(a.date || "1970-01-01"));
+      if (!list.length) {
+        empty.classList.remove("hidden");
+        return;
+      }
+      empty.classList.add("hidden");
 
-    if (!list.length) {
-      empty.classList.remove("hidden");
-      return;
-    }
-    empty.classList.add("hidden");
+      for (const it of list) {
+        const url = await resolveCoverUrl(it);
+        const card = document.createElement("div");
+        card.className =
+          "bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-200";
 
-    for (const it of list) {
-      const url = await resolveCoverUrl(it);
-      const card = document.createElement("div");
-      card.className = "bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-200";
-
-      const badges = `
-        ${it.showInHome ? `<span class="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-700">Inicio</span>` : ""}
-        ${it.archived ? `<span class="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-700">Archivada</span>` : ""}
+        const badges = `
+        ${
+          it.showInHome
+            ? `<span class="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-700">Inicio</span>`
+            : ""
+        }
+        ${
+          it.archived
+            ? `<span class="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-700">Archivada</span>`
+            : ""
+        }
       `;
 
-      card.innerHTML = `
+        card.innerHTML = `
         <div class="relative">
           ${
             url
@@ -415,28 +624,42 @@
           }
           <div class="absolute top-3 left-3 flex gap-2">${badges}</div>
           <div class="absolute top-3 right-3 flex gap-2">
-            <button class="bg-white/90 hover:bg-white p-2 rounded-lg" title="Editar" onclick="Noticias.edit(${it.id})"><i class="fas fa-edit text-gray-600"></i></button>
-            <button class="bg-red-500/90 hover:bg-red-500 p-2 rounded-lg" title="Eliminar" onclick="Noticias.remove(${it.id})"><i class="fas fa-trash text-white"></i></button>
+            <button class="bg-white/90 hover:bg-white p-2 rounded-lg" title="Editar" onclick="Noticias.edit(${
+              it.id
+            })"><i class="fas fa-edit text-gray-600"></i></button>
+            <button class="bg-red-500/90 hover:bg-red-500 p-2 rounded-lg" title="Eliminar" onclick="Noticias.remove(${
+              it.id
+            })"><i class="fas fa-trash text-white"></i></button>
           </div>
         </div>
         <div class="p-5">
           <div class="flex items-start justify-between gap-3">
             <div>
               <h3 class="text-lg font-bold text-gray-800">${it.title || ""}</h3>
-              <div class="text-gray-500 text-xs mt-0.5">${it.category || ""} · ${it.author || ""} · ${fmtDate(it.date) || ""}</div>
+              <div class="text-gray-500 text-xs mt-0.5">${
+                it.category || ""
+              } · ${it.author || ""} · ${fmtDate(it.date) || ""}</div>
             </div>
-            <button class="text-blue-600 hover:text-blue-800 text-sm" onclick="Noticias.view(${it.id})">Vista rápida</button>
+            <button class="text-blue-600 hover:text-blue-800 text-sm" onclick="Noticias.view(${
+              it.id
+            })">Vista rápida</button>
           </div>
-          <p class="text-sm text-gray-700 mt-3 line-clamp-3">${it.summary || ""}</p>
+          <p class="text-sm text-gray-700 mt-3 line-clamp-3">${
+            it.summary || ""
+          }</p>
 
           <div class="mt-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
               <label class="inline-flex items-center gap-1 text-xs">
-                <input type="checkbox" ${it.showInHome ? "checked" : ""} onchange="Noticias.toggleHome(${it.id}, this.checked)">
+                <input type="checkbox" ${
+                  it.showInHome ? "checked" : ""
+                } onchange="Noticias.toggleHome(${it.id}, this.checked)">
                 <span>Mostrar en inicio</span>
               </label>
               <label class="inline-flex items-center gap-1 text-xs">
-                <input type="checkbox" ${it.archived ? "checked" : ""} onchange="Noticias.toggleArchived(${it.id}, this.checked)">
+                <input type="checkbox" ${
+                  it.archived ? "checked" : ""
+                } onchange="Noticias.toggleArchived(${it.id}, this.checked)">
                 <span>Archivada</span>
               </label>
             </div>
@@ -444,406 +667,492 @@
           </div>
         </div>
       `;
-      grid.appendChild(card);
+        grid.appendChild(card);
+      }
     }
-  }
 
-  // ===== Modal: open/close + load/reset =====
-  function openForm(id = null) {
-    editId = id;
-    document.getElementById("news-form-modal").classList.remove("hidden");
-    document.getElementById("news-form-title").textContent = id ? "Editar Noticia" : "Nueva Noticia";
-    resetForm();
+    // ===== Modal: open/close + load/reset =====
+    function openForm(id = null) {
+      editId = id;
+      document.getElementById("news-form-modal").classList.remove("hidden");
+      document.getElementById("news-form-title").textContent = id
+        ? "Editar Noticia"
+        : "Nueva Noticia";
+      resetForm();
 
-    if (id) {
+      if (id) {
+        const it = items.find((x) => x.id === id);
+        if (!it) return;
+
+        setVal("n-title", it.title);
+        setVal("n-category", it.category);
+        setVal("n-date", fmtDate(it.date));
+        setVal("n-author", it.author);
+        setVal("n-summary", it.summary);
+        setVal("n-body", it.body);
+        document.getElementById("n-show-home").checked = !!it.showInHome;
+        document.getElementById("n-archived").checked = !!it.archived;
+
+        links = Array.isArray(it.links)
+          ? it.links.map((l) => ({ title: l.title || "", url: l.url || "" }))
+          : [];
+        renderLinks();
+
+        originalFotoIds = Array.isArray(it.imageIds) ? [...it.imageIds] : [];
+        originalFotoUrls = Array.isArray(it.imageUrls) ? [...it.imageUrls] : [];
+        currentFotos = [];
+        portadaIdx = 0;
+
+        (async () => {
+          // Cargar blobs
+          for (const fid of originalFotoIds) {
+            const blob = await idbGet(fid);
+            if (blob) {
+              const url = URL.createObjectURL(blob);
+              currentFotos.push({ blob, existingId: fid, previewUrl: url });
+            }
+          }
+          // Cargar URLs
+          for (const u of originalFotoUrls) {
+            if (isValidHttpUrl(u))
+              currentFotos.push({ url: u, existingUrl: u, previewUrl: u });
+          }
+
+          // Mover a portada lo que estaba marcado (si existe)
+          if (it.coverIsUrl) {
+            const url = it.imageUrls?.[it.coverIndex];
+            const idx = currentFotos.findIndex(
+              (f) => f.existingUrl === url || f.url === url
+            );
+            if (idx >= 0) {
+              const chosen = currentFotos.splice(idx, 1)[0];
+              currentFotos.unshift(chosen);
+            }
+          } else {
+            const idSel = it.imageIds?.[it.coverIndex];
+            const idx = currentFotos.findIndex((f) => f.existingId === idSel);
+            if (idx >= 0) {
+              const chosen = currentFotos.splice(idx, 1)[0];
+              currentFotos.unshift(chosen);
+            }
+          }
+          renderPreviews();
+        })();
+      }
+    }
+    function closeForm() {
+      // cleanup object URLs
+      currentFotos.forEach((f) => {
+        try {
+          if (f.previewUrl?.startsWith("blob:"))
+            URL.revokeObjectURL(f.previewUrl);
+        } catch {}
+      });
+      currentFotos = [];
+      originalFotoIds = [];
+      originalFotoUrls = [];
+      links = [];
+      document.getElementById("news-form-modal").classList.add("hidden");
+    }
+    function resetForm() {
+      [
+        "n-title",
+        "n-category",
+        "n-date",
+        "n-author",
+        "n-summary",
+        "n-body",
+      ].forEach((id) => setVal(id, ""));
+      document.getElementById("n-show-home").checked = false;
+      document.getElementById("n-archived").checked = false;
+      document.getElementById("n-image-url-input").value = "";
+      document.getElementById("n-cache-url").checked = false;
+      links = [];
+      renderLinks();
+      currentFotos = [];
+      originalFotoIds = [];
+      originalFotoUrls = [];
+      portadaIdx = 0;
+      renderPreviews();
+    }
+    function setVal(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.value = val ?? "";
+    }
+
+    // ===== Links (dynamic) =====
+    function renderLinks() {
+      const host = document.getElementById("n-links");
+      host.innerHTML = links
+        .map(
+          (l, i) => `
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
+        <input class="md:col-span-2 px-3 py-2 rounded border border-gray-300" placeholder="Título" value="${
+          l.title || ""
+        }" oninput="Noticias._linkSet(${i}, 'title', this.value)">
+        <input class="md:col-span-3 px-3 py-2 rounded border border-gray-300" placeholder="URL https://..." value="${
+          l.url || ""
+        }" oninput="Noticias._linkSet(${i}, 'url', this.value)">
+        <button type="button" class="text-red-600 text-sm hover:underline md:col-span-5 justify-self-end" onclick="Noticias.removeLink(${i})"><i class="fas fa-trash mr-1"></i>Quitar</button>
+      </div>
+    `
+        )
+        .join("");
+    }
+    function addLink() {
+      links.push({ title: "", url: "" });
+      renderLinks();
+    }
+    function removeLink(i) {
+      links.splice(i, 1);
+      renderLinks();
+    }
+    function linkSet(i, k, v) {
+      if (!links[i]) return;
+      links[i][k] = v;
+    }
+
+    // ===== Imágenes: archivos =====
+    document.getElementById("n-images").addEventListener("change", (ev) => {
+      const files = Array.from(ev.target.files || []);
+      if (!files.length) return;
+      files.forEach((file) => {
+        const url = URL.createObjectURL(file);
+        currentFotos.push({ blob: file, previewUrl: url });
+      });
+      renderPreviews();
+      ev.target.value = "";
+    });
+
+    // ===== Imágenes: URLs =====
+    async function addImageUrl() {
+      const input = document.getElementById("n-image-url-input");
+      const cache = !!document.getElementById("n-cache-url")?.checked;
+      if (!input) return;
+      const raw = input.value.trim();
+      if (!raw) return;
+
+      const pieces = raw
+        .split(/[\n,]/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+      let added = 0;
+
+      for (const p of pieces) {
+        if (!isValidHttpUrl(p)) continue;
+
+        if (cache) {
+          try {
+            const blob = await fetchUrlAsBlob(p);
+            const previewUrl = URL.createObjectURL(blob);
+            currentFotos.push({ blob, previewUrl, sourceUrl: p });
+            added++;
+            continue;
+          } catch (err) {
+            console.warn(
+              "No se pudo copiar (CORS). Se usará URL directa:",
+              p,
+              err
+            );
+          }
+        }
+        currentFotos.push({ url: p, previewUrl: p });
+        added++;
+      }
+
+      if (!added) {
+        alert("No se encontraron URLs válidas.");
+        return;
+      }
+      input.value = "";
+      renderPreviews();
+    }
+
+    // ===== Previews =====
+    function renderPreviews() {
+      const wrap = document.getElementById("n-image-preview");
+      wrap.innerHTML = currentFotos
+        .map((f, i) =>
+          f._removed
+            ? ""
+            : `
+      <div class="relative group">
+        <img src="${
+          f.previewUrl || (f.blob ? URL.createObjectURL(f.blob) : "")
+        }" class="w-full h-24 object-cover rounded border">
+        <div class="absolute top-1 right-1 bg-black/60 text-white text-xs px-1 rounded">${
+          i === portadaIdx ? "Portada" : i + 1
+        }</div>
+        <button type="button" onclick="Noticias.removeImage(${i})" class="absolute top-1 left-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100">×</button>
+        ${
+          i === portadaIdx
+            ? ""
+            : `<button type="button" onclick="Noticias.setCover(${i})" class="absolute bottom-1 left-1 bg-blue-600 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100">Portada</button>`
+        }
+        <div class="absolute bottom-1 right-1 text-[10px] bg-white/80 text-gray-700 px-1 rounded border">
+          ${f.url ? "URL" : f.sourceUrl ? "Copiado" : "Archivo"}
+        </div>
+      </div>
+    `
+        )
+        .join("");
+    }
+    function setCover(i) {
+      if (i < 0 || i >= currentFotos.length || currentFotos[i]._removed) return;
+      const chosen = currentFotos.splice(i, 1)[0];
+      currentFotos.unshift(chosen);
+      portadaIdx = 0;
+      renderPreviews();
+    }
+    function removeImage(i) {
+      const f = currentFotos[i];
+      if (!f) return;
+      try {
+        if (f.previewUrl?.startsWith("blob:"))
+          URL.revokeObjectURL(f.previewUrl);
+      } catch {}
+      f._removed = true;
+      if (portadaIdx === i) portadaIdx = 0;
+      renderPreviews();
+    }
+
+    // ===== Submit (create/update) =====
+    document
+      .getElementById("news-form")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const data = {
+          title: document.getElementById("n-title").value.trim(),
+          category: document.getElementById("n-category").value.trim(),
+          date: document.getElementById("n-date").value.trim(),
+          author: document.getElementById("n-author").value.trim(),
+          summary: document.getElementById("n-summary").value.trim(),
+          body: document.getElementById("n-body").value.trim(),
+          showInHome: document.getElementById("n-show-home").checked,
+          archived: document.getElementById("n-archived").checked,
+          links: links.filter(
+            (l) => (l.title || "").trim() || (l.url || "").trim()
+          ),
+        };
+
+        if (
+          !data.title ||
+          !data.category ||
+          !data.date ||
+          !data.author ||
+          !data.body
+        ) {
+          alert("Completa los campos obligatorios (*)");
+          return;
+        }
+
+        // Construir imageIds / imageUrls respetando el orden actual de currentFotos
+        const imageIds = [];
+        const imageUrls = [];
+        const keptExistingIds = new Set();
+
+        for (const f of currentFotos) {
+          if (f._removed) continue;
+
+          if (f.existingId) {
+            imageIds.push(f.existingId);
+            keptExistingIds.add(f.existingId);
+          } else if (f.blob) {
+            const id = generateId();
+            await idbPut(id, f.blob);
+            imageIds.push(id);
+          } else if (f.existingUrl) {
+            if (isValidHttpUrl(f.existingUrl)) imageUrls.push(f.existingUrl);
+          } else if (f.url && isValidHttpUrl(f.url)) {
+            imageUrls.push(f.url);
+          }
+        }
+
+        // Borrar blobs removidos (solo en edición)
+        if (editId && originalFotoIds.length) {
+          const removed = originalFotoIds.filter(
+            (oldId) => !keptExistingIds.has(oldId)
+          );
+          removed.forEach(idbDelete);
+        }
+
+        // Portada: detecta si es URL o blob según el primer item no removido
+        let coverIsUrl = false;
+        let coverIndex = 0;
+        const cover = currentFotos.find((f) => !f._removed);
+        if (cover) {
+          if (cover.existingId || cover.blob) {
+            // portada es blob -> buscar su índice en imageIds
+            const key = cover.existingId || null;
+            if (key) coverIndex = imageIds.indexOf(key);
+            else {
+              // si fue nueva, es el último push; lo movemos al inicio para asegurar index 0
+              // (más simple: reordenar arrays para que la portada quede al frente)
+              // pero ya está en orden; asumimos push mantuvo orden
+              coverIndex = 0; // fallback
+            }
+            coverIsUrl = false;
+          } else if (cover.existingUrl || cover.url) {
+            const u = cover.existingUrl || cover.url;
+            coverIndex = Math.max(0, imageUrls.indexOf(u));
+            coverIsUrl = true;
+          }
+        }
+
+        const payload = {
+          imageIds,
+          imageUrls,
+          coverIndex: Math.max(0, coverIndex),
+          coverIsUrl,
+        };
+
+        if (editId) {
+          const i = items.findIndex((x) => x.id === editId);
+          if (i !== -1) items[i] = { ...items[i], ...data, ...payload };
+        } else {
+          const newId =
+            (items.length ? Math.max(...items.map((x) => x.id)) : 0) + 1;
+          items.push({ id: newId, ...data, ...payload });
+        }
+
+        save(items);
+        await renderList();
+        closeForm();
+      });
+
+    // ===== Viewer =====
+    async function view(id) {
       const it = items.find((x) => x.id === id);
       if (!it) return;
 
-      setVal("n-title", it.title);
-      setVal("n-category", it.category);
-      setVal("n-date", fmtDate(it.date));
-      setVal("n-author", it.author);
-      setVal("n-summary", it.summary);
-      setVal("n-body", it.body);
-      document.getElementById("n-show-home").checked = !!it.showInHome;
-      document.getElementById("n-archived").checked = !!it.archived;
+      const modal = document.getElementById("news-viewer-modal");
+      const title = document.getElementById("news-viewer-title");
+      const cover = document.getElementById("news-viewer-cover");
+      const body = document.getElementById("news-viewer-body");
+      const refs = document.getElementById("news-viewer-links");
 
-      links = Array.isArray(it.links) ? it.links.map((l) => ({ title: l.title || "", url: l.url || "" })) : [];
-      renderLinks();
+      title.textContent = it.title;
 
-      originalFotoIds = Array.isArray(it.imageIds) ? [...it.imageIds] : [];
-      originalFotoUrls = Array.isArray(it.imageUrls) ? [...it.imageUrls] : [];
-      currentFotos = [];
-      portadaIdx = 0;
-
-      (async () => {
-        // Cargar blobs
-        for (const fid of originalFotoIds) {
-          const blob = await idbGet(fid);
-          if (blob) {
-            const url = URL.createObjectURL(blob);
-            currentFotos.push({ blob, existingId: fid, previewUrl: url });
-          }
-        }
-        // Cargar URLs
-        for (const u of originalFotoUrls) {
-          if (isValidHttpUrl(u)) currentFotos.push({ url: u, existingUrl: u, previewUrl: u });
-        }
-
-        // Mover a portada lo que estaba marcado (si existe)
-        if (it.coverIsUrl) {
-          const url = it.imageUrls?.[it.coverIndex];
-          const idx = currentFotos.findIndex((f) => f.existingUrl === url || f.url === url);
-          if (idx >= 0) {
-            const chosen = currentFotos.splice(idx, 1)[0];
-            currentFotos.unshift(chosen);
-          }
-        } else {
-          const idSel = it.imageIds?.[it.coverIndex];
-          const idx = currentFotos.findIndex((f) => f.existingId === idSel);
-          if (idx >= 0) {
-            const chosen = currentFotos.splice(idx, 1)[0];
-            currentFotos.unshift(chosen);
-          }
-        }
-        renderPreviews();
-      })();
-    }
-  }
-  function closeForm() {
-    // cleanup object URLs
-    currentFotos.forEach((f) => {
-      try { if (f.previewUrl?.startsWith("blob:")) URL.revokeObjectURL(f.previewUrl); } catch {}
-    });
-    currentFotos = [];
-    originalFotoIds = [];
-    originalFotoUrls = [];
-    links = [];
-    document.getElementById("news-form-modal").classList.add("hidden");
-  }
-  function resetForm() {
-    ["n-title","n-category","n-date","n-author","n-summary","n-body"].forEach((id) => setVal(id, ""));
-    document.getElementById("n-show-home").checked = false;
-    document.getElementById("n-archived").checked = false;
-    document.getElementById("n-image-url-input").value = "";
-    document.getElementById("n-cache-url").checked = false;
-    links = [];
-    renderLinks();
-    currentFotos = [];
-    originalFotoIds = [];
-    originalFotoUrls = [];
-    portadaIdx = 0;
-    renderPreviews();
-  }
-  function setVal(id, val) {
-    const el = document.getElementById(id);
-    if (el) el.value = val ?? "";
-  }
-
-  // ===== Links (dynamic) =====
-  function renderLinks() {
-    const host = document.getElementById("n-links");
-    host.innerHTML = links.map((l, i) => `
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
-        <input class="md:col-span-2 px-3 py-2 rounded border border-gray-300" placeholder="Título" value="${l.title || ""}" oninput="Noticias._linkSet(${i}, 'title', this.value)">
-        <input class="md:col-span-3 px-3 py-2 rounded border border-gray-300" placeholder="URL https://..." value="${l.url || ""}" oninput="Noticias._linkSet(${i}, 'url', this.value)">
-        <button type="button" class="text-red-600 text-sm hover:underline md:col-span-5 justify-self-end" onclick="Noticias.removeLink(${i})"><i class="fas fa-trash mr-1"></i>Quitar</button>
-      </div>
-    `).join("");
-  }
-  function addLink() { links.push({ title: "", url: "" }); renderLinks(); }
-  function removeLink(i) { links.splice(i, 1); renderLinks(); }
-  function linkSet(i, k, v) { if (!links[i]) return; links[i][k] = v; }
-
-  // ===== Imágenes: archivos =====
-  document.getElementById("n-images").addEventListener("change", (ev) => {
-    const files = Array.from(ev.target.files || []);
-    if (!files.length) return;
-    files.forEach((file) => {
-      const url = URL.createObjectURL(file);
-      currentFotos.push({ blob: file, previewUrl: url });
-    });
-    renderPreviews();
-    ev.target.value = "";
-  });
-
-  // ===== Imágenes: URLs =====
-  async function addImageUrl() {
-    const input = document.getElementById("n-image-url-input");
-    const cache = !!document.getElementById("n-cache-url")?.checked;
-    if (!input) return;
-    const raw = input.value.trim();
-    if (!raw) return;
-
-    const pieces = raw.split(/[\n,]/).map((s) => s.trim()).filter(Boolean);
-    let added = 0;
-
-    for (const p of pieces) {
-      if (!isValidHttpUrl(p)) continue;
-
-      if (cache) {
-        try {
-          const blob = await fetchUrlAsBlob(p);
-          const previewUrl = URL.createObjectURL(blob);
-          currentFotos.push({ blob, previewUrl, sourceUrl: p });
-          added++;
-          continue;
-        } catch (err) {
-          console.warn("No se pudo copiar (CORS). Se usará URL directa:", p, err);
-        }
+      // Cover
+      const url = await resolveCoverUrl(it);
+      if (url) {
+        cover.src = url;
+        cover.classList.remove("hidden");
+      } else {
+        cover.classList.add("hidden");
       }
-      currentFotos.push({ url: p, previewUrl: p });
-      added++;
-    }
 
-    if (!added) {
-      alert("No se encontraron URLs válidas.");
-      return;
-    }
-    input.value = "";
-    renderPreviews();
-  }
+      // Body (Markdown muy básico)
+      body.innerHTML = (it.body || "")
+        .replace(/^### (.*)$/gm, "<h3>$1</h3>")
+        .replace(/^## (.*)$/gm, "<h2>$1</h2>")
+        .replace(/^# (.*)$/gm, "<h1>$1</h1>")
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        .replace(/`(.*?)`/g, "<code>$1</code>")
+        .replace(/\n\- (.*)/g, "<li>$1</li>")
+        .replace(/\n{2,}/g, "</p><p>")
+        .replace(/\n/g, "<br>")
+        .replace(/^/, "<p>")
+        .concat("</p>")
+        .replace(/<p><\/p>$/, "");
 
-  // ===== Previews =====
-  function renderPreviews() {
-    const wrap = document.getElementById("n-image-preview");
-    wrap.innerHTML = currentFotos.map((f, i) => f._removed ? "" : `
-      <div class="relative group">
-        <img src="${f.previewUrl || (f.blob ? URL.createObjectURL(f.blob) : "")}" class="w-full h-24 object-cover rounded border">
-        <div class="absolute top-1 right-1 bg-black/60 text-white text-xs px-1 rounded">${i === portadaIdx ? "Portada" : i + 1}</div>
-        <button type="button" onclick="Noticias.removeImage(${i})" class="absolute top-1 left-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100">×</button>
-        ${ i === portadaIdx ? "" : `<button type="button" onclick="Noticias.setCover(${i})" class="absolute bottom-1 left-1 bg-blue-600 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100">Portada</button>`}
-        <div class="absolute bottom-1 right-1 text-[10px] bg-white/80 text-gray-700 px-1 rounded border">
-          ${f.url ? "URL" : (f.sourceUrl ? "Copiado" : "Archivo")}
-        </div>
-      </div>
-    `).join("");
-  }
-  function setCover(i) {
-    if (i < 0 || i >= currentFotos.length || currentFotos[i]._removed) return;
-    const chosen = currentFotos.splice(i, 1)[0];
-    currentFotos.unshift(chosen);
-    portadaIdx = 0;
-    renderPreviews();
-  }
-  function removeImage(i) {
-    const f = currentFotos[i];
-    if (!f) return;
-    try { if (f.previewUrl?.startsWith("blob:")) URL.revokeObjectURL(f.previewUrl); } catch {}
-    f._removed = true;
-    if (portadaIdx === i) portadaIdx = 0;
-    renderPreviews();
-  }
-
-  // ===== Submit (create/update) =====
-  document.getElementById("news-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const data = {
-      title: document.getElementById("n-title").value.trim(),
-      category: document.getElementById("n-category").value.trim(),
-      date: document.getElementById("n-date").value.trim(),
-      author: document.getElementById("n-author").value.trim(),
-      summary: document.getElementById("n-summary").value.trim(),
-      body: document.getElementById("n-body").value.trim(),
-      showInHome: document.getElementById("n-show-home").checked,
-      archived: document.getElementById("n-archived").checked,
-      links: links.filter((l) => (l.title || "").trim() || (l.url || "").trim()),
-    };
-
-    if (!data.title || !data.category || !data.date || !data.author || !data.body) {
-      alert("Completa los campos obligatorios (*)");
-      return;
-    }
-
-    // Construir imageIds / imageUrls respetando el orden actual de currentFotos
-    const imageIds = [];
-    const imageUrls = [];
-    const keptExistingIds = new Set();
-
-    for (const f of currentFotos) {
-      if (f._removed) continue;
-
-      if (f.existingId) {
-        imageIds.push(f.existingId);
-        keptExistingIds.add(f.existingId);
-      } else if (f.blob) {
-        const id = generateId();
-        await idbPut(id, f.blob);
-        imageIds.push(id);
-      } else if (f.existingUrl) {
-        if (isValidHttpUrl(f.existingUrl)) imageUrls.push(f.existingUrl);
-      } else if (f.url && isValidHttpUrl(f.url)) {
-        imageUrls.push(f.url);
-      }
-    }
-
-    // Borrar blobs removidos (solo en edición)
-    if (editId && originalFotoIds.length) {
-      const removed = originalFotoIds.filter((oldId) => !keptExistingIds.has(oldId));
-      removed.forEach(idbDelete);
-    }
-
-    // Portada: detecta si es URL o blob según el primer item no removido
-    let coverIsUrl = false;
-    let coverIndex = 0;
-    const cover = currentFotos.find((f) => !f._removed);
-    if (cover) {
-      if (cover.existingId || cover.blob) {
-        // portada es blob -> buscar su índice en imageIds
-        const key = cover.existingId || null;
-        if (key) coverIndex = imageIds.indexOf(key);
-        else {
-          // si fue nueva, es el último push; lo movemos al inicio para asegurar index 0
-          // (más simple: reordenar arrays para que la portada quede al frente)
-          // pero ya está en orden; asumimos push mantuvo orden
-          coverIndex = 0; // fallback
-        }
-        coverIsUrl = false;
-      } else if (cover.existingUrl || cover.url) {
-        const u = cover.existingUrl || cover.url;
-        coverIndex = Math.max(0, imageUrls.indexOf(u));
-        coverIsUrl = true;
-      }
-    }
-
-    const payload = {
-      imageIds,
-      imageUrls,
-      coverIndex: Math.max(0, coverIndex),
-      coverIsUrl,
-    };
-
-    if (editId) {
-      const i = items.findIndex((x) => x.id === editId);
-      if (i !== -1) items[i] = { ...items[i], ...data, ...payload };
-    } else {
-      const newId = (items.length ? Math.max(...items.map((x) => x.id)) : 0) + 1;
-      items.push({ id: newId, ...data, ...payload });
-    }
-
-    save(items);
-    await renderList();
-    closeForm();
-  });
-
-  // ===== Viewer =====
-  async function view(id) {
-    const it = items.find((x) => x.id === id);
-    if (!it) return;
-
-    const modal = document.getElementById("news-viewer-modal");
-    const title = document.getElementById("news-viewer-title");
-    const cover = document.getElementById("news-viewer-cover");
-    const body = document.getElementById("news-viewer-body");
-    const refs = document.getElementById("news-viewer-links");
-
-    title.textContent = it.title;
-
-    // Cover
-    const url = await resolveCoverUrl(it);
-    if (url) {
-      cover.src = url;
-      cover.classList.remove("hidden");
-    } else {
-      cover.classList.add("hidden");
-    }
-
-    // Body (Markdown muy básico)
-    body.innerHTML = (it.body || "")
-      .replace(/^### (.*)$/gm, "<h3>$1</h3>")
-      .replace(/^## (.*)$/gm, "<h2>$1</h2>")
-      .replace(/^# (.*)$/gm, "<h1>$1</h1>")
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/g, "<em>$1</em>")
-      .replace(/`(.*?)`/g, "<code>$1</code>")
-      .replace(/\n\- (.*)/g, "<li>$1</li>")
-      .replace(/\n{2,}/g, "</p><p>")
-      .replace(/\n/g, "<br>")
-      .replace(/^/, "<p>")
-      .concat("</p>")
-      .replace(/<p><\/p>$/, "");
-
-    // Links
-    refs.innerHTML = (it.links || []).length
-      ? `
+      // Links
+      refs.innerHTML = (it.links || []).length
+        ? `
         <div class="mt-2">
           <div class="font-semibold text-gray-800 mb-1">Referencias</div>
           <ul class="list-disc pl-5 space-y-1">
             ${(it.links || [])
-              .map((l) => `<li><a class="text-blue-600 hover:underline" target="_blank" href="${l.url || "#"}">${l.title || l.url || "Enlace"}</a></li>`)
+              .map(
+                (l) =>
+                  `<li><a class="text-blue-600 hover:underline" target="_blank" href="${
+                    l.url || "#"
+                  }">${l.title || l.url || "Enlace"}</a></li>`
+              )
               .join("")}
           </ul>
         </div>
       `
-      : "";
+        : "";
 
-    modal.classList.remove("hidden");
-  }
-  function closeViewer() {
-    try {
-      const img = document.getElementById("news-viewer-cover");
-      if (img?.src?.startsWith("blob:")) URL.revokeObjectURL(img.src);
-    } catch {}
-    document.getElementById("news-viewer-modal").classList.add("hidden");
-  }
+      modal.classList.remove("hidden");
+    }
+    function closeViewer() {
+      try {
+        const img = document.getElementById("news-viewer-cover");
+        if (img?.src?.startsWith("blob:")) URL.revokeObjectURL(img.src);
+      } catch {}
+      document.getElementById("news-viewer-modal").classList.add("hidden");
+    }
 
-  // ===== Row actions =====
-  function edit(id) { openForm(id); }
-  function removeItem(id) {
-    if (!confirm("¿Eliminar esta noticia?")) return;
-    const it = items.find((x) => x.id === id);
-    if (it?.imageIds?.length) it.imageIds.forEach(idbDelete);
-    // URLs no requieren limpieza
-    items = items.filter((x) => x.id !== id);
-    save(items);
-    renderList();
-  }
-  function toggleHome(id, val) {
-    const it = items.find((x) => x.id === id);
-    if (!it) return;
-    it.showInHome = !!val;
-    save(items);
-    renderList();
-  }
-  function toggleArchived(id, val) {
-    const it = items.find((x) => x.id === id);
-    if (!it) return;
-    it.archived = !!val;
-    save(items);
-    renderList();
-  }
+    // ===== Row actions =====
+    function edit(id) {
+      openForm(id);
+    }
+    function removeItem(id) {
+      if (!confirm("¿Eliminar esta noticia?")) return;
+      const it = items.find((x) => x.id === id);
+      if (it?.imageIds?.length) it.imageIds.forEach(idbDelete);
+      // URLs no requieren limpieza
+      items = items.filter((x) => x.id !== id);
+      save(items);
+      renderList();
+    }
+    function toggleHome(id, val) {
+      const it = items.find((x) => x.id === id);
+      if (!it) return;
+      it.showInHome = !!val;
+      save(items);
+      renderList();
+    }
+    function toggleArchived(id, val) {
+      const it = items.find((x) => x.id === id);
+      if (!it) return;
+      it.archived = !!val;
+      save(items);
+      renderList();
+    }
 
-  // ===== Public getters para Home =====
-  window.getNews = function (limit = null) {
-    const list = load()
-      .filter((n) => !n.archived)
-      .sort((a, b) => new Date(b.date || "1970-01-01") - new Date(a.date || "1970-01-01"));
-    return typeof limit === "number" && limit > 0 ? list.slice(0, limit) : list;
-  };
-  window.getHomeNews = function (limit = 4) {
-    return load()
-      .filter((n) => !n.archived && n.showInHome)
-      .sort((a, b) => new Date(b.date || "1970-01-01") - new Date(a.date || "1970-01-01"))
-      .slice(0, limit);
-  };
+    // ===== Public getters para Home =====
+    window.getNews = function (limit = null) {
+      const list = load()
+        .filter((n) => !n.archived)
+        .sort(
+          (a, b) =>
+            new Date(b.date || "1970-01-01") - new Date(a.date || "1970-01-01")
+        );
+      return typeof limit === "number" && limit > 0
+        ? list.slice(0, limit)
+        : list;
+    };
+    window.getHomeNews = function (limit = 4) {
+      return load()
+        .filter((n) => !n.archived && n.showInHome)
+        .sort(
+          (a, b) =>
+            new Date(b.date || "1970-01-01") - new Date(a.date || "1970-01-01")
+        )
+        .slice(0, limit);
+    };
 
-  // ===== Expose =====
-  window.Noticias = {
-    openForm,
-    closeForm,
-    edit,
-    remove: removeItem,
-    view,
-    closeViewer,
-    addLink,
-    removeLink,
-    _linkSet: linkSet,
-    setCover,
-    removeImage,
-    toggleHome,
-    toggleArchived,
-    addImageUrl,
-  };
-})();
+    // ===== Expose =====
+    window.Noticias = {
+      openForm,
+      closeForm,
+      edit,
+      remove: removeItem,
+      view,
+      closeViewer,
+      addLink,
+      removeLink,
+      _linkSet: linkSet,
+      setCover,
+      removeImage,
+      toggleHome,
+      toggleArchived,
+      addImageUrl,
+    };
+  })();
 </script>
