@@ -729,12 +729,6 @@
         document
           .getElementById("projects-add-btn")
           .addEventListener("click", () => openModal());
-        document
-          .getElementById("projects-export-btn")
-          .addEventListener("click", exportCSV);
-        document
-          .getElementById("projects-import-btn")
-          .addEventListener("click", openImportModal);
         const emptyAdd = document.getElementById("projects-empty-add");
         if (emptyAdd) emptyAdd.addEventListener("click", () => openModal());
 
