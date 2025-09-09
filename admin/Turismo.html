@@ -386,7 +386,20 @@
     modal.classList.remove('hidden');
   }
   function closeViewer(){ document.getElementById('image-viewer-modal').classList.add('hidden'); }
-  function pick(src){ document.getElementById('main-viewer-image').src = src; }
+  function pick(src, index) {
+  const main = document.getElementById('main-viewer-image');
+  main.src = src;
+
+  // reset borders
+  document.querySelectorAll('#image-thumbnails img').forEach((img, i) => {
+    img.classList.remove('border-orange-500');
+    img.classList.add('border-gray-200');
+    if (i === index) {
+      img.classList.add('border-orange-500');
+      img.classList.remove('border-gray-200');
+    }
+  });
+}
 
   // -------- expose --------
   window.Turismo = {
