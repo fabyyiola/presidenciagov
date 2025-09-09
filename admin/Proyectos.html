@@ -459,39 +459,6 @@
     </div>
   </div>
 
-  <!-- Import Modal -->
-  <div
-    id="projects-import-modal"
-    class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4"
-  >
-    <div class="bg-white rounded-xl max-w-md w-full">
-      <div class="p-6 border-b border-gray-200">
-        <h3 class="text-xl font-bold text-gray-800">Importar Proyectos</h3>
-      </div>
-      <div class="p-6">
-        <input
-          type="file"
-          id="projects-import-file"
-          accept=".json"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
-        />
-        <div class="flex justify-end space-x-4">
-          <button
-            id="projects-import-cancel"
-            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-          >
-            Cancelar
-          </button>
-          <button
-            id="projects-import-confirm"
-            class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
-          >
-            Importar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
 
 
@@ -774,24 +741,11 @@
           .getElementById("projects-drawer-close")
           .addEventListener("click", closeDrawer);
 
-        // Import
-        document
-          .getElementById("projects-import-cancel")
-          .addEventListener("click", closeImportModal);
-        document
-          .getElementById("projects-import-confirm")
-          .addEventListener("click", importJSON);
-
         // Close modals by backdrop
         document
           .getElementById("projects-modal")
           .addEventListener("click", (e) => {
             if (e.target.id === "projects-modal") closeModal();
-          });
-        document
-          .getElementById("projects-import-modal")
-          .addEventListener("click", (e) => {
-            if (e.target.id === "projects-import-modal") closeImportModal();
           });
       }
 
@@ -1692,53 +1646,6 @@
         a.click();
         a.remove();
       }
-      function openImportModal() {
-        document
-          .getElementById("projects-import-modal")
-          .classList.remove("hidden");
-      }
-      function closeImportModal() {
-        document
-          .getElementById("projects-import-modal")
-          .classList.add("hidden");
-        document.getElementById("projects-import-file").value = "";
-      }
-      function importJSON() {
-        const file = document.getElementById("projects-import-file").files[0];
-        if (!file) {
-          alert("Selecciona un archivo JSON");
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          try {
-            const data = JSON.parse(e.target.result);
-            if (!Array.isArray(data))
-              throw new Error("El JSON debe ser un arreglo de proyectos");
-            const processed = data.map((p) => ({
-              ...p,
-              id: generateId(),
-              etapas: (p.etapas || []).map((e) => ({
-                ...e,
-                id: generateId(),
-                tareas: (e.tareas || []).map((t) => ({
-                  ...t,
-                  id: generateId(),
-                })),
-                photoIds: e.photoIds || [],
-              })),
-            }));
-            proyectos = [...proyectos, ...processed];
-            saveProyectos();
-            filterProyectos();
-            updateKPIs();
-            closeImportModal();
-            alert(`Se importaron ${processed.length} proyectos`);
-          } catch (err) {
-            alert("Error al importar: " + err.message);
-          }
-        };
-        reader.readAsText(file);
-      }
+     
     })();
   </script>
