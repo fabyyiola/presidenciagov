@@ -1,787 +1,390 @@
-  <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              "gov-blue": "#1e40af",
-              "gov-green": "#059669",
-              "gov-gray": "#6b7280",
-              "gov-light": "#f8fafc",
-              "gov-teal": "#0f766e",
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      .modal-backdrop {
-        backdrop-filter: blur(4px);
-      }
-      .chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.5rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-      }
-      .chip-yellow {
-        background: #fef9c3;
-        color: #854d0e;
-      }
-      .chip-green {
-        background: #dcfce7;
-        color: #166534;
-      }
-      .chip-blue {
-        background: #dbeafe;
-        color: #1e40af;
-      }
-      .chip-gray {
-        background: #f3f4f6;
-        color: #374151;
-      }
-    </style>
-    <main class="max-w-7xl mx-auto p-6">
-      <div class="flex justify-between items-center mb-8">
+<!-- Transparencia.html (fragment only) -->
+<section class="section-content p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Transparencia</h2>
+      <p class="text-gov-gray">Administración de documentos oficiales (PDF).</p>
+    </div>
+    <button onclick="Transparencia.openForm()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition flex items-center">
+      <i class="fas fa-plus mr-2"></i> Agregar Documento
+    </button>
+  </div>
+
+  <!-- Filtros -->
+  <div class="bg-white p-5 rounded-xl shadow mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <input id="filterSearch" type="text" placeholder="Buscar título o descripción..." class="px-4 py-2 border rounded-lg" oninput="Transparencia.applyFilters()">
+      <select id="filterCategoria" class="px-4 py-2 border rounded-lg" onchange="Transparencia.applyFilters()">
+        <option value="">Todas las categorías</option>
+        <option value="Presupuesto">Presupuesto</option>
+        <option value="Nómina">Nómina</option>
+        <option value="Contrataciones">Contrataciones</option>
+        <option value="Obra Pública">Obra Pública</option>
+        <option value="Informes">Informes</option>
+      </select>
+      <select id="filterDependencia" class="px-4 py-2 border rounded-lg" onchange="Transparencia.applyFilters()">
+        <option value="">Todas las dependencias</option>
+        <option>Presidencia Municipal</option>
+        <option>Tesorería</option>
+        <option>Obras Públicas</option>
+        <option>Recursos Humanos</option>
+        <option>Contraloría</option>
+      </select>
+      <select id="filterAnio" class="px-4 py-2 border rounded-lg" onchange="Transparencia.applyFilters()">
+        <option value="">Todos los años</option>
+        <option>2025</option><option>2024</option><option>2023</option><option>2022</option>
+      </select>
+      <select id="filterEstado" class="px-4 py-2 border rounded-lg" onchange="Transparencia.applyFilters()">
+        <option value="">Todos</option>
+        <option>Publicado</option>
+        <option>Borrador</option>
+      </select>
+    </div>
+    <div class="mt-2">
+      <button onclick="Transparencia.clearFilters()" class="text-sm text-blue-600 hover:underline">Limpiar filtros</button>
+      <span id="countLabel" class="text-sm text-gov-gray ml-2"></span>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="bg-white rounded-xl shadow overflow-hidden">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-50">
+        <tr class="text-left">
+          <th class="px-4 py-3">Título</th>
+          <th class="px-4 py-3">Categoría</th>
+          <th class="px-4 py-3">Dependencia</th>
+          <th class="px-4 py-3">Periodo</th>
+          <th class="px-4 py-3">Estado</th>
+          <th class="px-4 py-3">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="docs-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal: Agregar/Editar Documento -->
+<div id="transp-modal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between px-6 py-4 border-b">
+      <h3 id="transp-title" class="text-lg font-bold">Agregar Documento</h3>
+      <button onclick="Transparencia.closeForm()" class="text-gov-gray hover:text-gray-800"><i class="fas fa-times"></i></button>
+    </div>
+
+    <form id="transp-form" class="p-6 space-y-4">
+      <div>
+        <label class="block text-sm font-medium">Título *</label>
+        <input id="docTitulo" required class="w-full px-3 py-2 border rounded-lg" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Descripción</label>
+        <textarea id="docDesc" rows="2" class="w-full px-3 py-2 border rounded-lg" placeholder="Breve resumen del contenido..."></textarea>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <h1 class="text-3xl font-bold">Administración de Trámites</h1>
-          <p class="text-gov-gray">
-            Gestión de trámites y servicios municipales
-          </p>
+          <label class="block text-sm font-medium">Categoría *</label>
+          <select id="docCategoria" required class="w-full px-3 py-2 border rounded-lg">
+            <option value="">Seleccionar</option>
+            <option>Presupuesto</option>
+            <option>Nómina</option>
+            <option>Contrataciones</option>
+            <option>Obra Pública</option>
+            <option>Informes</option>
+          </select>
         </div>
-        <button
-          id="btnAdd"
-          class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-3 rounded-lg"
-        >
-          <i class="fa-solid fa-plus mr-2"></i> Agregar Trámite
-        </button>
-      </div>
-
-      <!-- Filtros -->
-      <section class="bg-white rounded-xl shadow p-6 mb-6">
-        <h2 class="text-lg font-bold mb-4">Filtros</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
-            <label class="block text-sm font-medium mb-2">Categoría</label>
-            <select id="fCategoria" class="w-full px-3 py-2 border rounded-lg">
-              <option value="">Todas las categorías</option>
-              <option value="identificacion">
-                Identificación y Documentos
-              </option>
-              <option value="apoyos">Apoyos Económicos y Sociales</option>
-              <option value="salud">Salud</option>
-              <option value="educacion">Educación</option>
-              <option value="transito">Tránsito y Transporte</option>
-              <option value="comercio">Comercio y Negocios</option>
-              <option value="construccion">Construcción y Obras</option>
-              <option value="otros">Otros</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-2">Ubicación</label>
-            <select id="fUbicacion" class="w-full px-3 py-2 border rounded-lg">
-              <option value="">Todas las ubicaciones</option>
-              <option>Presidencia Municipal</option>
-              <option>DIF Municipal</option>
-              <option>Módulo de Tránsito</option>
-              <option>Registro Civil</option>
-              <option>Catastro</option>
-              <option>Desarrollo Económico</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-2">Costo</label>
-            <select id="fCosto" class="w-full px-3 py-2 border rounded-lg">
-              <option value="">Todos</option>
-              <option value="gratuito">Gratuitos</option>
-              <option value="costo">Con costo</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-2">Estado</label>
-            <select id="fEstado" class="w-full px-3 py-2 border rounded-lg">
-              <option value="">Todos</option>
-              <option value="destacado">Destacados</option>
-              <option value="normal">Normales</option>
-            </select>
-          </div>
-        </div>
-        <div class="mt-4 flex justify-between items-center">
-          <button
-            id="btnClearFilters"
-            class="text-teal-700 hover:underline text-sm"
-          >
-            <i class="fa-solid fa-xmark mr-1"></i> Limpiar filtros
-          </button>
-          <span id="resultCount" class="text-sm text-gov-gray"
-            >0 trámites encontrados</span
-          >
-        </div>
-      </section>
-
-      <!-- Tabla -->
-      <section class="bg-white rounded-xl shadow overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-50 border-b">
-              <tr
-                class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                <th class="px-6 py-4">Trámite</th>
-                <th class="px-6 py-4">Categoría</th>
-                <th class="px-6 py-4">Costo</th>
-                <th class="px-6 py-4">Tiempo</th>
-                <th class="px-6 py-4">Ubicación</th>
-                <th class="px-6 py-4">Estado</th>
-                <th class="px-6 py-4">Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tbody" class="divide-y"></tbody>
-          </table>
-        </div>
-        <div id="empty" class="text-center py-12 hidden">
-          <div
-            class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
-          >
-            <i class="fas fa-file-alt text-gray-400 text-2xl"></i>
-          </div>
-          <h3 class="text-lg font-medium mb-2">No hay trámites registrados</h3>
-          <p class="text-gov-gray">Agrega tu primer trámite para empezar.</p>
-        </div>
-      </section>
-    </main>
-
-    <!-- Modal Alta/Edición -->
-    <div
-      id="modal"
-      class="fixed inset-0 bg-black/50 modal-backdrop hidden z-50 p-4"
-    >
-      <div
-        class="bg-white rounded-xl max-w-2xl w-full mx-auto max-h-[92vh] overflow-y-auto"
-      >
-        <div class="p-6 border-b flex justify-between items-center">
-          <h3 id="modalTitle" class="text-xl font-bold">Agregar Trámite</h3>
-          <button
-            class="text-gov-gray hover:text-gray-800"
-            onclick="UI.closeModal()"
-          >
-            <i class="fa-solid fa-xmark text-xl"></i>
-          </button>
-        </div>
-        <form id="form" class="p-6 space-y-4">
-          <div>
-            <label class="block text-sm font-medium"
-              >Título del Trámite *</label
-            >
-            <input
-              id="titulo"
-              required
-              class="w-full px-3 py-2 border rounded-lg"
-              placeholder="Ej. Renovación de Licencia de Conducir"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium">Descripción Corta *</label>
-            <textarea
-              id="descripcion"
-              required
-              rows="2"
-              class="w-full px-3 py-2 border rounded-lg"
-              placeholder="Breve descripción del trámite y para qué sirve..."
-            ></textarea>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium">Categoría *</label>
-              <select
-                id="categoria"
-                required
-                class="w-full px-3 py-2 border rounded-lg"
-              >
-                <option value="">Seleccionar categoría</option>
-                <option value="identificacion">
-                  Identificación y Documentos
-                </option>
-                <option value="apoyos">Apoyos Económicos y Sociales</option>
-                <option value="salud">Salud</option>
-                <option value="educacion">Educación</option>
-                <option value="transito">Tránsito y Transporte</option>
-                <option value="comercio">Comercio y Negocios</option>
-                <option value="construccion">Construcción y Obras</option>
-                <option value="otros">Otros</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium">Costo *</label>
-              <input
-                id="costo"
-                required
-                class="w-full px-3 py-2 border rounded-lg"
-                placeholder="Ej. Gratuito, $850, $15 por m²"
-              />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium"
-                >Tiempo de Resolución *</label
-              >
-              <input
-                id="tiempo"
-                required
-                class="w-full px-3 py-2 border rounded-lg"
-                placeholder="Ej. 30 minutos, 15 días hábiles"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium">Ubicación *</label>
-              <select
-                id="ubicacion"
-                required
-                class="w-full px-3 py-2 border rounded-lg"
-              >
-                <option value="">Seleccionar ubicación</option>
-                <option>Presidencia Municipal</option>
-                <option>DIF Municipal</option>
-                <option>Módulo de Tránsito</option>
-                <option>Registro Civil</option>
-                <option>Catastro</option>
-                <option>Desarrollo Económico</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium"
-              >Horario de Atención *</label
-            >
-            <input
-              id="horario"
-              required
-              class="w-full px-3 py-2 border rounded-lg"
-              placeholder="Ej. Lunes a Viernes 8:00–15:00 hrs"
-            />
-          </div>
-
-          <!-- Requisitos dinámicos -->
-          <div>
-            <div class="flex items-center justify-between">
-              <label class="block text-sm font-medium">Requisitos *</label>
-              <button
-                type="button"
-                class="text-teal-700 text-sm"
-                onclick="Form.addReq()"
-              >
-                <i class="fa-solid fa-plus mr-1"></i> Agregar requisito
-              </button>
-            </div>
-            <div id="reqList" class="space-y-2 mt-2"></div>
-          </div>
-
-          <!-- Procedimiento dinámico -->
-          <div>
-            <div class="flex items-center justify-between">
-              <label class="block text-sm font-medium"
-                >Procedimiento (Pasos) *</label
-              >
-              <button
-                type="button"
-                class="text-teal-700 text-sm"
-                onclick="Form.addPaso()"
-              >
-                <i class="fa-solid fa-plus mr-1"></i> Agregar paso
-              </button>
-            </div>
-            <div id="pasosList" class="space-y-2 mt-2"></div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium"
-              >Descripción Adicional</label
-            >
-            <textarea
-              id="descripcionLarga"
-              rows="3"
-              class="w-full px-3 py-2 border rounded-lg"
-              placeholder="Información adicional, excepciones, notas..."
-            ></textarea>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium">Icono</label>
-              <select id="icono" class="w-full px-3 py-2 border rounded-lg">
-                <option value="fas fa-file-alt">Documento</option>
-                <option value="fas fa-id-card">Identificación</option>
-                <option value="fas fa-store">Negocio</option>
-                <option value="fas fa-hard-hat">Construcción</option>
-                <option value="fas fa-heart">Social</option>
-                <option value="fas fa-baby">Nacimiento</option>
-                <option value="fas fa-home">Domicilio</option>
-              </select>
-            </div>
-            <div class="flex items-center mt-6">
-              <input id="destacado" type="checkbox" class="mr-2" />
-              <label for="destacado">Marcar como trámite destacado</label>
-            </div>
-          </div>
-
-          <div class="flex justify-end gap-3 pt-4">
-            <button
-              type="button"
-              class="px-4 py-2 border rounded-lg"
-              onclick="UI.closeModal()"
-            >
-              Cancelar
-            </button>
-            <button
-              class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg"
-            >
-              Guardar
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Modal Detalle -->
-    <div
-      id="detail"
-      class="fixed inset-0 bg-black/50 modal-backdrop hidden z-50 p-4"
-    >
-      <div
-        class="bg-white rounded-xl max-w-4xl w-full mx-auto max-h-[92vh] overflow-y-auto"
-      >
-        <div class="p-6 border-b flex justify-between items-center">
-          <h3 id="dTitulo" class="text-2xl font-bold">Detalle del Trámite</h3>
-          <button
-            class="text-gov-gray hover:text-gray-800"
-            onclick="UI.closeDetail()"
-          >
-            <i class="fa-solid fa-xmark text-xl"></i>
-          </button>
-        </div>
-
-        <div id="dBody" class="p-6">
-          <!-- contenido dinámico -->
+        <div>
+          <label class="block text-sm font-medium">Dependencia *</label>
+          <select id="docDependencia" required class="w-full px-3 py-2 border rounded-lg">
+            <option value="">Seleccionar</option>
+            <option>Presidencia Municipal</option>
+            <option>Tesorería</option>
+            <option>Obras Públicas</option>
+            <option>Recursos Humanos</option>
+            <option>Contraloría</option>
+          </select>
         </div>
       </div>
-    </div>
-
-    <script>
-      // ======== Storage ========
-      const LS_KEY = "tramites";
-      const Storage = {
-        load() {
-          const raw = localStorage.getItem(LS_KEY);
-          if (!raw) {
-            // seed de ejemplo (solo la primera vez)
-            const seed = [
-              {
-                id: crypto.randomUUID(),
-                titulo: "Renovación de Licencia de Conducir",
-                descripcion:
-                  "Renovación de licencia de conducir vigente para vehículos particulares",
-                categoria: "transito",
-                categoriaNombre: "Tránsito y Transporte",
-                requisitos: [
-                  "Licencia anterior (original y copia)",
-                  "Identificación oficial vigente (INE/IFE)",
-                  "Comprobante de domicilio no mayor a 3 meses",
-                  "Examen médico vigente (no mayor a 6 meses)",
-                  "2 fotografías tamaño infantil a color",
-                ],
-                procedimiento: [
-                  "Presentarse en el Módulo de Tránsito con todos los documentos",
-                  "Entregar documentos en ventanilla de recepción",
-                  "Realizar pago correspondiente en caja",
-                  "Pasar a toma de fotografía y datos biométricos",
-                  "Esperar entrega de licencia (mismo día)",
-                ],
-                costo: "$850",
-                tiempo: "30 minutos",
-                ubicacion: "Módulo de Tránsito",
-                horario: "Lunes a Viernes 8:00–15:00 hrs",
-                descripcionLarga:
-                  "La renovación debe realizarse antes del vencimiento de la licencia anterior.",
-                icono: "fas fa-id-card",
-                destacado: true,
-              },
-            ];
-            localStorage.setItem(LS_KEY, JSON.stringify(seed));
-            return seed;
-          }
-          try {
-            return JSON.parse(raw);
-          } catch {
-            return [];
-          }
-        },
-        save(arr) {
-          localStorage.setItem(LS_KEY, JSON.stringify(arr));
-        },
-      };
-
-      // ======== State & DOM refs ========
-      let data = Storage.load();
-      let editingId = null;
-
-      const $ = (sel) => document.querySelector(sel);
-      const $$ = (sel) => document.querySelectorAll(sel);
-
-      const refs = {
-        tbody: $("#tbody"),
-        empty: $("#empty"),
-        resultCount: $("#resultCount"),
-        fCategoria: $("#fCategoria"),
-        fUbicacion: $("#fUbicacion"),
-        fCosto: $("#fCosto"),
-        fEstado: $("#fEstado"),
-        modal: $("#modal"),
-        modalTitle: $("#modalTitle"),
-        form: $("#form"),
-        reqList: $("#reqList"),
-        pasosList: $("#pasosList"),
-        detail: $("#detail"),
-        dTitulo: $("#dTitulo"),
-        dBody: $("#dBody"),
-      };
-
-      // ======== UI helpers ========
-      const UI = {
-        openModal(editItem = null) {
-          refs.modal.classList.remove("hidden");
-          refs.form.reset();
-          refs.reqList.innerHTML = "";
-          refs.pasosList.innerHTML = "";
-          editingId = editItem ? editItem.id : null;
-          refs.modalTitle.textContent = editingId
-            ? "Editar Trámite"
-            : "Agregar Trámite";
-
-          // set values if editing
-          if (editItem) {
-            $("#titulo").value = editItem.titulo || "";
-            $("#descripcion").value = editItem.descripcion || "";
-            $("#categoria").value = editItem.categoria || "";
-            $("#costo").value = editItem.costo || "";
-            $("#tiempo").value = editItem.tiempo || "";
-            $("#ubicacion").value = editItem.ubicacion || "";
-            $("#horario").value = editItem.horario || "";
-            $("#descripcionLarga").value = editItem.descripcionLarga || "";
-            $("#icono").value = editItem.icono || "fas fa-file-alt";
-            $("#destacado").checked = !!editItem.destacado;
-
-            (editItem.requisitos || []).forEach((v) => Form.addReq(v));
-            (editItem.procedimiento || []).forEach((v) => Form.addPaso(v));
-          } else {
-            // first row for each
-            Form.addReq();
-            Form.addPaso();
-          }
-        },
-        closeModal() {
-          refs.modal.classList.add("hidden");
-          editingId = null;
-        },
-
-        openDetail(item) {
-          refs.detail.classList.remove("hidden");
-          refs.dTitulo.textContent = item.titulo;
-
-          const chipCat = `<span class="chip chip-blue"><i class="fa-solid fa-tags"></i> ${
-            item.categoriaNombre || mapCat(item.categoria)
-          }</span>`;
-          const chipDest = item.destacado
-            ? `<span class="chip chip-yellow">Destacado</span>`
-            : "";
-
-          const reqs = (item.requisitos || [])
-            .map(
-              (r, i) => `
-        <div class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-xs">${
-          i + 1
-        }</span><span>${r}</span></div>
-      `
-            )
-            .join("");
-
-          const pasos = (item.procedimiento || [])
-            .map(
-              (r, i) => `
-        <div class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs">${
-          i + 1
-        }</span><span>${r}</span></div>
-      `
-            )
-            .join("");
-
-          refs.dBody.innerHTML = `
-        <div class="flex flex-wrap gap-2 mb-3">${chipCat}${chipDest}</div>
-        <p class="text-gov-gray mb-4">${item.descripcion || ""}</p>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="space-y-3">
-            <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-dollar-sign"></i></span><div><div class="text-xs text-gov-gray">Costo</div><div class="font-semibold">${
-              item.costo || "—"
-            }</div></div></div>
-            <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center"><i class="fa-regular fa-clock"></i></span><div><div class="text-xs text-gov-gray">Tiempo</div><div class="font-semibold">${
-              item.tiempo || "—"
-            }</div></div></div>
-            <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></span><div><div class="text-xs text-gov-gray">Ubicación</div><div class="font-semibold">${
-              item.ubicacion || "—"
-            }</div><div class="text-xs text-gov-gray">${
-            item.horario || ""
-          }</div></div></div>
-          </div>
-
-          <div class="space-y-4">
-            <div>
-              <div class="font-semibold mb-2">Requisitos</div>
-              <div class="space-y-2">${
-                reqs || '<div class="text-gov-gray text-sm">—</div>'
-              }</div>
-            </div>
-            <div>
-              <div class="font-semibold mb-2">Procedimiento</div>
-              <div class="space-y-2">${
-                pasos || '<div class="text-gov-gray text-sm">—</div>'
-              }</div>
-            </div>
-          </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium">Año *</label>
+          <select id="docAnio" required class="w-full px-3 py-2 border rounded-lg">
+            <option value="">Seleccionar</option>
+            <option>2025</option><option>2024</option><option>2023</option><option>2022</option>
+          </select>
         </div>
-
-        ${
-          item.descripcionLarga
-            ? `<div class="mt-6 p-4 bg-gray-50 rounded-lg">${item.descripcionLarga}</div>`
-            : ""
-        }
-        <div class="mt-6 flex gap-3">
-          <button class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg" onclick='Actions.edit("${
-            item.id
-          }")'><i class="fa-solid fa-pen mr-2"></i>Editar Trámite</button>
-          <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg" onclick='Actions.remove("${
-            item.id
-          }")'><i class="fa-solid fa-trash mr-2"></i>Eliminar</button>
+        <div>
+          <label class="block text-sm font-medium">Mes</label>
+          <select id="docMes" class="w-full px-3 py-2 border rounded-lg">
+            <option value="">(Opcional)</option>
+            <option>01</option><option>02</option><option>03</option><option>04</option>
+            <option>05</option><option>06</option><option>07</option><option>08</option>
+            <option>09</option><option>10</option><option>11</option><option>12</option>
+          </select>
         </div>
-      `;
-        },
-        closeDetail() {
-          refs.detail.classList.add("hidden");
-        },
-      };
+        <div>
+          <label class="block text-sm font-medium">Estado *</label>
+          <select id="docEstado" required class="w-full px-3 py-2 border rounded-lg">
+            <option>Publicado</option>
+            <option>Borrador</option>
+          </select>
+        </div>
+      </div>
 
-      // ======== Form helpers ========
-      const Form = {
-        addReq(value = "") {
-          const id = crypto.randomUUID();
-          const row = document.createElement("div");
-          row.className = "flex gap-2";
-          row.innerHTML = `
-        <input data-kind="req" data-id="${id}" class="flex-1 px-3 py-2 border rounded-lg" placeholder="Ej. Identificación oficial vigente" value="${value.replaceAll(
-            '"',
-            "&quot;"
-          )}">
-        <button type="button" class="px-2 text-red-600" title="Eliminar" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>
-      `;
-          refs.reqList.appendChild(row);
-        },
-        addPaso(value = "") {
-          const id = crypto.randomUUID();
-          const row = document.createElement("div");
-          row.className = "flex gap-2";
-          row.innerHTML = `
-        <input data-kind="paso" data-id="${id}" class="flex-1 px-3 py-2 border rounded-lg" placeholder="Ej. Presentarse en la oficina con documentos" value="${value.replaceAll(
-            '"',
-            "&quot;"
-          )}">
-        <button type="button" class="px-2 text-red-600" title="Eliminar" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>
-      `;
-          refs.pasosList.appendChild(row);
-        },
-        collectList(kind) {
-          return [...document.querySelectorAll(`input[data-kind="${kind}"]`)]
-            .map((i) => i.value.trim())
-            .filter(Boolean);
-        },
-      };
+      <div>
+        <label class="block text-sm font-medium">Archivo PDF *</label>
+        <input id="docFile" type="file" accept="application/pdf" class="w-full px-3 py-2 border rounded-lg" />
+        <p class="text-xs text-gov-gray mt-1">Tamaño recomendado &lt; 20 MB. Si ya hay un PDF cargado, selecciona otro para reemplazarlo.</p>
+        <div id="pdfInfo" class="text-sm text-gray-600 mt-2"></div>
+      </div>
 
-      // ======== Actions ========
-      const Actions = {
-        add() {
-          UI.openModal();
-        },
-        edit(id) {
-          const item = data.find((d) => d.id === id);
-          if (item) UI.openModal(item);
-        },
-        remove(id) {
-          if (!confirm("¿Eliminar este trámite?")) return;
-          data = data.filter((d) => d.id !== id);
-          Storage.save(data);
-          render();
-          UI.closeDetail();
-        },
-        save(e) {
-          e?.preventDefault?.();
-          // build object
-          const item = {
-            id: editingId || crypto.randomUUID(),
-            titulo: $("#titulo").value.trim(),
-            descripcion: $("#descripcion").value.trim(),
-            categoria: $("#categoria").value,
-            categoriaNombre: mapCat($("#categoria").value),
-            requisitos: Form.collectList("req"),
-            procedimiento: Form.collectList("paso"),
-            costo: $("#costo").value.trim(),
-            tiempo: $("#tiempo").value.trim(),
-            ubicacion: $("#ubicacion").value,
-            horario: $("#horario").value.trim(),
-            descripcionLarga: $("#descripcionLarga").value.trim(),
-            icono: $("#icono").value || "fas fa-file-alt",
-            destacado: $("#destacado").checked,
-          };
+      <div class="flex justify-end gap-3 pt-2">
+        <button type="button" onclick="Transparencia.closeForm()" class="px-4 py-2 border rounded-lg">Cancelar</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-          if (
-            !item.titulo ||
-            !item.descripcion ||
-            !item.categoria ||
-            !item.costo ||
-            !item.tiempo ||
-            !item.ubicacion ||
-            !item.horario ||
-            !item.requisitos.length ||
-            !item.procedimiento.length
-          ) {
-            alert("Completa los campos obligatorios.");
-            return;
-          }
+<script>
+(() => {
+  // -------- Storage keys --------
+  const LS_KEY = 'transparenciaDocs'; // only metadata
+  let docs = [];
+  let editId = null;
+  let pendingFile = null; // { blob, name, size }
 
-          const i = data.findIndex((d) => d.id === item.id);
-          if (i >= 0) data[i] = item;
-          else data.push(item);
-          Storage.save(data);
-          render();
-          UI.closeModal();
-        },
-      };
+  // -------- IndexedDB for PDFs --------
+  let db;
+  const openReq = indexedDB.open('TransparenciaDB', 1);
+  openReq.onupgradeneeded = (e) => {
+    db = e.target.result;
+    if (!db.objectStoreNames.contains('archivos')) db.createObjectStore('archivos');
+  };
+  openReq.onsuccess = (e) => {
+    db = e.target.result;
+    // load metadata after DB is ready
+    docs = jsonGet(LS_KEY, []);
+    render();
+  };
+  openReq.onerror = () => console.error('IndexedDB error (TransparenciaDB)');
 
-      // ======== Filters & Render ========
-      function mapCat(c) {
-        const map = {
-          identificacion: "Identificación y Documentos",
-          apoyos: "Apoyos Económicos y Sociales",
-          salud: "Salud",
-          educacion: "Educación",
-          transito: "Tránsito y Transporte",
-          comercio: "Comercio y Negocios",
-          construccion: "Construcción y Obras",
-          otros: "Otros",
-        };
-        return map[c] || "Otros";
-      }
+  function idbPut(key, blob) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('archivos', 'readwrite');
+      tx.objectStore('archivos').put(blob, key);
+      tx.oncomplete = resolve;
+      tx.onerror = reject;
+    });
+  }
+  function idbGet(key) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('archivos', 'readonly');
+      const req = tx.objectStore('archivos').get(key);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = reject;
+    });
+  }
+  function idbDelete(key) {
+    const tx = db.transaction('archivos', 'readwrite');
+    tx.objectStore('archivos').delete(key);
+  }
 
-      function passFilters(item) {
-        const c = refs.fCategoria.value;
-        const u = refs.fUbicacion.value;
-        const co = refs.fCosto.value;
-        const e = refs.fEstado.value;
+  // -------- Helpers --------
+  const jsonGet = (k, d) => {
+    try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(d)); } catch { return d; }
+  };
+  const jsonSet = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+  const byId = (id) => document.getElementById(id);
+  const periodStr = (d) => d.mes ? `${d.anio}-${d.mes}` : d.anio;
 
-        if (c && item.categoria !== c) return false;
-        if (u && item.ubicacion !== u) return false;
-        if (co) {
-          const isFree =
-            (item.costo || "").toLowerCase().includes("gratuito") ||
-            item.costo.trim() === "0" ||
-            item.costo.toLowerCase() === "$0";
-          if (co === "gratuito" && !isFree) return false;
-          if (co === "costo" && isFree) return false;
-        }
-        if (e) {
-          const isDest = !!item.destacado;
-          if (e === "destacado" && !isDest) return false;
-          if (e === "normal" && isDest) return false;
-        }
-        return true;
-      }
+  // -------- Rendering --------
+  async function render(list = docs) {
+    const body = byId('docs-body');
+    body.innerHTML = '';
 
-      function render() {
-        refs.tbody.innerHTML = "";
-        const list = data.filter(passFilters);
-        refs.resultCount.textContent = `${list.length} trámite${
-          list.length !== 1 ? "s" : ""
-        } encontrados`;
-        refs.empty.classList.toggle("hidden", list.length > 0);
-
-        for (const t of list) {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-        <td class="px-6 py-4">
-          <div class="flex items-start gap-3">
-            <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0"><i class="${
-              t.icono || "fas fa-file-alt"
-            }"></i></div>
-            <div>
-              <div class="font-semibold">${t.titulo}</div>
-              <div class="text-xs text-gov-gray line-clamp-1">${
-                t.descripcion || ""
-              }</div>
-            </div>
-          </div>
-        </td>
-        <td class="px-6 py-4">
-          <span class="chip chip-blue">${
-            t.categoriaNombre || mapCat(t.categoria)
-          }</span>
-        </td>
-        <td class="px-6 py-4">${t.costo || "—"}</td>
-        <td class="px-6 py-4">${t.tiempo || "—"}</td>
-        <td class="px-6 py-4">${t.ubicacion || "—"}</td>
-        <td class="px-6 py-4">${
-          t.destacado
-            ? '<span class="chip chip-yellow">Destacado</span>'
-            : '<span class="chip chip-gray">Normal</span>'
-        }</td>
-        <td class="px-6 py-4">
-          <div class="flex items-center gap-3 text-teal-700">
-            <button title="Ver" onclick='UI.openDetail(${JSON.stringify(
-              t
-            )})'><i class="fa-regular fa-eye"></i></button>
-            <button title="Editar" onclick='Actions.edit("${
-              t.id
-            }")'><i class="fa-solid fa-pen"></i></button>
-            <button title="Eliminar" class="text-red-600" onclick='Actions.remove("${
-              t.id
-            }")'><i class="fa-solid fa-trash"></i></button>
-          </div>
-        </td>
-      `;
-          refs.tbody.appendChild(tr);
+    for (const d of list) {
+      // make a small "descargar" link if file exists
+      let fileBtn = '';
+      if (d.fileId) {
+        const blob = await idbGet(d.fileId);
+        if (blob) {
+          const url = URL.createObjectURL(blob);
+          fileBtn = `<a href="${url}" download="${(d.fileName || 'documento')}.pdf" class="inline-flex items-center text-blue-600 hover:underline">
+                       <i class="fas fa-download mr-1"></i> Descargar
+                     </a>`;
+        } else {
+          fileBtn = `<span class="text-xs text-red-600">Archivo no encontrado</span>`;
         }
       }
 
-      // ======== Events ========
-      $("#btnAdd").addEventListener("click", () => Actions.add());
-      $("#btnClearFilters").addEventListener("click", () => {
-        refs.fCategoria.value = "";
-        refs.fUbicacion.value = "";
-        refs.fCosto.value = "";
-        refs.fEstado.value = "";
-        render();
-      });
-      [refs.fCategoria, refs.fUbicacion, refs.fCosto, refs.fEstado].forEach(
-        (el) => el.addEventListener("change", render)
-      );
-      refs.form.addEventListener("submit", (e) => Actions.save(e));
+      const estadoBadge = d.estado === 'Publicado'
+        ? `<span class="px-2 py-1 rounded bg-green-100 text-green-700">Publicado</span>`
+        : `<span class="px-2 py-1 rounded bg-gray-100 text-gray-600">Borrador</span>`;
 
-      // init
-      render();
-      window.UI = UI;
-      window.Form = Form;
-      window.Actions = Actions;
-    </script>
+      const tr = document.createElement('tr');
+      tr.className = 'border-t';
+      tr.innerHTML = `
+        <td class="px-4 py-3">
+          <div class="font-semibold">${d.titulo}</div>
+          <div class="text-gray-500 text-xs line-clamp-2">${d.descripcion || ''}</div>
+        </td>
+        <td class="px-4 py-3">${d.categoria}</td>
+        <td class="px-4 py-3">${d.dependencia}</td>
+        <td class="px-4 py-3">${periodStr(d)}</td>
+        <td class="px-4 py-3">${estadoBadge}</td>
+        <td class="px-4 py-3 flex items-center gap-3">
+          ${fileBtn}
+          <button onclick="Transparencia.edit(${d.id})" class="text-yellow-600 hover:text-yellow-700"><i class="fas fa-edit"></i></button>
+          <button onclick="Transparencia.remove(${d.id})" class="text-red-600 hover:text-red-700"><i class="fas fa-trash"></i></button>
+        </td>
+      `;
+      body.appendChild(tr);
+    }
+    byId('countLabel').textContent = `${list.length} documento(s) encontrados`;
+    // fill dynamic organizer/dependencia filter options from data (unique)
+    fillDynamicFilters();
+  }
+
+  function fillDynamicFilters() {
+    const depSel = byId('filterDependencia');
+    const cats = new Set(), deps = new Set(), years = new Set();
+    docs.forEach(d => { cats.add(d.categoria); deps.add(d.dependencia); years.add(d.anio); });
+
+    // Dependencias
+    const current = depSel.value;
+    depSel.innerHTML = `<option value="">Todas las dependencias</option>` +
+      Array.from(deps).filter(Boolean).sort().map(v => `<option>${v}</option>`).join('');
+    depSel.value = current;
+  }
+
+  // -------- Filters --------
+  function applyFilters() {
+    const q = byId('filterSearch').value.trim().toLowerCase();
+    const cat = byId('filterCategoria').value;
+    const dep = byId('filterDependencia').value;
+    const year = byId('filterAnio').value;
+    const est = byId('filterEstado').value;
+
+    let list = docs.slice();
+    if (q) list = list.filter(d =>
+      (d.titulo||'').toLowerCase().includes(q) ||
+      (d.descripcion||'').toLowerCase().includes(q)
+    );
+    if (cat) list = list.filter(d => d.categoria === cat);
+    if (dep) list = list.filter(d => d.dependencia === dep);
+    if (year) list = list.filter(d => d.anio === year);
+    if (est) list = list.filter(d => d.estado === est);
+
+    render(list);
+  }
+  function clearFilters() {
+    ['filterSearch','filterCategoria','filterDependencia','filterAnio','filterEstado'].forEach(id => byId(id).value = '');
+    render();
+  }
+
+  // -------- Modal form --------
+  function openForm(id = null) {
+    editId = id;
+    byId('transp-modal').classList.remove('hidden');
+    byId('transp-title').textContent = id ? 'Editar Documento' : 'Agregar Documento';
+    byId('transp-form').reset();
+    byId('pdfInfo').textContent = '';
+    pendingFile = null;
+
+    if (id) {
+      const d = docs.find(x => x.id === id);
+      if (!d) return;
+      byId('docTitulo').value = d.titulo || '';
+      byId('docDesc').value = d.descripcion || '';
+      byId('docCategoria').value = d.categoria || '';
+      byId('docDependencia').value = d.dependencia || '';
+      byId('docAnio').value = d.anio || '';
+      byId('docMes').value = d.mes || '';
+      byId('docEstado').value = d.estado || 'Borrador';
+      if (d.fileName) byId('pdfInfo').textContent = `PDF actual: ${d.fileName}`;
+    }
+  }
+  function closeForm() { byId('transp-modal').classList.add('hidden'); }
+
+  byId('docFile').addEventListener('change', (e) => {
+    const f = e.target.files?.[0];
+    if (!f) { pendingFile = null; byId('pdfInfo').textContent = ''; return; }
+    if (f.type !== 'application/pdf') { alert('Solo se aceptan archivos PDF'); e.target.value=''; return; }
+    pendingFile = { blob: f, name: f.name, size: f.size };
+    byId('pdfInfo').textContent = `Archivo seleccionado: ${f.name} (${Math.round(f.size/1024)} KB)`;
+  });
+
+  byId('transp-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = {
+      titulo: byId('docTitulo').value.trim(),
+      descripcion: byId('docDesc').value.trim(),
+      categoria: byId('docCategoria').value,
+      dependencia: byId('docDependencia').value,
+      anio: byId('docAnio').value,
+      mes: byId('docMes').value,
+      estado: byId('docEstado').value,
+    };
+    if (!data.titulo || !data.categoria || !data.dependencia || !data.anio) {
+      alert('Completa los campos obligatorios (*)');
+      return;
+    }
+
+    // Handle file: new or keep existing
+    let fileId = null, fileName = null;
+    if (editId) {
+      const idx = docs.findIndex(d => d.id === editId);
+      if (idx === -1) return;
+      fileId = docs[idx].fileId || null;
+      fileName = docs[idx].fileName || null;
+
+      if (pendingFile) {
+        // replace file in IDB
+        const newId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        await idbPut(newId, pendingFile.blob);
+        if (fileId) idbDelete(fileId);
+        fileId = newId;
+        fileName = pendingFile.name;
+      }
+      docs[idx] = { ...docs[idx], ...data, fileId, fileName };
+    } else {
+      if (!pendingFile) { alert('Adjunta el PDF del documento'); return; }
+      const newId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      await idbPut(newId, pendingFile.blob);
+      fileId = newId; fileName = pendingFile.name;
+
+      const newDoc = {
+        id: (docs.length ? Math.max(...docs.map(d => d.id)) : 0) + 1,
+        ...data,
+        fileId, fileName,
+        createdAt: new Date().toISOString()
+      };
+      docs.push(newDoc);
+    }
+
+    jsonSet(LS_KEY, docs);
+    closeForm();
+    applyFilters(); // re-render with current filters
+  });
+
+  // -------- CRUD actions from table --------
+  function edit(id){ openForm(id); }
+
+  function removeItem(id) {
+    const d = docs.find(x => x.id === id);
+    if (!d) return;
+    if (!confirm('¿Eliminar este documento?')) return;
+    if (d.fileId) idbDelete(d.fileId);
+    docs = docs.filter(x => x.id !== id);
+    jsonSet(LS_KEY, docs);
+    applyFilters();
+  }
+
+  // -------- Expose globally for buttons --------
+  window.Transparencia = {
+    openForm, closeForm, edit, remove: removeItem,
+    applyFilters, clearFilters
+  };
+})();
+</script>
