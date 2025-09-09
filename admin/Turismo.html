@@ -101,6 +101,19 @@
         <div id="image-preview" class="grid grid-cols-3 gap-2 mt-3"></div>
       </div>
 
+      <!-- NEW: flags -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+        <label class="flex items-center gap-2">
+          <input type="checkbox" id="showInHome" class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-200">
+          <span class="text-sm text-gray-700">Mostrar en página de inicio</span>
+        </label>
+        <label class="flex items-center gap-2">
+          <input type="checkbox" id="useAsHero" class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-200">
+          <span class="text-sm text-gray-700">Usar sus fotos en el Hero</span>
+        </label>
+      </div>
+      <p class="text-xs text-gray-500 -mt-2">Nota: solo un lugar puede estar marcado como “Usar sus fotos en el Hero”.</p>
+
       <div class="flex justify-end gap-3 pt-2">
         <button type="button" onclick="Turismo.closeForm()" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">Cancelar</button>
         <button type="submit" class="px-5 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600">Guardar</button>
@@ -133,9 +146,9 @@
 
   // ===== State =====
   let lugares = [];
-  let editId = null;                 // null = crear, number = editar
-  let currentFotos = [];             // [{ blob, existingId?, _removed?, previewUrl }]
-  let editOriginalFotoIds = [];      // to detect deletions
+  let editId = null;
+  let currentFotos = [];
+  let editOriginalFotoIds = [];
   let mainIdx = 0;
   let db = null;
 
@@ -205,7 +218,6 @@
         }
         l.fotoIds = ids;
         delete l.imagenes;
-        // keep existing imagenPrincipal index (works over new ordered ids)
         if (typeof l.imagenPrincipal !== 'number') l.imagenPrincipal = 0;
         changed = true;
       } else if (!Array.isArray(l.fotoIds)){
@@ -213,6 +225,9 @@
         if (typeof l.imagenPrincipal !== 'number') l.imagenPrincipal = 0;
         changed = true;
       }
+      // ensure new fields exist
+      if (typeof l.showInHome !== 'boolean') { l.showInHome = false; changed = true; }
+      if (typeof l.useAsHero !== 'boolean') { l.useAsHero = false; changed = true; }
     }
     if (changed) save(lugares);
   }
@@ -232,10 +247,11 @@
         precio: "Gratuito",
         googleMaps: "https://maps.google.com/?q=Plaza+Principal+Sabinas+Hidalgo",
         recomendaciones: "Visitar al atardecer; suele haber eventos culturales.",
-        // New model:
         fotoIds: [],
         imagenPrincipal: 0,
-        icono: "fas fa-tree"
+        icono: "fas fa-tree",
+        showInHome: true,
+        useAsHero: false
       }];
       save(lugares);
     }
@@ -264,7 +280,11 @@
 
       head.innerHTML = `
         <img data-url-cleanup class="w-full h-48 object-cover" src="${mainURL}" alt="${lugar.nombre}">
-        <span class="absolute top-4 left-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">${lugar.categoria}</span>
+        <div class="absolute top-4 left-4 flex gap-2">
+          <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">${lugar.categoria}</span>
+          ${lugar.showInHome ? '<span class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs">En inicio</span>' : ''}
+          ${lugar.useAsHero ? '<span class="bg-purple-600 text-white px-2 py-0.5 rounded-full text-xs">Hero</span>' : ''}
+        </div>
         <div class="absolute top-4 right-4 flex gap-2">
           <button onclick="Turismo.edit(${lugar.id})" class="bg-white/90 hover:bg-white p-2 rounded-lg"><i class="fas fa-edit text-gray-600"></i></button>
           <button onclick="Turismo.remove(${lugar.id})" class="bg-red-500/90 hover:bg-red-500 p-2 rounded-lg"><i class="fas fa-trash text-white"></i></button>
@@ -312,6 +332,8 @@
       setVal('googleMaps', l.googleMaps);
       setVal('recomendaciones', l.recomendaciones);
       setVal('icono', l.icono || 'fas fa-map-marked-alt');
+      document.getElementById('showInHome').checked = !!l.showInHome;
+      document.getElementById('useAsHero').checked = !!l.useAsHero;
 
       // Load existing photos into editor
       editOriginalFotoIds = Array.isArray(l.fotoIds) ? [...l.fotoIds] : [];
@@ -330,7 +352,6 @@
     }
   }
   function closeForm() {
-    // cleanup preview URLs
     currentFotos.forEach(f => { if (f.previewUrl) URL.revokeObjectURL(f.previewUrl); });
     currentFotos = [];
     editOriginalFotoIds = [];
@@ -338,6 +359,8 @@
   }
   function resetForm() {
     ['nombre','categoria','descripcion','direccion','horario','precio','googleMaps','recomendaciones','icono'].forEach(id => setVal(id,''));
+    document.getElementById('showInHome').checked = false;
+    document.getElementById('useAsHero').checked = false;
     currentFotos = [];
     editOriginalFotoIds = [];
     mainIdx = 0;
@@ -358,7 +381,9 @@
       precio: document.getElementById('precio').value.trim(),
       googleMaps: document.getElementById('googleMaps').value.trim(),
       recomendaciones: document.getElementById('recomendaciones').value.trim(),
-      icono: document.getElementById('icono').value || 'fas fa-map-marked-alt'
+      icono: document.getElementById('icono').value || 'fas fa-map-marked-alt',
+      showInHome: document.getElementById('showInHome').checked,
+      useAsHero: document.getElementById('useAsHero').checked
     };
 
     if (!data.nombre || !data.categoria || !data.descripcion || !data.direccion || !data.horario || !data.precio || !data.googleMaps) {
@@ -388,6 +413,11 @@
     }
 
     const imagenPrincipal = Math.min(mainIdx, Math.max(fotoIds.length - 1, 0));
+
+    // Ensure useAsHero uniqueness
+    if (data.useAsHero) {
+      lugares = lugares.map(l => ({ ...l, useAsHero: false }));
+    }
 
     if (editId) {
       const i = lugares.findIndex(x => x.id === editId);
@@ -430,7 +460,6 @@
 
   function setMain(i) {
     if (i<0 || i>=currentFotos.length || currentFotos[i]._removed) return;
-    // move chosen photo to the front so indices stay intuitive
     const chosen = currentFotos.splice(i,1)[0];
     currentFotos.unshift(chosen);
     mainIdx = 0;
@@ -452,8 +481,9 @@
   function removePlace(id){
     if (!confirm('¿Eliminar este lugar turístico?')) return;
     const it = lugares.find(l=>l.id===id);
-    if (it?.fotoIds?.length) it.fotoIds.forEach(idbDelete); // cleanup blobs
+    if (it?.fotoIds?.length) it.fotoIds.forEach(idbDelete);
     lugares = lugares.filter(l => l.id !== id);
+    // if we deleted the current hero, no hero remains
     save(lugares);
     renderList();
   }
@@ -470,7 +500,6 @@
 
     title.textContent = l.nombre;
 
-    // fetch blobs -> URLs (limit reasonable count if needed)
     const urls = [];
     for (const fid of (l.fotoIds||[])){
       const blob = await idbGet(fid);
@@ -507,7 +536,6 @@
     modal.classList.remove('hidden');
   }
   function closeViewer(){
-    // cleanup any object URLs created inside viewer
     document.querySelectorAll('#image-viewer-modal [data-url-cleanup], #image-viewer-modal img').forEach(img=>{
       try { if (img.src && img.src.startsWith('blob:')) URL.revokeObjectURL(img.src); } catch {}
     });
@@ -522,11 +550,9 @@
     const blob = await idbGet(fid);
     if (!blob) return;
     const url = URL.createObjectURL(blob);
-    // revoke previous main if it was a blob URL
     try { if (main.src.startsWith('blob:')) URL.revokeObjectURL(main.src); } catch {}
     main.src = url;
 
-    // reset borders
     document.querySelectorAll('#image-thumbnails img').forEach((img, i) => {
       img.classList.remove('border-orange-500');
       img.classList.add('border-gray-200');
@@ -547,4 +573,3 @@
 
 })();
 </script>
-
