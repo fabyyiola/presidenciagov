@@ -522,7 +522,7 @@
     let etapaCounter = 0;
     let tareaCounter = 0;
     let db = null;
-// ===== Lightbox state & helpers =====
+    // ===== Lightbox state & helpers =====
     let lightboxState = { etapaId: null, urls: [], index: 0 };
 
     async function openEtapaLightbox(etapaId, startIndex = 0) {
@@ -603,9 +603,9 @@
       });
     }
     // make available to HTML inline handlers and other modules
-window.openEtapaLightbox = openEtapaLightbox;
-window.closeLightbox = closeLightbox;
-window.stepLightbox = stepLightbox;
+    window.openEtapaLightbox = openEtapaLightbox;
+    window.closeLightbox = closeLightbox;
+    window.stepLightbox = stepLightbox;
     // ---------------- IndexedDB helpers ----------------
     function idbOpen() {
       return new Promise((resolve, reject) => {
@@ -1446,7 +1446,7 @@ window.stepLightbox = stepLightbox;
         const cell = document.createElement("div");
         cell.className = "relative group";
         cell.innerHTML = `
-        <img src="${url}" alt="Foto etapa" class="w-full h-20 object-cover rounded">
+        <img src="${url}" alt="Foto etapa" style="cursor:pointer" class="w-full h-20 object-cover rounded">
         <button class="absolute top-1 right-1 bg-black/60 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition" title="Eliminar">
           <i class="fas fa-trash text-xs"></i>
         </button>`;
@@ -1765,7 +1765,7 @@ window.stepLightbox = stepLightbox;
       updateKPIs();
       openDrawer(id);
     };
-    
+
     // ---------------- Export CSV ----------------
     function exportCSV() {
       const headers = [
