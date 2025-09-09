@@ -1,0 +1,1410 @@
+
+<section id="ProjectsAdmin" class="p-6 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+  <!-- Top Controls -->
+  <div class="mb-8">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">Proyectos Municipales</h1>
+        <p class="text-gray-600">Gestión integral de proyectos e inversiones públicas</p>
+      </div>
+      <div class="flex flex-wrap gap-3 mt-4 lg:mt-0">
+        <button id="projects-add-btn" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center shadow-sm">
+          <i class="fas fa-plus mr-2"></i>
+          Agregar Proyecto
+        </button>
+        <button id="projects-export-btn" class="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 flex items-center shadow-sm">
+          <i class="fas fa-download mr-2"></i>
+          Exportar CSV
+        </button>
+        <button id="projects-import-btn" class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all duration-200 flex items-center shadow-sm">
+          <i class="fas fa-upload mr-2"></i>
+          Importar JSON
+        </button>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+      <div class="flex flex-col lg:flex-row gap-4 mb-4">
+        <div class="flex-1">
+          <label for="projects-search" class="sr-only">Buscar proyectos</label>
+          <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <input 
+              type="text" 
+              id="projects-search" 
+              placeholder="Buscar proyectos... (presiona / para enfocar)"
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <select id="projects-filter-categoria" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <option value="">Todas las categorías</option>
+            <option value="Infraestructura">Infraestructura</option>
+            <option value="Desarrollo Social">Desarrollo Social</option>
+            <option value="Medio Ambiente">Medio Ambiente</option>
+            <option value="Tecnología">Tecnología</option>
+            <option value="Educación">Educación</option>
+            <option value="Salud">Salud</option>
+          </select>
+          <select id="projects-filter-estatus" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <option value="">Todos los estatus</option>
+            <option value="Planificación">Planificación</option>
+            <option value="En Progreso">En Progreso</option>
+            <option value="Pausado">Pausado</option>
+            <option value="Completado">Completado</option>
+            <option value="Cancelado">Cancelado</option>
+          </select>
+          <input type="date" id="projects-filter-fecha-inicio" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          <input type="date" id="projects-filter-fecha-fin" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+        </div>
+      </div>
+      <div id="projects-filter-chips" class="flex flex-wrap gap-2"></div>
+    </div>
+  </div>
+
+  <!-- KPIs Row -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-activos">0</p>
+          <p class="text-gray-600 text-sm">Proyectos Activos</p>
+        </div>
+        <div class="bg-blue-100 p-3 rounded-lg">
+          <i class="fas fa-project-diagram text-blue-600 text-xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-avance">0%</p>
+          <p class="text-gray-600 text-sm">Avance Promedio</p>
+        </div>
+        <div class="bg-green-100 p-3 rounded-lg">
+          <i class="fas fa-chart-line text-green-600 text-xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-inversion">$0</p>
+          <p class="text-gray-600 text-sm">Inversión Total</p>
+        </div>
+        <div class="bg-purple-100 p-3 rounded-lg">
+          <i class="fas fa-dollar-sign text-purple-600 text-xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-indigo-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-beneficiarios">0</p>
+          <p class="text-gray-600 text-sm">Beneficiarios</p>
+        </div>
+        <div class="bg-indigo-100 p-3 rounded-lg">
+          <i class="fas fa-users text-indigo-600 text-xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-riesgo">0</p>
+          <p class="text-gray-600 text-sm">En Riesgo</p>
+        </div>
+        <div class="bg-red-100 p-3 rounded-lg">
+          <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Projects Table -->
+  <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proyecto</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inversión</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Beneficiarios</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avance</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estatus</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiempo</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="projects-table-body" class="bg-white divide-y divide-gray-200">
+          <!-- Projects will be rendered here -->
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Empty State -->
+    <div id="projects-empty-state" class="text-center py-12 hidden">
+      <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-project-diagram text-gray-400 text-2xl"></i>
+      </div>
+      <h3 class="text-lg font-medium text-gray-800 mb-2">No hay proyectos registrados</h3>
+      <p class="text-gray-600 mb-4">Comienza agregando tu primer proyecto municipal.</p>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+        <i class="fas fa-plus mr-2"></i>
+        Agregar Proyecto
+      </button>
+    </div>
+  </div>
+
+  <!-- Details Drawer -->
+  <div id="projects-details-drawer" class="fixed inset-y-0 right-0 w-full lg:w-1/2 xl:w-1/3 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+    <div class="p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold text-gray-800" id="projects-drawer-title">Detalles del Proyecto</h2>
+        <button id="projects-drawer-close" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      
+      <div id="projects-drawer-content">
+        <!-- Content will be populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Modal -->
+  <div id="projects-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <h3 id="projects-modal-title" class="text-2xl font-bold text-gray-800">Nuevo Proyecto</h3>
+          <button id="projects-modal-close" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+      </div>
+      
+      <form id="projects-form" class="p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div class="lg:col-span-2">
+            <label for="projects-form-nombre" class="block text-sm font-medium text-gray-700 mb-2">Nombre del Proyecto *</label>
+            <input type="text" id="projects-form-nombre" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          </div>
+          
+          <div>
+            <label for="projects-form-categoria" class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
+            <select id="projects-form-categoria" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">Seleccionar categoría</option>
+              <option value="Infraestructura">Infraestructura</option>
+              <option value="Desarrollo Social">Desarrollo Social</option>
+              <option value="Medio Ambiente">Medio Ambiente</option>
+              <option value="Tecnología">Tecnología</option>
+              <option value="Educación">Educación</option>
+              <option value="Salud">Salud</option>
+            </select>
+          </div>
+          
+          <div>
+            <label for="projects-form-estatus" class="block text-sm font-medium text-gray-700 mb-2">Estatus *</label>
+            <select id="projects-form-estatus" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="Planificación">Planificación</option>
+              <option value="En Progreso">En Progreso</option>
+              <option value="Pausado">Pausado</option>
+              <option value="Completado">Completado</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+          
+          <div>
+            <label for="projects-form-inversion" class="block text-sm font-medium text-gray-700 mb-2">Inversión Total *</label>
+            <input type="number" id="projects-form-inversion" required min="0" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          </div>
+          
+          <div>
+            <label for="projects-form-beneficiarios" class="block text-sm font-medium text-gray-700 mb-2">Beneficiarios *</label>
+            <input type="number" id="projects-form-beneficiarios" required min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          </div>
+        </div>
+
+        <!-- Etapas Section -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-lg font-semibold text-gray-800">Cronograma y Etapas</h4>
+            <button type="button" id="projects-add-etapa" class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm">
+              <i class="fas fa-plus mr-1"></i>
+              Agregar Etapa
+            </button>
+          </div>
+          
+          <div id="projects-etapas-container" class="space-y-4">
+            <!-- Etapas will be rendered here -->
+          </div>
+          
+          <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium text-gray-700">Total de pesos:</span>
+              <span id="projects-peso-total" class="text-sm font-bold text-gray-800">0%</span>
+            </div>
+            <div id="projects-peso-error" class="text-red-600 text-sm mt-1 hidden">
+              La suma de los pesos debe ser exactamente 100%
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-4">
+          <button type="button" id="projects-form-cancel" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+            Cancelar
+          </button>
+          <button type="button" id="projects-form-duplicate" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200 hidden">
+            <i class="fas fa-copy mr-2"></i>
+            Duplicar
+          </button>
+          <button type="button" id="projects-form-delete" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 hidden">
+            <i class="fas fa-trash mr-2"></i>
+            Eliminar
+          </button>
+          <button type="submit" id="projects-form-submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+            <i class="fas fa-save mr-2"></i>
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Import Modal -->
+  <div id="projects-import-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full">
+      <div class="p-6 border-b border-gray-200">
+        <h3 class="text-xl font-bold text-gray-800">Importar Proyectos</h3>
+      </div>
+      <div class="p-6">
+        <input type="file" id="projects-import-file" accept=".json" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4">
+        <div class="flex justify-end space-x-4">
+          <button id="projects-import-cancel" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+            Cancelar
+          </button>
+          <button id="projects-import-confirm" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200">
+            Importar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+      
+      // Storage key
+      const STORAGE_KEY = 'municipio.proyectos.v1';
+      
+      // Global state
+      let proyectos = [];
+      let filteredProyectos = [];
+      let currentEditId = null;
+      let etapaCounter = 0;
+      let tareaCounter = 0;
+      
+      // Initialize
+      document.addEventListener('DOMContentLoaded', function() {
+        loadProyectos();
+        setupEventListeners();
+        setupKeyboardShortcuts();
+        renderProyectos();
+        updateKPIs();
+      });
+      
+      // Data persistence
+      function saveProyectos() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(proyectos));
+      }
+      
+      function loadProyectos() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          proyectos = JSON.parse(stored);
+        } else {
+          // Sample data
+          proyectos = [
+            {
+              id: '1',
+              nombre: 'Renovación del Parque Central',
+              categoria: 'Infraestructura',
+              inversionTotal: 2500000,
+              beneficiarios: 15000,
+              estatusGeneral: 'En Progreso',
+              etapas: [
+                {
+                  id: 'e1',
+                  nombre: 'Diseño y Planificación',
+                  peso: 20,
+                  inicio: '2024-01-15',
+                  fin: '2024-02-15',
+                  tareas: [
+                    { id: 't1', nombre: 'Levantamiento topográfico', completada: true, responsable: 'Ing. García' },
+                    { id: 't2', nombre: 'Diseño arquitectónico', completada: true, responsable: 'Arq. López' },
+                    { id: 't3', nombre: 'Estudios ambientales', completada: false, responsable: 'Biol. Martín' }
+                  ]
+                },
+                {
+                  id: 'e2',
+                  nombre: 'Construcción Fase 1',
+                  peso: 40,
+                  inicio: '2024-02-16',
+                  fin: '2024-05-15',
+                  tareas: [
+                    { id: 't4', nombre: 'Demolición estructuras existentes', completada: true, responsable: 'Constructora ABC' },
+                    { id: 't5', nombre: 'Preparación del terreno', completada: false, responsable: 'Constructora ABC' }
+                  ]
+                },
+                {
+                  id: 'e3',
+                  nombre: 'Construcción Fase 2',
+                  peso: 30,
+                  inicio: '2024-05-16',
+                  fin: '2024-08-15',
+                  tareas: []
+                },
+                {
+                  id: 'e4',
+                  nombre: 'Finalización y Entrega',
+                  peso: 10,
+                  inicio: '2024-08-16',
+                  fin: '2024-09-15',
+                  tareas: []
+                }
+              ]
+            },
+            {
+              id: '2',
+              nombre: 'Sistema de Gestión Digital',
+              categoria: 'Tecnología',
+              inversionTotal: 800000,
+              beneficiarios: 50000,
+              estatusGeneral: 'Planificación',
+              etapas: [
+                {
+                  id: 'e5',
+                  nombre: 'Análisis de Requerimientos',
+                  peso: 25,
+                  inicio: '2024-03-01',
+                  fin: '2024-03-31',
+                  tareas: []
+                },
+                {
+                  id: 'e6',
+                  nombre: 'Desarrollo del Sistema',
+                  peso: 50,
+                  inicio: '2024-04-01',
+                  fin: '2024-07-31',
+                  tareas: []
+                },
+                {
+                  id: 'e7',
+                  nombre: 'Implementación y Capacitación',
+                  peso: 25,
+                  inicio: '2024-08-01',
+                  fin: '2024-09-30',
+                  tareas: []
+                }
+              ]
+            }
+          ];
+          saveProyectos();
+        }
+      }
+      
+      // Event listeners
+      function setupEventListeners() {
+        // Top buttons
+        document.getElementById('projects-add-btn').addEventListener('click', () => openModal());
+        document.getElementById('projects-export-btn').addEventListener('click', exportCSV);
+        document.getElementById('projects-import-btn').addEventListener('click', () => openImportModal());
+        
+        // Search and filters
+        document.getElementById('projects-search').addEventListener('input', filterProyectos);
+        document.getElementById('projects-filter-categoria').addEventListener('change', filterProyectos);
+        document.getElementById('projects-filter-estatus').addEventListener('change', filterProyectos);
+        document.getElementById('projects-filter-fecha-inicio').addEventListener('change', filterProyectos);
+        document.getElementById('projects-filter-fecha-fin').addEventListener('change', filterProyectos);
+        
+        // Modal
+        document.getElementById('projects-modal-close').addEventListener('click', closeModal);
+        document.getElementById('projects-form-cancel').addEventListener('click', closeModal);
+        document.getElementById('projects-form').addEventListener('submit', saveProyecto);
+        document.getElementById('projects-form-duplicate').addEventListener('click', duplicateProyecto);
+        document.getElementById('projects-form-delete').addEventListener('click', deleteProyecto);
+        
+        // Drawer
+        document.getElementById('projects-drawer-close').addEventListener('click', closeDrawer);
+        
+        // Etapas
+        document.getElementById('projects-add-etapa').addEventListener('click', addEtapa);
+        
+        // Import modal
+        document.getElementById('projects-import-cancel').addEventListener('click', closeImportModal);
+        document.getElementById('projects-import-confirm').addEventListener('click', importJSON);
+        
+        // Click outside to close
+        document.getElementById('projects-modal').addEventListener('click', (e) => {
+          if (e.target.id === 'projects-modal') closeModal();
+        });
+        
+        document.getElementById('projects-import-modal').addEventListener('click', (e) => {
+          if (e.target.id === 'projects-import-modal') closeImportModal();
+        });
+      }
+      
+      // Keyboard shortcuts
+      function setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+            if (e.key === 'Escape') {
+              e.target.blur();
+            }
+            return;
+          }
+          
+          switch(e.key) {
+            case '/':
+              e.preventDefault();
+              document.getElementById('projects-search').focus();
+              break;
+            case 'n':
+              if (!e.ctrlKey && !e.metaKey) {
+                e.preventDefault();
+                openModal();
+              }
+              break;
+            case 'Escape':
+              closeModal();
+              closeDrawer();
+              closeImportModal();
+              break;
+          }
+        });
+        
+        // Save shortcut in modal
+        document.getElementById('projects-modal').addEventListener('keydown', (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            document.getElementById('projects-form').dispatchEvent(new Event('submit'));
+          }
+        });
+      }
+      
+      // Filtering
+      function filterProyectos() {
+        const search = document.getElementById('projects-search').value.toLowerCase();
+        const categoria = document.getElementById('projects-filter-categoria').value;
+        const estatus = document.getElementById('projects-filter-estatus').value;
+        const fechaInicio = document.getElementById('projects-filter-fecha-inicio').value;
+        const fechaFin = document.getElementById('projects-filter-fecha-fin').value;
+        
+        filteredProyectos = proyectos.filter(proyecto => {
+          if (search && !proyecto.nombre.toLowerCase().includes(search)) return false;
+          if (categoria && proyecto.categoria !== categoria) return false;
+          if (estatus && proyecto.estatusGeneral !== estatus) return false;
+          
+          if (fechaInicio || fechaFin) {
+            const proyectoInicio = proyecto.etapas.length > 0 ? proyecto.etapas[0].inicio : null;
+            const proyectoFin = proyecto.etapas.length > 0 ? proyecto.etapas[proyecto.etapas.length - 1].fin : null;
+            
+            if (fechaInicio && proyectoInicio && proyectoInicio < fechaInicio) return false;
+            if (fechaFin && proyectoFin && proyectoFin > fechaFin) return false;
+          }
+          
+          return true;
+        });
+        
+        renderProyectos();
+        updateFilterChips();
+      }
+      
+      function updateFilterChips() {
+        const container = document.getElementById('projects-filter-chips');
+        const chips = [];
+        
+        const search = document.getElementById('projects-search').value;
+        const categoria = document.getElementById('projects-filter-categoria').value;
+        const estatus = document.getElementById('projects-filter-estatus').value;
+        const fechaInicio = document.getElementById('projects-filter-fecha-inicio').value;
+        const fechaFin = document.getElementById('projects-filter-fecha-fin').value;
+        
+        if (search) chips.push({ type: 'search', value: search, label: `Búsqueda: ${search}` });
+        if (categoria) chips.push({ type: 'categoria', value: categoria, label: `Categoría: ${categoria}` });
+        if (estatus) chips.push({ type: 'estatus', value: estatus, label: `Estatus: ${estatus}` });
+        if (fechaInicio) chips.push({ type: 'fecha-inicio', value: fechaInicio, label: `Desde: ${fechaInicio}` });
+        if (fechaFin) chips.push({ type: 'fecha-fin', value: fechaFin, label: `Hasta: ${fechaFin}` });
+        
+        container.innerHTML = chips.map(chip => `
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+            ${chip.label}
+            <button onclick="removeFilter('${chip.type}')" class="ml-2 text-blue-600 hover:text-blue-800">
+              <i class="fas fa-times text-xs"></i>
+            </button>
+          </span>
+        `).join('');
+      }
+      
+      window.removeFilter = function(type) {
+        switch(type) {
+          case 'search':
+            document.getElementById('projects-search').value = '';
+            break;
+          case 'categoria':
+            document.getElementById('projects-filter-categoria').value = '';
+            break;
+          case 'estatus':
+            document.getElementById('projects-filter-estatus').value = '';
+            break;
+          case 'fecha-inicio':
+            document.getElementById('projects-filter-fecha-inicio').value = '';
+            break;
+          case 'fecha-fin':
+            document.getElementById('projects-filter-fecha-fin').value = '';
+            break;
+        }
+        filterProyectos();
+      };
+      
+      // Rendering
+      function renderProyectos() {
+        const tbody = document.getElementById('projects-table-body');
+        const emptyState = document.getElementById('projects-empty-state');
+        
+        if (filteredProyectos.length === 0) {
+          tbody.innerHTML = '';
+          emptyState.classList.remove('hidden');
+          return;
+        }
+        
+        emptyState.classList.add('hidden');
+        
+        tbody.innerHTML = filteredProyectos.map(proyecto => {
+          const progreso = calcularProgreso(proyecto);
+          const variacionTiempo = calcularVariacionTiempo(proyecto);
+          const estatusColor = getEstatusColor(proyecto.estatusGeneral);
+          const tiempoColor = getTiempoColor(variacionTiempo);
+          
+          return `
+            <tr class="hover:bg-gray-50 cursor-pointer transition-colors duration-200" onclick="openDrawer('${proyecto.id}')">
+              <td class="px-6 py-4">
+                <div class="font-medium text-gray-800">${proyecto.nombre}</div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  ${proyecto.categoria}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <div class="text-sm font-medium text-gray-800">$${formatNumber(proyecto.inversionTotal)}</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="text-sm text-gray-800">${formatNumber(proyecto.beneficiarios)}</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center">
+                  <div class="w-16 bg-gray-200 rounded-full h-2 mr-3">
+                    <div class="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full" style="width: ${progreso}%"></div>
+                  </div>
+                  <span class="text-sm font-medium text-gray-800">${progreso}%</span>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${estatusColor}">
+                  ${proyecto.estatusGeneral}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${tiempoColor}">
+                  ${variacionTiempo.label}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex space-x-2">
+                  <button onclick="event.stopPropagation(); editProyecto('${proyecto.id}')" class="text-blue-600 hover:text-blue-800 transition-colors duration-200" title="Editar">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button onclick="event.stopPropagation(); duplicateProyectoFromTable('${proyecto.id}')" class="text-purple-600 hover:text-purple-800 transition-colors duration-200" title="Duplicar">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                  <button onclick="event.stopPropagation(); deleteProyectoFromTable('${proyecto.id}')" class="text-red-600 hover:text-red-800 transition-colors duration-200" title="Eliminar">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+      
+      function updateKPIs() {
+        const activos = proyectos.filter(p => p.estatusGeneral === 'En Progreso' || p.estatusGeneral === 'Planificación').length;
+        const avancePromedio = proyectos.length > 0 ? 
+          Math.round(proyectos.reduce((sum, p) => sum + calcularProgreso(p), 0) / proyectos.length) : 0;
+        const inversionTotal = proyectos.reduce((sum, p) => sum + p.inversionTotal, 0);
+        const beneficiarios = proyectos.reduce((sum, p) => sum + p.beneficiarios, 0);
+        const enRiesgo = proyectos.filter(p => {
+          const variacion = calcularVariacionTiempo(p);
+          return variacion.status === 'critico';
+        }).length;
+        
+        document.getElementById('projects-kpi-activos').textContent = activos;
+        document.getElementById('projects-kpi-avance').textContent = `${avancePromedio}%`;
+        document.getElementById('projects-kpi-inversion').textContent = `$${formatNumber(inversionTotal)}`;
+        document.getElementById('projects-kpi-beneficiarios').textContent = formatNumber(beneficiarios);
+        document.getElementById('projects-kpi-riesgo').textContent = enRiesgo;
+      }
+      
+      // Calculations
+      function calcularProgreso(proyecto) {
+        if (!proyecto.etapas || proyecto.etapas.length === 0) return 0;
+        
+        let progresoTotal = 0;
+        proyecto.etapas.forEach(etapa => {
+          const avanceEtapa = calcularAvanceEtapa(etapa);
+          progresoTotal += (etapa.peso / 100) * avanceEtapa;
+        });
+        
+        return Math.round(progresoTotal);
+      }
+      
+      function calcularAvanceEtapa(etapa) {
+        if (etapa.avanceManual !== undefined) {
+          return etapa.avanceManual;
+        }
+        
+        if (!etapa.tareas || etapa.tareas.length === 0) return 0;
+        
+        const completadas = etapa.tareas.filter(t => t.completada).length;
+        return Math.round((completadas / etapa.tareas.length) * 100);
+      }
+      
+      function calcularVariacionTiempo(proyecto) {
+        if (!proyecto.etapas || proyecto.etapas.length === 0) {
+          return { status: 'sin-datos', label: 'Sin datos' };
+        }
+        
+        const progreso = calcularProgreso(proyecto);
+        const ultimaEtapa = proyecto.etapas[proyecto.etapas.length - 1];
+        const fechaFin = new Date(ultimaEtapa.fin);
+        const hoy = new Date();
+        
+        if (progreso === 100) {
+          return { status: 'completado', label: 'Completado' };
+        }
+        
+        if (hoy <= fechaFin) {
+          return { status: 'a-tiempo', label: 'A tiempo' };
+        }
+        
+        const diasRetraso = Math.floor((hoy - fechaFin) / (1000 * 60 * 60 * 24));
+        
+        if (diasRetraso <= 7) {
+          return { status: 'retraso-leve', label: `${diasRetraso}d retraso` };
+        } else {
+          return { status: 'critico', label: `${diasRetraso}d crítico` };
+        }
+      }
+      
+      // Utility functions
+      function formatNumber(num) {
+        return new Intl.NumberFormat('es-MX').format(num);
+      }
+      
+      function getEstatusColor(estatus) {
+        const colors = {
+          'Planificación': 'bg-yellow-100 text-yellow-800',
+          'En Progreso': 'bg-blue-100 text-blue-800',
+          'Pausado': 'bg-orange-100 text-orange-800',
+          'Completado': 'bg-green-100 text-green-800',
+          'Cancelado': 'bg-red-100 text-red-800'
+        };
+        return colors[estatus] || 'bg-gray-100 text-gray-800';
+      }
+      
+      function getTiempoColor(variacion) {
+        const colors = {
+          'completado': 'bg-green-100 text-green-800',
+          'a-tiempo': 'bg-green-100 text-green-800',
+          'retraso-leve': 'bg-yellow-100 text-yellow-800',
+          'critico': 'bg-red-100 text-red-800',
+          'sin-datos': 'bg-gray-100 text-gray-800'
+        };
+        return colors[variacion.status] || 'bg-gray-100 text-gray-800';
+      }
+      
+      function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+      }
+      
+      // Modal functions
+      function openModal(proyectoId = null) {
+        currentEditId = proyectoId;
+        const modal = document.getElementById('projects-modal');
+        const title = document.getElementById('projects-modal-title');
+        const duplicateBtn = document.getElementById('projects-form-duplicate');
+        const deleteBtn = document.getElementById('projects-form-delete');
+        
+        if (proyectoId) {
+          title.textContent = 'Editar Proyecto';
+          duplicateBtn.classList.remove('hidden');
+          deleteBtn.classList.remove('hidden');
+          loadProyectoToForm(proyectoId);
+        } else {
+          title.textContent = 'Nuevo Proyecto';
+          duplicateBtn.classList.add('hidden');
+          deleteBtn.classList.add('hidden');
+          resetForm();
+        }
+        
+        modal.classList.remove('hidden');
+        document.getElementById('projects-form-nombre').focus();
+      }
+      
+      function closeModal() {
+        document.getElementById('projects-modal').classList.add('hidden');
+        currentEditId = null;
+        resetForm();
+      }
+      
+      function resetForm() {
+        document.getElementById('projects-form').reset();
+        document.getElementById('projects-etapas-container').innerHTML = '';
+        updatePesoTotal();
+        etapaCounter = 0;
+        tareaCounter = 0;
+      }
+      
+      function loadProyectoToForm(proyectoId) {
+        const proyecto = proyectos.find(p => p.id === proyectoId);
+        if (!proyecto) return;
+        
+        document.getElementById('projects-form-nombre').value = proyecto.nombre;
+        document.getElementById('projects-form-categoria').value = proyecto.categoria;
+        document.getElementById('projects-form-estatus').value = proyecto.estatusGeneral;
+        document.getElementById('projects-form-inversion').value = proyecto.inversionTotal;
+        document.getElementById('projects-form-beneficiarios').value = proyecto.beneficiarios;
+        
+        // Load etapas
+        const container = document.getElementById('projects-etapas-container');
+        container.innerHTML = '';
+        
+        proyecto.etapas.forEach(etapa => {
+          addEtapa(etapa);
+        });
+        
+        updatePesoTotal();
+      }
+      
+      function saveProyecto(e) {
+        e.preventDefault();
+        
+        const formData = {
+          nombre: document.getElementById('projects-form-nombre').value,
+          categoria: document.getElementById('projects-form-categoria').value,
+          estatusGeneral: document.getElementById('projects-form-estatus').value,
+          inversionTotal: parseFloat(document.getElementById('projects-form-inversion').value),
+          beneficiarios: parseInt(document.getElementById('projects-form-beneficiarios').value),
+          etapas: getEtapasFromForm()
+        };
+        
+        // Validate peso total
+        const pesoTotal = formData.etapas.reduce((sum, etapa) => sum + etapa.peso, 0);
+        if (Math.abs(pesoTotal - 100) > 0.01) {
+          alert('La suma de los pesos de las etapas debe ser exactamente 100%');
+          return;
+        }
+        
+        if (currentEditId) {
+          const index = proyectos.findIndex(p => p.id === currentEditId);
+          if (index !== -1) {
+            proyectos[index] = { ...proyectos[index], ...formData };
+          }
+        } else {
+          formData.id = generateId();
+          proyectos.push(formData);
+        }
+        
+        saveProyectos();
+        filterProyectos();
+        updateKPIs();
+        closeModal();
+      }
+      
+      function getEtapasFromForm() {
+        const etapas = [];
+        const etapaElements = document.querySelectorAll('[data-etapa-id]');
+        
+        etapaElements.forEach(element => {
+          const etapaId = element.getAttribute('data-etapa-id');
+          const nombre = element.querySelector('[data-field="nombre"]').value;
+          const peso = parseFloat(element.querySelector('[data-field="peso"]').value) || 0;
+          const inicio = element.querySelector('[data-field="inicio"]').value;
+          const fin = element.querySelector('[data-field="fin"]').value;
+          
+          const tareas = [];
+          const tareaElements = element.querySelectorAll('[data-tarea-id]');
+          
+          tareaElements.forEach(tareaElement => {
+            const tareaId = tareaElement.getAttribute('data-tarea-id');
+            const tareas_nombre = tareaElement.querySelector('[data-field="tarea-nombre"]').value;
+            const completada = tareaElement.querySelector('[data-field="completada"]').checked;
+            const responsable = tareaElement.querySelector('[data-field="responsable"]').value;
+            const costo = parseFloat(tareaElement.querySelector('[data-field="costo"]').value) || 0;
+            
+            if (tareas_nombre) {
+              tareas.push({
+                id: tareaId,
+                nombre: tareas_nombre,
+                completada,
+                responsable,
+                costo: costo > 0 ? costo : undefined
+              });
+            }
+          });
+          
+          if (nombre) {
+            etapas.push({
+              id: etapaId,
+              nombre,
+              peso,
+              inicio,
+              fin,
+              tareas
+            });
+          }
+        });
+        
+        return etapas;
+      }
+      
+      // Etapas management
+      function addEtapa(etapaData = null) {
+        const container = document.getElementById('projects-etapas-container');
+        const etapaId = etapaData ? etapaData.id : `etapa-${++etapaCounter}`;
+        
+        const etapaElement = document.createElement('div');
+        etapaElement.className = 'border border-gray-200 rounded-lg p-4 bg-gray-50';
+        etapaElement.setAttribute('data-etapa-id', etapaId);
+        
+        etapaElement.innerHTML = `
+          <div class="flex items-center justify-between mb-4">
+            <h5 class="font-semibold text-gray-800">Etapa</h5>
+            <div class="flex space-x-2">
+              <button type="button" onclick="addTarea('${etapaId}')" class="text-blue-600 hover:text-blue-800 text-sm">
+                <i class="fas fa-plus mr-1"></i>Tarea
+              </button>
+              <button type="button" onclick="removeEtapa('${etapaId}')" class="text-red-600 hover:text-red-800">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
+            <div class="lg:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
+              <input type="text" data-field="nombre" value="${etapaData ? etapaData.nombre : ''}" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Peso (%) *</label>
+              <input type="number" data-field="peso" value="${etapaData ? etapaData.peso : ''}" required min="0" max="100" step="0.1" onchange="updatePesoTotal()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Avance Manual (%)</label>
+              <input type="number" data-field="avance-manual" value="${etapaData && etapaData.avanceManual !== undefined ? etapaData.avanceManual : ''}" min="0" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
+              <input type="date" data-field="inicio" value="${etapaData ? etapaData.inicio : ''}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>
+              <input type="date" data-field="fin" value="${etapaData ? etapaData.fin : ''}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+            </div>
+          </div>
+          
+          <div class="tareas-container space-y-2">
+            <!-- Tareas will be added here -->
+          </div>
+        `;
+        
+        container.appendChild(etapaElement);
+        
+        // Add existing tareas if any
+        if (etapaData && etapaData.tareas) {
+          etapaData.tareas.forEach(tarea => {
+            addTarea(etapaId, tarea);
+          });
+        }
+        
+        updatePesoTotal();
+      }
+      
+      window.removeEtapa = function(etapaId) {
+        if (confirm('¿Estás seguro de que deseas eliminar esta etapa?')) {
+          const element = document.querySelector(`[data-etapa-id="${etapaId}"]`);
+          if (element) {
+            element.remove();
+            updatePesoTotal();
+          }
+        }
+      };
+      
+      window.addTarea = function(etapaId, tareaData = null) {
+        const etapaElement = document.querySelector(`[data-etapa-id="${etapaId}"]`);
+        const tareasContainer = etapaElement.querySelector('.tareas-container');
+        const tareaId = tareaData ? tareaData.id : `tarea-${++tareaCounter}`;
+        
+        const tareaElement = document.createElement('div');
+        tareaElement.className = 'bg-white border border-gray-200 rounded p-3';
+        tareaElement.setAttribute('data-tarea-id', tareaId);
+        
+        tareaElement.innerHTML = `
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-3 items-center">
+            <div class="lg:col-span-2">
+              <input type="text" data-field="tarea-nombre" value="${tareaData ? tareaData.nombre : ''}" placeholder="Nombre de la tarea" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+            </div>
+            <div>
+              <input type="text" data-field="responsable" value="${tareaData ? tareaData.responsable || '' : ''}" placeholder="Responsable" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+            </div>
+            <div>
+              <input type="number" data-field="costo" value="${tareaData && tareaData.costo ? tareaData.costo : ''}" placeholder="Costo" min="0" step="0.01" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+            </div>
+            <div class="flex items-center justify-between">
+              <label class="flex items-center">
+                <input type="checkbox" data-field="completada" ${tareaData && tareaData.completada ? 'checked' : ''} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <span class="ml-2 text-sm text-gray-700">Completada</span>
+              </label>
+              <button type="button" onclick="removeTarea('${tareaId}')" class="text-red-600 hover:text-red-800 ml-2">
+                <i class="fas fa-trash text-sm"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        
+        tareasContainer.appendChild(tareaElement);
+      };
+      
+      window.removeTarea = function(tareaId) {
+        const element = document.querySelector(`[data-tarea-id="${tareaId}"]`);
+        if (element) {
+          element.remove();
+        }
+      };
+      
+      function updatePesoTotal() {
+        const pesoInputs = document.querySelectorAll('[data-field="peso"]');
+        let total = 0;
+        
+        pesoInputs.forEach(input => {
+          total += parseFloat(input.value) || 0;
+        });
+        
+        const totalElement = document.getElementById('projects-peso-total');
+        const errorElement = document.getElementById('projects-peso-error');
+        
+        totalElement.textContent = `${total.toFixed(1)}%`;
+        
+        if (Math.abs(total - 100) > 0.01) {
+          totalElement.className = 'text-sm font-bold text-red-600';
+          errorElement.classList.remove('hidden');
+        } else {
+          totalElement.className = 'text-sm font-bold text-green-600';
+          errorElement.classList.add('hidden');
+        }
+      }
+      
+      window.updatePesoTotal = updatePesoTotal;
+      
+      // CRUD operations
+      window.editProyecto = function(proyectoId) {
+        openModal(proyectoId);
+      };
+      
+      function duplicateProyecto() {
+        if (!currentEditId) return;
+        
+        const proyecto = proyectos.find(p => p.id === currentEditId);
+        if (!proyecto) return;
+        
+        const duplicated = {
+          ...proyecto,
+          id: generateId(),
+          nombre: `${proyecto.nombre} (Copia)`,
+          etapas: proyecto.etapas.map(etapa => ({
+            ...etapa,
+            id: generateId(),
+            tareas: etapa.tareas ? etapa.tareas.map(tarea => ({
+              ...tarea,
+              id: generateId(),
+              completada: false
+            })) : []
+          }))
+        };
+        
+        proyectos.push(duplicated);
+        saveProyectos();
+        filterProyectos();
+        updateKPIs();
+        closeModal();
+      }
+      
+      window.duplicateProyectoFromTable = function(proyectoId) {
+        const proyecto = proyectos.find(p => p.id === proyectoId);
+        if (!proyecto) return;
+        
+        if (confirm(`¿Deseas duplicar el proyecto "${proyecto.nombre}"?`)) {
+          const duplicated = {
+            ...proyecto,
+            id: generateId(),
+            nombre: `${proyecto.nombre} (Copia)`,
+            etapas: proyecto.etapas.map(etapa => ({
+              ...etapa,
+              id: generateId(),
+              tareas: etapa.tareas ? etapa.tareas.map(tarea => ({
+                ...tarea,
+                id: generateId(),
+                completada: false
+              })) : []
+            }))
+          };
+          
+          proyectos.push(duplicated);
+          saveProyectos();
+          filterProyectos();
+          updateKPIs();
+        }
+      };
+      
+      function deleteProyecto() {
+        if (!currentEditId) return;
+        
+        const proyecto = proyectos.find(p => p.id === currentEditId);
+        if (!proyecto) return;
+        
+        if (confirm(`¿Estás seguro de que deseas eliminar el proyecto "${proyecto.nombre}"?`)) {
+          proyectos = proyectos.filter(p => p.id !== currentEditId);
+          saveProyectos();
+          filterProyectos();
+          updateKPIs();
+          closeModal();
+        }
+      }
+      
+      window.deleteProyectoFromTable = function(proyectoId) {
+        const proyecto = proyectos.find(p => p.id === proyectoId);
+        if (!proyecto) return;
+        
+        if (confirm(`¿Estás seguro de que deseas eliminar el proyecto "${proyecto.nombre}"?`)) {
+          proyectos = proyectos.filter(p => p.id !== proyectoId);
+          saveProyectos();
+          filterProyectos();
+          updateKPIs();
+        }
+      };
+      
+      // Drawer functions
+      window.openDrawer = function(proyectoId) {
+        const proyecto = proyectos.find(p => p.id === proyectoId);
+        if (!proyecto) return;
+        
+        const drawer = document.getElementById('projects-details-drawer');
+        const title = document.getElementById('projects-drawer-title');
+        const content = document.getElementById('projects-drawer-content');
+        
+        title.textContent = proyecto.nombre;
+        
+        const progreso = calcularProgreso(proyecto);
+        const variacionTiempo = calcularVariacionTiempo(proyecto);
+        
+        content.innerHTML = `
+          <div class="space-y-6">
+            <!-- Resumen -->
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+              <h3 class="font-semibold text-gray-800 mb-3">Resumen del Proyecto</h3>
+              <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span class="text-gray-600">Categoría:</span>
+                  <span class="font-medium text-gray-800 ml-2">${proyecto.categoria}</span>
+                </div>
+                <div>
+                  <span class="text-gray-600">Estatus:</span>
+                  <span class="font-medium text-gray-800 ml-2">${proyecto.estatusGeneral}</span>
+                </div>
+                <div>
+                  <span class="text-gray-600">Inversión:</span>
+                  <span class="font-medium text-gray-800 ml-2">$${formatNumber(proyecto.inversionTotal)}</span>
+                </div>
+                <div>
+                  <span class="text-gray-600">Beneficiarios:</span>
+                  <span class="font-medium text-gray-800 ml-2">${formatNumber(proyecto.beneficiarios)}</span>
+                </div>
+              </div>
+              
+              <div class="mt-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-sm font-medium text-gray-700">Progreso General</span>
+                  <span class="text-sm font-bold text-gray-800">${progreso}%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                  <div class="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full transition-all duration-300" style="width: ${progreso}%"></div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Mini Gantt -->
+            <div>
+              <h3 class="font-semibold text-gray-800 mb-3">Cronograma de Etapas</h3>
+              <div class="space-y-3">
+                ${proyecto.etapas.map(etapa => {
+                  const avanceEtapa = calcularAvanceEtapa(etapa);
+                  const fechaInicio = etapa.inicio ? new Date(etapa.inicio) : null;
+                  const fechaFin = etapa.fin ? new Date(etapa.fin) : null;
+                  const hoy = new Date();
+                  
+                  let estadoColor = 'bg-gray-200';
+                  if (avanceEtapa === 100) {
+                    estadoColor = 'bg-green-500';
+                  } else if (fechaFin && hoy > fechaFin) {
+                    estadoColor = 'bg-red-500';
+                  } else if (avanceEtapa > 0) {
+                    estadoColor = 'bg-blue-500';
+                  }
+                  
+                  return `
+                    <div class="border border-gray-200 rounded-lg p-3">
+                      <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 rounded-full ${estadoColor} mr-3"></div>
+                          <span class="font-medium text-gray-800">${etapa.nombre}</span>
+                          <span class="text-xs text-gray-500 ml-2">(${etapa.peso}%)</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700">${avanceEtapa}%</span>
+                      </div>
+                      
+                      <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-2 rounded-full" style="width: ${avanceEtapa}%"></div>
+                      </div>
+                      
+                      <div class="flex justify-between text-xs text-gray-500">
+                        <span>${fechaInicio ? fechaInicio.toLocaleDateString('es-MX') : 'Sin fecha'}</span>
+                        <span>${fechaFin ? fechaFin.toLocaleDateString('es-MX') : 'Sin fecha'}</span>
+                      </div>
+                      
+                      ${etapa.tareas && etapa.tareas.length > 0 ? `
+                        <div class="mt-3 space-y-1">
+                          <div class="text-xs font-medium text-gray-600 mb-1">Tareas (${etapa.tareas.filter(t => t.completada).length}/${etapa.tareas.length})</div>
+                          ${etapa.tareas.slice(0, 3).map(tarea => `
+                            <div class="flex items-center text-xs">
+                              <i class="fas fa-${tarea.completada ? 'check-circle text-green-500' : 'circle text-gray-400'} mr-2"></i>
+                              <span class="${tarea.completada ? 'line-through text-gray-500' : 'text-gray-700'}">${tarea.nombre}</span>
+                              ${tarea.responsable ? `<span class="text-gray-500 ml-auto">${tarea.responsable}</span>` : ''}
+                            </div>
+                          `).join('')}
+                          ${etapa.tareas.length > 3 ? `<div class="text-xs text-gray-400">+${etapa.tareas.length - 3} tareas más</div>` : ''}
+                        </div>
+                      ` : ''}
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+            
+            <!-- Últimas Actividades -->
+            <div>
+              <h3 class="font-semibold text-gray-800 mb-3">Últimas Actividades</h3>
+              <div class="space-y-2 text-sm">
+                <div class="flex items-center text-gray-600">
+                  <i class="fas fa-clock mr-2"></i>
+                  <span>Proyecto creado</span>
+                </div>
+                ${proyecto.etapas.filter(e => e.tareas && e.tareas.some(t => t.completada)).map(etapa => 
+                  etapa.tareas.filter(t => t.completada).slice(-2).map(tarea => `
+                    <div class="flex items-center text-gray-600">
+                      <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                      <span>Tarea completada: ${tarea.nombre}</span>
+                    </div>
+                  `).join('')
+                ).join('')}
+              </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div>
+              <h3 class="font-semibold text-gray-800 mb-3">Acciones Rápidas</h3>
+              <div class="flex flex-wrap gap-2">
+                <button onclick="editProyecto('${proyecto.id}'); closeDrawer();" class="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm">
+                  <i class="fas fa-edit mr-1"></i>
+                  Editar
+                </button>
+                <button onclick="toggleProyectoStatus('${proyecto.id}')" class="bg-${proyecto.estatusGeneral === 'Pausado' ? 'green' : 'orange'}-600 text-white px-3 py-2 rounded-lg hover:bg-${proyecto.estatusGeneral === 'Pausado' ? 'green' : 'orange'}-700 transition-colors duration-200 text-sm">
+                  <i class="fas fa-${proyecto.estatusGeneral === 'Pausado' ? 'play' : 'pause'} mr-1"></i>
+                  ${proyecto.estatusGeneral === 'Pausado' ? 'Reanudar' : 'Pausar'}
+                </button>
+                ${progreso < 100 ? `
+                  <button onclick="completeProyecto('${proyecto.id}')" class="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm">
+                    <i class="fas fa-check mr-1"></i>
+                    Completar
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+        
+        drawer.classList.remove('translate-x-full');
+      };
+      
+      function closeDrawer() {
+        const drawer = document.getElementById('projects-details-drawer');
+        drawer.classList.add('translate-x-full');
+      }
+      
+      window.toggleProyectoStatus = function(proyectoId) {
+        const proyecto = proyectos.find(p => p.id === proyectoId);
+        if (!proyecto) return;
+        
+        if (proyecto.estatusGeneral === 'Pausado') {
+          proyecto.estatusGeneral = 'En Progreso';
+        } else if (proyecto.estatusGeneral === 'En Progreso') {
+          proyecto.estatusGeneral = 'Pausado';
+        }
+        
+        saveProyectos();
+        filterProyectos();
+        updateKPIs();
+        openDrawer(proyectoId); // Refresh drawer
+      };
+      
+      window.completeProyecto = function(proyectoId) {
+        if (confirm('¿Marcar este proyecto como completado?')) {
+          const proyecto = proyectos.find(p => p.id === proyectoId);
+          if (proyecto) {
+            proyecto.estatusGeneral = 'Completado';
+            // Mark all tasks as completed
+            proyecto.etapas.forEach(etapa => {
+              if (etapa.tareas) {
+                etapa.tareas.forEach(tarea => {
+                  tarea.completada = true;
+                });
+              }
+            });
+            
+            saveProyectos();
+            filterProyectos();
+            updateKPIs();
+            openDrawer(proyectoId); // Refresh drawer
+          }
+        }
+      };
+      
+      // Import/Export functions
+      function exportCSV() {
+        const headers = ['Nombre', 'Categoría', 'Inversión Total', 'Beneficiarios', 'Estatus', 'Progreso %'];
+        const rows = proyectos.map(proyecto => [
+          proyecto.nombre,
+          proyecto.categoria,
+          proyecto.inversionTotal,
+          proyecto.beneficiarios,
+          proyecto.estatusGeneral,
+          calcularProgreso(proyecto)
+        ]);
+        
+        const csvContent = [headers, ...rows]
+          .map(row => row.map(field => `"${field}"`).join(','))
+          .join('\n');
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `proyectos_municipales_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+      
+      function openImportModal() {
+        document.getElementById('projects-import-modal').classList.remove('hidden');
+      }
+      
+      function closeImportModal() {
+        document.getElementById('projects-import-modal').classList.add('hidden');
+        document.getElementById('projects-import-file').value = '';
+      }
+      
+      function importJSON() {
+        const fileInput = document.getElementById('projects-import-file');
+        const file = fileInput.files[0];
+        
+        if (!file) {
+          alert('Por favor selecciona un archivo JSON');
+          return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const importedData = JSON.parse(e.target.result);
+            
+            if (!Array.isArray(importedData)) {
+              throw new Error('El archivo debe contener un array de proyectos');
+            }
+            
+            // Validate structure
+            importedData.forEach((proyecto, index) => {
+              if (!proyecto.nombre || !proyecto.categoria || typeof proyecto.inversionTotal !== 'number') {
+                throw new Error(`Proyecto en posición ${index + 1} tiene estructura inválida`);
+              }
+            });
+            
+            // Assign new IDs to avoid conflicts
+            const processedData = importedData.map(proyecto => ({
+              ...proyecto,
+              id: generateId(),
+              etapas: proyecto.etapas ? proyecto.etapas.map(etapa => ({
+                ...etapa,
+                id: generateId(),
+                tareas: etapa.tareas ? etapa.tareas.map(tarea => ({
+                  ...tarea,
+                  id: generateId()
+                })) : []
+              })) : []
+            }));
+            
+            proyectos = [...proyectos, ...processedData];
+            saveProyectos();
+            filterProyectos();
+            updateKPIs();
+            closeImportModal();
+            
+            alert(`Se importaron ${processedData.length} proyectos exitosamente`);
+            
+          } catch (error) {
+            alert(`Error al importar: ${error.message}`);
+          }
+        };
+        
+        reader.readAsText(file);
+      }
+      
+      // Initialize filtered projects
+      filteredProyectos = [...proyectos];
+      
+    })();
+  </script>
+</section>
