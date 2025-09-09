@@ -45,7 +45,7 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">URL *</label>
-            <input id="ql-href" type="url" required placeholder="/tramites o https://..."
+            <input id="ql-href" required placeholder="/tramites o https://..."
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
           </div>
 
@@ -286,12 +286,68 @@
 
     // ------------- Icon picker -------------
     const ICONS = [
-      'fas fa-car','fas fa-file-lines','fas fa-calendar-alt','fas fa-scale-balanced',
-      'fas fa-comments','fas fa-users','fas fa-map','fas fa-phone','fas fa-bullhorn',
-      'fas fa-shield-alt','fas fa-ambulance','fas fa-water','fas fa-tree','fas fa-building',
-      'fas fa-university','fas fa-credit-card','fas fa-receipt','fas fa-id-card',
-      'fas fa-globe','fas fa-lightbulb','fas fa-route','fas fa-ticket-alt'
-    ];
+  // Transportation & Travel
+  'fas fa-car','fas fa-bus','fas fa-train','fas fa-plane','fas fa-ship',
+  'fas fa-bicycle','fas fa-motorcycle','fas fa-truck','fas fa-taxi','fas fa-suitcase',
+
+  // Documents & Office
+  'fas fa-file','fas fa-file-alt','fas fa-file-pdf','fas fa-file-excel','fas fa-file-word',
+  'fas fa-clipboard','fas fa-sticky-note','fas fa-book','fas fa-book-open','fas fa-envelope',
+
+  // Calendar & Time
+  'fas fa-calendar','fas fa-calendar-day','fas fa-calendar-week','fas fa-clock','fas fa-hourglass-half',
+
+  // Communication
+  'fas fa-comments','fas fa-comment','fas fa-comment-dots','fas fa-envelope-open','fas fa-at',
+  'fas fa-bullhorn','fas fa-phone','fas fa-phone-alt','fas fa-video','fas fa-microphone',
+
+  // People & Users
+  'fas fa-user','fas fa-user-circle','fas fa-user-plus','fas fa-user-friends','fas fa-users-cog',
+  'fas fa-address-book','fas fa-id-badge','fas fa-id-card-alt','fas fa-child','fas fa-chalkboard-teacher',
+
+  // Security & Warnings
+  'fas fa-lock','fas fa-unlock','fas fa-key','fas fa-shield-alt','fas fa-shield-virus',
+  'fas fa-exclamation-triangle','fas fa-ban','fas fa-eye','fas fa-eye-slash','fas fa-fingerprint',
+
+  // Nature & Environment
+  'fas fa-tree','fas fa-leaf','fas fa-seedling','fas fa-mountain','fas fa-water',
+  'fas fa-sun','fas fa-moon','fas fa-star','fas fa-cloud','fas fa-fire',
+
+  // Health & Emergency
+  'fas fa-ambulance','fas fa-hospital','fas fa-clinic-medical','fas fa-first-aid','fas fa-stethoscope',
+  'fas fa-heart','fas fa-heartbeat','fas fa-notes-medical','fas fa-pills','fas fa-syringe',
+
+  // Education & Science
+  'fas fa-graduation-cap','fas fa-chalkboard','fas fa-atom','fas fa-microscope','fas fa-flask',
+  'fas fa-laptop','fas fa-desktop','fas fa-tablet','fas fa-mobile-alt','fas fa-robot',
+
+  // Business & Finance
+  'fas fa-briefcase','fas fa-building','fas fa-university','fas fa-landmark','fas fa-wallet',
+  'fas fa-credit-card','fas fa-money-bill','fas fa-coins','fas fa-receipt','fas fa-chart-line',
+
+  // Shopping & Commerce
+  'fas fa-store','fas fa-store-alt','fas fa-shopping-cart','fas fa-shopping-basket','fas fa-cash-register',
+  'fas fa-tag','fas fa-tags','fas fa-gift','fas fa-box','fas fa-truck-loading',
+
+  // Entertainment & Media
+  'fas fa-music','fas fa-guitar','fas fa-play','fas fa-film','fas fa-photo-video',
+  'fas fa-camera','fas fa-video','fas fa-tv','fas fa-headphones','fas fa-gamepad',
+
+  // Sports & Activities
+  'fas fa-football-ball','fas fa-basketball-ball','fas fa-baseball-ball','fas fa-table-tennis','fas fa-bowling-ball',
+  'fas fa-dumbbell','fas fa-swimmer','fas fa-biking','fas fa-hiking','fas fa-futbol',
+
+  // Food & Drink
+  'fas fa-utensils','fas fa-hamburger','fas fa-pizza-slice','fas fa-ice-cream','fas fa-coffee',
+  'fas fa-beer','fas fa-wine-glass','fas fa-cocktail','fas fa-apple-alt','fas fa-carrot',
+
+  // Miscellaneous
+  'fas fa-route','fas fa-map','fas fa-map-marker','fas fa-map-pin','fas fa-compass',
+  'fas fa-lightbulb','fas fa-battery-full','fas fa-bell','fas fa-gavel','fas fa-cogs',
+  'fas fa-cube','fas fa-cubes','fas fa-dice','fas fa-paint-brush','fas fa-recycle',
+  'fas fa-anchor','fas fa-fish','fas fa-feather','fas fa-pray','fas fa-cross',
+];
+
     function iconModal(show){
       document.getElementById('ql-icon-modal').classList.toggle('hidden', !show);
       if (show){ document.getElementById('ql-icon-search').value=''; renderIconGrid(); document.getElementById('ql-icon-search').focus(); }
