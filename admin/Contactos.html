@@ -28,59 +28,6 @@
         <!-- <button id="contacts-preview-btn" class="bg-white text-gray-800 px-4 py-2 rounded-lg border hover:bg-gray-50 transition">Vista pública</button> -->
       </div>
     </div>
-
-    <!-- Search and Filters -->
-    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-      <div class="flex flex-col lg:flex-row gap-4 mb-4">
-        <div class="flex-1">
-          <label for="contacts-search" class="sr-only">Buscar contactos</label>
-          <div class="relative">
-            <i
-              class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            ></i>
-            <input
-              type="text"
-              id="contacts-search"
-              placeholder="Buscar contactos... (presiona / para enfocar)"
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            />
-          </div>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <select
-            id="contacts-filter-categoria"
-            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          >
-            <option value="">Todas las categorías</option>
-            <option value="Emergencias Médicas">Emergencias Médicas</option>
-            <option value="Seguridad Pública">Seguridad Pública</option>
-            <option value="Bomberos">Bomberos</option>
-            <option value="Protección Civil">Protección Civil</option>
-            <option value="Servicios Públicos">Servicios Públicos</option>
-            <option value="Gobierno Municipal">Gobierno Municipal</option>
-            <option value="Otros Servicios">Otros Servicios</option>
-          </select>
-          <select
-            id="contacts-filter-disponibilidad"
-            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          >
-            <option value="">Toda disponibilidad</option>
-            <option value="24/7">24 horas</option>
-            <option value="Horario Laboral">Horario laboral</option>
-            <option value="Emergencias">Solo emergencias</option>
-          </select>
-          <select
-            id="contacts-filter-activo"
-            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          >
-            <option value="">Todos los estados</option>
-            <option value="true">Activos</option>
-            <option value="false">Inactivos</option>
-          </select>
-        </div>
-      </div>
-      <div id="contacts-filter-chips" class="flex flex-wrap gap-2"></div>
-    </div>
   </div>
 
   <!-- KPIs Row -->
@@ -144,7 +91,58 @@
       </div>
     </div>
   </div>
-
+    <!-- Search and Filters -->
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+      <div class="flex flex-col lg:flex-row gap-4 mb-4">
+        <div class="flex-1">
+          <label for="contacts-search" class="sr-only">Buscar contactos</label>
+          <div class="relative">
+            <i
+              class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            ></i>
+            <input
+              type="text"
+              id="contacts-search"
+              placeholder="Buscar contactos... (presiona / para enfocar)"
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <select
+            id="contacts-filter-categoria"
+            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          >
+            <option value="">Todas las categorías</option>
+            <option value="Emergencias Médicas">Emergencias Médicas</option>
+            <option value="Seguridad Pública">Seguridad Pública</option>
+            <option value="Bomberos">Bomberos</option>
+            <option value="Protección Civil">Protección Civil</option>
+            <option value="Servicios Públicos">Servicios Públicos</option>
+            <option value="Gobierno Municipal">Gobierno Municipal</option>
+            <option value="Otros Servicios">Otros Servicios</option>
+          </select>
+          <select
+            id="contacts-filter-disponibilidad"
+            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          >
+            <option value="">Toda disponibilidad</option>
+            <option value="24/7">24 horas</option>
+            <option value="Horario Laboral">Horario laboral</option>
+            <option value="Emergencias">Solo emergencias</option>
+          </select>
+          <select
+            id="contacts-filter-activo"
+            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          >
+            <option value="">Todos los estados</option>
+            <option value="true">Activos</option>
+            <option value="false">Inactivos</option>
+          </select>
+        </div>
+      </div>
+      <div id="contacts-filter-chips" class="flex flex-wrap gap-2"></div>
+    </div>
   <!-- Contacts Grid -->
   <div
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
