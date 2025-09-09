@@ -1,5 +1,5 @@
 <!-- ServiciosPublicos.html (Public module) -->
-<section id="ServiciosPublicos" class="bg-gray-50 font-sans">
+<section id="ServiciosPublicos" class="bg-gray-500 font-sans">
   <!-- Header / Hero Section -->
   <header class="institutional-gradient hero-pattern text-white">
     <div class="container mx-auto px-6 py-16 text-center max-w-4xl">
@@ -124,7 +124,7 @@
             <p class="text-sm text-gray-600">${p.desc}</p>
           </div>
         </div>
-        <button onclick="selectProgram('${p.id}')" class="mt-auto bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Solicitar</button>
+        <button onclick="selectProgram('${p.id}')" class="mt-auto bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Solicitar</button>
       </div>
     `).join('');
     document.getElementById('program').innerHTML='<option value="">Selecciona un programa</option>'+programs.map(p=>`<option value="${p.name}">${p.name}</option>`).join('');
