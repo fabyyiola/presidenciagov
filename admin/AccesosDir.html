@@ -2,38 +2,15 @@
      ACCESOS RÁPIDOS (ADMIN)
 ========================== -->
 <section id="QuickLinksAdmin" class="p-6 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen" data-bound="0">
-  <!-- Top Controls -->
   <div class="mb-8">
     <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-6">
       <div>
         <h1 class="text-2xl font-bold text-gray-800 mb-2">Accesos Rápidos</h1>
         <p class="text-gray-600">Configura tarjetas con icono, colores y enlace</p>
       </div>
-      <div class="flex flex-wrap gap-3 mt-4 lg:mt-0">
-        <button id="ql-add-btn" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center shadow-sm">
-          <i class="fas fa-plus mr-2"></i>Agregar Acceso
-        </button>
-        <button id="ql-export-btn" class="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 flex items-center shadow-sm">
-          <i class="fas fa-download mr-2"></i>Exportar JSON
-        </button>
-        <button id="ql-import-btn" class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all duration-200 flex items-center shadow-sm">
-          <i class="fas fa-upload mr-2"></i>Importar JSON
-        </button>
-      </div>
-    </div>
-
-    <!-- Search -->
-    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-      <div class="flex flex-col lg:flex-row gap-4">
-        <div class="flex-1">
-          <label for="ql-search" class="sr-only">Buscar</label>
-          <div class="relative">
-            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-            <input id="ql-search" type="text" placeholder="Buscar... (/, Enter para limpiar)"
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-          </div>
-        </div>
-      </div>
+      <button id="ql-add-btn" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center shadow-sm">
+        <i class="fas fa-plus mr-2"></i>Agregar Acceso
+      </button>
     </div>
   </div>
 
@@ -72,15 +49,15 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
           </div>
 
-          <div>
+          <div class="md:col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-2">Icono *</label>
             <div class="flex gap-2">
-              <input id="ql-icon" required readonly class="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+              <input id="ql-icon" required readonly class="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50" placeholder="Selecciona un icono">
               <button type="button" id="ql-pick-icon" class="px-3 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900">
                 <i class="fas fa-icons mr-1"></i>Elegir
               </button>
             </div>
-            <p class="text-xs text-gray-500 mt-1">Usa clases de Font Awesome (ej. <code>fas fa-calendar-alt</code>).</p>
+            <p class="text-xs text-gray-500 mt-1">Clases de Font Awesome (ej. <code>fas fa-calendar-alt</code>).</p>
           </div>
 
           <div>
@@ -88,7 +65,6 @@
             <input id="ql-order" type="number" min="0" value="0"
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
           </div>
-
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Color del icono</label>
             <input id="ql-icon-color" type="color" value="#2563eb" class="w-12 h-10 p-1 border rounded">
@@ -97,11 +73,9 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">Color del título</label>
             <input id="ql-title-color" type="color" value="#0f172a" class="w-12 h-10 p-1 border rounded">
           </div>
-
-          <div class="md:col-span-2">
+          <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Color de fondo</label>
             <input id="ql-bg-color" type="color" value="#ffffff" class="w-12 h-10 p-1 border rounded">
-            <p class="text-xs text-gray-500 mt-1">La tarjeta usa borde y sombra; el color de fondo aplica al panel interno.</p>
           </div>
 
           <div class="md:col-span-2">
@@ -141,119 +115,77 @@
     </div>
   </div>
 
-  <!-- Import Modal -->
-  <div id="ql-import-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 p-4">
-    <div class="bg-white rounded-2xl max-w-md mx-auto">
-      <div class="p-6 border-b">
-        <h3 class="text-xl font-bold text-gray-800">Importar Accesos</h3>
-      </div>
-      <div class="p-6">
-        <input id="ql-import-file" type="file" accept=".json" class="w-full px-3 py-2 border rounded mb-4">
-        <div class="flex justify-end gap-3">
-          <button id="ql-import-cancel" class="px-4 py-2 border rounded">Cancelar</button>
-          <button id="ql-import-go" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Importar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script>
   (function(){
     'use strict';
 
     const STORAGE_KEY = 'municipio.quicklinks.v1';
 
-    // State
+    // ------------- State -------------
     let items = [];
-    let filtered = [];
     let editId = null;
 
-    // Idempotent init
+    // ------------- Init (idempotent) -------------
     function init(){
       const root = document.getElementById('QuickLinksAdmin');
-      if (!root) return;
-      if (root.dataset.bound === '1') return;
+      if (!root || root.dataset.bound === '1') return;
       root.dataset.bound = '1';
 
       load();
-      bind();
-      filtered = [...items];
+      bindUI();
       render();
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 
-    // Persistence
+    // ------------- Persistence -------------
     function load(){
-      try {
+      try{
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) items = JSON.parse(raw);
-        else {
+        items = raw ? JSON.parse(raw) : [];
+        if (!items.length){
+          // seed a couple so you see something
           items = [
-            { id: gid(), titulo: 'Multas de Tránsito', href:'/pagos/multas', iconClass:'fas fa-car', iconColor:'#2563eb', titleColor:'#0f172a', bgColor:'#ffffff', order:10, activo:true },
-            { id: gid(), titulo: 'Trámites Municipales', href:'/tramites', iconClass:'fas fa-file-lines', iconColor:'#14b8a6', titleColor:'#0f172a', bgColor:'#ffffff', order:20, activo:true },
-            { id: gid(), titulo: 'Eventos', href:'/eventos', iconClass:'fas fa-calendar-alt', iconColor:'#10b981', titleColor:'#0f172a', bgColor:'#ffffff', order:30, activo:true },
-            { id: gid(), titulo: 'Transparencia', href:'/transparencia', iconClass:'fas fa-scale-balanced', iconColor:'#f43f5e', titleColor:'#0f172a', bgColor:'#ffffff', order:40, activo:true }
+            { id: gid(), titulo:'Multas de Tránsito', href:'/pagos/multas', iconClass:'fas fa-car', iconColor:'#2563eb', titleColor:'#0f172a', bgColor:'#ffffff', order:10, activo:true },
+            { id: gid(), titulo:'Trámites Municipales', href:'/tramites', iconClass:'fas fa-file-lines', iconColor:'#14b8a6', titleColor:'#0f172a', bgColor:'#ffffff', order:20, activo:true }
           ];
           save();
         }
-      } catch { items = []; }
+      }catch{ items = []; }
     }
     function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
-    function gid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+    const gid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 
-    // UI bindings
-    function bind(){
-      qs('#ql-add-btn').onclick = () => openForm();
-      qs('#ql-export-btn').onclick = exportJSON;
-      qs('#ql-import-btn').onclick = () => qlImportModal(true);
-      qs('#ql-empty-add').onclick = () => openForm();
+    // ------------- UI Binding -------------
+    function bindUI(){
+      // Add button (this fixes your issue)
+      document.getElementById('ql-add-btn').addEventListener('click', () => openForm());
+      document.getElementById('ql-empty-add').addEventListener('click', () => openForm());
 
-      qs('#ql-close').onclick = closeForm;
-      qs('#ql-cancel').onclick = closeForm;
-      qs('#ql-delete').onclick = removeCurrent;
+      // Modal buttons
+      document.getElementById('ql-close').addEventListener('click', closeForm);
+      document.getElementById('ql-cancel').addEventListener('click', closeForm);
+      document.getElementById('ql-form').addEventListener('submit', onSubmit);
+      document.getElementById('ql-delete').addEventListener('click', removeCurrent);
 
-      qs('#ql-form').addEventListener('submit', onSubmit);
-
-      // search
-      const s = qs('#ql-search');
-      s.addEventListener('input', filter);
-      s.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ s.value=''; filter(); }});
-      document.addEventListener('keydown', (e)=>{ if(e.key==='/'){ if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return; e.preventDefault(); s.focus(); }});
-
-      // icon picker modal
-      qs('#ql-pick-icon').onclick = ()=> iconModal(true);
-      qs('#ql-icon-close').onclick = ()=> iconModal(false);
-      qs('#ql-icon-search').addEventListener('input', renderIconGrid);
-
-      // import modal
-      qs('#ql-import-cancel').onclick = ()=> qlImportModal(false);
-      qs('#ql-import-go').onclick = importJSON;
+      // Icon picker
+      document.getElementById('ql-pick-icon').addEventListener('click', () => iconModal(true));
+      document.getElementById('ql-icon-close').addEventListener('click', () => iconModal(false));
+      document.getElementById('ql-icon-search').addEventListener('input', renderIconGrid);
     }
 
-    // Helpers
-    const qs = (sel, ctx=document) => ctx.querySelector(sel);
-    const qsa = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
-
-    // Filter & render
-    function filter(){
-      const t = (qs('#ql-search').value||'').toLowerCase().trim();
-      filtered = !t ? [...items] : items.filter(i =>
-        [i.titulo, i.href, i.iconClass].some(v => (v||'').toLowerCase().includes(t))
-      );
-      render();
-    }
-
+    // ------------- Render grid -------------
     function render(){
-      const grid = qs('#ql-grid');
-      const empty = qs('#ql-empty');
-      if (!filtered.length){
+      const grid = document.getElementById('ql-grid');
+      const empty = document.getElementById('ql-empty');
+
+      if (!items.length){
         grid.innerHTML = '';
         empty.classList.remove('hidden');
         return;
       }
       empty.classList.add('hidden');
 
-      const sorted = [...filtered].sort((a,b)=> (a.order??0)-(b.order??0) || a.titulo.localeCompare(b.titulo));
+      const sorted = [...items].sort((a,b)=>(a.order??0)-(b.order??0) || a.titulo.localeCompare(b.titulo));
       grid.innerHTML = sorted.map(i => `
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
           <div class="p-6" style="background:${i.bgColor||'#ffffff'}">
@@ -279,11 +211,11 @@
       `).join('');
     }
 
-    // Form
+    // ------------- Form logic -------------
     function openForm(id=null){
       editId = id;
-      qs('#ql-modal-title').textContent = id ? 'Editar Acceso' : 'Nuevo Acceso';
-      qs('#ql-delete').classList.toggle('hidden', !id);
+      document.getElementById('ql-modal-title').textContent = id ? 'Editar Acceso' : 'Nuevo Acceso';
+      document.getElementById('ql-delete').classList.toggle('hidden', !id);
       resetForm();
 
       if (id){
@@ -296,62 +228,63 @@
           set('#ql-icon-color', it.iconColor || '#2563eb');
           set('#ql-title-color', it.titleColor || '#0f172a');
           set('#ql-bg-color', it.bgColor || '#ffffff');
-          qs('#ql-active').checked = !!it.activo;
+          document.getElementById('ql-active').checked = !!it.activo;
         }
       }
-      qs('#ql-modal').classList.remove('hidden');
-      qs('#ql-title').focus();
+      document.getElementById('ql-modal').classList.remove('hidden');
+      document.getElementById('ql-title').focus();
     }
-    function closeForm(){ qs('#ql-modal').classList.add('hidden'); editId=null; }
+    function closeForm(){ document.getElementById('ql-modal').classList.add('hidden'); editId=null; }
     function resetForm(){
       ['#ql-title','#ql-href','#ql-icon'].forEach(sel => set(sel,''));
       set('#ql-order', 0);
       set('#ql-icon-color','#2563eb'); set('#ql-title-color','#0f172a'); set('#ql-bg-color','#ffffff');
-      qs('#ql-active').checked = true;
+      document.getElementById('ql-active').checked = true;
     }
-    function set(sel,val){ const el=qs(sel); if(el) el.value = val; }
+    function set(sel,val){ const el=document.querySelector(sel); if(el) el.value = val; }
 
-    async function onSubmit(e){
+    function onSubmit(e){
       e.preventDefault();
       const data = {
-        titulo: qs('#ql-title').value.trim(),
-        href: qs('#ql-href').value.trim(),
-        iconClass: qs('#ql-icon').value.trim(),
-        order: parseInt(qs('#ql-order').value||'0',10),
-        iconColor: qs('#ql-icon-color').value,
-        titleColor: qs('#ql-title-color').value,
-        bgColor: qs('#ql-bg-color').value,
-        activo: qs('#ql-active').checked
+        titulo: document.getElementById('ql-title').value.trim(),
+        href: document.getElementById('ql-href').value.trim(),
+        iconClass: document.getElementById('ql-icon').value.trim(),
+        order: parseInt(document.getElementById('ql-order').value||'0',10),
+        iconColor: document.getElementById('ql-icon-color').value,
+        titleColor: document.getElementById('ql-title-color').value,
+        bgColor: document.getElementById('ql-bg-color').value,
+        activo: document.getElementById('ql-active').checked
       };
       if (!data.titulo || !data.href || !data.iconClass){
         alert('Completa Título, URL e Icono.'); return;
       }
+
       if (editId){
         const i = items.findIndex(x=>x.id===editId);
         if (i!==-1) items[i] = { ...items[i], ...data };
       } else {
         items.push({ id: gid(), ...data });
       }
-      save(); filter(); closeForm();
+      save(); render(); closeForm();
     }
 
     function removeCurrent(){
       if (!editId) return; const it = items.find(x=>x.id===editId); if(!it) return;
       if (!confirm(`¿Eliminar el acceso "${it.titulo}"?`)) return;
-      items = items.filter(x=>x.id!==editId); save(); filter(); closeForm();
+      items = items.filter(x=>x.id!==editId); save(); render(); closeForm();
     }
 
-    // Row actions
+    // Actions from grid
     window.QL = {
       edit: openForm,
       remove: (id)=>{ const it=items.find(x=>x.id===id); if(!it) return;
         if(!confirm(`¿Eliminar "${it.titulo}"?`)) return;
-        items = items.filter(x=>x.id!==id); save(); filter();
+        items = items.filter(x=>x.id!==id); save(); render();
       },
-      toggle: (id)=>{ const it=items.find(x=>x.id===id); if(!it) return; it.activo=!it.activo; save(); filter(); }
+      toggle: (id)=>{ const it=items.find(x=>x.id===id); if(!it) return; it.activo=!it.activo; save(); render(); }
     };
 
-    // Icon picker
+    // ------------- Icon picker -------------
     const ICONS = [
       'fas fa-car','fas fa-file-lines','fas fa-calendar-alt','fas fa-scale-balanced',
       'fas fa-comments','fas fa-users','fas fa-map','fas fa-phone','fas fa-bullhorn',
@@ -360,56 +293,25 @@
       'fas fa-globe','fas fa-lightbulb','fas fa-route','fas fa-ticket-alt'
     ];
     function iconModal(show){
-      qs('#ql-icon-modal').classList.toggle('hidden', !show);
-      if (show){ qs('#ql-icon-search').value=''; renderIconGrid(); qs('#ql-icon-search').focus(); }
+      document.getElementById('ql-icon-modal').classList.toggle('hidden', !show);
+      if (show){ document.getElementById('ql-icon-search').value=''; renderIconGrid(); document.getElementById('ql-icon-search').focus(); }
     }
     function renderIconGrid(){
-      const needle = (qs('#ql-icon-search').value||'').toLowerCase().trim();
+      const needle = (document.getElementById('ql-icon-search').value||'').toLowerCase().trim();
       const list = ICONS.filter(c=> c.toLowerCase().includes(needle));
-      qs('#ql-icon-grid').innerHTML = list.map(c=>`
+      const grid = document.getElementById('ql-icon-grid');
+      grid.innerHTML = list.map(c=>`
         <button type="button" data-icon="${c}" class="group border rounded-lg p-3 hover:border-blue-500 hover:bg-blue-50 text-center">
           <i class="${c} text-2xl mb-2 block"></i>
           <div class="text-xs text-slate-700 break-all">${c.replace('fas ','')}</div>
         </button>
       `).join('') || `<div class="text-slate-500 text-sm">Sin resultados.</div>`;
-      qsa('#ql-icon-grid [data-icon]').forEach(btn=>{
-        btn.onclick = ()=>{ set('#ql-icon', btn.dataset.icon); iconModal(false); };
+      Array.from(grid.querySelectorAll('[data-icon]')).forEach(btn=>{
+        btn.onclick = ()=>{ document.getElementById('ql-icon').value = btn.dataset.icon; iconModal(false); };
       });
     }
 
-    // Import/Export
-    function exportJSON(){
-      const blob = new Blob([JSON.stringify(items,null,2)], {type:'application/json'});
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = 'accesos_rapidos.json'; document.body.appendChild(a); a.click(); a.remove();
-    }
-    function qlImportModal(show){ qs('#ql-import-modal').classList.toggle('hidden', !show); if(show) qs('#ql-import-file').value=''; }
-    function importJSON(){
-      const f = qs('#ql-import-file').files[0];
-      if (!f){ alert('Selecciona un archivo .json'); return; }
-      const rr = new FileReader();
-      rr.onload = (e)=>{
-        try{
-          const arr = JSON.parse(e.target.result);
-          if(!Array.isArray(arr)) throw new Error('El JSON debe ser un array');
-          // basic validation
-          arr.forEach((x, i)=>{
-            if(!x.titulo || !x.href || !x.iconClass) throw new Error('Item #'+(i+1)+' incompleto');
-            x.id = x.id || gid();
-            x.order = parseInt(x.order||0,10);
-            x.iconColor = x.iconColor || '#2563eb';
-            x.titleColor = x.titleColor || '#0f172a';
-            x.bgColor = x.bgColor || '#ffffff';
-            x.activo = x.activo !== false;
-          });
-          items = arr; save(); filter(); qlImportModal(false);
-          alert('Accesos importados correctamente.');
-        }catch(err){ alert('Error al importar: '+err.message); }
-      };
-      rr.readAsText(f);
-    }
-
-    // Public API (for Home page)
+    // ------------- Public API for Home -------------
     window.getQuickLinks = function(){
       try{
         const raw = localStorage.getItem(STORAGE_KEY);
