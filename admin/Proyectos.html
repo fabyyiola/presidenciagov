@@ -1340,18 +1340,67 @@
         </div>
       </div>
 
-      <div class="mb-3">
-         <div class="flex justify-end"><button type="button" class="text-blue-600 hover:text-blue-800 text-sm" data-action="add-tarea"><i class="fas fa-plus mr-1"></i>Agregar Tarea</button></div>
+     <!-- Etapa content: Tasks + Gallery, neat & separated -->
+<div class="mb-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- TAREAS -->
+    <section class="bg-white border border-gray-200 rounded-lg p-4">
+      <header class="flex items-center justify-between mb-3">
+        <h6 class="text-sm font-semibold text-gray-800">
+          Tareas
+          <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700"
+                data-field="tareas-count">0</span>
+        </h6>
+        <button type="button"
+                class="text-blue-600 hover:text-blue-800 text-sm inline-flex items-center"
+                data-action="add-tarea">
+          <i class="fas fa-plus mr-1"></i> Agregar tarea
+        </button>
+      </header>
+
       <div class="tareas-container space-y-2"></div>
-        <div class="flex justify-between">
-          <div class="text-sm font-medium text-gray-700 mb-2">Galería</div>
-          <label class="text-sm bg-indigo-600 text-white px-2 py-1 rounded cursor-pointer hover:bg-indigo-700">
-            <i class="fas fa-image mr-1"></i> Subir Fotos
-            <input type="file" accept="image/*" multiple class="hidden" data-field="etapa-fotos">
-          </label>
+
+      <!-- Empty state tareas -->
+      <div class="text-center py-8 text-gray-500 text-sm" data-empty="tareas">
+        <div class="mx-auto mb-2 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
+          <i class="fas fa-list-ul"></i>
         </div>
-        <div class="grid grid-cols-3 md:grid-cols-6 gap-2" data-field="gallery"></div>
+        <p class="mb-3">Sin tareas registradas.</p>
+        <button type="button"
+                class="px-3 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs"
+                data-action="add-tarea">
+          <i class="fas fa-plus mr-1"></i> Agregar la primera tarea
+        </button>
       </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section class="bg-white border border-gray-200 rounded-lg p-4">
+      <header class="flex items-center justify-between mb-3">
+        <h6 class="text-sm font-semibold text-gray-800">
+          Galería
+          <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700"
+                data-field="fotos-count">0</span>
+        </h6>
+        <label class="text-sm bg-indigo-600 text-white px-3 py-1.5 rounded cursor-pointer hover:bg-indigo-700 inline-flex items-center">
+          <i class="fas fa-image mr-1"></i> Subir fotos
+          <input type="file" accept="image/*" multiple class="hidden" data-field="etapa-fotos">
+        </label>
+      </header>
+
+      <div class="grid grid-cols-3 md:grid-cols-6 gap-2" data-field="gallery"></div>
+
+      <!-- Empty state galería -->
+      <div class="text-center py-8 text-gray-500 text-sm" data-empty="gallery">
+        <div class="mx-auto mb-2 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
+          <i class="far fa-images"></i>
+        </div>
+        <p>Sin imágenes aún.</p>
+      </div>
+    </section>
+  </div>
+</div>
+
     `;
       panels.appendChild(wrap);
 
@@ -1477,6 +1526,15 @@
       });
     }
 
+    function updateTareasUI(etapaEl) {
+      const tareas = etapaEl.querySelectorAll("[data-tarea-id]");
+      const count = tareas.length;
+      const countEl = etapaEl.querySelector('[data-field="tareas-count"]');
+      const empty = etapaEl.querySelector('[data-empty="tareas"]');
+      if (countEl) countEl.textContent = count;
+      if (empty) empty.classList.toggle("hidden", count > 0);
+    }
+
     window.addTarea = function (etapaId, tarea = null) {
       const etapaEl = document.querySelector(`[data-etapa-id="${etapaId}"]`);
       const cont = etapaEl.querySelector(".tareas-container");
@@ -1506,6 +1564,7 @@
         </div>
       </div>`;
       cont.appendChild(div);
+      updateTareasUI(etapaEl);
     };
     window.removeTarea = function (id) {
       const el = document.querySelector(`[data-tarea-id="${id}"]`);
