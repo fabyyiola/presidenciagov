@@ -318,15 +318,14 @@
           "Para garantizar una visita segura y agradable en el Parque Recreativo La Turbina, se recomienda a los visitantes no introducir envases de vidrio, realizar fogatas o asados únicamente en las áreas designadas, depositar la basura en los contenedores correspondientes, utilizar calzado cómodo para recorrer senderos y respetar tanto las instalaciones como la flora y fauna del lugar. De esta manera, todos podemos disfrutar de un espacio limpio, ordenado y en armonía con la naturaleza.",
         icono: "fas fa-tree",
         imagenPrincipal: 0,
-        fotoIds: [
-          "mfbze6r8rjjar437",
-          "mfbze6re9m0uulzg",
-          "mfbze6rgau0fnec7",
-          "mfcqqchu2s0ijp7y",
-        ],
-        fotoUrls: [],
+        fotoIds: [],
         showInHome: true,
         useAsHero: false,
+        fotoUrls: [
+          "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518403015_1120690886834049_1595098545931312344_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHL_zBLKsJ5jhM4EdT10lfGmc9pQ5PYv3GZz2lDk9i_cVWgN8GYRa_VgQeAcMMzbSZyAST66i4o7BTqdlRaAU5D&_nc_ohc=-uv_JlmHr0kQ7kNvwHRVNdr&_nc_oc=Admvd1gjFhCFl7f51YLcNMCbAXoi3K4cS-jCTX0uJ8vfXzyzpV2MQUPsLN7E0bxIxRjN1pSuvfaUAmkRF2eO_ZEJ&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=4mi6xe68WVGCkt89fMxOAg&oh=00_AfYsPOnlh1XaE_o0YppqK4RaeRC7CMh9Gg6H1ciVr2-BAA&oe=68C68314",
+          "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/530661664_1120690920167379_6339475029868551293_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGMUt57JUPXEthQlnoyA5Q9pf9c_nMMEbKl_1z-cwwRsjYGIoTiYmfAii7WkJfbUJWBWyYq81NAMnWmXtZAsdZ2&_nc_ohc=oadpcPrVPbYQ7kNvwEJF7fp&_nc_oc=AdlulgmbK7tqQyQBjIOvAxLxTMQ4fkAiH4N7Q-3O0DxGqncdc1T0L-cFCb6RMCLBUL8FVLbZ2nRj2VW_e0MTVwvs&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=8GxsCpc4tdYjdtjSPQKRVA&oh=00_AfbU7z9UYwr_qvv_4kQjeO58IOhSi1nfi0NzBEQ8IC5r8A&oe=68C69F95",
+          "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518403015_1120690886834049_1595098545931312344_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHL_zBLKsJ5jhM4EdT10lfGmc9pQ5PYv3GZz2lDk9i_cVWgN8GYRa_VgQeAcMMzbSZyAST66i4o7BTqdlRaAU5D&_nc_ohc=-uv_JlmHr0kQ7kNvwHRVNdr&_nc_oc=Admvd1gjFhCFl7f51YLcNMCbAXoi3K4cS-jCTX0uJ8vfXzyzpV2MQUPsLN7E0bxIxRjN1pSuvfaUAmkRF2eO_ZEJ&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=4mi6xe68WVGCkt89fMxOAg&oh=00_AfYsPOnlh1XaE_o0YppqK4RaeRC7CMh9Gg6H1ciVr2-BAA&oe=68C68314",
+        ],
       },
       {
         id: 3,
@@ -343,9 +342,14 @@
         icono: "fas fa-hiking",
         showInHome: true,
         useAsHero: true,
-        fotoIds: ["mfcqldryfmcelfi0", "mfcqlds90uvyu668", "mfcqldscthgy4jkq"],
-        fotoUrls: [],
+        fotoIds: [],
         imagenPrincipal: 0,
+        fotoUrls: [
+          "https://blob.posta.com.mx/images/2025/04/23/diseno-sin-titulo-2-15f67eb4-focus-0-0-1200-600.webp",
+          "https://imggraficos.gruporeforma.com/2021/03/Parque-de-Ojo-de-Agua-de-Sabinas-Hidalgo.jpg",
+          "https://images.mnstatic.com/0b/4a/0b4a3ddb9310043bbbdc16b95ba3ffa3.jpg",
+          "https://www.turismonuevoleon.com/wp-content/uploads/2021/04/Galeri%CC%81a-4-3.jpg",
+        ],
       },
     ];
     let editId = null;
@@ -531,22 +535,41 @@
         let mainURL = PLACEHOLDER;
         const combinedCount =
           (lugar.fotoIds?.length || 0) + (lugar.fotoUrls?.length || 0);
-        const safeMainIdx = Math.min(lugar.imagenPrincipal || 0, Math.max(combinedCount - 1, 0));
+        const safeMainIdx = Math.min(
+          lugar.imagenPrincipal || 0,
+          Math.max(combinedCount - 1, 0)
+        );
 
         // build array of preview urls with correct order
         const previewUrls = await getAllPreviewUrls(lugar);
         if (previewUrls[safeMainIdx]) mainURL = previewUrls[safeMainIdx];
 
         head.innerHTML = `
-        <img data-url-cleanup class="w-full h-48 object-cover" src="${mainURL}" alt="${lugar.nombre}">
+        <img data-url-cleanup class="w-full h-48 object-cover" src="${mainURL}" alt="${
+          lugar.nombre
+        }">
         <div class="absolute top-4 left-4 flex gap-2">
-          <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">${lugar.categoria}</span>
-          ${lugar.showInHome ? '<span class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs">En inicio</span>' : ""}
-          ${lugar.useAsHero ? '<span class="bg-purple-600 text-white px-2 py-0.5 rounded-full text-xs">Hero</span>' : ""}
+          <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">${
+            lugar.categoria
+          }</span>
+          ${
+            lugar.showInHome
+              ? '<span class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs">En inicio</span>'
+              : ""
+          }
+          ${
+            lugar.useAsHero
+              ? '<span class="bg-purple-600 text-white px-2 py-0.5 rounded-full text-xs">Hero</span>'
+              : ""
+          }
         </div>
         <div class="absolute top-4 right-4 flex gap-2">
-          <button onclick="Turismo.edit(${lugar.id})" class="bg-white/90 hover:bg-white p-2 rounded-lg"><i class="fas fa-edit text-gray-600"></i></button>
-          <button onclick="Turismo.remove(${lugar.id})" class="bg-red-500/90 hover:bg-red-500 p-2 rounded-lg"><i class="fas fa-trash text-white"></i></button>
+          <button onclick="Turismo.edit(${
+            lugar.id
+          })" class="bg-white/90 hover:bg-white p-2 rounded-lg"><i class="fas fa-edit text-gray-600"></i></button>
+          <button onclick="Turismo.remove(${
+            lugar.id
+          })" class="bg-red-500/90 hover:bg-red-500 p-2 rounded-lg"><i class="fas fa-trash text-white"></i></button>
         </div>`;
 
         const body = document.createElement("div");
@@ -554,19 +577,35 @@
         body.innerHTML = `
         <div class="flex items-start justify-between mb-3">
           <h3 class="text-xl font-bold text-gray-800">${lugar.nombre}</h3>
-          <div class="bg-orange-100 p-2 rounded-lg ml-3"><i class="${lugar.icono || "fas fa-map-marked-alt"} text-orange-600"></i></div>
+          <div class="bg-orange-100 p-2 rounded-lg ml-3"><i class="${
+            lugar.icono || "fas fa-map-marked-alt"
+          } text-orange-600"></i></div>
         </div>
-        <p class="text-gray-600 mb-4 text-sm leading-relaxed">${lugar.descripcion || ""}</p>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">${
+          lugar.descripcion || ""
+        }</p>
         <div class="space-y-2 text-sm mb-4 text-gray-600">
-          <div class="flex items-center"><i class="fas fa-map-marker-alt mr-2 text-orange-500"></i><span>${lugar.direccion || ""}</span></div>
-          <div class="flex items-center"><i class="fas fa-clock mr-2 text-orange-500"></i><span>${lugar.horario || ""}</span></div>
-          <div class="flex items-center"><i class="fas fa-ticket-alt mr-2 text-orange-500"></i><span class="font-medium">${lugar.precio || ""}</span></div>
+          <div class="flex items-center"><i class="fas fa-map-marker-alt mr-2 text-orange-500"></i><span>${
+            lugar.direccion || ""
+          }</span></div>
+          <div class="flex items-center"><i class="fas fa-clock mr-2 text-orange-500"></i><span>${
+            lugar.horario || ""
+          }</span></div>
+          <div class="flex items-center"><i class="fas fa-ticket-alt mr-2 text-orange-500"></i><span class="font-medium">${
+            lugar.precio || ""
+          }</span></div>
         </div>
         <div class="flex gap-2">
-          <button onclick="Turismo.view(${lugar.id})" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition text-sm font-medium">
+          <button onclick="Turismo.view(${
+            lugar.id
+          })" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition text-sm font-medium">
             <i class="fas fa-images mr-2"></i>Ver Galería
           </button>
-          ${lugar.googleMaps ? `<a href="${lugar.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>` : ""}
+          ${
+            lugar.googleMaps
+              ? `<a href="${lugar.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>`
+              : ""
+          }
         </div>`;
         card.appendChild(head);
         card.appendChild(body);
@@ -826,7 +865,9 @@
             ? ""
             : `
       <div class="relative group">
-        <img src="${f.previewUrl}" class="w-full h-20 object-cover rounded border">
+        <img src="${
+          f.previewUrl
+        }" class="w-full h-20 object-cover rounded border">
         <div class="absolute top-1 right-1 bg-black/60 text-white text-xs px-1 rounded">
           ${i === mainIdx ? "Principal" : i + 1}
         </div>
@@ -908,8 +949,8 @@
         .map(
           (u, index) => `
         <img data-url-cleanup src="${u}" class="w-16 h-16 object-cover rounded cursor-pointer border-2 ${
-          index === mainIndex ? "border-orange-500" : "border-gray-200"
-        }" onclick="Turismo.pick(${id}, ${index})">`
+            index === mainIndex ? "border-orange-500" : "border-gray-200"
+          }" onclick="Turismo.pick(${id}, ${index})">`
         )
         .join("");
 
@@ -919,10 +960,18 @@
           <h4 class="font-bold text-gray-800 mb-2">${l.nombre}</h4>
           <p class="text-gray-600 mb-3">${l.descripcion || ""}</p>
           <div class="space-y-2">
-            <div class="flex items-center"><i class="fas fa-tag text-orange-500 mr-2"></i><span class="font-medium">${l.categoria || ""}</span></div>
-            <div class="flex items-center"><i class="fas fa-map-marker-alt text-orange-500 mr-2"></i><span>${l.direccion || ""}</span></div>
-            <div class="flex items-center"><i class="fas fa-clock text-orange-500 mr-2"></i><span>${l.horario || ""}</span></div>
-            <div class="flex items-center"><i class="fas fa-ticket-alt text-orange-500 mr-2"></i><span class="font-medium">${l.precio || ""}</span></div>
+            <div class="flex items-center"><i class="fas fa-tag text-orange-500 mr-2"></i><span class="font-medium">${
+              l.categoria || ""
+            }</span></div>
+            <div class="flex items-center"><i class="fas fa-map-marker-alt text-orange-500 mr-2"></i><span>${
+              l.direccion || ""
+            }</span></div>
+            <div class="flex items-center"><i class="fas fa-clock text-orange-500 mr-2"></i><span>${
+              l.horario || ""
+            }</span></div>
+            <div class="flex items-center"><i class="fas fa-ticket-alt text-orange-500 mr-2"></i><span class="font-medium">${
+              l.precio || ""
+            }</span></div>
           </div>
         </div>
         <div>
@@ -989,4 +1038,3 @@
     };
   })();
 </script>
-
