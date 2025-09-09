@@ -86,9 +86,7 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-activos">
-            0
-          </p>
+          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-activos">0</p>
           <p class="text-gray-600 text-sm">Proyectos Activos</p>
         </div>
         <div class="bg-blue-100 p-3 rounded-lg">
@@ -100,9 +98,7 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-avance">
-            0%
-          </p>
+          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-avance">0%</p>
           <p class="text-gray-600 text-sm">Avance Promedio</p>
         </div>
         <div class="bg-green-100 p-3 rounded-lg">
@@ -114,12 +110,7 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
       <div class="flex items-center justify-between">
         <div>
-          <p
-            class="text-2xl font-bold text-gray-800"
-            id="projects-kpi-inversion"
-          >
-            $0
-          </p>
+          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-inversion">$0</p>
           <p class="text-gray-600 text-sm">Inversión Total</p>
         </div>
         <div class="bg-purple-100 p-3 rounded-lg">
@@ -131,12 +122,7 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-indigo-500">
       <div class="flex items-center justify-between">
         <div>
-          <p
-            class="text-2xl font-bold text-gray-800"
-            id="projects-kpi-beneficiarios"
-          >
-            0
-          </p>
+          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-beneficiarios">0</p>
           <p class="text-gray-600 text-sm">Beneficiarios</p>
         </div>
         <div class="bg-indigo-100 p-3 rounded-lg">
@@ -148,9 +134,7 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-riesgo">
-            0
-          </p>
+          <p class="text-2xl font-bold text-gray-800" id="projects-kpi-riesgo">0</p>
           <p class="text-gray-600 text-sm">En Riesgo</p>
         </div>
         <div class="bg-red-100 p-3 rounded-lg">
@@ -164,71 +148,28 @@
   <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
     <div class="overflow-x-auto">
       <table class="w-full">
-        <thead
-          class="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200"
-        >
+        <thead class="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
           <tr>
-            <th
-              class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Proyecto
-            </th>
-            <th
-              class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Categoría
-            </th>
-            <th
-              class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Inversión
-            </th>
-            <th
-              class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Beneficiarios
-            </th>
-            <th
-              class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Avance
-            </th>
-            <th
-              class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Estatus
-            </th>
-            <th
-              class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Tiempo
-            </th>
-            <th
-              class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Acciones
-            </th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proyecto</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inversión</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Beneficiarios</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avance</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estatus</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiempo</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
           </tr>
         </thead>
-        <tbody
-          id="projects-table-body"
-          class="bg-white divide-y divide-gray-200"
-        ></tbody>
+        <tbody id="projects-table-body" class="bg-white divide-y divide-gray-200"></tbody>
       </table>
     </div>
     <!-- Empty State -->
     <div id="projects-empty-state" class="text-center py-12 hidden">
-      <div
-        class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
-      >
+      <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
         <i class="fas fa-project-diagram text-gray-400 text-2xl"></i>
       </div>
-      <h3 class="text-lg font-medium text-gray-800 mb-2">
-        No hay proyectos registrados
-      </h3>
-      <p class="text-gray-600 mb-4">
-        Comienza agregando tu primer proyecto municipal.
-      </p>
+      <h3 class="text-lg font-medium text-gray-800 mb-2">No hay proyectos registrados</h3>
+      <p class="text-gray-600 mb-4">Comienza agregando tu primer proyecto municipal.</p>
       <button
         id="projects-empty-add"
         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
@@ -246,13 +187,8 @@
   >
     <div class="p-6">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-gray-800" id="projects-drawer-title">
-          Detalles del Proyecto
-        </h2>
-        <button
-          id="projects-drawer-close"
-          class="text-gray-400 hover:text-gray-600 transition-colors duration-200"
-        >
+        <h2 class="text-xl font-bold text-gray-800" id="projects-drawer-title">Detalles del Proyecto</h2>
+        <button id="projects-drawer-close" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
           <i class="fas fa-times text-xl"></i>
         </button>
       </div>
@@ -265,21 +201,11 @@
     id="projects-modal"
     class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4"
   >
-    <div
-      class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-    >
+    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
       <div class="p-6 border-b border-gray-200">
         <div class="flex justify-between items-center">
-          <h3
-            id="projects-modal-title"
-            class="text-2xl font-bold text-gray-800"
-          >
-            Nuevo Proyecto
-          </h3>
-          <button
-            id="projects-modal-close"
-            class="text-gray-400 hover:text-gray-600 transition-colors duration-200"
-          >
+          <h3 id="projects-modal-title" class="text-2xl font-bold text-gray-800">Nuevo Proyecto</h3>
+          <button id="projects-modal-close" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
             <i class="fas fa-times text-xl"></i>
           </button>
         </div>
@@ -288,9 +214,7 @@
       <form id="projects-form" class="p-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <div class="lg:col-span-2">
-            <label
-              for="projects-form-nombre"
-              class="block text-sm font-medium text-gray-700 mb-2"
+            <label for="projects-form-nombre" class="block text-sm font-medium text-gray-700 mb-2"
               >Nombre del Proyecto *</label
             >
             <input
@@ -299,30 +223,19 @@
               required
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-            <div>
+            <div class="mt-2">
               <label class="inline-flex items-center flex">
-                <input
-                  type="checkbox"
-                  id="projects-form-show-home"
-                  class="rounded border-gray-300 text-blue-600"
-                />
-                <span class="ml-2 text-sm text-gray-700"
-                  >Mostrar en página de inicio</span
-                >
+                <input type="checkbox" id="projects-form-show-home" class="rounded border-gray-300 text-blue-600" />
+                <span class="ml-2 text-sm text-gray-700">Mostrar en página de inicio</span>
               </label>
               <p class="text-xs text-gray-500 mt-1">
-                Si está marcado, el proyecto se destacará en la página
-                principal.
+                Si está marcado, el proyecto se destacará en la página principal.
               </p>
             </div>
           </div>
 
           <div>
-            <label
-              for="projects-form-categoria"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Categoría *</label
-            >
+            <label for="projects-form-categoria" class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
             <select
               id="projects-form-categoria"
               required
@@ -338,11 +251,7 @@
             </select>
           </div>
           <div>
-            <label
-              for="projects-form-estatus"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Estatus *</label
-            >
+            <label for="projects-form-estatus" class="block text-sm font-medium text-gray-700 mb-2">Estatus *</label>
             <select
               id="projects-form-estatus"
               required
@@ -356,9 +265,7 @@
             </select>
           </div>
           <div>
-            <label
-              for="projects-form-inversion"
-              class="block text-sm font-medium text-gray-700 mb-2"
+            <label for="projects-form-inversion" class="block text-sm font-medium text-gray-700 mb-2"
               >Inversión Total *</label
             >
             <input
@@ -371,9 +278,7 @@
             />
           </div>
           <div>
-            <label
-              for="projects-form-beneficiarios"
-              class="block text-sm font-medium text-gray-700 mb-2"
+            <label for="projects-form-beneficiarios" class="block text-sm font-medium text-gray-700 mb-2"
               >Beneficiarios *</label
             >
             <input
@@ -386,12 +291,10 @@
           </div>
         </div>
 
-        <!-- Etapas Section -->
+        <!-- Etapas Section (TABS) -->
         <div class="mb-6">
           <div class="flex items-center justify-between mb-4">
-            <h4 class="text-lg font-semibold text-gray-800">
-              Cronograma y Etapas
-            </h4>
+            <h4 class="text-lg font-semibold text-gray-800">Cronograma y Etapas</h4>
             <button
               type="button"
               id="projects-add-etapa"
@@ -401,22 +304,22 @@
               Agregar Etapa
             </button>
           </div>
-          <div id="projects-etapas-container" class="space-y-4"></div>
+
+          <div id="projects-etapas-tabs" class="rounded-lg border border-gray-200">
+            <div
+              id="etapas-tablist"
+              role="tablist"
+              class="flex items-center gap-1 overflow-x-auto p-2 bg-gray-50 rounded-t-lg"
+            ></div>
+            <div id="etapas-panels" class="p-4 space-y-4"></div>
+          </div>
+
           <div class="mt-4 p-4 bg-gray-50 rounded-lg">
             <div class="flex justify-between items-center">
-              <span class="text-sm font-medium text-gray-700"
-                >Total de pesos:</span
-              >
-              <span
-                id="projects-peso-total"
-                class="text-sm font-bold text-gray-800"
-                >0%</span
-              >
+              <span class="text-sm font-medium text-gray-700">Total de pesos:</span>
+              <span id="projects-peso-total" class="text-sm font-bold text-gray-800">0%</span>
             </div>
-            <div
-              id="projects-peso-error"
-              class="text-red-600 text-sm mt-1 hidden"
-            >
+            <div id="projects-peso-error" class="text-red-600 text-sm mt-1 hidden">
               La suma de los pesos debe ser exactamente 100%
             </div>
           </div>
@@ -493,7 +396,6 @@
     </div>
   </div>
 </section>
-
 <script>
 (function () {
   "use strict";
@@ -753,3 +655,4 @@
   }
 })();
 </script>
+
