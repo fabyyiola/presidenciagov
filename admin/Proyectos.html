@@ -261,7 +261,7 @@
   </div>
 
   <!-- Form Modal -->
-  <div
+ <div
     id="projects-modal"
     class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4"
   >
@@ -286,105 +286,7 @@
       </div>
 
       <form id="projects-form" class="p-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <div class="lg:col-span-2">
-            <label
-              for="projects-form-nombre"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Nombre del Proyecto *</label
-            >
-            <input
-              type="text"
-              id="projects-form-nombre"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <div>
-              <label class="inline-flex items-center flex">
-                <input
-                  type="checkbox"
-                  id="projects-form-show-home"
-                  class="rounded border-gray-300 text-blue-600"
-                />
-                <span class="ml-2 text-sm text-gray-700"
-                  >Mostrar en página de inicio</span
-                >
-              </label>
-              <p class="text-xs text-gray-500 mt-1">
-                Si está marcado, el proyecto se destacará en la página
-                principal.
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <label
-              for="projects-form-categoria"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Categoría *</label
-            >
-            <select
-              id="projects-form-categoria"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">Seleccionar categoría</option>
-              <option value="Infraestructura">Infraestructura</option>
-              <option value="Desarrollo Social">Desarrollo Social</option>
-              <option value="Medio Ambiente">Medio Ambiente</option>
-              <option value="Tecnología">Tecnología</option>
-              <option value="Educación">Educación</option>
-              <option value="Salud">Salud</option>
-            </select>
-          </div>
-          <div>
-            <label
-              for="projects-form-estatus"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Estatus *</label
-            >
-            <select
-              id="projects-form-estatus"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="Planificación">Planificación</option>
-              <option value="En Progreso">En Progreso</option>
-              <option value="Pausado">Pausado</option>
-              <option value="Completado">Completado</option>
-              <option value="Cancelado">Cancelado</option>
-            </select>
-          </div>
-          <div>
-            <label
-              for="projects-form-inversion"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Inversión Total *</label
-            >
-            <input
-              type="number"
-              id="projects-form-inversion"
-              required
-              min="0"
-              step="0.01"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label
-              for="projects-form-beneficiarios"
-              class="block text-sm font-medium text-gray-700 mb-2"
-              >Beneficiarios *</label
-            >
-            <input
-              type="number"
-              id="projects-form-beneficiarios"
-              required
-              min="0"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-        </div>
+        ... <!-- general project fields -->
 
         <!-- Etapas Section -->
         <div class="mb-6">
@@ -401,60 +303,26 @@
               Agregar Etapa
             </button>
           </div>
-          <div id="projects-etapas-container" class="space-y-4"></div>
+
+          <!-- Tabs container -->
+          <div id="projects-etapas-tabs" class="rounded-lg border border-gray-200">
+            <div id="etapas-tablist" role="tablist"
+                 class="flex items-center gap-1 overflow-x-auto p-2 bg-gray-50 rounded-t-lg"></div>
+            <div id="etapas-panels" class="p-4 space-y-4"></div>
+          </div>
+
           <div class="mt-4 p-4 bg-gray-50 rounded-lg">
             <div class="flex justify-between items-center">
-              <span class="text-sm font-medium text-gray-700"
-                >Total de pesos:</span
-              >
-              <span
-                id="projects-peso-total"
-                class="text-sm font-bold text-gray-800"
-                >0%</span
-              >
+              <span class="text-sm font-medium text-gray-700">Total de pesos:</span>
+              <span id="projects-peso-total" class="text-sm font-bold text-gray-800">0%</span>
             </div>
-            <div
-              id="projects-peso-error"
-              class="text-red-600 text-sm mt-1 hidden"
-            >
+            <div id="projects-peso-error" class="text-red-600 text-sm mt-1 hidden">
               La suma de los pesos debe ser exactamente 100%
             </div>
           </div>
         </div>
 
-        <div class="flex justify-end space-x-4">
-          <button
-            type="button"
-            id="projects-form-cancel"
-            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-          >
-            Cancelar
-          </button>
-          <button
-            type="button"
-            id="projects-form-duplicate"
-            class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200 hidden"
-          >
-            <i class="fas fa-copy mr-2"></i>
-            Duplicar
-          </button>
-          <button
-            type="button"
-            id="projects-form-delete"
-            class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 hidden"
-          >
-            <i class="fas fa-trash mr-2"></i>
-            Eliminar
-          </button>
-          <button
-            type="submit"
-            id="projects-form-submit"
-            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
-          >
-            <i class="fas fa-save mr-2"></i>
-            Guardar
-          </button>
-        </div>
+        ... <!-- buttons -->
       </form>
     </div>
   </div>
@@ -494,7 +362,71 @@
   </div>
 </section>
 
+<script>
+(function(){
+  "use strict";
 
+  // --- existing variables ---
+  let etapaCounter = 0;
+  let tareaCounter = 0;
+
+  // --- Tabs helpers ---
+  function selectEtapaTab(id){
+    document.querySelectorAll('#etapas-panels [data-etapa-id]')
+      .forEach(p => p.classList.toggle('hidden', p.getAttribute('data-etapa-id') !== id));
+    document.querySelectorAll('#etapas-tablist [data-tab-for]')
+      .forEach(t => {
+        const active = t.getAttribute('data-tab-for') === id;
+        t.className = active
+          ? "px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium"
+          : "px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 text-sm";
+      });
+  }
+
+  // --- modified addEtapa ---
+  function addEtapa(etapa=null){
+    const id = etapa ? etapa.id : `etapa-${++etapaCounter}`;
+    const tablist = document.getElementById("etapas-tablist");
+    const panels = document.getElementById("etapas-panels");
+
+    // Tab button
+    const tabBtn = document.createElement("button");
+    tabBtn.textContent = etapa?.nombre || `Etapa ${etapaCounter}`;
+    tabBtn.setAttribute("data-tab-for", id);
+    tabBtn.type = "button";
+    tabBtn.className = "px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 text-sm";
+    tabBtn.onclick = () => selectEtapaTab(id);
+    tablist.appendChild(tabBtn);
+
+    // Panel
+    const wrap = document.createElement("div");
+    wrap.className = "border border-gray-200 rounded-lg p-4 bg-gray-50";
+    wrap.setAttribute("data-etapa-id", id);
+
+    wrap.innerHTML = `
+      <div class="flex items-center justify-between mb-4">
+        <h5 class="font-semibold text-gray-800">Etapa</h5>
+        <button type="button" onclick="removeEtapa('${id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+      </div>
+      <label class="block text-sm font-medium">Nombre *</label>
+      <input type="text" data-field="nombre" value="${etapa?.nombre||""}"
+             class="w-full px-3 py-2 border rounded mb-4"/>
+    `;
+    panels.appendChild(wrap);
+
+    selectEtapaTab(id);
+  }
+  window.addEtapa = addEtapa;
+  window.removeEtapa = function(id){
+    document.querySelector(`[data-tab-for="${id}"]`)?.remove();
+    document.querySelector(`[data-etapa-id="${id}"]`)?.remove();
+    const first = document.querySelector('#etapas-tablist [data-tab-for]');
+    if(first) selectEtapaTab(first.getAttribute("data-tab-for"));
+  };
+
+  // ... keep the rest of your script unchanged (init, CRUD, KPIs, etc.) ...
+})();
+</script>
   <script>
     (function () {
       "use strict";
