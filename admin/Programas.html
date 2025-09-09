@@ -1,0 +1,121 @@
+<!-- ServiciosAdmin.html (Admin module) -->
+<section class="section-content p-6" id="ServiciosAdmin">
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Solicitudes de Apoyo</h2>
+      <p class="text-gov-gray">Gestión de solicitudes de programas sociales</p>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white border border-gray-200 rounded-2xl p-4 mb-6 flex flex-col md:flex-row gap-3">
+    <div class="flex-1">
+      <div class="relative">
+        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input
+          id="solicitudes-search"
+          type="text"
+          placeholder="Buscar por nombre, CURP o programa..."
+          class="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+    </div>
+    <select id="solicitudes-status" class="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
+      <option value="">Todos los estados</option>
+      <option value="pending">Pendiente</option>
+      <option value="in-review">En Revisión</option>
+      <option value="approved">Aprobado</option>
+      <option value="rejected">Rechazado</option>
+    </select>
+  </div>
+
+  <!-- Grid -->
+  <div id="solicitudes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  <div id="solicitudes-empty" class="text-gray-500 text-sm">No hay solicitudes registradas.</div>
+</section>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'municipio.solicitudes.v1';
+  let solicitudes = [];
+  let filtered = [];
+
+  // === Utils ===
+  const load = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(solicitudes));
+  const fmtDate = d => new Date(d).toLocaleDateString('es-MX',{year:'numeric',month:'short',day:'numeric'});
+  const statusLabels = { pending:'Pendiente', 'in-review':'En Revisión', approved:'Aprobado', rejected:'Rechazado' };
+
+  // === Render ===
+  function render() {
+    const grid = document.getElementById('solicitudes-grid');
+    const empty = document.getElementById('solicitudes-empty');
+    grid.innerHTML = '';
+
+    if (!filtered.length) {
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+
+    for (const s of filtered) {
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-2xl shadow border border-gray-200 p-5 flex flex-col justify-between';
+
+      card.innerHTML = `
+        <div>
+          <h3 class="text-lg font-bold text-gray-800 mb-1">${s.fullName}</h3>
+          <p class="text-sm text-gray-500 mb-2">${s.curp} · ${s.age} años</p>
+          <p class="text-sm text-gray-600 mb-2"><i class="fas fa-phone mr-1"></i>${s.phone}</p>
+          <p class="text-sm text-gray-600 mb-2"><i class="fas fa-map-marker-alt mr-1"></i>${s.address}</p>
+          <p class="text-sm text-gray-700 mb-2"><strong>Programa:</strong> ${s.program}</p>
+          <p class="text-sm text-gray-700 mb-4"><strong>Motivo:</strong> ${s.reason}</p>
+        </div>
+        <div class="mt-3 flex items-center justify-between">
+          <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">${fmtDate(s.submissionDate)}</span>
+          <select onchange="ServiciosAdmin.updateStatus('${s.id}', this.value)" class="text-sm border rounded px-2 py-1">
+            ${Object.entries(statusLabels).map(([val,label]) =>
+              `<option value="${val}" ${s.status===val?'selected':''}>${label}</option>`
+            ).join('')}
+          </select>
+        </div>
+      `;
+      grid.appendChild(card);
+    }
+  }
+
+  // === Filters ===
+  function applyFilters() {
+    const q = document.getElementById('solicitudes-search').value.toLowerCase();
+    const st = document.getElementById('solicitudes-status').value;
+    filtered = solicitudes.filter(s => {
+      if (q && !s.fullName.toLowerCase().includes(q) && !s.curp.toLowerCase().includes(q) && !s.program.toLowerCase().includes(q)) return false;
+      if (st && s.status !== st) return false;
+      return true;
+    });
+    render();
+  }
+
+  // === Public actions ===
+  function updateStatus(id, status) {
+    const s = solicitudes.find(x => x.id === id);
+    if (!s) return;
+    s.status = status;
+    save();
+    applyFilters();
+  }
+
+  // === Init ===
+  function init() {
+    solicitudes = load();
+    filtered = [...solicitudes];
+    applyFilters();
+    document.getElementById('solicitudes-search').addEventListener('input', applyFilters);
+    document.getElementById('solicitudes-status').addEventListener('change', applyFilters);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+
+  // === Expose ===
+  window.ServiciosAdmin = { updateStatus };
+})();
+</script>
