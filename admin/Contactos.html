@@ -1,5 +1,4 @@
-
-<section id="EmergencyContactsAdmin" class="p-6 bg-gradient-to-br from-slate-50 to-red-50 min-h-screen">
+<section id="EmergencyContactsAdmin" class="p-6 bg-gradient-to-br from-slate-50 to-red-50 min-h-screen" data-bound="0">
   <!-- Top Controls -->
   <div class="mb-8">
     <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-6">
@@ -122,9 +121,7 @@
   </div>
 
   <!-- Contacts Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="contacts-grid">
-    <!-- Contacts will be rendered here -->
-  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="contacts-grid"></div>
 
   <!-- Empty State -->
   <div id="contacts-empty-state" class="text-center py-12 hidden">
@@ -133,7 +130,7 @@
     </div>
     <h3 class="text-lg font-medium text-gray-800 mb-2">No hay contactos registrados</h3>
     <p class="text-gray-600 mb-4">Comienza agregando los primeros contactos de emergencia.</p>
-    <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200">
+    <button id="contacts-empty-add-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200">
       <i class="fas fa-plus mr-2"></i>
       Agregar Contacto
     </button>
@@ -271,38 +268,51 @@
           </button>
         </div>
       </div>
-      <div id="contacts-preview-content" class="p-6">
-        <!-- Public view will be rendered here -->
-      </div>
+      <div id="contacts-preview-content" class="p-6"></div>
     </div>
   </div>
 
   <script>
     (function() {
       'use strict';
-      
+
       // Storage key
       const STORAGE_KEY = 'municipio.contactos.emergencia.v1';
-      
+
       // Global state
       let contactos = [];
       let filteredContactos = [];
       let currentEditId = null;
-      
-      // Initialize
-      document.addEventListener('DOMContentLoaded', function() {
+
+      // --- Idempotent init (works in SPA) ---
+      function init() {
+        const root = document.getElementById('EmergencyContactsAdmin');
+        if (!root) return;
+        if (root.dataset.bound === '1') return; // avoid double-binding when re-injected
+        root.dataset.bound = '1';
+
         loadContactos();
         setupEventListeners();
         setupKeyboardShortcuts();
+
+        // initialize filtered list, render & KPIs
+        filteredContactos = [...contactos];
         renderContactos();
         updateKPIs();
-      });
-      
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        // If this HTML is injected after DOMContentLoaded (SPA), run immediately
+        init();
+      }
+
       // Data persistence
       function saveContactos() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(contactos));
       }
-      
+
       function loadContactos() {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
@@ -310,95 +320,17 @@
         } else {
           // Sample data
           contactos = [
-            {
-              id: '1',
-              nombre: 'Cruz Roja Mexicana',
-              categoria: 'Emergencias Médicas',
-              telefono: '911',
-              telefonoAlt: '065',
-              disponibilidad: '24/7',
-              prioridad: 1,
-              descripcion: 'Atención médica de emergencia, ambulancias y primeros auxilios',
-              direccion: 'Av. Principal #123, Centro',
-              email: 'emergencias@cruzroja.org.mx',
-              activo: true,
-              fechaCreacion: '2024-01-15'
-            },
-            {
-              id: '2',
-              nombre: 'Policía Municipal',
-              categoria: 'Seguridad Pública',
-              telefono: '911',
-              telefonoAlt: '(555) 123-4567',
-              disponibilidad: '24/7',
-              prioridad: 1,
-              descripcion: 'Seguridad pública, emergencias y denuncia de delitos',
-              direccion: 'Comandancia Municipal, Col. Centro',
-              email: 'policia@municipio.gob.mx',
-              activo: true,
-              fechaCreacion: '2024-01-15'
-            },
-            {
-              id: '3',
-              nombre: 'Bomberos',
-              categoria: 'Bomberos',
-              telefono: '911',
-              telefonoAlt: '(555) 234-5678',
-              disponibilidad: '24/7',
-              prioridad: 1,
-              descripcion: 'Combate de incendios, rescates y emergencias químicas',
-              direccion: 'Estación Central de Bomberos',
-              email: 'bomberos@municipio.gob.mx',
-              activo: true,
-              fechaCreacion: '2024-01-15'
-            },
-            {
-              id: '4',
-              nombre: 'Protección Civil',
-              categoria: 'Protección Civil',
-              telefono: '(555) 345-6789',
-              telefonoAlt: '',
-              disponibilidad: '24/7',
-              prioridad: 1,
-              descripcion: 'Prevención y atención de desastres naturales',
-              direccion: 'Coordinación Municipal de Protección Civil',
-              email: 'proteccioncivil@municipio.gob.mx',
-              activo: true,
-              fechaCreacion: '2024-01-15'
-            },
-            {
-              id: '5',
-              nombre: 'Servicios Públicos',
-              categoria: 'Servicios Públicos',
-              telefono: '(555) 456-7890',
-              telefonoAlt: '',
-              disponibilidad: 'Horario Laboral',
-              prioridad: 2,
-              descripcion: 'Reportes de fallas en agua, luz, drenaje y recolección de basura',
-              direccion: 'Dirección de Servicios Públicos',
-              email: 'servicios@municipio.gob.mx',
-              activo: true,
-              fechaCreacion: '2024-01-15'
-            },
-            {
-              id: '6',
-              nombre: 'Presidencia Municipal',
-              categoria: 'Gobierno Municipal',
-              telefono: '(555) 567-8901',
-              telefonoAlt: '',
-              disponibilidad: 'Horario Laboral',
-              prioridad: 3,
-              descripcion: 'Información general y trámites municipales',
-              direccion: 'Palacio Municipal',
-              email: 'presidencia@municipio.gob.mx',
-              activo: true,
-              fechaCreacion: '2024-01-15'
-            }
+            { id: '1', nombre: 'Cruz Roja Mexicana', categoria: 'Emergencias Médicas', telefono: '911', telefonoAlt: '065', disponibilidad: '24/7', prioridad: 1, descripcion: 'Atención médica de emergencia, ambulancias y primeros auxilios', direccion: 'Av. Principal #123, Centro', email: 'emergencias@cruzroja.org.mx', activo: true, fechaCreacion: '2024-01-15' },
+            { id: '2', nombre: 'Policía Municipal', categoria: 'Seguridad Pública', telefono: '911', telefonoAlt: '(555) 123-4567', disponibilidad: '24/7', prioridad: 1, descripcion: 'Seguridad pública, emergencias y denuncia de delitos', direccion: 'Comandancia Municipal, Col. Centro', email: 'policia@municipio.gob.mx', activo: true, fechaCreacion: '2024-01-15' },
+            { id: '3', nombre: 'Bomberos', categoria: 'Bomberos', telefono: '911', telefonoAlt: '(555) 234-5678', disponibilidad: '24/7', prioridad: 1, descripcion: 'Combate de incendios, rescates y emergencias químicas', direccion: 'Estación Central de Bomberos', email: 'bomberos@municipio.gob.mx', activo: true, fechaCreacion: '2024-01-15' },
+            { id: '4', nombre: 'Protección Civil', categoria: 'Protección Civil', telefono: '(555) 345-6789', telefonoAlt: '', disponibilidad: '24/7', prioridad: 1, descripcion: 'Prevención y atención de desastres naturales', direccion: 'Coordinación Municipal de Protección Civil', email: 'proteccioncivil@municipio.gob.mx', activo: true, fechaCreacion: '2024-01-15' },
+            { id: '5', nombre: 'Servicios Públicos', categoria: 'Servicios Públicos', telefono: '(555) 456-7890', telefonoAlt: '', disponibilidad: 'Horario Laboral', prioridad: 2, descripcion: 'Reportes de fallas en agua, luz, drenaje y recolección de basura', direccion: 'Dirección de Servicios Públicos', email: 'servicios@municipio.gob.mx', activo: true, fechaCreacion: '2024-01-15' },
+            { id: '6', nombre: 'Presidencia Municipal', categoria: 'Gobierno Municipal', telefono: '(555) 567-8901', telefonoAlt: '', disponibilidad: 'Horario Laboral', prioridad: 3, descripcion: 'Información general y trámites municipales', direccion: 'Palacio Municipal', email: 'presidencia@municipio.gob.mx', activo: true, fechaCreacion: '2024-01-15' }
           ];
           saveContactos();
         }
       }
-      
+
       // Event listeners
       function setupEventListeners() {
         // Top buttons
@@ -406,51 +338,52 @@
         document.getElementById('contacts-export-btn').addEventListener('click', exportCSV);
         document.getElementById('contacts-import-btn').addEventListener('click', () => openImportModal());
         document.getElementById('contacts-preview-btn').addEventListener('click', () => openPreviewModal());
-        
+
+        // Empty state add button
+        const emptyAdd = document.getElementById('contacts-empty-add-btn');
+        if (emptyAdd) emptyAdd.addEventListener('click', () => openModal());
+
         // Search and filters
         document.getElementById('contacts-search').addEventListener('input', filterContactos);
         document.getElementById('contacts-filter-categoria').addEventListener('change', filterContactos);
         document.getElementById('contacts-filter-disponibilidad').addEventListener('change', filterContactos);
         document.getElementById('contacts-filter-activo').addEventListener('change', filterContactos);
-        
+
         // Modal
         document.getElementById('contacts-modal-close').addEventListener('click', closeModal);
         document.getElementById('contacts-form-cancel').addEventListener('click', closeModal);
         document.getElementById('contacts-form').addEventListener('submit', saveContacto);
         document.getElementById('contacts-form-delete').addEventListener('click', deleteContacto);
-        
+
         // Import modal
         document.getElementById('contacts-import-cancel').addEventListener('click', closeImportModal);
         document.getElementById('contacts-import-confirm').addEventListener('click', importJSON);
-        
+
         // Preview modal
         document.getElementById('contacts-preview-close').addEventListener('click', closePreviewModal);
-        
+
         // Click outside to close
         document.getElementById('contacts-modal').addEventListener('click', (e) => {
           if (e.target.id === 'contacts-modal') closeModal();
         });
-        
         document.getElementById('contacts-import-modal').addEventListener('click', (e) => {
           if (e.target.id === 'contacts-import-modal') closeImportModal();
         });
-        
         document.getElementById('contacts-preview-modal').addEventListener('click', (e) => {
           if (e.target.id === 'contacts-preview-modal') closePreviewModal();
         });
       }
-      
+
       // Keyboard shortcuts
       function setupKeyboardShortcuts() {
         document.addEventListener('keydown', (e) => {
-          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
-            if (e.key === 'Escape') {
-              e.target.blur();
-            }
+          // Ignore when typing in inputs
+          if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+            if (e.key === 'Escape') e.target.blur();
             return;
           }
-          
-          switch(e.key) {
+
+          switch (e.key) {
             case '/':
               e.preventDefault();
               document.getElementById('contacts-search').focus();
@@ -474,7 +407,7 @@
               break;
           }
         });
-        
+
         // Save shortcut in modal
         document.getElementById('contacts-modal').addEventListener('keydown', (e) => {
           if ((e.ctrlKey || e.metaKey) && e.key === 's') {
@@ -483,43 +416,44 @@
           }
         });
       }
-      
+
       // Filtering
       function filterContactos() {
         const search = document.getElementById('contacts-search').value.toLowerCase();
         const categoria = document.getElementById('contacts-filter-categoria').value;
         const disponibilidad = document.getElementById('contacts-filter-disponibilidad').value;
         const activo = document.getElementById('contacts-filter-activo').value;
-        
+
         filteredContactos = contactos.filter(contacto => {
-          if (search && !contacto.nombre.toLowerCase().includes(search) && 
-              !contacto.descripcion.toLowerCase().includes(search) &&
-              !contacto.telefono.includes(search)) return false;
+          if (search && !(
+            (contacto.nombre && contacto.nombre.toLowerCase().includes(search)) ||
+            (contacto.descripcion && contacto.descripcion.toLowerCase().includes(search)) ||
+            (contacto.telefono && contacto.telefono.includes(search))
+          )) return false;
           if (categoria && contacto.categoria !== categoria) return false;
           if (disponibilidad && contacto.disponibilidad !== disponibilidad) return false;
           if (activo !== '' && contacto.activo.toString() !== activo) return false;
-          
           return true;
         });
-        
+
         renderContactos();
         updateFilterChips();
       }
-      
+
       function updateFilterChips() {
         const container = document.getElementById('contacts-filter-chips');
         const chips = [];
-        
+
         const search = document.getElementById('contacts-search').value;
         const categoria = document.getElementById('contacts-filter-categoria').value;
         const disponibilidad = document.getElementById('contacts-filter-disponibilidad').value;
         const activo = document.getElementById('contacts-filter-activo').value;
-        
+
         if (search) chips.push({ type: 'search', value: search, label: `Búsqueda: ${search}` });
         if (categoria) chips.push({ type: 'categoria', value: categoria, label: `Categoría: ${categoria}` });
         if (disponibilidad) chips.push({ type: 'disponibilidad', value: disponibilidad, label: `Disponibilidad: ${disponibilidad}` });
         if (activo !== '') chips.push({ type: 'activo', value: activo, label: `Estado: ${activo === 'true' ? 'Activos' : 'Inactivos'}` });
-        
+
         container.innerHTML = chips.map(chip => `
           <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-red-100 text-red-800">
             ${chip.label}
@@ -529,51 +463,44 @@
           </span>
         `).join('');
       }
-      
+
       window.removeFilter = function(type) {
         switch(type) {
-          case 'search':
-            document.getElementById('contacts-search').value = '';
-            break;
-          case 'categoria':
-            document.getElementById('contacts-filter-categoria').value = '';
-            break;
-          case 'disponibilidad':
-            document.getElementById('contacts-filter-disponibilidad').value = '';
-            break;
-          case 'activo':
-            document.getElementById('contacts-filter-activo').value = '';
-            break;
+          case 'search': document.getElementById('contacts-search').value = ''; break;
+          case 'categoria': document.getElementById('contacts-filter-categoria').value = ''; break;
+          case 'disponibilidad': document.getElementById('contacts-filter-disponibilidad').value = ''; break;
+          case 'activo': document.getElementById('contacts-filter-activo').value = ''; break;
         }
         filterContactos();
       };
-      
+
       // Rendering
       function renderContactos() {
         const grid = document.getElementById('contacts-grid');
         const emptyState = document.getElementById('contacts-empty-state');
-        
-        if (filteredContactos.length === 0) {
+
+        if (!filteredContactos || filteredContactos.length === 0) {
           grid.innerHTML = '';
           emptyState.classList.remove('hidden');
           return;
         }
-        
+
         emptyState.classList.add('hidden');
-        
-        // Sort by priority and then by name
+
         const sortedContactos = [...filteredContactos].sort((a, b) => {
-          if (a.prioridad !== b.prioridad) {
-            return a.prioridad - b.prioridad;
-          }
+          if (a.prioridad !== b.prioridad) return a.prioridad - b.prioridad;
           return a.nombre.localeCompare(b.nombre);
         });
-        
+
         grid.innerHTML = sortedContactos.map(contacto => {
           const categoriaColor = getCategoriaColor(contacto.categoria);
           const prioridadColor = getPrioridadColor(contacto.prioridad);
           const disponibilidadIcon = getDisponibilidadIcon(contacto.disponibilidad);
-          
+
+          // Nota: clases dinámicas de Tailwind como text-${...} pueden no generarse con CDN/JIT.
+          // Para evitarlo, ponemos clases estáticas por estado (orange/green) ya presentes en el bundle.
+          const toggleColor = contacto.activo ? 'text-orange-600 hover:text-orange-800' : 'text-green-600 hover:text-green-800';
+
           return `
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 ${!contacto.activo ? 'opacity-60' : ''}">
               <div class="p-6">
@@ -593,26 +520,26 @@
                     </span>
                   </div>
                 </div>
-                
+
                 <div class="space-y-3 mb-4">
                   <div class="flex items-center text-gray-600">
                     <i class="fas fa-phone text-red-500 mr-3 w-4"></i>
                     <span class="font-medium text-gray-800">${contacto.telefono}</span>
                     ${contacto.telefonoAlt ? `<span class="text-sm text-gray-500 ml-2">/ ${contacto.telefonoAlt}</span>` : ''}
                   </div>
-                  
+
                   <div class="flex items-center text-gray-600">
                     <i class="fas ${disponibilidadIcon} text-blue-500 mr-3 w-4"></i>
                     <span class="text-sm">${contacto.disponibilidad}</span>
                   </div>
-                  
+
                   ${contacto.direccion ? `
                     <div class="flex items-center text-gray-600">
                       <i class="fas fa-map-marker-alt text-green-500 mr-3 w-4"></i>
                       <span class="text-sm">${contacto.direccion}</span>
                     </div>
                   ` : ''}
-                  
+
                   ${contacto.email ? `
                     <div class="flex items-center text-gray-600">
                       <i class="fas fa-envelope text-purple-500 mr-3 w-4"></i>
@@ -620,17 +547,17 @@
                     </div>
                   ` : ''}
                 </div>
-                
+
                 ${contacto.descripcion ? `
-                  <p class="text-sm text-gray-600 mb-4 line-clamp-2">${contacto.descripcion}</p>
+                  <p class="text-sm text-gray-600 mb-4">${contacto.descripcion}</p>
                 ` : ''}
-                
+
                 <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                   <div class="flex space-x-2">
                     <button onclick="editContacto('${contacto.id}')" class="text-blue-600 hover:text-blue-800 transition-colors duration-200" title="Editar">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button onclick="toggleContactoStatus('${contacto.id}')" class="text-${contacto.activo ? 'orange' : 'green'}-600 hover:text-${contacto.activo ? 'orange' : 'green'}-800 transition-colors duration-200" title="${contacto.activo ? 'Desactivar' : 'Activar'}">
+                    <button onclick="toggleContactoStatus('${contacto.id}')" class="${toggleColor} transition-colors duration-200" title="${contacto.activo ? 'Desactivar' : 'Activar'}">
                       <i class="fas fa-${contacto.activo ? 'eye-slash' : 'eye'}"></i>
                     </button>
                     <button onclick="deleteContactoFromGrid('${contacto.id}')" class="text-red-600 hover:text-red-800 transition-colors duration-200" title="Eliminar">
@@ -647,19 +574,19 @@
           `;
         }).join('');
       }
-      
+
       function updateKPIs() {
         const total = contactos.length;
         const activos = contactos.filter(c => c.activo).length;
         const disponibles24h = contactos.filter(c => c.disponibilidad === '24/7' && c.activo).length;
         const categorias = new Set(contactos.map(c => c.categoria)).size;
-        
+
         document.getElementById('contacts-kpi-total').textContent = total;
         document.getElementById('contacts-kpi-activos').textContent = activos;
         document.getElementById('contacts-kpi-24h').textContent = disponibles24h;
         document.getElementById('contacts-kpi-categorias').textContent = categorias;
       }
-      
+
       // Utility functions
       function getCategoriaColor(categoria) {
         const colors = {
@@ -673,7 +600,7 @@
         };
         return colors[categoria] || 'bg-gray-100 text-gray-800';
       }
-      
+
       function getPrioridadColor(prioridad) {
         const colors = {
           1: 'bg-red-100 text-red-800',
@@ -682,16 +609,12 @@
         };
         return colors[prioridad] || 'bg-gray-100 text-gray-800';
       }
-      
+
       function getPrioridadLabel(prioridad) {
-        const labels = {
-          1: 'Alta',
-          2: 'Media',
-          3: 'Baja'
-        };
+        const labels = { 1: 'Alta', 2: 'Media', 3: 'Baja' };
         return labels[prioridad] || 'Normal';
       }
-      
+
       function getDisponibilidadIcon(disponibilidad) {
         const icons = {
           '24/7': 'fa-clock',
@@ -700,18 +623,18 @@
         };
         return icons[disponibilidad] || 'fa-clock';
       }
-      
+
       function generateId() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2);
       }
-      
+
       // Modal functions
       function openModal(contactoId = null) {
         currentEditId = contactoId;
         const modal = document.getElementById('contacts-modal');
         const title = document.getElementById('contacts-modal-title');
         const deleteBtn = document.getElementById('contacts-form-delete');
-        
+
         if (contactoId) {
           title.textContent = 'Editar Contacto';
           deleteBtn.classList.remove('hidden');
@@ -721,41 +644,41 @@
           deleteBtn.classList.add('hidden');
           resetForm();
         }
-        
+
         modal.classList.remove('hidden');
         document.getElementById('contacts-form-nombre').focus();
       }
-      
+
       function closeModal() {
         document.getElementById('contacts-modal').classList.add('hidden');
         currentEditId = null;
         resetForm();
       }
-      
+
       function resetForm() {
         document.getElementById('contacts-form').reset();
         document.getElementById('contacts-form-activo').checked = true;
       }
-      
+
       function loadContactoToForm(contactoId) {
         const contacto = contactos.find(c => c.id === contactoId);
         if (!contacto) return;
-        
-        document.getElementById('contacts-form-nombre').value = contacto.nombre;
-        document.getElementById('contacts-form-categoria').value = contacto.categoria;
-        document.getElementById('contacts-form-telefono').value = contacto.telefono;
+
+        document.getElementById('contacts-form-nombre').value = contacto.nombre || '';
+        document.getElementById('contacts-form-categoria').value = contacto.categoria || '';
+        document.getElementById('contacts-form-telefono').value = contacto.telefono || '';
         document.getElementById('contacts-form-telefono-alt').value = contacto.telefonoAlt || '';
-        document.getElementById('contacts-form-disponibilidad').value = contacto.disponibilidad;
-        document.getElementById('contacts-form-prioridad').value = contacto.prioridad;
+        document.getElementById('contacts-form-disponibilidad').value = contacto.disponibilidad || '24/7';
+        document.getElementById('contacts-form-prioridad').value = contacto.prioridad || 2;
         document.getElementById('contacts-form-descripcion').value = contacto.descripcion || '';
         document.getElementById('contacts-form-direccion').value = contacto.direccion || '';
         document.getElementById('contacts-form-email').value = contacto.email || '';
-        document.getElementById('contacts-form-activo').checked = contacto.activo;
+        document.getElementById('contacts-form-activo').checked = !!contacto.activo;
       }
-      
+
       function saveContacto(e) {
         e.preventDefault();
-        
+
         const formData = {
           nombre: document.getElementById('contacts-form-nombre').value,
           categoria: document.getElementById('contacts-form-categoria').value,
@@ -768,45 +691,39 @@
           email: document.getElementById('contacts-form-email').value,
           activo: document.getElementById('contacts-form-activo').checked
         };
-        
+
         if (currentEditId) {
           const index = contactos.findIndex(c => c.id === currentEditId);
-          if (index !== -1) {
-            contactos[index] = { ...contactos[index], ...formData };
-          }
+          if (index !== -1) contactos[index] = { ...contactos[index], ...formData };
         } else {
           formData.id = generateId();
           formData.fechaCreacion = new Date().toISOString().split('T')[0];
           contactos.push(formData);
         }
-        
+
         saveContactos();
         filterContactos();
         updateKPIs();
         closeModal();
       }
-      
-      // CRUD operations
-      window.editContacto = function(contactoId) {
-        openModal(contactoId);
-      };
-      
+
+      // CRUD helpers exposed to grid buttons
+      window.editContacto = function(contactoId) { openModal(contactoId); };
+
       window.toggleContactoStatus = function(contactoId) {
         const contacto = contactos.find(c => c.id === contactoId);
         if (!contacto) return;
-        
         contacto.activo = !contacto.activo;
         saveContactos();
         filterContactos();
         updateKPIs();
       };
-      
+
       function deleteContacto() {
         if (!currentEditId) return;
-        
         const contacto = contactos.find(c => c.id === currentEditId);
         if (!contacto) return;
-        
+
         if (confirm(`¿Estás seguro de que deseas eliminar el contacto "${contacto.nombre}"?`)) {
           contactos = contactos.filter(c => c.id !== currentEditId);
           saveContactos();
@@ -815,11 +732,11 @@
           closeModal();
         }
       }
-      
+
       window.deleteContactoFromGrid = function(contactoId) {
         const contacto = contactos.find(c => c.id === contactoId);
         if (!contacto) return;
-        
+
         if (confirm(`¿Estás seguro de que deseas eliminar el contacto "${contacto.nombre}"?`)) {
           contactos = contactos.filter(c => c.id !== contactoId);
           saveContactos();
@@ -827,8 +744,8 @@
           updateKPIs();
         }
       };
-      
-      // Import/Export functions
+
+      // Import/Export
       function exportCSV() {
         const headers = ['Nombre', 'Categoría', 'Teléfono', 'Teléfono Alt', 'Disponibilidad', 'Prioridad', 'Descripción', 'Dirección', 'Email', 'Activo'];
         const rows = contactos.map(contacto => [
@@ -843,97 +760,80 @@
           contacto.email || '',
           contacto.activo ? 'Sí' : 'No'
         ]);
-        
-        const csvContent = [headers, ...rows]
-          .map(row => row.map(field => `"${field}"`).join(','))
-          .join('\n');
-        
+
+        const csvContent = [headers, ...rows].map(row => row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',')).join('\n');
+
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `contactos_emergencia_${new Date().toISOString().split('T')[0]}.csv`);
-        link.style.visibility = 'hidden';
+        link.href = URL.createObjectURL(blob);
+        link.download = `contactos_emergencia_${new Date().toISOString().split('T')[0]}.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       }
-      
+
       function openImportModal() {
         document.getElementById('contacts-import-modal').classList.remove('hidden');
       }
-      
+
       function closeImportModal() {
         document.getElementById('contacts-import-modal').classList.add('hidden');
         document.getElementById('contacts-import-file').value = '';
       }
-      
+
       function importJSON() {
         const fileInput = document.getElementById('contacts-import-file');
         const file = fileInput.files[0];
-        
-        if (!file) {
-          alert('Por favor selecciona un archivo JSON');
-          return;
-        }
-        
+        if (!file) { alert('Por favor selecciona un archivo JSON'); return; }
+
         const reader = new FileReader();
         reader.onload = function(e) {
           try {
             const importedData = JSON.parse(e.target.result);
-            
-            if (!Array.isArray(importedData)) {
-              throw new Error('El archivo debe contener un array de contactos');
-            }
-            
-            // Validate structure
+            if (!Array.isArray(importedData)) throw new Error('El archivo debe contener un array de contactos');
+
             importedData.forEach((contacto, index) => {
               if (!contacto.nombre || !contacto.categoria || !contacto.telefono) {
                 throw new Error(`Contacto en posición ${index + 1} tiene estructura inválida`);
               }
             });
-            
-            // Assign new IDs to avoid conflicts
+
             const processedData = importedData.map(contacto => ({
               ...contacto,
               id: generateId(),
               fechaCreacion: new Date().toISOString().split('T')[0],
               activo: contacto.activo !== undefined ? contacto.activo : true
             }));
-            
+
             contactos = [...contactos, ...processedData];
             saveContactos();
             filterContactos();
             updateKPIs();
             closeImportModal();
-            
             alert(`Se importaron ${processedData.length} contactos exitosamente`);
-            
           } catch (error) {
             alert(`Error al importar: ${error.message}`);
           }
         };
-        
         reader.readAsText(file);
       }
-      
-      // Public preview functions
+
+      // Public preview
       function openPreviewModal() {
         const modal = document.getElementById('contacts-preview-modal');
         const content = document.getElementById('contacts-preview-content');
-        
         renderPublicView(content);
         modal.classList.remove('hidden');
       }
-      
+
       function closePreviewModal() {
         document.getElementById('contacts-preview-modal').classList.add('hidden');
       }
-      
+
       function renderPublicView(container) {
         const activeContactos = contactos.filter(c => c.activo);
         const groupedContactos = groupBy(activeContactos, 'categoria');
-        
+
         container.innerHTML = `
           <div class="bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl p-8 mb-8 text-center">
             <h1 class="text-3xl font-bold mb-4">🚨 Contactos de Emergencia</h1>
@@ -943,7 +843,7 @@
               <div class="text-sm">Número de Emergencia Nacional</div>
             </div>
           </div>
-          
+
           ${Object.entries(groupedContactos)
             .sort(([,a], [,b]) => Math.min(...a.map(c => c.prioridad)) - Math.min(...b.map(c => c.prioridad)))
             .map(([categoria, contactosCategoria]) => `
@@ -973,7 +873,7 @@
                             </a>
                           </div>
                         </div>
-                        
+
                         <div class="space-y-3">
                           <div class="flex items-center text-gray-700">
                             <i class="fas fa-phone text-red-500 mr-3 w-5"></i>
@@ -982,19 +882,19 @@
                               ${contacto.telefonoAlt ? `<div class="text-sm text-gray-500">Alt: ${contacto.telefonoAlt}</div>` : ''}
                             </div>
                           </div>
-                          
+
                           <div class="flex items-center text-gray-600">
                             <i class="fas ${getDisponibilidadIcon(contacto.disponibilidad)} text-blue-500 mr-3 w-5"></i>
                             <span>${contacto.disponibilidad}</span>
                           </div>
-                          
+
                           ${contacto.direccion ? `
                             <div class="flex items-center text-gray-600">
                               <i class="fas fa-map-marker-alt text-green-500 mr-3 w-5"></i>
                               <span>${contacto.direccion}</span>
                             </div>
                           ` : ''}
-                          
+
                           ${contacto.email ? `
                             <div class="flex items-center text-gray-600">
                               <i class="fas fa-envelope text-purple-500 mr-3 w-5"></i>
@@ -1002,7 +902,7 @@
                             </div>
                           ` : ''}
                         </div>
-                        
+
                         ${contacto.descripcion ? `
                           <div class="mt-4 pt-4 border-t border-gray-100">
                             <p class="text-gray-600 text-sm">${contacto.descripcion}</p>
@@ -1013,7 +913,7 @@
                 </div>
               </div>
             `).join('')}
-          
+
           <div class="mt-12 bg-gray-50 rounded-xl p-6 text-center">
             <h3 class="text-lg font-semibold text-gray-800 mb-2">¿Necesitas ayuda?</h3>
             <p class="text-gray-600 mb-4">Si no encuentras el servicio que buscas, contacta a la Presidencia Municipal</p>
@@ -1021,32 +921,28 @@
           </div>
         `;
       }
-      
-      // Utility function to group array by property
+
+      // Helpers
       function groupBy(array, property) {
         return array.reduce((groups, item) => {
           const group = item[property];
-          if (!groups[group]) {
-            groups[group] = [];
-          }
+          if (!groups[group]) groups[group] = [];
           groups[group].push(item);
           return groups;
         }, {});
       }
-      
-      // Public API for getting contacts (for use in public pages)
+
+      // Public API for other pages
       window.getEmergencyContacts = function() {
         const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
+        if (!stored) return [];
+        try {
           const allContacts = JSON.parse(stored);
           return allContacts.filter(c => c.activo);
+        } catch {
+          return [];
         }
-        return [];
       };
-      
-      // Initialize filtered contacts
-      filteredContactos = [...contactos];
-      
     })();
   </script>
 </section>
