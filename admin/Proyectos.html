@@ -693,7 +693,7 @@
 
   function getEtapasFromForm(){
     const res = [];
-    document.querySelectorAll('[data-role="form-etapa-panel"]').forEach((el)=>{
+    document.querySelectorAll('[data-form-role="form-etapa-panel"]').forEach((el)=>{
       const id = el.getAttribute("data-etapa-id");
       const nombre = el.querySelector('[data-field="nombre"]').value;
       const peso = parseFloat(el.querySelector('[data-field="peso"]').value) || 0;
@@ -760,7 +760,7 @@
     wrap.setAttribute("data-role","panel");
     wrap.setAttribute("data-etapa-id", id);
     wrap.setAttribute("data-photo-ids", photoIds.join(","));
-    wrap.setAttribute("data-role","form-etapa-panel");
+    wrap.setAttribute("data-form-role","form-etapa-panel");
 
     wrap.innerHTML = `
       <div class="flex items-center justify-between mb-4">
