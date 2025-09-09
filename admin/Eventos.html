@@ -1,0 +1,306 @@
+<!-- Eventos.html -->
+<section class="section-content p-6">
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Eventos</h2>
+      <p class="text-gov-gray">Gestión de eventos municipales y comunitarios</p>
+    </div>
+    <button onclick="Eventos.openForm()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition flex items-center">
+      <i class="fas fa-plus mr-2"></i> Agregar Evento
+    </button>
+  </div>
+
+  <!-- Filtros -->
+  <div class="bg-white p-4 rounded-xl shadow mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <select id="filterCategoria" onchange="Eventos.applyFilters()" class="px-4 py-2 border rounded-lg">
+        <option value="">Todas las categorías</option>
+        <option value="Religioso">Religioso</option>
+        <option value="Deportivo">Deportivo</option>
+        <option value="Cultural">Cultural</option>
+        <option value="Gastronomico">Gastronómico</option>
+        <option value="Familiar">Familiar</option>
+      </select>
+      <select id="filterOrganizador" onchange="Eventos.applyFilters()" class="px-4 py-2 border rounded-lg">
+        <option value="">Todos los organizadores</option>
+      </select>
+      <select id="filterMes" onchange="Eventos.applyFilters()" class="px-4 py-2 border rounded-lg">
+        <option value="">Todos los meses</option>
+        <option value="01">Enero</option>
+        <option value="02">Febrero</option>
+        <option value="03">Marzo</option>
+        <option value="04">Abril</option>
+        <option value="05">Mayo</option>
+        <option value="06">Junio</option>
+        <option value="07">Julio</option>
+        <option value="08">Agosto</option>
+        <option value="09">Septiembre</option>
+        <option value="10">Octubre</option>
+        <option value="11">Noviembre</option>
+        <option value="12">Diciembre</option>
+      </select>
+      <select id="filterEstado" onchange="Eventos.applyFilters()" class="px-4 py-2 border rounded-lg">
+        <option value="">Todos</option>
+        <option value="Pendiente">Pendiente</option>
+        <option value="Finalizado">Finalizado</option>
+      </select>
+    </div>
+    <button onclick="Eventos.clearFilters()" class="mt-2 text-sm text-indigo-600 hover:underline">Limpiar filtros</button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="bg-white rounded-xl shadow overflow-hidden">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-50 text-left">
+        <tr>
+          <th class="px-4 py-3">Evento</th>
+          <th class="px-4 py-3">Fecha y Hora</th>
+          <th class="px-4 py-3">Lugar</th>
+          <th class="px-4 py-3">Organizador</th>
+          <th class="px-4 py-3">Estado</th>
+          <th class="px-4 py-3">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="eventos-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal Formulario -->
+<div id="evento-modal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-xl w-full max-w-2xl shadow-lg overflow-y-auto max-h-[90vh]">
+    <div class="flex justify-between items-center px-6 py-4 border-b">
+      <h3 id="evento-modal-title" class="text-lg font-bold">Agregar Evento</h3>
+      <button onclick="Eventos.closeForm()" class="text-gray-500 hover:text-gray-800"><i class="fas fa-times"></i></button>
+    </div>
+
+    <form id="evento-form" class="p-6 space-y-4">
+      <div>
+        <label class="block text-sm font-medium">Título del Evento *</label>
+        <input type="text" id="titulo" required class="w-full px-3 py-2 border rounded-lg">
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Descripción *</label>
+        <textarea id="descripcion" rows="3" required class="w-full px-3 py-2 border rounded-lg"></textarea>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium">Fecha de Inicio *</label>
+          <input type="date" id="fechaInicio" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Fecha de Fin</label>
+          <input type="date" id="fechaFin" class="w-full px-3 py-2 border rounded-lg">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Hora *</label>
+        <input type="text" id="hora" required placeholder="Ej. 18:00 hrs, Todo el día" class="w-full px-3 py-2 border rounded-lg">
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium">Lugar *</label>
+          <input type="text" id="lugar" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Colonia</label>
+          <input type="text" id="colonia" class="w-full px-3 py-2 border rounded-lg">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Organizador *</label>
+        <input type="text" id="organizador" required class="w-full px-3 py-2 border rounded-lg">
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium">Contacto</label>
+          <input type="text" id="contacto" class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Precio *</label>
+          <input type="text" id="precio" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Categoría *</label>
+        <select id="categoria" required class="w-full px-3 py-2 border rounded-lg">
+          <option value="">Seleccionar categoría</option>
+          <option value="Religioso">Religioso</option>
+          <option value="Deportivo">Deportivo</option>
+          <option value="Cultural">Cultural</option>
+          <option value="Gastronomico">Gastronómico</option>
+          <option value="Familiar">Familiar</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2">
+        <input type="checkbox" id="destacado">
+        <label for="destacado">Marcar como evento destacado</label>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Fotos del Evento</label>
+        <input type="file" id="fotos" multiple accept="image/*" class="w-full px-3 py-2 border rounded-lg">
+        <div id="foto-preview" class="grid grid-cols-3 gap-2 mt-2"></div>
+      </div>
+      <div class="flex justify-end gap-3 pt-4">
+        <button type="button" onclick="Eventos.closeForm()" class="px-4 py-2 border rounded-lg">Cancelar</button>
+        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(() => {
+  const LS_KEY = "eventos";
+  let eventos = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+  let editId = null;
+  let currentFotos = [];
+
+  // ---------- Render ----------
+  function render() {
+    const body = document.getElementById("eventos-body");
+    if (!body) return;
+    body.innerHTML = eventos.map(ev => `
+      <tr class="border-t">
+        <td class="px-4 py-3">
+          <div class="font-semibold">${ev.titulo}</div>
+          <div class="text-gray-500 text-xs">${ev.descripcion}</div>
+          ${ev.destacado ? `<span class="bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded">Destacado</span>` : ""}
+        </td>
+        <td class="px-4 py-3">${ev.fechaInicio}${ev.fechaFin ? " - " + ev.fechaFin : ""}<br><span class="text-gray-500 text-xs">${ev.hora}</span></td>
+        <td class="px-4 py-3">${ev.lugar}<br><span class="text-gray-500 text-xs">${ev.colonia||""}</span></td>
+        <td class="px-4 py-3">${ev.organizador}<br><span class="text-gray-500 text-xs">${ev.contacto||""}</span></td>
+        <td class="px-4 py-3"><span class="px-2 py-1 rounded bg-gray-100">${ev.categoria}</span><br><span class="text-xs text-gray-500">${ev.estado||"Pendiente"}</span></td>
+        <td class="px-4 py-3 flex gap-2">
+          <button onclick="Eventos.edit(${ev.id})" class="text-yellow-600"><i class="fas fa-edit"></i></button>
+          <button onclick="Eventos.remove(${ev.id})" class="text-red-600"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  // ---------- Filters ----------
+  function applyFilters() {
+    const cat = document.getElementById("filterCategoria").value;
+    const org = document.getElementById("filterOrganizador").value;
+    const mes = document.getElementById("filterMes").value;
+    const est = document.getElementById("filterEstado").value;
+
+    let filtered = [...eventos];
+    if (cat) filtered = filtered.filter(e => e.categoria === cat);
+    if (org) filtered = filtered.filter(e => e.organizador === org);
+    if (mes) filtered = filtered.filter(e => (e.fechaInicio||"").split("-")[1] === mes);
+    if (est) filtered = filtered.filter(e => (e.estado||"") === est);
+
+    const body = document.getElementById("eventos-body");
+    body.innerHTML = filtered.map(ev => `
+      <tr class="border-t">
+        <td class="px-4 py-3"><div class="font-semibold">${ev.titulo}</div></td>
+        <td class="px-4 py-3">${ev.fechaInicio}</td>
+        <td class="px-4 py-3">${ev.lugar}</td>
+        <td class="px-4 py-3">${ev.organizador}</td>
+        <td class="px-4 py-3">${ev.categoria}</td>
+        <td class="px-4 py-3"><button onclick="Eventos.edit(${ev.id})"><i class="fas fa-edit"></i></button></td>
+      </tr>
+    `).join("");
+  }
+  function clearFilters() {
+    ["filterCategoria","filterOrganizador","filterMes","filterEstado"].forEach(id => document.getElementById(id).value = "");
+    render();
+  }
+
+  // ---------- Form ----------
+  function openForm(id=null) {
+    editId = id;
+    document.getElementById("evento-modal").classList.remove("hidden");
+    document.getElementById("evento-modal-title").textContent = id ? "Editar Evento" : "Agregar Evento";
+    document.getElementById("evento-form").reset();
+    currentFotos = [];
+    document.getElementById("foto-preview").innerHTML = "";
+
+    if (id) {
+      const ev = eventos.find(e => e.id === id);
+      if (!ev) return;
+      ["titulo","descripcion","fechaInicio","fechaFin","hora","lugar","colonia","organizador","contacto","precio","categoria"].forEach(f => {
+        const el = document.getElementById(f);
+        if (el) el.value = ev[f] || "";
+      });
+      document.getElementById("destacado").checked = ev.destacado;
+      currentFotos = ev.fotos || [];
+      renderPreviews();
+    }
+  }
+  function closeForm(){ document.getElementById("evento-modal").classList.add("hidden"); }
+
+  document.getElementById("evento-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const data = {
+      id: editId || (eventos.length ? Math.max(...eventos.map(e=>e.id))+1 : 1),
+      titulo: titulo.value.trim(),
+      descripcion: descripcion.value.trim(),
+      fechaInicio: fechaInicio.value,
+      fechaFin: fechaFin.value,
+      hora: hora.value,
+      lugar: lugar.value,
+      colonia: colonia.value,
+      organizador: organizador.value,
+      contacto: contacto.value,
+      precio: precio.value,
+      categoria: categoria.value,
+      destacado: document.getElementById("destacado").checked,
+      fotos: currentFotos,
+      estado: "Pendiente"
+    };
+
+    if (editId) {
+      const i = eventos.findIndex(e => e.id===editId);
+      if (i!==-1) eventos[i]=data;
+    } else {
+      eventos.push(data);
+    }
+    localStorage.setItem(LS_KEY, JSON.stringify(eventos));
+    render();
+    closeForm();
+  });
+
+  // ---------- Fotos ----------
+  document.getElementById("fotos").addEventListener("change", e => {
+    const files = Array.from(e.target.files);
+    files.forEach(f => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        currentFotos.push(ev.target.result);
+        renderPreviews();
+      };
+      reader.readAsDataURL(f);
+    });
+    e.target.value="";
+  });
+
+  function renderPreviews(){
+    const c = document.getElementById("foto-preview");
+    c.innerHTML = currentFotos.map((src,i)=>`
+      <div class="relative group">
+        <img src="${src}" class="w-full h-20 object-cover rounded border">
+        <button type="button" onclick="Eventos.removeFoto(${i})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">×</button>
+      </div>`).join("");
+  }
+
+  function removeFoto(i){ currentFotos.splice(i,1); renderPreviews(); }
+
+  // ---------- CRUD ----------
+  function edit(id){ openForm(id); }
+  function remove(id){
+    if (!confirm("¿Eliminar este evento?")) return;
+    eventos = eventos.filter(e => e.id!==id);
+    localStorage.setItem(LS_KEY, JSON.stringify(eventos));
+    render();
+  }
+
+  // ---------- Expose ----------
+  window.Eventos = { openForm, closeForm, edit, remove, applyFilters, clearFilters, removeFoto };
+
+  // ---------- Init ----------
+  render();
+})();
+</script>
