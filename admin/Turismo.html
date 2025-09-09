@@ -369,68 +369,80 @@
   function setVal(id, val){ const el = document.getElementById(id); if (el) el.value = val ?? ''; }
 
   // Submit (save)
-  document.getElementById('turismo-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
+document.getElementById('turismo-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-    const data = {
-      nombre: document.getElementById('nombre').value.trim(),
-      categoria: document.getElementById('categoria').value.trim(),
-      descripcion: document.getElementById('descripcion').value.trim(),
-      direccion: document.getElementById('direccion').value.trim(),
-      horario: document.getElementById('horario').value.trim(),
-      precio: document.getElementById('precio').value.trim(),
-      googleMaps: document.getElementById('googleMaps').value.trim(),
-      recomendaciones: document.getElementById('recomendaciones').value.trim(),
-      icono: document.getElementById('icono').value || 'fas fa-map-marked-alt',
-      showInHome: document.getElementById('showInHome').checked,
-      useAsHero: document.getElementById('useAsHero').checked
-    };
+  // --- Collect form data ---
+  const data = {
+    nombre: document.getElementById('nombre').value.trim(),
+    categoria: document.getElementById('categoria').value.trim(),
+    descripcion: document.getElementById('descripcion').value.trim(),
+    direccion: document.getElementById('direccion').value.trim(),
+    horario: document.getElementById('horario').value.trim(),
+    precio: document.getElementById('precio').value.trim(),
+    googleMaps: document.getElementById('googleMaps').value.trim(),
+    recomendaciones: document.getElementById('recomendaciones').value.trim(),
+    icono: document.getElementById('icono').value || 'fas fa-map-marked-alt',
+    // NEW: flags
+    showInHome: !!document.getElementById('showInHome')?.checked,
+    useAsHero: !!document.getElementById('useAsHero')?.checked,
+  };
 
-    if (!data.nombre || !data.categoria || !data.descripcion || !data.direccion || !data.horario || !data.precio || !data.googleMaps) {
-      alert('Por favor completa los campos obligatorios (*)');
-      return;
+  // --- Basic validations ---
+  if (!data.nombre || !data.categoria || !data.descripcion || !data.direccion || !data.horario || !data.precio || !data.googleMaps) {
+    alert('Por favor completa los campos obligatorios (*)');
+    return;
+  }
+
+  // --- Persist photos to IDB; keep order ---
+  const fotoIds = [];
+  const keptExisting = new Set();
+  for (const f of currentFotos) {
+    if (f._removed) continue;
+    if (f.existingId) {
+      fotoIds.push(f.existingId);
+      keptExisting.add(f.existingId);
+    } else if (f.blob) {
+      const id = generateId();
+      await idbPut(id, f.blob);
+      fotoIds.push(id);
     }
+  }
 
-    // Persist photos to IDB; keep order; compute fotoIds
-    const fotoIds = [];
-    const keptExisting = new Set();
-    for (const f of currentFotos){
-      if (f._removed) continue;
-      if (f.existingId){
-        fotoIds.push(f.existingId);
-        keptExisting.add(f.existingId);
-      } else if (f.blob){
-        const id = generateId();
-        await idbPut(id, f.blob);
-        fotoIds.push(id);
-      }
+  // If editing, delete removed blobs from IDB
+  if (editId && editOriginalFotoIds.length) {
+    const removed = editOriginalFotoIds.filter(oldId => !keptExisting.has(oldId));
+    removed.forEach(idbDelete);
+  }
+
+  // Main image index (safety clamp)
+  const imagenPrincipal = Math.min(mainIdx, Math.max(fotoIds.length - 1, 0));
+
+  // --- Enforce uniqueness of flags BEFORE writing current record ---
+  if (data.useAsHero) {
+    lugares = lugares.map(l => ({ ...l, useAsHero: false }));
+  }
+  if (data.showInHome) {
+    lugares = lugares.map(l => ({ ...l, showInHome: false }));
+  }
+
+  // --- Upsert ---
+  if (editId) {
+    const i = lugares.findIndex(x => x.id === editId);
+    if (i !== -1) {
+      lugares[i] = { ...lugares[i], ...data, fotoIds, imagenPrincipal };
     }
+  } else {
+    const newId = (lugares.length ? Math.max(...lugares.map(x => x.id)) : 0) + 1;
+    lugares.push({ id: newId, ...data, fotoIds, imagenPrincipal });
+  }
 
-    // Delete removed blobs if editing
-    if (editId && editOriginalFotoIds.length){
-      const removed = editOriginalFotoIds.filter(oldId => !keptExisting.has(oldId));
-      removed.forEach(idbDelete);
-    }
+  // --- Persist & refresh UI ---
+  save(lugares);
+  await renderList();
+  closeForm();
+});
 
-    const imagenPrincipal = Math.min(mainIdx, Math.max(fotoIds.length - 1, 0));
-
-    // Ensure useAsHero uniqueness
-    if (data.useAsHero) {
-      lugares = lugares.map(l => ({ ...l, useAsHero: false }));
-    }
-
-    if (editId) {
-      const i = lugares.findIndex(x => x.id === editId);
-      if (i !== -1) lugares[i] = { ...lugares[i], ...data, fotoIds, imagenPrincipal };
-    } else {
-      const newId = (lugares.length ? Math.max(...lugares.map(x => x.id)) : 0) + 1;
-      lugares.push({ id: newId, ...data, fotoIds, imagenPrincipal });
-    }
-
-    save(lugares);
-    await renderList();
-    closeForm();
-  });
 
   // ===== Imágenes (previews) =====
   document.getElementById('imagenes').addEventListener('change', (ev) => {
