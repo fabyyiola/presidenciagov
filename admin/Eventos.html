@@ -13,65 +13,6 @@
     </button>
   </div>
 
-  <!-- Filtros -->
-  <div class="bg-white p-4 rounded-xl shadow mb-6">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <select
-        id="filterCategoria"
-        onchange="Eventos.applyFilters()"
-        class="px-4 py-2 border rounded-lg"
-      >
-        <option value="">Todas las categorías</option>
-        <option value="Religioso">Religioso</option>
-        <option value="Deportivo">Deportivo</option>
-        <option value="Cultural">Cultural</option>
-        <option value="Gastronomico">Gastronómico</option>
-        <option value="Familiar">Familiar</option>
-      </select>
-      <select
-        id="filterOrganizador"
-        onchange="Eventos.applyFilters()"
-        class="px-4 py-2 border rounded-lg"
-      >
-        <option value="">Todos los organizadores</option>
-      </select>
-      <select
-        id="filterMes"
-        onchange="Eventos.applyFilters()"
-        class="px-4 py-2 border rounded-lg"
-      >
-        <option value="">Todos los meses</option>
-        <option value="01">Enero</option>
-        <option value="02">Febrero</option>
-        <option value="03">Marzo</option>
-        <option value="04">Abril</option>
-        <option value="05">Mayo</option>
-        <option value="06">Junio</option>
-        <option value="07">Julio</option>
-        <option value="08">Agosto</option>
-        <option value="09">Septiembre</option>
-        <option value="10">Octubre</option>
-        <option value="11">Noviembre</option>
-        <option value="12">Diciembre</option>
-      </select>
-      <select
-        id="filterEstado"
-        onchange="Eventos.applyFilters()"
-        class="px-4 py-2 border rounded-lg"
-      >
-        <option value="">Todos</option>
-        <option value="Pendiente">Pendiente</option>
-        <option value="Finalizado">Finalizado</option>
-      </select>
-    </div>
-    <button
-      onclick="Eventos.clearFilters()"
-      class="mt-2 text-sm text-indigo-600 hover:underline"
-    >
-      Limpiar filtros
-    </button>
-  </div>
-
   <!-- KPIs (Eventos) -->
   <section class="mb-6">
     <div
@@ -150,6 +91,64 @@
       </div>
     </div>
   </section>
+  <!-- Filtros -->
+  <div class="bg-white p-4 rounded-xl shadow mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <select
+        id="filterCategoria"
+        onchange="Eventos.applyFilters()"
+        class="px-4 py-2 border rounded-lg"
+      >
+        <option value="">Todas las categorías</option>
+        <option value="Religioso">Religioso</option>
+        <option value="Deportivo">Deportivo</option>
+        <option value="Cultural">Cultural</option>
+        <option value="Gastronomico">Gastronómico</option>
+        <option value="Familiar">Familiar</option>
+      </select>
+      <select
+        id="filterOrganizador"
+        onchange="Eventos.applyFilters()"
+        class="px-4 py-2 border rounded-lg"
+      >
+        <option value="">Todos los organizadores</option>
+      </select>
+      <select
+        id="filterMes"
+        onchange="Eventos.applyFilters()"
+        class="px-4 py-2 border rounded-lg"
+      >
+        <option value="">Todos los meses</option>
+        <option value="01">Enero</option>
+        <option value="02">Febrero</option>
+        <option value="03">Marzo</option>
+        <option value="04">Abril</option>
+        <option value="05">Mayo</option>
+        <option value="06">Junio</option>
+        <option value="07">Julio</option>
+        <option value="08">Agosto</option>
+        <option value="09">Septiembre</option>
+        <option value="10">Octubre</option>
+        <option value="11">Noviembre</option>
+        <option value="12">Diciembre</option>
+      </select>
+      <select
+        id="filterEstado"
+        onchange="Eventos.applyFilters()"
+        class="px-4 py-2 border rounded-lg"
+      >
+        <option value="">Todos</option>
+        <option value="Pendiente">Pendiente</option>
+        <option value="Finalizado">Finalizado</option>
+      </select>
+    </div>
+    <button
+      onclick="Eventos.clearFilters()"
+      class="mt-2 text-sm text-indigo-600 hover:underline"
+    >
+      Limpiar filtros
+    </button>
+  </div>
 
   <!-- Tabla -->
   <div class="bg-white rounded-xl shadow overflow-hidden">
