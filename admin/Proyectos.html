@@ -362,9 +362,23 @@
   </div>
 </section>
 
-<script>
-(function(){
-  "use strict";
+
+  <script>
+    (function () {
+      "use strict";
+
+      const STORAGE_KEY = "municipio.proyectos.v1";
+      const IDB_NAME = "proyectos_media";
+      const IDB_STORE = "etapa_fotos";
+
+      let proyectos = [];
+      let filteredProyectos = [];
+      let currentEditId = null;
+      let etapaCounter = 0;
+      let tareaCounter = 0;
+      let db = null;
+
+       "use strict";
 
   // --- existing variables ---
   let etapaCounter = 0;
@@ -423,24 +437,6 @@
     const first = document.querySelector('#etapas-tablist [data-tab-for]');
     if(first) selectEtapaTab(first.getAttribute("data-tab-for"));
   };
-
-  // ... keep the rest of your script unchanged (init, CRUD, KPIs, etc.) ...
-})();
-</script>
-  <script>
-    (function () {
-      "use strict";
-
-      const STORAGE_KEY = "municipio.proyectos.v1";
-      const IDB_NAME = "proyectos_media";
-      const IDB_STORE = "etapa_fotos";
-
-      let proyectos = [];
-      let filteredProyectos = [];
-      let currentEditId = null;
-      let etapaCounter = 0;
-      let tareaCounter = 0;
-      let db = null;
 
       // ------------ IndexedDB helpers -------------
       function idbOpen() {
