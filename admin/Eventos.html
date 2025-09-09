@@ -26,18 +26,12 @@
       </select>
       <select id="filterMes" onchange="Eventos.applyFilters()" class="px-4 py-2 border rounded-lg">
         <option value="">Todos los meses</option>
-        <option value="01">Enero</option>
-        <option value="02">Febrero</option>
-        <option value="03">Marzo</option>
-        <option value="04">Abril</option>
-        <option value="05">Mayo</option>
-        <option value="06">Junio</option>
-        <option value="07">Julio</option>
-        <option value="08">Agosto</option>
-        <option value="09">Septiembre</option>
-        <option value="10">Octubre</option>
-        <option value="11">Noviembre</option>
-        <option value="12">Diciembre</option>
+        <option value="01">Enero</option><option value="02">Febrero</option>
+        <option value="03">Marzo</option><option value="04">Abril</option>
+        <option value="05">Mayo</option><option value="06">Junio</option>
+        <option value="07">Julio</option><option value="08">Agosto</option>
+        <option value="09">Septiembre</option><option value="10">Octubre</option>
+        <option value="11">Noviembre</option><option value="12">Diciembre</option>
       </select>
       <select id="filterEstado" onchange="Eventos.applyFilters()" class="px-4 py-2 border rounded-lg">
         <option value="">Todos</option>
@@ -83,6 +77,7 @@
         <label class="block text-sm font-medium">Descripción *</label>
         <textarea id="descripcion" rows="3" required class="w-full px-3 py-2 border rounded-lg"></textarea>
       </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium">Fecha de Inicio *</label>
@@ -93,10 +88,12 @@
           <input type="date" id="fechaFin" class="w-full px-3 py-2 border rounded-lg">
         </div>
       </div>
+
       <div>
         <label class="block text-sm font-medium">Hora *</label>
         <input type="text" id="hora" required placeholder="Ej. 18:00 hrs, Todo el día" class="w-full px-3 py-2 border rounded-lg">
       </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium">Lugar *</label>
@@ -107,10 +104,12 @@
           <input type="text" id="colonia" class="w-full px-3 py-2 border rounded-lg">
         </div>
       </div>
+
       <div>
         <label class="block text-sm font-medium">Organizador *</label>
         <input type="text" id="organizador" required class="w-full px-3 py-2 border rounded-lg">
       </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium">Contacto</label>
@@ -121,6 +120,7 @@
           <input type="text" id="precio" required class="w-full px-3 py-2 border rounded-lg">
         </div>
       </div>
+
       <div>
         <label class="block text-sm font-medium">Categoría *</label>
         <select id="categoria" required class="w-full px-3 py-2 border rounded-lg">
@@ -132,15 +132,28 @@
           <option value="Familiar">Familiar</option>
         </select>
       </div>
+
       <div class="flex items-center gap-2">
         <input type="checkbox" id="destacado">
         <label for="destacado">Marcar como evento destacado</label>
       </div>
+
       <div>
         <label class="block text-sm font-medium">Fotos del Evento</label>
         <input type="file" id="fotos" multiple accept="image/*" class="w-full px-3 py-2 border rounded-lg">
         <div id="foto-preview" class="grid grid-cols-3 gap-2 mt-2"></div>
       </div>
+
+      <!-- NUEVOS CAMPOS -->
+      <div>
+        <label class="block text-sm font-medium">Link de Google Maps</label>
+        <input type="url" id="googleMaps" placeholder="https://maps.google.com/..." class="w-full px-3 py-2 border rounded-lg">
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Recomendaciones</label>
+        <textarea id="recomendaciones" rows="2" placeholder="Ej. No llevar vidrio" class="w-full px-3 py-2 border rounded-lg"></textarea>
+      </div>
+
       <div class="flex justify-end gap-3 pt-4">
         <button type="button" onclick="Eventos.closeForm()" class="px-4 py-2 border rounded-lg">Cancelar</button>
         <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Guardar</button>
@@ -149,41 +162,43 @@
   </div>
 </div>
 
-<!-- Modal Detalle + Carrusel -->
+<!-- Modal Detalle (tipo Lugares Turísticos) -->
 <div id="evento-detalle-modal" class="fixed inset-0 bg-black/60 hidden z-50 p-4">
-  <div class="bg-white rounded-xl max-w-4xl mx-auto h-full overflow-y-auto">
+  <div class="bg-white rounded-xl max-w-5xl mx-auto h-full overflow-y-auto">
     <div class="flex justify-between items-center px-6 py-4 border-b sticky top-0 bg-white">
       <h3 class="text-lg font-bold" id="detalle-title">Detalle del Evento</h3>
       <button onclick="Eventos.closeDetalle()" class="text-gray-500 hover:text-gray-800"><i class="fas fa-times"></i></button>
     </div>
 
-    <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Carrusel -->
-      <div class="lg:col-span-2">
-        <div class="relative rounded-xl overflow-hidden bg-gray-100 aspect-video select-none" id="carousel-wrapper">
-          <img id="carousel-image" class="w-full h-full object-cover" alt="Imagen del evento">
-          <!-- Controles -->
-          <button id="carousel-prev" class="absolute inset-y-0 left-0 px-3 text-white/90 hover:text-white text-2xl flex items-center"
-                  onclick="Eventos.prevFoto()"
-                  aria-label="Anterior">❮</button>
-          <button id="carousel-next" class="absolute inset-y-0 right-0 px-3 text-white/90 hover:text-white text-2xl flex items-center"
-                  onclick="Eventos.nextFoto()"
-                  aria-label="Siguiente">❯</button>
-          <!-- Indicadores -->
-          <div id="carousel-dots" class="absolute bottom-2 left-0 right-0 flex justify-center gap-2"></div>
-        </div>
+    <div class="p-6">
+      <!-- Foto principal -->
+      <div class="rounded-xl overflow-hidden bg-gray-100">
+        <img id="carousel-image" class="w-full h-[360px] md:h-[440px] object-cover" alt="Imagen del evento">
       </div>
 
-      <!-- Datos -->
-      <div class="space-y-2">
-        <div><span class="text-xs uppercase text-gray-500">Fechas</span><div id="detalle-fechas" class="font-medium"></div></div>
-        <div><span class="text-xs uppercase text-gray-500">Hora</span><div id="detalle-hora" class="font-medium"></div></div>
-        <div><span class="text-xs uppercase text-gray-500">Lugar</span><div id="detalle-lugar" class="font-medium"></div></div>
-        <div><span class="text-xs uppercase text-gray-500">Organizador</span><div id="detalle-organizador" class="font-medium"></div></div>
-        <div><span class="text-xs uppercase text-gray-500">Contacto</span><div id="detalle-contacto" class="font-medium"></div></div>
-        <div><span class="text-xs uppercase text-gray-500">Precio</span><div id="detalle-precio" class="font-medium"></div></div>
-        <div><span class="text-xs uppercase text-gray-500">Categoría</span><div id="detalle-categoria" class="font-medium"></div></div>
-        <div><span class="text-xs uppercase text-gray-500">Descripción</span><p id="detalle-descripcion" class="text-sm text-gray-700"></p></div>
+      <!-- Miniaturas -->
+      <div id="thumbs" class="flex gap-3 mt-4 overflow-x-auto pb-1"></div>
+
+      <!-- Info en dos columnas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <div class="space-y-2">
+          <div class="font-semibold" id="detalle-titulo"></div>
+          <p id="detalle-descripcion" class="text-sm text-gray-700"></p>
+
+          <div class="flex items-start gap-2"><i class="fas fa-tags text-orange-500 mt-[2px]"></i><span class="font-medium" id="detalle-categoria"></span></div>
+          <div class="flex items-start gap-2"><i class="fas fa-map-marker-alt text-orange-500 mt-[2px]"></i><span class="font-medium" id="detalle-lugar"></span></div>
+          <div class="flex items-start gap-2"><i class="far fa-clock text-orange-500 mt-[2px]"></i><span class="font-medium" id="detalle-hora"></span></div>
+          <div class="flex items-start gap-2"><i class="fas fa-dollar-sign text-orange-500 mt-[2px]"></i><span class="font-medium" id="detalle-precio"></span></div>
+        </div>
+
+        <div class="bg-gray-50 rounded-xl p-5">
+          <div class="font-semibold mb-1">Recomendaciones</div>
+          <div id="detalle-recomendaciones" class="text-sm text-gray-700 mb-4"></div>
+          <a id="detalle-gmaps-btn" href="#" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg disabled:opacity-50 disabled:pointer-events-none">
+            <i class="fas fa-map-marked-alt"></i> Ver en Google Maps
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -201,9 +216,7 @@
   const request = indexedDB.open("EventosDB", 1);
   request.onupgradeneeded = e => {
     db = e.target.result;
-    if (!db.objectStoreNames.contains("imagenes")) {
-      db.createObjectStore("imagenes");
-    }
+    if (!db.objectStoreNames.contains("imagenes")) db.createObjectStore("imagenes");
   };
   request.onsuccess = e => { db = e.target.result; render(); };
 
@@ -228,7 +241,7 @@
     tx.objectStore("imagenes").delete(id);
   }
 
-  // --- Render list ---
+  // --- Render tabla ---
   async function render() {
     const body = document.getElementById("eventos-body");
     if (!body) return;
@@ -236,7 +249,7 @@
 
     for (const ev of eventos) {
       let thumbHtml = "";
-      if (ev.fotoIds && ev.fotoIds.length) {
+      if (ev.fotoIds?.length) {
         const blob = await getImage(ev.fotoIds[0]);
         if (blob) {
           const url = URL.createObjectURL(blob);
@@ -245,7 +258,7 @@
       }
 
       body.innerHTML += `
-        <tr class="border-t hover:bg-gray-50 cursor-pointer" data-id="${ev.id}" onclick="Eventos.view(${ev.id})">
+        <tr class="border-t hover:bg-gray-50 cursor-pointer" onclick="Eventos.view(${ev.id})">
           <td class="px-4 py-3">
             <div class="font-semibold">${ev.titulo}</div>
             <div class="text-gray-500 text-xs line-clamp-2">${ev.descripcion || ""}</div>
@@ -260,13 +273,12 @@
             <button onclick="event.stopPropagation(); Eventos.edit(${ev.id})" class="text-yellow-600 hover:text-yellow-700" title="Editar"><i class="fas fa-edit"></i></button>
             <button onclick="event.stopPropagation(); Eventos.remove(${ev.id})" class="text-red-600 hover:text-red-700" title="Eliminar"><i class="fas fa-trash"></i></button>
           </td>
-        </tr>
-      `;
+        </tr>`;
     }
   }
 
-  // --- Filters (placeholder) ---
-  function applyFilters(){ /* TODO: implementar */ }
+  // --- Filtros (placeholder) ---
+  function applyFilters(){ /* TODO */ }
   function clearFilters(){ render(); }
 
   // --- Form ---
@@ -281,10 +293,8 @@
     if (id) {
       const ev = eventos.find(e => e.id === id);
       if (!ev) return;
-      ["titulo","descripcion","fechaInicio","fechaFin","hora","lugar","colonia","organizador","contacto","precio","categoria"].forEach(f => {
-        const el = document.getElementById(f);
-        if (el) el.value = ev[f] || "";
-      });
+      ["titulo","descripcion","fechaInicio","fechaFin","hora","lugar","colonia","organizador","contacto","precio","categoria","googleMaps","recomendaciones"]
+        .forEach(f => { const el = document.getElementById(f); if (el) el.value = ev[f] || ""; });
       document.getElementById("destacado").checked = ev.destacado;
     }
   }
@@ -314,6 +324,8 @@
       precio: precio.value,
       categoria: categoria.value,
       destacado: document.getElementById("destacado").checked,
+      googleMaps: document.getElementById("googleMaps").value.trim(),
+      recomendaciones: document.getElementById("recomendaciones").value.trim(),
       fotoIds,
       estado: "Pendiente"
     };
@@ -332,11 +344,10 @@
   // --- Fotos (form) ---
   document.getElementById("fotos").addEventListener("change", e => {
     const files = Array.from(e.target.files);
-    files.forEach(f => { currentFotos.push({blob:f}); });
+    files.forEach(f => currentFotos.push({blob:f}));
     renderPreviews();
     e.target.value="";
   });
-
   function renderPreviews(){
     const c = document.getElementById("foto-preview");
     c.innerHTML = currentFotos.map((f,i)=>`
@@ -358,28 +369,20 @@
     render();
   }
 
-  // ====== DETALLE + CARRUSEL ======
-  let detalle = {
-    ev: null,
-    urls: [],
-    idx: 0,
-    touchStartX: null,
-  };
+  // ====== DETALLE (hero + thumbs + botón Maps) ======
+  let detalle = { ev:null, urls:[], idx:0 };
+  function cleanupCarouselUrls(){ if (detalle.urls?.length) detalle.urls.forEach(u=>URL.revokeObjectURL(u)); detalle.urls=[]; }
 
   async function view(id){
     const ev = eventos.find(e=>e.id===id);
     if (!ev) return;
 
-    // limpiar urls anteriores
     cleanupCarouselUrls();
+    detalle = { ev, urls:[], idx:0 };
 
-    detalle.ev = ev;
-    detalle.urls = [];
-    detalle.idx = 0;
-
-    // Cargar blobs → ObjectURLs
-    if (ev.fotoIds?.length) {
-      for (const fid of ev.fotoIds) {
+    // Cargar imágenes
+    if (ev.fotoIds?.length){
+      for (const fid of ev.fotoIds){
         const blob = await getImage(fid);
         if (blob) detalle.urls.push(URL.createObjectURL(blob));
       }
@@ -387,107 +390,58 @@
 
     // Datos
     document.getElementById("detalle-title").textContent = ev.titulo || "Detalle del Evento";
-    document.getElementById("detalle-fechas").textContent = ev.fechaInicio + (ev.fechaFin ? " – " + ev.fechaFin : "");
-    document.getElementById("detalle-hora").textContent = ev.hora || "";
-    document.getElementById("detalle-lugar").textContent = [ev.lugar, ev.colonia].filter(Boolean).join(", ");
-    document.getElementById("detalle-organizador").textContent = ev.organizador || "";
-    document.getElementById("detalle-contacto").textContent = ev.contacto || "";
-    document.getElementById("detalle-precio").textContent = ev.precio || "";
-    document.getElementById("detalle-categoria").textContent = ev.categoria || "";
+    document.getElementById("detalle-titulo").textContent = ev.titulo || "";
     document.getElementById("detalle-descripcion").textContent = ev.descripcion || "";
+    document.getElementById("detalle-categoria").textContent = ev.categoria || "";
+    document.getElementById("detalle-lugar").textContent = [ev.lugar, ev.colonia].filter(Boolean).join(", ");
+    document.getElementById("detalle-hora").textContent = `${ev.fechaInicio || ""}${ev.fechaFin ? " – "+ev.fechaFin : ""} · ${ev.hora || ""}`;
+    document.getElementById("detalle-precio").textContent = ev.precio || "";
+    document.getElementById("detalle-recomendaciones").textContent = ev.recomendaciones || "—";
 
-    // Carrusel
-    updateCarouselImage();
-    renderDots();
+    const mapsBtn = document.getElementById("detalle-gmaps-btn");
+    if (ev.googleMaps) { mapsBtn.href = ev.googleMaps; mapsBtn.removeAttribute("disabled"); }
+    else { mapsBtn.href="#"; mapsBtn.setAttribute("disabled","true"); }
 
-    // Mostrar modal
+    // Imagen principal
+    const hero = document.getElementById("carousel-image");
+    if (detalle.urls.length){ hero.src = detalle.urls[0]; hero.alt = "Imagen 1"; }
+    else { hero.src=""; hero.alt="Sin imágenes"; }
+
+    // Thumbs
+    renderThumbs();
+
     document.getElementById("evento-detalle-modal").classList.remove("hidden");
-
-    // Teclado
     window.addEventListener("keydown", handleKeys);
-    // Swipe
-    const wrapper = document.getElementById("carousel-wrapper");
-    wrapper.addEventListener("touchstart", onTouchStart, {passive:true});
-    wrapper.addEventListener("touchend", onTouchEnd, {passive:true});
   }
 
-  function closeDetalle(){
-    document.getElementById("evento-detalle-modal").classList.add("hidden");
-    window.removeEventListener("keydown", handleKeys);
-    const wrapper = document.getElementById("carousel-wrapper");
-    wrapper.removeEventListener("touchstart", onTouchStart);
-    wrapper.removeEventListener("touchend", onTouchEnd);
-    cleanupCarouselUrls();
-  }
-
-  function cleanupCarouselUrls(){
-    if (detalle.urls?.length) {
-      detalle.urls.forEach(u => URL.revokeObjectURL(u));
-    }
-    detalle.urls = [];
-  }
-
-  function handleKeys(e){
-    if (e.key === "Escape") closeDetalle();
-    if (e.key === "ArrowRight") nextFoto();
-    if (e.key === "ArrowLeft") prevFoto();
-  }
-
-  function onTouchStart(e){
-    detalle.touchStartX = e.changedTouches[0].clientX;
-  }
-  function onTouchEnd(e){
-    const dx = e.changedTouches[0].clientX - (detalle.touchStartX ?? 0);
-    if (Math.abs(dx) > 40) {
-      if (dx < 0) nextFoto(); else prevFoto();
-    }
-    detalle.touchStartX = null;
-  }
-
-  function updateCarouselImage(){
-    const img = document.getElementById("carousel-image");
-    if (!detalle.urls.length) {
-      img.src = "";
-      img.alt = "Sin imágenes";
-      img.classList.add("opacity-60");
-      img.parentElement.classList.add("flex","items-center","justify-center");
-      img.parentElement.innerHTML = `<div class="text-gray-500">Sin imágenes para este evento</div>`;
-      return;
-    }
-    img.parentElement.classList.remove("flex","items-center","justify-center");
-    img.classList.remove("opacity-60");
-    img.src = detalle.urls[detalle.idx];
-    img.alt = `Imagen ${detalle.idx+1} de ${detalle.urls.length}`;
-  }
-
-  function renderDots(){
-    const c = document.getElementById("carousel-dots");
+  function renderThumbs(){
+    const c = document.getElementById("thumbs");
     c.innerHTML = "";
-    if (!detalle.urls.length) return;
-    detalle.urls.forEach((_, i) => {
+    detalle.urls.forEach((u,i)=>{
       const b = document.createElement("button");
-      b.className = "w-2.5 h-2.5 rounded-full " + (i===detalle.idx ? "bg-white shadow ring-1 ring-black/20" : "bg-white/60 hover:bg-white");
-      b.style.margin = "0 3px";
-      b.onclick = ()=> goFoto(i);
+      b.className = "w-28 h-20 rounded overflow-hidden border transition ring-0";
+      if (i===detalle.idx) b.classList.add("border-orange-500","ring-2","ring-orange-500");
+      b.onclick = ()=> { goFoto(i); };
+      b.innerHTML = `<img src="${u}" class="w-full h-full object-cover">`;
       c.appendChild(b);
     });
   }
 
-  function goFoto(i){
-    if (!detalle.urls.length) return;
-    detalle.idx = (i + detalle.urls.length) % detalle.urls.length;
-    updateCarouselImage();
-    renderDots();
+  function handleKeys(e){ if (e.key==="Escape") closeDetalle(); if (e.key==="ArrowRight") nextFoto(); if (e.key==="ArrowLeft") prevFoto(); }
+  function goFoto(i){ if (!detalle.urls.length) return; detalle.idx = (i+detalle.urls.length)%detalle.urls.length; document.getElementById("carousel-image").src = detalle.urls[detalle.idx]; renderThumbs(); }
+  function nextFoto(){ goFoto(detalle.idx+1); }
+  function prevFoto(){ goFoto(detalle.idx-1); }
+
+  function closeDetalle(){
+    document.getElementById("evento-detalle-modal").classList.add("hidden");
+    window.removeEventListener("keydown", handleKeys);
+    cleanupCarouselUrls();
   }
-  function nextFoto(){ goFoto(detalle.idx + 1); }
-  function prevFoto(){ goFoto(detalle.idx - 1); }
 
   // --- Expose ---
   window.Eventos = {
     openForm, closeForm, edit, remove, applyFilters, clearFilters,
-    removeFoto,
-    view, closeDetalle, nextFoto, prevFoto
+    removeFoto, view, closeDetalle, nextFoto, prevFoto
   };
-
 })();
 </script>
