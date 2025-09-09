@@ -115,211 +115,215 @@
     </div>
   </div>
 
-  <script>
-  (function(){
-    'use strict';
+<script>
+(() => {
+  'use strict';
 
-    const STORAGE_KEY = 'municipio.quicklinks.v1';
+  const STORAGE_KEY = 'municipio.quicklinks.v1';
+  const gid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,8);
 
-    // ------------- State -------------
-    let items = [];
-    let editId = null;
-
-    // ------------- Init (idempotent) -------------
-    function init(){
-      const root = document.getElementById('QuickLinksAdmin');
+  // Public module API expected by your SPA
+  window.QuickLinksAdmin = {
+    // SPA will call: QuickLinksAdmin.bind(root, { qs, qsa })   (helpers optional)
+    bind(root, helpers = {}) {
       if (!root || root.dataset.bound === '1') return;
       root.dataset.bound = '1';
 
-      load();
-      bindUI();
+      // Local, safe selectors scoped to this root
+      const qs  = (sel) => root.querySelector(sel);
+      const qsa = (sel) => Array.from(root.querySelectorAll(sel));
+
+      // ---------- state ----------
+      let items = load();
+      let editId = null;
+
+      // ---------- ui bindings ----------
+      qs('#ql-add-btn')?.addEventListener('click', () => openForm());
+      qs('#ql-empty-add')?.addEventListener('click', () => openForm());
+
+      qs('#ql-close')?.addEventListener('click', closeForm);
+      qs('#ql-cancel')?.addEventListener('click', closeForm);
+      qs('#ql-form')?.addEventListener('submit', onSubmit);
+      qs('#ql-delete')?.addEventListener('click', removeCurrent);
+
+      qs('#ql-pick-icon')?.addEventListener('click', () => iconModal(true));
+      qs('#ql-icon-close')?.addEventListener('click', () => iconModal(false));
+      qs('#ql-icon-search')?.addEventListener('input', renderIconGrid);
+
       render();
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 
-    // ------------- Persistence -------------
-    function load(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        items = raw ? JSON.parse(raw) : [];
+      // ---------- persistence ----------
+      function load(){
+        try{
+          const raw = localStorage.getItem(STORAGE_KEY);
+          const list = raw ? JSON.parse(raw) : [];
+          if (!list.length){
+            const seeded = [
+              { id: gid(), titulo:'Multas de Tránsito', href:'/pagos/multas', iconClass:'fas fa-car',
+                iconColor:'#2563eb', titleColor:'#0f172a', bgColor:'#ffffff', order:10, activo:true },
+              { id: gid(), titulo:'Trámites Municipales', href:'/tramites', iconClass:'fas fa-file-lines',
+                iconColor:'#14b8a6', titleColor:'#0f172a', bgColor:'#ffffff', order:20, activo:true }
+            ];
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
+            return seeded;
+          }
+          return list;
+        } catch { return []; }
+      }
+      function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
+
+      // ---------- render ----------
+      function render(){
+        const grid = qs('#ql-grid');
+        const empty = qs('#ql-empty');
+        if (!grid) return;
+
         if (!items.length){
-          // seed a couple so you see something
-          items = [
-            { id: gid(), titulo:'Multas de Tránsito', href:'/pagos/multas', iconClass:'fas fa-car', iconColor:'#2563eb', titleColor:'#0f172a', bgColor:'#ffffff', order:10, activo:true },
-            { id: gid(), titulo:'Trámites Municipales', href:'/tramites', iconClass:'fas fa-file-lines', iconColor:'#14b8a6', titleColor:'#0f172a', bgColor:'#ffffff', order:20, activo:true }
-          ];
-          save();
+          grid.innerHTML = '';
+          empty?.classList.remove('hidden');
+          return;
         }
-      }catch{ items = []; }
-    }
-    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
-    const gid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+        empty?.classList.add('hidden');
 
-    // ------------- UI Binding -------------
-    function bindUI(){
-      // Add button (this fixes your issue)
-      document.getElementById('ql-add-btn').addEventListener('click', () => openForm());
-      document.getElementById('ql-empty-add').addEventListener('click', () => openForm());
-
-      // Modal buttons
-      document.getElementById('ql-close').addEventListener('click', closeForm);
-      document.getElementById('ql-cancel').addEventListener('click', closeForm);
-      document.getElementById('ql-form').addEventListener('submit', onSubmit);
-      document.getElementById('ql-delete').addEventListener('click', removeCurrent);
-
-      // Icon picker
-      document.getElementById('ql-pick-icon').addEventListener('click', () => iconModal(true));
-      document.getElementById('ql-icon-close').addEventListener('click', () => iconModal(false));
-      document.getElementById('ql-icon-search').addEventListener('input', renderIconGrid);
-    }
-
-    // ------------- Render grid -------------
-    function render(){
-      const grid = document.getElementById('ql-grid');
-      const empty = document.getElementById('ql-empty');
-
-      if (!items.length){
-        grid.innerHTML = '';
-        empty.classList.remove('hidden');
-        return;
-      }
-      empty.classList.add('hidden');
-
-      const sorted = [...items].sort((a,b)=>(a.order??0)-(b.order??0) || a.titulo.localeCompare(b.titulo));
-      grid.innerHTML = sorted.map(i => `
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="p-6" style="background:${i.bgColor||'#ffffff'}">
-            <div class="w-14 h-14 rounded-xl mx-auto flex items-center justify-center mb-3" style="background:rgba(0,0,0,0.04)">
-              <i class="${i.iconClass||'fas fa-circle'} text-3xl" style="color:${i.iconColor||'#0f172a'}"></i>
+        const sorted = [...items].sort((a,b)=>(a.order??0)-(b.order??0) || a.titulo.localeCompare(b.titulo));
+        grid.innerHTML = sorted.map(i => `
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6" style="background:${i.bgColor||'#ffffff'}">
+              <div class="w-14 h-14 rounded-xl mx-auto flex items-center justify-center mb-3" style="background:rgba(0,0,0,0.04)">
+                <i class="${i.iconClass||'fas fa-circle'} text-3xl" style="color:${i.iconColor||'#0f172a'}"></i>
+              </div>
+              <div class="text-center">
+                <div class="text-lg font-bold" style="color:${i.titleColor||'#0f172a'}">${i.titulo||''}</div>
+                <div class="text-xs text-slate-500 break-all">${i.href||''}</div>
+              </div>
             </div>
-            <div class="text-center">
-              <div class="text-lg font-bold" style="color:${i.titleColor||'#0f172a'}">${i.titulo||''}</div>
-              <div class="text-xs text-slate-500 break-all">${i.href||''}</div>
+            <div class="px-4 py-3 border-t flex items-center justify-between">
+              <div class="flex items-center gap-3 text-slate-600">
+                <button class="hover:text-blue-700" title="Editar" data-act="edit" data-id="${i.id}"><i class="fas fa-edit"></i></button>
+                <button class="hover:text-amber-700" title="${i.activo?'Desactivar':'Activar'}" data-act="toggle" data-id="${i.id}">
+                  <i class="fas fa-${i.activo?'eye-slash':'eye'}"></i>
+                </button>
+                <button class="hover:text-red-700" title="Eliminar" data-act="remove" data-id="${i.id}"><i class="fas fa-trash"></i></button>
+              </div>
+              <div class="text-xs ${i.activo?'text-green-700':'text-slate-500'}">${i.activo?'Activo':'Oculto'}</div>
             </div>
           </div>
-          <div class="px-4 py-3 border-t flex items-center justify-between">
-            <div class="flex items-center gap-3 text-slate-600">
-              <button class="hover:text-blue-700" title="Editar" onclick="QL.edit('${i.id}')"><i class="fas fa-edit"></i></button>
-              <button class="hover:text-amber-700" title="${i.activo?'Desactivar':'Activar'}" onclick="QL.toggle('${i.id}')">
-                <i class="fas fa-${i.activo?'eye-slash':'eye'}"></i>
-              </button>
-              <button class="hover:text-red-700" title="Eliminar" onclick="QL.remove('${i.id}')"><i class="fas fa-trash"></i></button>
-            </div>
-            <div class="text-xs ${i.activo?'text-green-700':'text-slate-500'}">${i.activo?'Activo':'Oculto'}</div>
-          </div>
-        </div>
-      `).join('');
-    }
+        `).join('');
 
-    // ------------- Form logic -------------
-    function openForm(id=null){
-      editId = id;
-      document.getElementById('ql-modal-title').textContent = id ? 'Editar Acceso' : 'Nuevo Acceso';
-      document.getElementById('ql-delete').classList.toggle('hidden', !id);
-      resetForm();
-
-      if (id){
-        const it = items.find(x=>x.id===id);
-        if (it){
-          set('#ql-title', it.titulo);
-          set('#ql-href', it.href);
-          set('#ql-icon', it.iconClass);
-          set('#ql-order', it.order ?? 0);
-          set('#ql-icon-color', it.iconColor || '#2563eb');
-          set('#ql-title-color', it.titleColor || '#0f172a');
-          set('#ql-bg-color', it.bgColor || '#ffffff');
-          document.getElementById('ql-active').checked = !!it.activo;
-        }
+        // delegate grid clicks
+        grid.addEventListener('click', (e)=>{
+          const btn = e.target.closest('[data-act]'); if(!btn) return;
+          const id = btn.dataset.id, act = btn.dataset.act;
+          if (act==='edit') openForm(id);
+          if (act==='toggle'){ const it=items.find(x=>x.id===id); if(!it) return; it.activo=!it.activo; save(); render(); }
+          if (act==='remove'){ const it=items.find(x=>x.id===id); if(!it) return;
+            if(!confirm(`¿Eliminar "${it.titulo}"?`)) return;
+            items = items.filter(x=>x.id!==id); save(); render();
+          }
+        }, { once: true }); // re-bound each render
       }
-      document.getElementById('ql-modal').classList.remove('hidden');
-      document.getElementById('ql-title').focus();
-    }
-    function closeForm(){ document.getElementById('ql-modal').classList.add('hidden'); editId=null; }
-    function resetForm(){
-      ['#ql-title','#ql-href','#ql-icon'].forEach(sel => set(sel,''));
-      set('#ql-order', 0);
-      set('#ql-icon-color','#2563eb'); set('#ql-title-color','#0f172a'); set('#ql-bg-color','#ffffff');
-      document.getElementById('ql-active').checked = true;
-    }
-    function set(sel,val){ const el=document.querySelector(sel); if(el) el.value = val; }
 
-    function onSubmit(e){
-      e.preventDefault();
-      const data = {
-        titulo: document.getElementById('ql-title').value.trim(),
-        href: document.getElementById('ql-href').value.trim(),
-        iconClass: document.getElementById('ql-icon').value.trim(),
-        order: parseInt(document.getElementById('ql-order').value||'0',10),
-        iconColor: document.getElementById('ql-icon-color').value,
-        titleColor: document.getElementById('ql-title-color').value,
-        bgColor: document.getElementById('ql-bg-color').value,
-        activo: document.getElementById('ql-active').checked
+      // ---------- form ----------
+      function openForm(id=null){
+        editId = id;
+        qs('#ql-modal-title').textContent = id ? 'Editar Acceso' : 'Nuevo Acceso';
+        qs('#ql-delete').classList.toggle('hidden', !id);
+        resetForm();
+
+        if (id){
+          const it = items.find(x=>x.id===id);
+          if (it){
+            set('#ql-title', it.titulo);
+            set('#ql-href', it.href);
+            set('#ql-icon', it.iconClass);
+            set('#ql-order', it.order ?? 0);
+            set('#ql-icon-color', it.iconColor || '#2563eb');
+            set('#ql-title-color', it.titleColor || '#0f172a');
+            set('#ql-bg-color', it.bgColor || '#ffffff');
+            qs('#ql-active').checked = !!it.activo;
+          }
+        }
+        qs('#ql-modal').classList.remove('hidden');
+        qs('#ql-title')?.focus();
+      }
+      function closeForm(){ qs('#ql-modal')?.classList.add('hidden'); editId=null; }
+      function resetForm(){
+        ['#ql-title','#ql-href','#ql-icon'].forEach(sel => set(sel,''));
+        set('#ql-order', 0);
+        set('#ql-icon-color','#2563eb'); set('#ql-title-color','#0f172a'); set('#ql-bg-color','#ffffff');
+        if (qs('#ql-active')) qs('#ql-active').checked = true;
+      }
+      function set(sel,val){ const el=qs(sel); if(el) el.value = val; }
+
+      function onSubmit(e){
+        e.preventDefault();
+        const data = {
+          titulo: qs('#ql-title').value.trim(),
+          href: qs('#ql-href').value.trim(),
+          iconClass: qs('#ql-icon').value.trim(),
+          order: parseInt(qs('#ql-order').value||'0',10),
+          iconColor: qs('#ql-icon-color').value,
+          titleColor: qs('#ql-title-color').value,
+          bgColor: qs('#ql-bg-color').value,
+          activo: qs('#ql-active').checked
+        };
+        if (!data.titulo || !data.href || !data.iconClass){
+          alert('Completa Título, URL e Icono.'); return;
+        }
+        if (editId){
+          const i = items.findIndex(x=>x.id===editId);
+          if (i!==-1) items[i] = { ...items[i], ...data };
+        } else {
+          items.push({ id: gid(), ...data });
+        }
+        save(); render(); closeForm();
+      }
+
+      function removeCurrent(){
+        if (!editId) return; const it = items.find(x=>x.id===editId); if(!it) return;
+        if (!confirm(`¿Eliminar el acceso "${it.titulo}"?`)) return;
+        items = items.filter(x=>x.id!==editId); save(); render(); closeForm();
+      }
+
+      // ---------- icon picker ----------
+      const ICONS = [
+        'fas fa-car','fas fa-file-lines','fas fa-calendar-alt','fas fa-scale-balanced',
+        'fas fa-comments','fas fa-users','fas fa-map','fas fa-phone','fas fa-bullhorn',
+        'fas fa-shield-alt','fas fa-ambulance','fas fa-water','fas fa-tree','fas fa-building',
+        'fas fa-university','fas fa-credit-card','fas fa-receipt','fas fa-id-card',
+        'fas fa-globe','fas fa-lightbulb','fas fa-route','fas fa-ticket-alt'
+      ];
+      function iconModal(show){
+        qs('#ql-icon-modal')?.classList.toggle('hidden', !show);
+        if (show){ const s=qs('#ql-icon-search'); if (s){ s.value=''; renderIconGrid(); s.focus(); } }
+      }
+      function renderIconGrid(){
+        const needle = (qs('#ql-icon-search')?.value||'').toLowerCase().trim();
+        const list = ICONS.filter(c=> c.toLowerCase().includes(needle));
+        const grid = qs('#ql-icon-grid');
+        if (!grid) return;
+        grid.innerHTML = list.map(c=>`
+          <button type="button" data-icon="${c}" class="group border rounded-lg p-3 hover:border-blue-500 hover:bg-blue-50 text-center">
+            <i class="${c} text-2xl mb-2 block"></i>
+            <div class="text-xs text-slate-700 break-all">${c.replace('fas ','')}</div>
+          </button>
+        `).join('') || `<div class="text-slate-500 text-sm">Sin resultados.</div>`;
+        grid.querySelectorAll('[data-icon]').forEach(btn=>{
+          btn.addEventListener('click', ()=>{ const v=btn.getAttribute('data-icon'); const input=qs('#ql-icon'); if (input) input.value=v; iconModal(false); });
+        });
+      }
+
+      // ---------- public getter for Home ----------
+      window.getQuickLinks = function(){
+        try{
+          const raw = localStorage.getItem(STORAGE_KEY);
+          const list = raw ? JSON.parse(raw) : [];
+          return list.filter(x=>x.activo).sort((a,b)=>(a.order??0)-(b.order??0)||a.titulo.localeCompare(b.titulo));
+        }catch{ return []; }
       };
-      if (!data.titulo || !data.href || !data.iconClass){
-        alert('Completa Título, URL e Icono.'); return;
-      }
-
-      if (editId){
-        const i = items.findIndex(x=>x.id===editId);
-        if (i!==-1) items[i] = { ...items[i], ...data };
-      } else {
-        items.push({ id: gid(), ...data });
-      }
-      save(); render(); closeForm();
     }
+  };
+})();
+</script>
 
-    function removeCurrent(){
-      if (!editId) return; const it = items.find(x=>x.id===editId); if(!it) return;
-      if (!confirm(`¿Eliminar el acceso "${it.titulo}"?`)) return;
-      items = items.filter(x=>x.id!==editId); save(); render(); closeForm();
-    }
-
-    // Actions from grid
-    window.QL = {
-      edit: openForm,
-      remove: (id)=>{ const it=items.find(x=>x.id===id); if(!it) return;
-        if(!confirm(`¿Eliminar "${it.titulo}"?`)) return;
-        items = items.filter(x=>x.id!==id); save(); render();
-      },
-      toggle: (id)=>{ const it=items.find(x=>x.id===id); if(!it) return; it.activo=!it.activo; save(); render(); }
-    };
-
-    // ------------- Icon picker -------------
-    const ICONS = [
-      'fas fa-car','fas fa-file-lines','fas fa-calendar-alt','fas fa-scale-balanced',
-      'fas fa-comments','fas fa-users','fas fa-map','fas fa-phone','fas fa-bullhorn',
-      'fas fa-shield-alt','fas fa-ambulance','fas fa-water','fas fa-tree','fas fa-building',
-      'fas fa-university','fas fa-credit-card','fas fa-receipt','fas fa-id-card',
-      'fas fa-globe','fas fa-lightbulb','fas fa-route','fas fa-ticket-alt'
-    ];
-    function iconModal(show){
-      document.getElementById('ql-icon-modal').classList.toggle('hidden', !show);
-      if (show){ document.getElementById('ql-icon-search').value=''; renderIconGrid(); document.getElementById('ql-icon-search').focus(); }
-    }
-    function renderIconGrid(){
-      const needle = (document.getElementById('ql-icon-search').value||'').toLowerCase().trim();
-      const list = ICONS.filter(c=> c.toLowerCase().includes(needle));
-      const grid = document.getElementById('ql-icon-grid');
-      grid.innerHTML = list.map(c=>`
-        <button type="button" data-icon="${c}" class="group border rounded-lg p-3 hover:border-blue-500 hover:bg-blue-50 text-center">
-          <i class="${c} text-2xl mb-2 block"></i>
-          <div class="text-xs text-slate-700 break-all">${c.replace('fas ','')}</div>
-        </button>
-      `).join('') || `<div class="text-slate-500 text-sm">Sin resultados.</div>`;
-      Array.from(grid.querySelectorAll('[data-icon]')).forEach(btn=>{
-        btn.onclick = ()=>{ document.getElementById('ql-icon').value = btn.dataset.icon; iconModal(false); };
-      });
-    }
-
-    // ------------- Public API for Home -------------
-    window.getQuickLinks = function(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        const list = raw ? JSON.parse(raw) : [];
-        return list.filter(x=>x.activo).sort((a,b)=>(a.order??0)-(b.order??0)||a.titulo.localeCompare(b.titulo));
-      }catch{ return []; }
-    };
-
-  })();
-  </script>
 </section>
