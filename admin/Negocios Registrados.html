@@ -498,7 +498,14 @@
       });
     });
   }
-
+  function readFileAsDataURL(file){
+    return new Promise((resolve,reject)=>{
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result);
+      fr.onerror = reject;
+      fr.readAsDataURL(file);
+    });
+  }
   // Specific details
   function renderSpecific(){
     const c = document.getElementById("w-specific");

@@ -3,37 +3,67 @@
   <div class="flex justify-between items-center mb-8">
     <div>
       <h2 class="text-3xl font-bold text-gray-800 mb-2">Lugares Turísticos</h2>
-      <p class="text-gov-gray">Gestión de lugares turísticos y atractivos locales</p>
+      <p class="text-gov-gray">
+        Gestión de lugares turísticos y atractivos locales
+      </p>
     </div>
-    <button onclick="Turismo.openForm()" class="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-200 flex items-center">
+    <button
+      onclick="Turismo.openForm()"
+      class="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-200 flex items-center"
+    >
       <i class="fas fa-plus mr-2"></i>
       Agregar Lugar Turístico
     </button>
   </div>
 
-  <div id="lugares-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  <div
+    id="lugares-grid"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+  ></div>
 </section>
 
 <!-- Modal: Crear/Editar Lugar Turístico -->
 <div id="turismo-form-modal" class="fixed inset-0 bg-black/50 z-50 hidden">
   <div class="absolute inset-0 backdrop-blur-sm"></div>
-  <div style="height: 90vh;overflow: auto;" class="relative mx-auto my-8 max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden">
+  <div
+    style="height: 90vh; overflow: auto"
+    class="relative mx-auto my-8 max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden"
+  >
     <div class="flex items-center justify-between px-6 py-4 border-b">
-      <h3 id="turismo-form-title" class="text-xl font-bold text-gray-800">Agregar Lugar Turístico</h3>
-      <button onclick="Turismo.closeForm()" class="text-gray-500 hover:text-gray-800">
+      <h3 id="turismo-form-title" class="text-xl font-bold text-gray-800">
+        Agregar Lugar Turístico
+      </h3>
+      <button
+        onclick="Turismo.closeForm()"
+        class="text-gray-500 hover:text-gray-800"
+      >
         <i class="fas fa-times text-lg"></i>
       </button>
     </div>
 
     <form id="turismo-form" class="p-6 space-y-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Lugar *</label>
-        <input type="text" id="nombre" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="Ej. Plaza Principal Benito Juárez">
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Nombre del Lugar *</label
+        >
+        <input
+          type="text"
+          id="nombre"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+          placeholder="Ej. Plaza Principal Benito Juárez"
+        />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
-        <select id="categoria" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Categoría *</label
+        >
+        <select
+          id="categoria"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+        >
           <option value="">Seleccionar categoría</option>
           <option>Plaza y Jardines</option>
           <option>Patrimonio Religioso</option>
@@ -47,40 +77,92 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Descripción *</label>
-        <textarea id="descripcion" rows="3" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="Describe el lugar y qué lo hace especial..."></textarea>
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Descripción *</label
+        >
+        <textarea
+          id="descripcion"
+          rows="3"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+          placeholder="Describe el lugar y qué lo hace especial..."
+        ></textarea>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Dirección *</label>
-          <input type="text" id="direccion" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="Dirección completa del lugar">
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Dirección *</label
+          >
+          <input
+            type="text"
+            id="direccion"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            placeholder="Dirección completa del lugar"
+          />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Horario de Atención *</label>
-          <input type="text" id="horario" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="Ej. Lunes a Domingo: 9:00 AM - 6:00 PM">
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Horario de Atención *</label
+          >
+          <input
+            type="text"
+            id="horario"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            placeholder="Ej. Lunes a Domingo: 9:00 AM - 6:00 PM"
+          />
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Precio de Entrada *</label>
-          <input type="text" id="precio" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="Gratuito / $50 adultos, $30 niños">
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Precio de Entrada *</label
+          >
+          <input
+            type="text"
+            id="precio"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            placeholder="Gratuito / $50 adultos, $30 niños"
+          />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Link de Google Maps *</label>
-          <input type="url" id="googleMaps" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="https://maps.google.com/?q=...">
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Link de Google Maps *</label
+          >
+          <input
+            type="url"
+            id="googleMaps"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            placeholder="https://maps.google.com/?q=..."
+          />
         </div>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Recomendaciones</label>
-        <textarea id="recomendaciones" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="Consejos útiles: horarios recomendados, qué llevar, etc."></textarea>
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Recomendaciones</label
+        >
+        <textarea
+          id="recomendaciones"
+          rows="2"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+          placeholder="Consejos útiles: horarios recomendados, qué llevar, etc."
+        ></textarea>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Icono</label>
-        <select id="icono" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Icono</label
+        >
+        <select
+          id="icono"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+        >
           <option value="fas fa-map-marked-alt">Genérico</option>
           <option value="fas fa-monument">Monumento</option>
           <option value="fas fa-church">Iglesia</option>
@@ -95,28 +177,86 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Imágenes</label>
-        <input type="file" id="imagenes" multiple accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-        <p class="text-xs text-gray-500 mt-2">Puedes seleccionar múltiples imágenes. La primera será la imagen principal.</p>
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Imágenes</label
+        >
+        <input
+          type="file"
+          id="imagenes"
+          multiple
+          accept="image/*"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+        />
+        <p class="text-xs text-gray-500 mt-2">
+          Puedes seleccionar múltiples imágenes. La primera será la imagen
+          principal.
+        </p>
         <div id="image-preview" class="grid grid-cols-3 gap-2 mt-3"></div>
+      </div>
+
+      <div class="mt-3">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Agregar imágenes por URL
+        </label>
+        <div class="flex gap-2">
+          <input
+            type="url"
+            id="imageUrlInput"
+            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            placeholder="https://sitio.com/imagen.jpg (puedes pegar varias separadas por coma o salto de línea)"
+          />
+          <button
+            type="button"
+            onclick="Turismo.addImageUrl()"
+            class="px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600"
+          >
+            Agregar URL
+          </button>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">
+          Acepta varias URLs separadas por coma (,) o por líneas. Se mezclarán
+          con las imágenes subidas.
+        </p>
       </div>
 
       <!-- NEW: flags -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
         <label class="flex items-center gap-2">
-          <input type="checkbox" id="showInHome" class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-200">
+          <input
+            type="checkbox"
+            id="showInHome"
+            class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-200"
+          />
           <span class="text-sm text-gray-700">Mostrar en página de inicio</span>
         </label>
         <label class="flex items-center gap-2">
-          <input type="checkbox" id="useAsHero" class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-200">
+          <input
+            type="checkbox"
+            id="useAsHero"
+            class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-200"
+          />
           <span class="text-sm text-gray-700">Usar sus fotos en el Hero</span>
         </label>
       </div>
-      <p class="text-xs text-gray-500 -mt-2">Nota: solo un lugar puede estar marcado como “Usar sus fotos en el Hero”.</p>
+      <p class="text-xs text-gray-500 -mt-2">
+        Nota: solo un lugar puede estar marcado como “Usar sus fotos en el
+        Hero”.
+      </p>
 
       <div class="flex justify-end gap-3 pt-2">
-        <button type="button" onclick="Turismo.closeForm()" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">Cancelar</button>
-        <button type="submit" class="px-5 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600">Guardar</button>
+        <button
+          type="button"
+          onclick="Turismo.closeForm()"
+          class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-5 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600"
+        >
+          Guardar
+        </button>
       </div>
     </form>
   </div>
@@ -124,461 +264,729 @@
 
 <!-- Modal Visor de Imágenes -->
 <div id="image-viewer-modal" class="fixed inset-0 bg-black/90 hidden z-50 p-4">
-  <div class="max-w-4xl mx-auto bg-white rounded-xl overflow-hidden" style="overflow: auto;height: 95vh;">
+  <div
+    class="max-w-4xl mx-auto bg-white rounded-xl overflow-hidden"
+    style="overflow: auto; height: 95vh"
+  >
     <div class="p-4 border-b flex justify-between items-center">
-      <h3 id="image-viewer-title" class="text-xl font-bold text-gray-800">Galería de Imágenes</h3>
-      <button onclick="Turismo.closeViewer()" class="text-gray-500 hover:text-gray-800"><i class="fas fa-times text-lg"></i></button>
+      <h3 id="image-viewer-title" class="text-xl font-bold text-gray-800">
+        Galería de Imágenes
+      </h3>
+      <button
+        onclick="Turismo.closeViewer()"
+        class="text-gray-500 hover:text-gray-800"
+      >
+        <i class="fas fa-times text-lg"></i>
+      </button>
     </div>
     <div class="p-6">
-      <img id="main-viewer-image" src="" alt="" class="w-full h-96 object-cover rounded-lg mb-4">
-      <div id="image-thumbnails" class="flex space-x-2 overflow-x-auto pb-2"></div>
+      <img
+        id="main-viewer-image"
+        src=""
+        alt=""
+        class="w-full h-96 object-cover rounded-lg mb-4"
+      />
+      <div
+        id="image-thumbnails"
+        class="flex space-x-2 overflow-x-auto pb-2"
+      ></div>
       <div id="place-info" class="mt-6 p-4 bg-gray-50 rounded-lg"></div>
     </div>
   </div>
 </div>
 
 <script>
-(() => {
-  // ===== Keys / DB =====
-  LS_KEY = 'lugaresTuristicos';
-  const IDB_NAME = 'TurismoDB';
-  const IDB_STORE = 'imagenes';
+  (() => {
+    // ===== Keys / DB =====
+    LS_KEY = "lugaresTuristicos";
+    const IDB_NAME = "TurismoDB";
+    const IDB_STORE = "imagenes";
 
-  // ===== State =====
-  let lugares = [];
-  let editId = null;
-  let currentFotos = [];
-  let editOriginalFotoIds = [];
-  let mainIdx = 0;
-  let db = null;
-
-  // ===== Helpers: localStorage =====
-  const load = () => { try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; } };
-  const save = (arr) => localStorage.setItem(LS_KEY, JSON.stringify(arr));
-
-  // ===== IndexedDB helpers =====
-  function idbOpen(){
-    return new Promise((resolve,reject)=>{
-      const req = indexedDB.open(IDB_NAME,1);
-      req.onupgradeneeded = (e)=>{
-        const db = e.target.result;
-        if(!db.objectStoreNames.contains(IDB_STORE)){
-          db.createObjectStore(IDB_STORE);
-        }
-      };
-      req.onsuccess = ()=>resolve(req.result);
-      req.onerror = ()=>reject(req.error);
-    });
-  }
-  async function idbPut(id, blob){
-    return new Promise((resolve,reject)=>{
-      const tx = db.transaction(IDB_STORE,'readwrite');
-      tx.objectStore(IDB_STORE).put(blob, id);
-      tx.oncomplete = resolve;
-      tx.onerror = ()=>reject(tx.error);
-    });
-  }
-  async function idbGet(id){
-    return new Promise((resolve,reject)=>{
-      const tx = db.transaction(IDB_STORE,'readonly');
-      const rq = tx.objectStore(IDB_STORE).get(id);
-      rq.onsuccess = ()=>resolve(rq.result||null);
-      rq.onerror = ()=>reject(rq.error);
-    });
-  }
-  function idbDelete(id){
-    const tx = db.transaction(IDB_STORE,'readwrite');
-    tx.objectStore(IDB_STORE).delete(id);
-  }
-
-  // ===== Utilities =====
-  function generateId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,10); }
-  function dataUrlToBlob(dataURL){
-    const [meta, b64] = dataURL.split(',');
-    const mime = (meta.match(/data:(.*?);/)||[])[1] || 'application/octet-stream';
-    const bin = atob(b64); const len = bin.length; const ua = new Uint8Array(len);
-    for(let i=0;i<len;i++) ua[i]=bin.charCodeAt(i);
-    return new Blob([ua], {type:mime});
-  }
-  const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23eef2ff'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='Arial' font-size='16'%3ESin imagen%3C/text%3E%3C/svg%3E";
-
-  // ===== Migration: imagenes (dataURL) -> fotoIds (IDB) =====
-  async function migrateIfNeeded(){
-    let changed = false;
-    for (const l of lugares){
-      if (Array.isArray(l.imagenes) && l.imagenes.length){
-        const ids = [];
-        for (const url of l.imagenes){
-          try{
-            const blob = dataUrlToBlob(url);
-            const id = generateId();
-            await idbPut(id, blob);
-            ids.push(id);
-          }catch{}
-        }
-        l.fotoIds = ids;
-        delete l.imagenes;
-        if (typeof l.imagenPrincipal !== 'number') l.imagenPrincipal = 0;
-        changed = true;
-      } else if (!Array.isArray(l.fotoIds)){
-        l.fotoIds = [];
-        if (typeof l.imagenPrincipal !== 'number') l.imagenPrincipal = 0;
-        changed = true;
-      }
-      // ensure new fields exist
-      if (typeof l.showInHome !== 'boolean') { l.showInHome = false; changed = true; }
-      if (typeof l.useAsHero !== 'boolean') { l.useAsHero = false; changed = true; }
-    }
-    if (changed) save(lugares);
-  }
-
-  // ===== Initial Load / Seed =====
-  async function init(){
-    db = await idbOpen().catch(console.error);
-    lugares = load();
-    if (!lugares.length){
-      lugares = [{
-        id: 1,
-        nombre: "Plaza Principal Benito Juárez",
-        categoria: "Plaza y Jardines",
-        descripcion: "Hermosa plaza central con arquitectura colonial, ideal para pasear en familia y disfrutar del ambiente tradicional mexicano.",
-        direccion: "Centro Histórico, Sabinas Hidalgo, N.L.",
-        horario: "24 horas",
-        precio: "Gratuito",
-        googleMaps: "https://maps.google.com/?q=Plaza+Principal+Sabinas+Hidalgo",
-        recomendaciones: "Visitar al atardecer; suele haber eventos culturales.",
-        fotoIds: [],
-        imagenPrincipal: 0,
+    // ===== State =====
+    let lugares = [
+      {
+        id: 2,
+        nombre: "La Turbina",
+        categoria: "Naturaleza y Senderismo",
+        descripcion:
+          "El Parque Recreativo La Turbina, ubicado en el Km 4 de la Carretera a Villaldama en Sabinas Hidalgo, es un espacio que combina historia, naturaleza y diversión. Fundado en torno a un edificio de turbinas eléctricas de 1932, hoy resalta por su pintoresca cascada artificial y el sonido relajante del agua. Aquí encontrarás palapas, restaurantes, asadores, áreas de camping, baños, vestidores y diversas actividades como canopy tour, pesca deportiva, juegos infantiles y acuáticos. Abierto todos los días de 07:00 a 20:00 hrs (sujeto a afluencia), el acceso cuesta aproximadamente $50 por persona, mientras que adultos mayores con credencial INAPAM y menores de 8 años pueden acceder por $20 o de forma gratuita.",
+        direccion: "Carr a Villaldama",
+        horario: "Lunes a Viernes de 8am a 10pm",
+        precio: "Locales $20mxn, Foraneos $30mxn",
+        googleMaps: "https://maps.app.goo.gl/UGZakQGgXPxs4NN68",
+        recomendaciones:
+          "Para garantizar una visita segura y agradable en el Parque Recreativo La Turbina, se recomienda a los visitantes no introducir envases de vidrio, realizar fogatas o asados únicamente en las áreas designadas, depositar la basura en los contenedores correspondientes, utilizar calzado cómodo para recorrer senderos y respetar tanto las instalaciones como la flora y fauna del lugar. De esta manera, todos podemos disfrutar de un espacio limpio, ordenado y en armonía con la naturaleza.",
         icono: "fas fa-tree",
+        imagenPrincipal: 0,
+        fotoIds: [
+          "mfbze6r8rjjar437",
+          "mfbze6re9m0uulzg",
+          "mfbze6rgau0fnec7",
+          "mfcqqchu2s0ijp7y",
+        ],
+        fotoUrls: [],
         showInHome: true,
-        useAsHero: false
-      }];
-      save(lugares);
-    }
-    await migrateIfNeeded();
-    renderList();
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+        useAsHero: false,
+      },
+      {
+        id: 3,
+        nombre: "Parque Recreativo Ojo de Agua",
+        categoria: "Naturaleza y Senderismo",
+        descripcion:
+          "El Ojo de Agua es el corazón natural y recreativo de Sabinas Hidalgo. Rodeado de frondosos nogales y extensas áreas verdes, este parque es un espacio emblemático donde brota un manantial de agua cristalina que alimenta sus albercas y arroyos.\n\nEs el lugar favorito de familias y visitantes para convivir, disfrutar de un día de campo, nadar en sus frescas aguas, recorrer senderos o simplemente descansar bajo la sombra de los árboles. El parque cuenta con áreas de picnic, juegos infantiles, palapas y espacios deportivos, lo que lo convierte en un sitio perfecto tanto para el descanso como para la recreación.\n\nAdemás, su valor histórico y cultural lo ha convertido en un símbolo de identidad para los sabinenses, siendo sede de eventos comunitarios y punto de encuentro para turistas que buscan naturaleza y tranquilidad en el norte de Nuevo León.",
+        direccion: "Carr a Villaldama Km 4",
+        horario: "Lunes a Domingo de 8am a 10pm",
+        precio: "Locales: $20, Foraneos: $30",
+        googleMaps: "https://maps.app.goo.gl/yqEdZTotdimDHVtS7",
+        recomendaciones:
+          "No introducir envases de vidrio en las áreas recreativas, no realizar fogatas fuera de las zonas designadas, depositar la basura en los contenedores correspondientes, cuidar las áreas verdes y la fauna local, y hacer un uso responsable de las albercas y espacios comunes. Recordemos que este parque es un patrimonio natural de Sabinas Hidalgo y depende de todos mantenerlo limpio, seguro y en armonía.",
+        icono: "fas fa-hiking",
+        showInHome: true,
+        useAsHero: true,
+        fotoIds: ["mfcqldryfmcelfi0", "mfcqlds90uvyu668", "mfcqldscthgy4jkq"],
+        fotoUrls: [],
+        imagenPrincipal: 0,
+      },
+    ];
+    let editId = null;
+    let currentFotos = []; // array of { blob?, url?, existingId?, existingUrl?, previewUrl, _removed? }
+    let editOriginalFotoIds = [];
+    let editOriginalFotoUrls = [];
+    let mainIdx = 0;
+    let db = null;
 
-  // ===== List / Cards =====
-  async function renderList(){
-    const grid = document.getElementById('lugares-grid');
-    grid.innerHTML = '';
-    for (const lugar of lugares){
-      const card = document.createElement('div');
-      card.className = "bg-white rounded-2xl shadow-sm overflow-hidden";
-      const head = document.createElement('div');
-      head.className = "relative";
-
-      // resolve main image URL
-      let mainURL = PLACEHOLDER;
-      if (lugar.fotoIds?.length){
-        const idx = Math.min(lugar.imagenPrincipal || 0, lugar.fotoIds.length-1);
-        const blob = await idbGet(lugar.fotoIds[idx]);
-        if (blob) mainURL = URL.createObjectURL(blob);
+    // ===== Helpers: localStorage =====
+    const load = () => {
+      try {
+        return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+      } catch {
+        return [];
       }
+    };
+    const save = (arr) => localStorage.setItem(LS_KEY, JSON.stringify(arr));
 
-      head.innerHTML = `
+    // ===== IndexedDB helpers =====
+    function idbOpen() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(IDB_NAME, 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(IDB_STORE)) {
+            db.createObjectStore(IDB_STORE);
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    async function idbPut(id, blob) {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(IDB_STORE, "readwrite");
+        tx.objectStore(IDB_STORE).put(blob, id);
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+      });
+    }
+    async function idbGet(id) {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(IDB_STORE, "readonly");
+        const rq = tx.objectStore(IDB_STORE).get(id);
+        rq.onsuccess = () => resolve(rq.result || null);
+        rq.onerror = () => reject(rq.error);
+      });
+    }
+    function idbDelete(id) {
+      const tx = db.transaction(IDB_STORE, "readwrite");
+      tx.objectStore(IDB_STORE).delete(id);
+    }
+
+    // ===== Utilities =====
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    }
+    function dataUrlToBlob(dataURL) {
+      const [meta, b64] = dataURL.split(",");
+      const mime =
+        (meta.match(/data:(.*?);/) || [])[1] || "application/octet-stream";
+      const bin = atob(b64);
+      const len = bin.length;
+      const ua = new Uint8Array(len);
+      for (let i = 0; i < len; i++) ua[i] = bin.charCodeAt(i);
+      return new Blob([ua], { type: mime });
+    }
+    function isValidHttpUrl(str) {
+      try {
+        const u = new URL(str);
+        return u.protocol === "http:" || u.protocol === "https:";
+      } catch {
+        return false;
+      }
+    }
+    const PLACEHOLDER =
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23eef2ff'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='Arial' font-size='16'%3ESin imagen%3C/text%3E%3C/svg%3E";
+
+    // ===== Migration: ensure fotoIds/fotoUrls arrays & move dataURL->IDB if needed =====
+    async function migrateIfNeeded() {
+      let changed = false;
+      for (const l of lugares) {
+        // legacy "imagenes" (dataURLs)
+        if (Array.isArray(l.imagenes) && l.imagenes.length) {
+          const ids = [];
+          for (const url of l.imagenes) {
+            try {
+              const blob = dataUrlToBlob(url);
+              const id = generateId();
+              await idbPut(id, blob);
+              ids.push(id);
+            } catch {}
+          }
+          l.fotoIds = ids;
+          delete l.imagenes;
+          if (typeof l.imagenPrincipal !== "number") l.imagenPrincipal = 0;
+          changed = true;
+        } else if (!Array.isArray(l.fotoIds)) {
+          l.fotoIds = [];
+          if (typeof l.imagenPrincipal !== "number") l.imagenPrincipal = 0;
+          changed = true;
+        }
+        if (!Array.isArray(l.fotoUrls)) {
+          l.fotoUrls = [];
+          changed = true;
+        }
+        // ensure flags
+        if (typeof l.showInHome !== "boolean") {
+          l.showInHome = false;
+          changed = true;
+        }
+        if (typeof l.useAsHero !== "boolean") {
+          l.useAsHero = false;
+          changed = true;
+        }
+      }
+      if (changed) save(lugares);
+    }
+
+    // ===== Initial Load / Seed =====
+    async function init() {
+      db = await idbOpen().catch(console.error);
+      lugares = load();
+      if (!lugares.length) {
+        lugares = [
+          {
+            id: 1,
+            nombre: "Plaza Principal Benito Juárez",
+            categoria: "Plaza y Jardines",
+            descripcion:
+              "Hermosa plaza central con arquitectura colonial, ideal para pasear en familia y disfrutar del ambiente tradicional mexicano.",
+            direccion: "Centro Histórico, Sabinas Hidalgo, N.L.",
+            horario: "24 horas",
+            precio: "Gratuito",
+            googleMaps:
+              "https://maps.google.com/?q=Plaza+Principal+Sabinas+Hidalgo",
+            recomendaciones:
+              "Visitar al atardecer; suele haber eventos culturales.",
+            fotoIds: [],
+            fotoUrls: [],
+            imagenPrincipal: 0,
+            icono: "fas fa-tree",
+            showInHome: true,
+            useAsHero: false,
+          },
+        ];
+        save(lugares);
+      }
+      await migrateIfNeeded();
+      renderList();
+    }
+    if (document.readyState === "loading")
+      document.addEventListener("DOMContentLoaded", init);
+    else init();
+
+    // ===== Helper: get ordered preview list (mix ids & urls) =====
+    async function getAllPreviewUrls(lugar) {
+      const urls = [];
+      // first: IDB blobs (fotoIds)
+      for (const fid of lugar.fotoIds || []) {
+        const blob = await idbGet(fid);
+        if (blob) urls.push(URL.createObjectURL(blob));
+      }
+      // then: plain URLs
+      for (const u of lugar.fotoUrls || []) {
+        if (isValidHttpUrl(u)) urls.push(u);
+      }
+      return urls;
+    }
+
+    // ===== List / Cards =====
+    async function renderList() {
+      const grid = document.getElementById("lugares-grid");
+      grid.innerHTML = "";
+      for (const lugar of lugares) {
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-2xl shadow-sm overflow-hidden";
+        const head = document.createElement("div");
+        head.className = "relative";
+
+        // resolve main image URL (mixing ids + urls)
+        let mainURL = PLACEHOLDER;
+        const combinedCount =
+          (lugar.fotoIds?.length || 0) + (lugar.fotoUrls?.length || 0);
+        const safeMainIdx = Math.min(lugar.imagenPrincipal || 0, Math.max(combinedCount - 1, 0));
+
+        // build array of preview urls with correct order
+        const previewUrls = await getAllPreviewUrls(lugar);
+        if (previewUrls[safeMainIdx]) mainURL = previewUrls[safeMainIdx];
+
+        head.innerHTML = `
         <img data-url-cleanup class="w-full h-48 object-cover" src="${mainURL}" alt="${lugar.nombre}">
         <div class="absolute top-4 left-4 flex gap-2">
           <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">${lugar.categoria}</span>
-          ${lugar.showInHome ? '<span class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs">En inicio</span>' : ''}
-          ${lugar.useAsHero ? '<span class="bg-purple-600 text-white px-2 py-0.5 rounded-full text-xs">Hero</span>' : ''}
+          ${lugar.showInHome ? '<span class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs">En inicio</span>' : ""}
+          ${lugar.useAsHero ? '<span class="bg-purple-600 text-white px-2 py-0.5 rounded-full text-xs">Hero</span>' : ""}
         </div>
         <div class="absolute top-4 right-4 flex gap-2">
           <button onclick="Turismo.edit(${lugar.id})" class="bg-white/90 hover:bg-white p-2 rounded-lg"><i class="fas fa-edit text-gray-600"></i></button>
           <button onclick="Turismo.remove(${lugar.id})" class="bg-red-500/90 hover:bg-red-500 p-2 rounded-lg"><i class="fas fa-trash text-white"></i></button>
         </div>`;
-      const body = document.createElement('div');
-      body.className = "p-6";
-      body.innerHTML = `
+
+        const body = document.createElement("div");
+        body.className = "p-6";
+        body.innerHTML = `
         <div class="flex items-start justify-between mb-3">
           <h3 class="text-xl font-bold text-gray-800">${lugar.nombre}</h3>
-          <div class="bg-orange-100 p-2 rounded-lg ml-3"><i class="${lugar.icono || 'fas fa-map-marked-alt'} text-orange-600"></i></div>
+          <div class="bg-orange-100 p-2 rounded-lg ml-3"><i class="${lugar.icono || "fas fa-map-marked-alt"} text-orange-600"></i></div>
         </div>
-        <p class="text-gray-600 mb-4 text-sm leading-relaxed">${lugar.descripcion || ''}</p>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">${lugar.descripcion || ""}</p>
         <div class="space-y-2 text-sm mb-4 text-gray-600">
-          <div class="flex items-center"><i class="fas fa-map-marker-alt mr-2 text-orange-500"></i><span>${lugar.direccion || ''}</span></div>
-          <div class="flex items-center"><i class="fas fa-clock mr-2 text-orange-500"></i><span>${lugar.horario || ''}</span></div>
-          <div class="flex items-center"><i class="fas fa-ticket-alt mr-2 text-orange-500"></i><span class="font-medium">${lugar.precio || ''}</span></div>
+          <div class="flex items-center"><i class="fas fa-map-marker-alt mr-2 text-orange-500"></i><span>${lugar.direccion || ""}</span></div>
+          <div class="flex items-center"><i class="fas fa-clock mr-2 text-orange-500"></i><span>${lugar.horario || ""}</span></div>
+          <div class="flex items-center"><i class="fas fa-ticket-alt mr-2 text-orange-500"></i><span class="font-medium">${lugar.precio || ""}</span></div>
         </div>
         <div class="flex gap-2">
           <button onclick="Turismo.view(${lugar.id})" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition text-sm font-medium">
             <i class="fas fa-images mr-2"></i>Ver Galería
           </button>
-          ${lugar.googleMaps ? `<a href="${lugar.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>` : ''}
+          ${lugar.googleMaps ? `<a href="${lugar.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>` : ""}
         </div>`;
-      card.appendChild(head); card.appendChild(body);
-      grid.appendChild(card);
+        card.appendChild(head);
+        card.appendChild(body);
+        grid.appendChild(card);
+      }
     }
-  }
 
-  // ===== Modal: Crear/Editar =====
-  function openForm(id = null) {
-    editId = id;
-    document.getElementById('turismo-form-modal').classList.remove('hidden');
-    document.getElementById('turismo-form-title').textContent = id ? 'Editar Lugar Turístico' : 'Agregar Lugar Turístico';
-    resetForm();
+    // ===== Modal: Crear/Editar =====
+    function openForm(id = null) {
+      editId = id;
+      document.getElementById("turismo-form-modal").classList.remove("hidden");
+      document.getElementById("turismo-form-title").textContent = id
+        ? "Editar Lugar Turístico"
+        : "Agregar Lugar Turístico";
+      resetForm();
 
-    if (id) {
-      const l = lugares.find(x => x.id === id);
-      if (!l) return;
-      setVal('nombre', l.nombre);
-      setVal('categoria', l.categoria);
-      setVal('descripcion', l.descripcion);
-      setVal('direccion', l.direccion);
-      setVal('horario', l.horario);
-      setVal('precio', l.precio);
-      setVal('googleMaps', l.googleMaps);
-      setVal('recomendaciones', l.recomendaciones);
-      setVal('icono', l.icono || 'fas fa-map-marked-alt');
-      document.getElementById('showInHome').checked = !!l.showInHome;
-      document.getElementById('useAsHero').checked = !!l.useAsHero;
+      if (id) {
+        const l = lugares.find((x) => x.id === id);
+        if (!l) return;
+        setVal("nombre", l.nombre);
+        setVal("categoria", l.categoria);
+        setVal("descripcion", l.descripcion);
+        setVal("direccion", l.direccion);
+        setVal("horario", l.horario);
+        setVal("precio", l.precio);
+        setVal("googleMaps", l.googleMaps);
+        setVal("recomendaciones", l.recomendaciones);
+        setVal("icono", l.icono || "fas fa-map-marked-alt");
+        document.getElementById("showInHome").checked = !!l.showInHome;
+        document.getElementById("useAsHero").checked = !!l.useAsHero;
 
-      // Load existing photos into editor
-      editOriginalFotoIds = Array.isArray(l.fotoIds) ? [...l.fotoIds] : [];
-      mainIdx = l.imagenPrincipal || 0;
+        // Load existing photos (IDB + URLs) into editor
+        editOriginalFotoIds = Array.isArray(l.fotoIds) ? [...l.fotoIds] : [];
+        editOriginalFotoUrls = Array.isArray(l.fotoUrls) ? [...l.fotoUrls] : [];
+        mainIdx = l.imagenPrincipal || 0;
+        currentFotos = [];
+        (async () => {
+          // blobs
+          for (const fid of editOriginalFotoIds) {
+            const blob = await idbGet(fid);
+            if (blob) {
+              const url = URL.createObjectURL(blob);
+              currentFotos.push({ blob, existingId: fid, previewUrl: url });
+            }
+          }
+          // urls
+          for (const u of editOriginalFotoUrls) {
+            if (isValidHttpUrl(u)) {
+              currentFotos.push({ url: u, existingUrl: u, previewUrl: u });
+            }
+          }
+          renderPreviews();
+        })();
+      }
+    }
+    function closeForm() {
+      currentFotos.forEach((f) => {
+        try {
+          if (f.previewUrl && f.previewUrl.startsWith("blob:")) {
+            URL.revokeObjectURL(f.previewUrl);
+          }
+        } catch {}
+      });
       currentFotos = [];
-      (async () => {
-        for (const fid of editOriginalFotoIds){
-          const blob = await idbGet(fid);
-          if (blob){
-            const url = URL.createObjectURL(blob);
-            currentFotos.push({ blob, existingId: fid, previewUrl: url });
+      editOriginalFotoIds = [];
+      editOriginalFotoUrls = [];
+      document.getElementById("turismo-form-modal").classList.add("hidden");
+    }
+    function resetForm() {
+      [
+        "nombre",
+        "categoria",
+        "descripcion",
+        "direccion",
+        "horario",
+        "precio",
+        "googleMaps",
+        "recomendaciones",
+        "icono",
+      ].forEach((id) => setVal(id, ""));
+      document.getElementById("showInHome").checked = false;
+      document.getElementById("useAsHero").checked = false;
+      const urlInput = document.getElementById("imageUrlInput");
+      if (urlInput) urlInput.value = "";
+      currentFotos = [];
+      editOriginalFotoIds = [];
+      editOriginalFotoUrls = [];
+      mainIdx = 0;
+      renderPreviews();
+    }
+    function setVal(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.value = val ?? "";
+    }
+
+    // Submit (save)
+    document
+      .getElementById("turismo-form")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // --- Collect form data ---
+        const data = {
+          nombre: document.getElementById("nombre").value.trim(),
+          categoria: document.getElementById("categoria").value.trim(),
+          descripcion: document.getElementById("descripcion").value.trim(),
+          direccion: document.getElementById("direccion").value.trim(),
+          horario: document.getElementById("horario").value.trim(),
+          precio: document.getElementById("precio").value.trim(),
+          googleMaps: document.getElementById("googleMaps").value.trim(),
+          recomendaciones: document
+            .getElementById("recomendaciones")
+            .value.trim(),
+          icono:
+            document.getElementById("icono").value || "fas fa-map-marked-alt",
+          // flags
+          showInHome: !!document.getElementById("showInHome")?.checked,
+          useAsHero: !!document.getElementById("useAsHero")?.checked,
+        };
+
+        // --- Basic validations ---
+        if (
+          !data.nombre ||
+          !data.categoria ||
+          !data.descripcion ||
+          !data.direccion ||
+          !data.horario ||
+          !data.precio ||
+          !data.googleMaps
+        ) {
+          alert("Por favor completa los campos obligatorios (*)");
+          return;
+        }
+
+        // --- Persist photos: split blobs (IDB) vs URLs; keep order ---
+        const fotoIds = [];
+        const fotoUrls = [];
+        const keptExistingIds = new Set();
+        const keptExistingUrls = new Set();
+
+        for (const f of currentFotos) {
+          if (f._removed) continue;
+
+          if (f.existingId) {
+            fotoIds.push(f.existingId);
+            keptExistingIds.add(f.existingId);
+          } else if (f.blob) {
+            const id = generateId();
+            await idbPut(id, f.blob);
+            fotoIds.push(id);
+          } else if (f.existingUrl) {
+            if (isValidHttpUrl(f.existingUrl)) {
+              fotoUrls.push(f.existingUrl);
+              keptExistingUrls.add(f.existingUrl);
+            }
+          } else if (f.url && isValidHttpUrl(f.url)) {
+            fotoUrls.push(f.url);
           }
         }
-        renderPreviews();
-      })();
-    }
-  }
-  function closeForm() {
-    currentFotos.forEach(f => { if (f.previewUrl) URL.revokeObjectURL(f.previewUrl); });
-    currentFotos = [];
-    editOriginalFotoIds = [];
-    document.getElementById('turismo-form-modal').classList.add('hidden');
-  }
-  function resetForm() {
-    ['nombre','categoria','descripcion','direccion','horario','precio','googleMaps','recomendaciones','icono'].forEach(id => setVal(id,''));
-    document.getElementById('showInHome').checked = false;
-    document.getElementById('useAsHero').checked = false;
-    currentFotos = [];
-    editOriginalFotoIds = [];
-    mainIdx = 0;
-    renderPreviews();
-  }
-  function setVal(id, val){ const el = document.getElementById(id); if (el) el.value = val ?? ''; }
 
-  // Submit (save)
-document.getElementById('turismo-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+        // If editing, delete removed blobs from IDB
+        if (editId && editOriginalFotoIds.length) {
+          const removed = editOriginalFotoIds.filter(
+            (oldId) => !keptExistingIds.has(oldId)
+          );
+          removed.forEach(idbDelete);
+        }
+        // no deletion needed for URLs (plain strings)
 
-  // --- Collect form data ---
-  const data = {
-    nombre: document.getElementById('nombre').value.trim(),
-    categoria: document.getElementById('categoria').value.trim(),
-    descripcion: document.getElementById('descripcion').value.trim(),
-    direccion: document.getElementById('direccion').value.trim(),
-    horario: document.getElementById('horario').value.trim(),
-    precio: document.getElementById('precio').value.trim(),
-    googleMaps: document.getElementById('googleMaps').value.trim(),
-    recomendaciones: document.getElementById('recomendaciones').value.trim(),
-    icono: document.getElementById('icono').value || 'fas fa-map-marked-alt',
-    // flags
-    showInHome: !!document.getElementById('showInHome')?.checked, // can be MANY
-    useAsHero:  !!document.getElementById('useAsHero')?.checked   // must be UNIQUE
-  };
+        // Main image index (safety clamp) against combined length
+        const combinedLen = fotoIds.length + fotoUrls.length;
+        const imagenPrincipal = Math.min(mainIdx, Math.max(combinedLen - 1, 0));
 
-  // --- Basic validations ---
-  if (!data.nombre || !data.categoria || !data.descripcion || !data.direccion || !data.horario || !data.precio || !data.googleMaps) {
-    alert('Por favor completa los campos obligatorios (*)');
-    return;
-  }
+        // --- Enforce UNIQUE "useAsHero" ---
+        if (data.useAsHero) {
+          lugares = lugares.map((l) => ({ ...l, useAsHero: false }));
+        }
 
-  // --- Persist photos to IDB; keep order ---
-  const fotoIds = [];
-  const keptExisting = new Set();
-  for (const f of currentFotos) {
-    if (f._removed) continue;
-    if (f.existingId) {
-      fotoIds.push(f.existingId);
-      keptExisting.add(f.existingId);
-    } else if (f.blob) {
-      const id = generateId();
-      await idbPut(id, f.blob);
-      fotoIds.push(id);
-    }
-  }
+        // --- Upsert record ---
+        if (editId) {
+          const i = lugares.findIndex((x) => x.id === editId);
+          if (i !== -1) {
+            lugares[i] = {
+              ...lugares[i],
+              ...data,
+              fotoIds,
+              fotoUrls,
+              imagenPrincipal,
+            };
+          }
+        } else {
+          const newId =
+            (lugares.length ? Math.max(...lugares.map((x) => x.id)) : 0) + 1;
+          lugares.push({
+            id: newId,
+            ...data,
+            fotoIds,
+            fotoUrls,
+            imagenPrincipal,
+          });
+        }
 
-  // If editing, delete removed blobs from IDB
-  if (editId && editOriginalFotoIds.length) {
-    const removed = editOriginalFotoIds.filter(oldId => !keptExisting.has(oldId));
-    removed.forEach(idbDelete);
-  }
+        // --- Persist & refresh UI ---
+        save(lugares);
+        await renderList();
+        closeForm();
+      });
 
-  // Main image index (safety clamp)
-  const imagenPrincipal = Math.min(mainIdx, Math.max(fotoIds.length - 1, 0));
+    // ===== Imágenes (file input) =====
+    document.getElementById("imagenes").addEventListener("change", (ev) => {
+      const files = Array.from(ev.target.files || []);
+      if (!files.length) return;
 
-  // --- Enforce UNIQUE "useAsHero" (do NOT touch showInHome) ---
-  if (data.useAsHero) {
-    lugares = lugares.map(l => ({ ...l, useAsHero: false }));
-  }
-
-  // --- Upsert record ---
-  if (editId) {
-    const i = lugares.findIndex(x => x.id === editId);
-    if (i !== -1) {
-      lugares[i] = { ...lugares[i], ...data, fotoIds, imagenPrincipal };
-    }
-  } else {
-    const newId = (lugares.length ? Math.max(...lugares.map(x => x.id)) : 0) + 1;
-    lugares.push({ id: newId, ...data, fotoIds, imagenPrincipal });
-  }
-
-  // --- Persist & refresh UI ---
-  save(lugares);
-  await renderList();
-  closeForm();
-});
-
-
-  // ===== Imágenes (previews) =====
-  document.getElementById('imagenes').addEventListener('change', (ev) => {
-    const files = Array.from(ev.target.files || []);
-    if (!files.length) return;
-
-    files.forEach((file) => {
-      const url = URL.createObjectURL(file);
-      currentFotos.push({ blob:file, previewUrl:url });
+      files.forEach((file) => {
+        const url = URL.createObjectURL(file);
+        currentFotos.push({ blob: file, previewUrl: url });
+      });
+      renderPreviews();
+      ev.target.value = "";
     });
-    renderPreviews();
-    ev.target.value = '';
-  });
 
-  function renderPreviews() {
-    const wrap = document.getElementById('image-preview');
-    if (!wrap) return;
-    wrap.innerHTML = currentFotos.map((f, i) => f._removed ? '' : `
+    // ===== Imágenes (add by URL) =====
+    function addImageUrl() {
+      const input = document.getElementById("imageUrlInput");
+      if (!input) return;
+      const raw = input.value.trim();
+      if (!raw) return;
+
+      // support comma-separated or multi-line
+      const pieces = raw
+        .split(/[\n,]/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      let added = 0;
+      for (const p of pieces) {
+        if (isValidHttpUrl(p)) {
+          currentFotos.push({ url: p, previewUrl: p });
+          added++;
+        }
+      }
+      if (!added) {
+        alert("Ninguna URL válida encontrada. Asegúrate de incluir http(s)://");
+        return;
+      }
+      input.value = "";
+      renderPreviews();
+    }
+
+    // ===== Previews (mixed) =====
+    function renderPreviews() {
+      const wrap = document.getElementById("image-preview");
+      if (!wrap) return;
+      wrap.innerHTML = currentFotos
+        .map((f, i) =>
+          f._removed
+            ? ""
+            : `
       <div class="relative group">
         <img src="${f.previewUrl}" class="w-full h-20 object-cover rounded border">
-        <div class="absolute top-1 right-1 bg-black/60 text-white text-xs px-1 rounded">${i === mainIdx ? 'Principal' : i+1}</div>
+        <div class="absolute top-1 right-1 bg-black/60 text-white text-xs px-1 rounded">
+          ${i === mainIdx ? "Principal" : i + 1}
+        </div>
         <button type="button" onclick="Turismo.removeImage(${i})" class="absolute top-1 left-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100">×</button>
-        ${i===mainIdx ? '' : `<button type="button" onclick="Turismo.setMain(${i})" class="absolute bottom-1 left-1 bg-orange-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100">Principal</button>`}
-      </div>
-    `).join('');
-  }
-
-  function setMain(i) {
-    if (i<0 || i>=currentFotos.length || currentFotos[i]._removed) return;
-    const chosen = currentFotos.splice(i,1)[0];
-    currentFotos.unshift(chosen);
-    mainIdx = 0;
-    renderPreviews();
-  }
-
-  function removeImage(i) {
-    const f = currentFotos[i];
-    if (!f) return;
-    if (f.previewUrl) URL.revokeObjectURL(f.previewUrl);
-    f._removed = true;
-    if (mainIdx === i) mainIdx = 0;
-    renderPreviews();
-  }
-
-  // ===== Tarjeta actions =====
-  function edit(id){ openForm(id); }
-
-  function removePlace(id){
-    if (!confirm('¿Eliminar este lugar turístico?')) return;
-    const it = lugares.find(l=>l.id===id);
-    if (it?.fotoIds?.length) it.fotoIds.forEach(idbDelete);
-    lugares = lugares.filter(l => l.id !== id);
-    // if we deleted the current hero, no hero remains
-    save(lugares);
-    renderList();
-  }
-
-  // ===== Viewer =====
-  async function view(id){
-    const l = lugares.find(x => x.id === id);
-    if (!l) return;
-    const modal = document.getElementById('image-viewer-modal');
-    const title = document.getElementById('image-viewer-title');
-    const main = document.getElementById('main-viewer-image');
-    const thumbs = document.getElementById('image-thumbnails');
-    const info = document.getElementById('place-info');
-
-    title.textContent = l.nombre;
-
-    const urls = [];
-    for (const fid of (l.fotoIds||[])){
-      const blob = await idbGet(fid);
-      if (blob) urls.push(URL.createObjectURL(blob));
+        ${
+          i === mainIdx
+            ? ""
+            : `<button type="button" onclick="Turismo.setMain(${i})" class="absolute bottom-1 left-1 bg-orange-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100">Principal</button>`
+        }
+        ${
+          f.url
+            ? `<div class="absolute bottom-1 right-1 text-[10px] bg-white/80 text-gray-700 px-1 rounded border">URL</div>`
+            : `<div class="absolute bottom-1 right-1 text-[10px] bg-white/80 text-gray-700 px-1 rounded border">Archivo</div>`
+        }
+      </div>`
+        )
+        .join("");
     }
 
-    const mainIndex = Math.min(l.imagenPrincipal || 0, Math.max(urls.length - 1, 0));
-    main.src = urls[mainIndex] || '';
-    main.alt = l.nombre;
+    function setMain(i) {
+      if (i < 0 || i >= currentFotos.length || currentFotos[i]._removed) return;
+      const chosen = currentFotos.splice(i, 1)[0];
+      currentFotos.unshift(chosen);
+      mainIdx = 0;
+      renderPreviews();
+    }
 
-    thumbs.innerHTML = urls.map((u, index) => `
-      <img data-url-cleanup src="${u}" class="w-16 h-16 object-cover rounded cursor-pointer border-2 ${index === mainIndex ? 'border-orange-500' : 'border-gray-200'}" onclick="Turismo.pick(${id}, ${index})">
-    `).join('');
+    function removeImage(i) {
+      const f = currentFotos[i];
+      if (!f) return;
+      try {
+        if (f.previewUrl && f.previewUrl.startsWith("blob:")) {
+          URL.revokeObjectURL(f.previewUrl);
+        }
+      } catch {}
+      f._removed = true;
+      if (mainIdx === i) mainIdx = 0;
+      renderPreviews();
+    }
 
-    info.innerHTML = `
+    // ===== Tarjeta actions =====
+    function edit(id) {
+      openForm(id);
+    }
+
+    function removePlace(id) {
+      if (!confirm("¿Eliminar este lugar turístico?")) return;
+      const it = lugares.find((l) => l.id === id);
+      if (it?.fotoIds?.length) it.fotoIds.forEach(idbDelete);
+      // nothing to do for fotoUrls (strings)
+      lugares = lugares.filter((l) => l.id !== id);
+      save(lugares);
+      renderList();
+    }
+
+    // ===== Viewer =====
+    async function view(id) {
+      const l = lugares.find((x) => x.id === id);
+      if (!l) return;
+      const modal = document.getElementById("image-viewer-modal");
+      const title = document.getElementById("image-viewer-title");
+      const main = document.getElementById("main-viewer-image");
+      const thumbs = document.getElementById("image-thumbnails");
+      const info = document.getElementById("place-info");
+
+      title.textContent = l.nombre;
+
+      // Build combined urls in saved order: first fotoIds (resolved), then fotoUrls
+      const urls = await getAllPreviewUrls(l);
+
+      const mainIndex = Math.min(
+        l.imagenPrincipal || 0,
+        Math.max(urls.length - 1, 0)
+      );
+      main.src = urls[mainIndex] || "";
+      main.alt = l.nombre;
+
+      thumbs.innerHTML = urls
+        .map(
+          (u, index) => `
+        <img data-url-cleanup src="${u}" class="w-16 h-16 object-cover rounded cursor-pointer border-2 ${
+          index === mainIndex ? "border-orange-500" : "border-gray-200"
+        }" onclick="Turismo.pick(${id}, ${index})">`
+        )
+        .join("");
+
+      info.innerHTML = `
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
         <div>
           <h4 class="font-bold text-gray-800 mb-2">${l.nombre}</h4>
-          <p class="text-gray-600 mb-3">${l.descripcion || ''}</p>
+          <p class="text-gray-600 mb-3">${l.descripcion || ""}</p>
           <div class="space-y-2">
-            <div class="flex items-center"><i class="fas fa-tag text-orange-500 mr-2"></i><span class="font-medium">${l.categoria || ''}</span></div>
-            <div class="flex items-center"><i class="fas fa-map-marker-alt text-orange-500 mr-2"></i><span>${l.direccion || ''}</span></div>
-            <div class="flex items-center"><i class="fas fa-clock text-orange-500 mr-2"></i><span>${l.horario || ''}</span></div>
-            <div class="flex items-center"><i class="fas fa-ticket-alt text-orange-500 mr-2"></i><span class="font-medium">${l.precio || ''}</span></div>
+            <div class="flex items-center"><i class="fas fa-tag text-orange-500 mr-2"></i><span class="font-medium">${l.categoria || ""}</span></div>
+            <div class="flex items-center"><i class="fas fa-map-marker-alt text-orange-500 mr-2"></i><span>${l.direccion || ""}</span></div>
+            <div class="flex items-center"><i class="fas fa-clock text-orange-500 mr-2"></i><span>${l.horario || ""}</span></div>
+            <div class="flex items-center"><i class="fas fa-ticket-alt text-orange-500 mr-2"></i><span class="font-medium">${l.precio || ""}</span></div>
           </div>
         </div>
         <div>
           <h5 class="font-bold text-gray-800 mb-2">Recomendaciones</h5>
-          <p class="text-gray-600 mb-3">${l.recomendaciones || ''}</p>
-          ${l.googleMaps ? `<a target="_blank" href="${l.googleMaps}" class="inline-flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"><i class="fas fa-map mr-2"></i> Ver en Google Maps</a>` : ''}
+          <p class="text-gray-600 mb-3">${l.recomendaciones || ""}</p>
+          ${
+            l.googleMaps
+              ? `<a target="_blank" href="${l.googleMaps}" class="inline-flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"><i class="fas fa-map mr-2"></i> Ver en Google Maps</a>`
+              : ""
+          }
         </div>
-      </div>
-    `;
-    modal.classList.remove('hidden');
-  }
-  function closeViewer(){
-    document.querySelectorAll('#image-viewer-modal [data-url-cleanup], #image-viewer-modal img').forEach(img=>{
-      try { if (img.src && img.src.startsWith('blob:')) URL.revokeObjectURL(img.src); } catch {}
-    });
-    document.getElementById('image-viewer-modal').classList.add('hidden');
-  }
-  async function pick(placeId, index){
-    const l = lugares.find(x=>x.id===placeId); if(!l) return;
-    const main = document.getElementById('main-viewer-image');
+      </div>`;
+      modal.classList.remove("hidden");
+    }
+    function closeViewer() {
+      document
+        .querySelectorAll(
+          "#image-viewer-modal [data-url-cleanup], #image-viewer-modal img"
+        )
+        .forEach((img) => {
+          try {
+            if (img.src && img.src.startsWith("blob:"))
+              URL.revokeObjectURL(img.src);
+          } catch {}
+        });
+      document.getElementById("image-viewer-modal").classList.add("hidden");
+    }
+    async function pick(placeId, index) {
+      const l = lugares.find((x) => x.id === placeId);
+      if (!l) return;
+      const main = document.getElementById("main-viewer-image");
 
-    const fid = (l.fotoIds||[])[index];
-    if (!fid) return;
-    const blob = await idbGet(fid);
-    if (!blob) return;
-    const url = URL.createObjectURL(blob);
-    try { if (main.src.startsWith('blob:')) URL.revokeObjectURL(main.src); } catch {}
-    main.src = url;
+      const urls = await getAllPreviewUrls(l);
+      const u = urls[index];
+      if (!u) return;
 
-    document.querySelectorAll('#image-thumbnails img').forEach((img, i) => {
-      img.classList.remove('border-orange-500');
-      img.classList.add('border-gray-200');
-      if (i === index) {
-        img.classList.add('border-orange-500');
-        img.classList.remove('border-gray-200');
-      }
-    });
-  }
+      try {
+        if (main.src.startsWith("blob:")) URL.revokeObjectURL(main.src);
+      } catch {}
+      main.src = u;
 
-  // ===== Expose =====
-  window.Turismo = {
-    openForm, closeForm,
-    edit, remove: removePlace,
-    view, closeViewer, pick,
-    setMain, removeImage
-  };
+      document.querySelectorAll("#image-thumbnails img").forEach((img, i) => {
+        img.classList.remove("border-orange-500");
+        img.classList.add("border-gray-200");
+        if (i === index) {
+          img.classList.add("border-orange-500");
+          img.classList.remove("border-gray-200");
+        }
+      });
+    }
 
-})();
+    // ===== Expose =====
+    window.Turismo = {
+      openForm,
+      closeForm,
+      edit,
+      remove: removePlace,
+      view,
+      closeViewer,
+      pick,
+      setMain,
+      removeImage,
+      addImageUrl,
+    };
+  })();
 </script>
+
