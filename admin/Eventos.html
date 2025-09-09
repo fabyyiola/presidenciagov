@@ -270,7 +270,7 @@
           <td class="px-4 py-3">${ev.organizador || ""}</td>
           <td class="px-4 py-3">${ev.categoria || ""}</td>
           <td class="px-4 py-3 flex items-center gap-2" onclick="event.stopPropagation()">
-            ${thumbHtml}
+            
             <button onclick="event.stopPropagation(); Eventos.edit(${ev.id})" class="text-yellow-600 hover:text-yellow-700" title="Editar"><i class="fas fa-edit"></i></button>
             <button onclick="event.stopPropagation(); Eventos.remove(${ev.id})" class="text-red-600 hover:text-red-700" title="Eliminar"><i class="fas fa-trash"></i></button>
           </td>
