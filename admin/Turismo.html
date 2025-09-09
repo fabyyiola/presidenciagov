@@ -126,19 +126,103 @@
 
 <script>
 (() => {
+  // ===== Keys / DB =====
   const LS_KEY = 'lugaresTuristicos';
+  const IDB_NAME = 'TurismoDB';
+  const IDB_STORE = 'imagenes';
 
-  // -------- storage helpers --------
-  const load = () => {
-    try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; }
-  };
+  // ===== State =====
+  let lugares = [];
+  let editId = null;                 // null = crear, number = editar
+  let currentFotos = [];             // [{ blob, existingId?, _removed?, previewUrl }]
+  let editOriginalFotoIds = [];      // to detect deletions
+  let mainIdx = 0;
+  let db = null;
+
+  // ===== Helpers: localStorage =====
+  const load = () => { try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; } };
   const save = (arr) => localStorage.setItem(LS_KEY, JSON.stringify(arr));
 
-  // -------- state --------
-  let lugares = load();
-  if (!lugares.length) {
-    lugares = [
-      {
+  // ===== IndexedDB helpers =====
+  function idbOpen(){
+    return new Promise((resolve,reject)=>{
+      const req = indexedDB.open(IDB_NAME,1);
+      req.onupgradeneeded = (e)=>{
+        const db = e.target.result;
+        if(!db.objectStoreNames.contains(IDB_STORE)){
+          db.createObjectStore(IDB_STORE);
+        }
+      };
+      req.onsuccess = ()=>resolve(req.result);
+      req.onerror = ()=>reject(req.error);
+    });
+  }
+  async function idbPut(id, blob){
+    return new Promise((resolve,reject)=>{
+      const tx = db.transaction(IDB_STORE,'readwrite');
+      tx.objectStore(IDB_STORE).put(blob, id);
+      tx.oncomplete = resolve;
+      tx.onerror = ()=>reject(tx.error);
+    });
+  }
+  async function idbGet(id){
+    return new Promise((resolve,reject)=>{
+      const tx = db.transaction(IDB_STORE,'readonly');
+      const rq = tx.objectStore(IDB_STORE).get(id);
+      rq.onsuccess = ()=>resolve(rq.result||null);
+      rq.onerror = ()=>reject(rq.error);
+    });
+  }
+  function idbDelete(id){
+    const tx = db.transaction(IDB_STORE,'readwrite');
+    tx.objectStore(IDB_STORE).delete(id);
+  }
+
+  // ===== Utilities =====
+  function generateId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,10); }
+  function dataUrlToBlob(dataURL){
+    const [meta, b64] = dataURL.split(',');
+    const mime = (meta.match(/data:(.*?);/)||[])[1] || 'application/octet-stream';
+    const bin = atob(b64); const len = bin.length; const ua = new Uint8Array(len);
+    for(let i=0;i<len;i++) ua[i]=bin.charCodeAt(i);
+    return new Blob([ua], {type:mime});
+  }
+  const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23eef2ff'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='Arial' font-size='16'%3ESin imagen%3C/text%3E%3C/svg%3E";
+
+  // ===== Migration: imagenes (dataURL) -> fotoIds (IDB) =====
+  async function migrateIfNeeded(){
+    let changed = false;
+    for (const l of lugares){
+      if (Array.isArray(l.imagenes) && l.imagenes.length){
+        const ids = [];
+        for (const url of l.imagenes){
+          try{
+            const blob = dataUrlToBlob(url);
+            const id = generateId();
+            await idbPut(id, blob);
+            ids.push(id);
+          }catch{}
+        }
+        l.fotoIds = ids;
+        delete l.imagenes;
+        // keep existing imagenPrincipal index (works over new ordered ids)
+        if (typeof l.imagenPrincipal !== 'number') l.imagenPrincipal = 0;
+        changed = true;
+      } else if (!Array.isArray(l.fotoIds)){
+        l.fotoIds = [];
+        if (typeof l.imagenPrincipal !== 'number') l.imagenPrincipal = 0;
+        changed = true;
+      }
+    }
+    if (changed) save(lugares);
+  }
+
+  // ===== Initial Load / Seed =====
+  async function init(){
+    db = await idbOpen().catch(console.error);
+    lugares = load();
+    if (!lugares.length){
+      lugares = [{
         id: 1,
         nombre: "Plaza Principal Benito Juárez",
         categoria: "Plaza y Jardines",
@@ -148,65 +232,68 @@
         precio: "Gratuito",
         googleMaps: "https://maps.google.com/?q=Plaza+Principal+Sabinas+Hidalgo",
         recomendaciones: "Visitar al atardecer; suele haber eventos culturales.",
-        imagenes: [],
+        // New model:
+        fotoIds: [],
         imagenPrincipal: 0,
         icono: "fas fa-tree"
-      }
-    ];
-    save(lugares);
+      }];
+      save(lugares);
+    }
+    await migrateIfNeeded();
+    renderList();
   }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 
-  let editId = null;          // null = crear, number = editar
-  let currentImages = [];     // data URLs
-  let mainIdx = 0;
-
-  // -------- UI: lista --------
-  function renderList() {
+  // ===== List / Cards =====
+  async function renderList(){
     const grid = document.getElementById('lugares-grid');
-    grid.innerHTML = lugares.map(cardHtml).join('');
+    grid.innerHTML = '';
+    for (const lugar of lugares){
+      const card = document.createElement('div');
+      card.className = "bg-white rounded-2xl shadow-sm overflow-hidden";
+      const head = document.createElement('div');
+      head.className = "relative";
+
+      // resolve main image URL
+      let mainURL = PLACEHOLDER;
+      if (lugar.fotoIds?.length){
+        const idx = Math.min(lugar.imagenPrincipal || 0, lugar.fotoIds.length-1);
+        const blob = await idbGet(lugar.fotoIds[idx]);
+        if (blob) mainURL = URL.createObjectURL(blob);
+      }
+
+      head.innerHTML = `
+        <img data-url-cleanup class="w-full h-48 object-cover" src="${mainURL}" alt="${lugar.nombre}">
+        <span class="absolute top-4 left-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">${lugar.categoria}</span>
+        <div class="absolute top-4 right-4 flex gap-2">
+          <button onclick="Turismo.edit(${lugar.id})" class="bg-white/90 hover:bg-white p-2 rounded-lg"><i class="fas fa-edit text-gray-600"></i></button>
+          <button onclick="Turismo.remove(${lugar.id})" class="bg-red-500/90 hover:bg-red-500 p-2 rounded-lg"><i class="fas fa-trash text-white"></i></button>
+        </div>`;
+      const body = document.createElement('div');
+      body.className = "p-6";
+      body.innerHTML = `
+        <div class="flex items-start justify-between mb-3">
+          <h3 class="text-xl font-bold text-gray-800">${lugar.nombre}</h3>
+          <div class="bg-orange-100 p-2 rounded-lg ml-3"><i class="${lugar.icono || 'fas fa-map-marked-alt'} text-orange-600"></i></div>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">${lugar.descripcion || ''}</p>
+        <div class="space-y-2 text-sm mb-4 text-gray-600">
+          <div class="flex items-center"><i class="fas fa-map-marker-alt mr-2 text-orange-500"></i><span>${lugar.direccion || ''}</span></div>
+          <div class="flex items-center"><i class="fas fa-clock mr-2 text-orange-500"></i><span>${lugar.horario || ''}</span></div>
+          <div class="flex items-center"><i class="fas fa-ticket-alt mr-2 text-orange-500"></i><span class="font-medium">${lugar.precio || ''}</span></div>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="Turismo.view(${lugar.id})" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition text-sm font-medium">
+            <i class="fas fa-images mr-2"></i>Ver Galería
+          </button>
+          ${lugar.googleMaps ? `<a href="${lugar.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>` : ''}
+        </div>`;
+      card.appendChild(head); card.appendChild(body);
+      grid.appendChild(card);
+    }
   }
 
-  function cardHtml(lugar) {
-    const main = (lugar.imagenes?.length ? (lugar.imagenes[lugar.imagenPrincipal] || lugar.imagenes[0]) :
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23eef2ff'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='Arial' font-size='16'%3ESin imagen%3C/text%3E%3C/svg%3E");
-
-    return `
-      <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
-        <div class="relative">
-          <img src="${main}" alt="${lugar.nombre}" class="w-full h-48 object-cover">
-          <span class="absolute top-4 left-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">${lugar.categoria}</span>
-          <div class="absolute top-4 right-4 flex gap-2">
-            <button onclick="Turismo.edit(${lugar.id})" class="bg-white/90 hover:bg-white p-2 rounded-lg"><i class="fas fa-edit text-gray-600"></i></button>
-            <button onclick="Turismo.remove(${lugar.id})" class="bg-red-500/90 hover:bg-red-500 p-2 rounded-lg"><i class="fas fa-trash text-white"></i></button>
-          </div>
-        </div>
-
-        <div class="p-6">
-          <div class="flex items-start justify-between mb-3">
-            <h3 class="text-xl font-bold text-gray-800">${lugar.nombre}</h3>
-            <div class="bg-orange-100 p-2 rounded-lg ml-3"><i class="${lugar.icono || 'fas fa-map-marked-alt'} text-orange-600"></i></div>
-          </div>
-
-          <p class="text-gray-600 mb-4 text-sm leading-relaxed">${lugar.descripcion || ''}</p>
-
-          <div class="space-y-2 text-sm mb-4 text-gray-600">
-            <div class="flex items-center"><i class="fas fa-map-marker-alt mr-2 text-orange-500"></i><span>${lugar.direccion || ''}</span></div>
-            <div class="flex items-center"><i class="fas fa-clock mr-2 text-orange-500"></i><span>${lugar.horario || ''}</span></div>
-            <div class="flex items-center"><i class="fas fa-ticket-alt mr-2 text-orange-500"></i><span class="font-medium">${lugar.precio || ''}</span></div>
-          </div>
-
-          <div class="flex gap-2">
-            <button onclick="Turismo.view(${lugar.id})" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition text-sm font-medium">
-              <i class="fas fa-images mr-2"></i>Ver Galería
-            </button>
-            ${lugar.googleMaps ? `<a href="${lugar.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>` : ''}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  // -------- modal form --------
+  // ===== Modal: Crear/Editar =====
   function openForm(id = null) {
     editId = id;
     document.getElementById('turismo-form-modal').classList.remove('hidden');
@@ -225,27 +312,41 @@
       setVal('googleMaps', l.googleMaps);
       setVal('recomendaciones', l.recomendaciones);
       setVal('icono', l.icono || 'fas fa-map-marked-alt');
-      currentImages = Array.isArray(l.imagenes) ? [...l.imagenes] : [];
+
+      // Load existing photos into editor
+      editOriginalFotoIds = Array.isArray(l.fotoIds) ? [...l.fotoIds] : [];
       mainIdx = l.imagenPrincipal || 0;
-      renderPreviews();
+      currentFotos = [];
+      (async () => {
+        for (const fid of editOriginalFotoIds){
+          const blob = await idbGet(fid);
+          if (blob){
+            const url = URL.createObjectURL(blob);
+            currentFotos.push({ blob, existingId: fid, previewUrl: url });
+          }
+        }
+        renderPreviews();
+      })();
     }
   }
-
   function closeForm() {
+    // cleanup preview URLs
+    currentFotos.forEach(f => { if (f.previewUrl) URL.revokeObjectURL(f.previewUrl); });
+    currentFotos = [];
+    editOriginalFotoIds = [];
     document.getElementById('turismo-form-modal').classList.add('hidden');
   }
-
   function resetForm() {
     ['nombre','categoria','descripcion','direccion','horario','precio','googleMaps','recomendaciones','icono'].forEach(id => setVal(id,''));
-    currentImages = [];
+    currentFotos = [];
+    editOriginalFotoIds = [];
     mainIdx = 0;
     renderPreviews();
   }
-
   function setVal(id, val){ const el = document.getElementById(id); if (el) el.value = val ?? ''; }
 
-  // submit
-  document.getElementById('turismo-form').addEventListener('submit', (e) => {
+  // Submit (save)
+  document.getElementById('turismo-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const data = {
@@ -257,9 +358,7 @@
       precio: document.getElementById('precio').value.trim(),
       googleMaps: document.getElementById('googleMaps').value.trim(),
       recomendaciones: document.getElementById('recomendaciones').value.trim(),
-      icono: document.getElementById('icono').value || 'fas fa-map-marked-alt',
-      imagenes: currentImages,
-      imagenPrincipal: Math.min(mainIdx, Math.max(currentImages.length - 1, 0))
+      icono: document.getElementById('icono').value || 'fas fa-map-marked-alt'
     };
 
     if (!data.nombre || !data.categoria || !data.descripcion || !data.direccion || !data.horario || !data.precio || !data.googleMaps) {
@@ -267,47 +366,61 @@
       return;
     }
 
+    // Persist photos to IDB; keep order; compute fotoIds
+    const fotoIds = [];
+    const keptExisting = new Set();
+    for (const f of currentFotos){
+      if (f._removed) continue;
+      if (f.existingId){
+        fotoIds.push(f.existingId);
+        keptExisting.add(f.existingId);
+      } else if (f.blob){
+        const id = generateId();
+        await idbPut(id, f.blob);
+        fotoIds.push(id);
+      }
+    }
+
+    // Delete removed blobs if editing
+    if (editId && editOriginalFotoIds.length){
+      const removed = editOriginalFotoIds.filter(oldId => !keptExisting.has(oldId));
+      removed.forEach(idbDelete);
+    }
+
+    const imagenPrincipal = Math.min(mainIdx, Math.max(fotoIds.length - 1, 0));
+
     if (editId) {
       const i = lugares.findIndex(x => x.id === editId);
-      if (i !== -1) lugares[i] = { ...lugares[i], ...data };
+      if (i !== -1) lugares[i] = { ...lugares[i], ...data, fotoIds, imagenPrincipal };
     } else {
       const newId = (lugares.length ? Math.max(...lugares.map(x => x.id)) : 0) + 1;
-      lugares.push({ id: newId, ...data });
+      lugares.push({ id: newId, ...data, fotoIds, imagenPrincipal });
     }
 
     save(lugares);
-    renderList();
+    await renderList();
     closeForm();
   });
 
-  // -------- imágenes (previews) --------
+  // ===== Imágenes (previews) =====
   document.getElementById('imagenes').addEventListener('change', (ev) => {
     const files = Array.from(ev.target.files || []);
     if (!files.length) return;
 
-    let pending = files.length;
-    files.forEach((file, idx) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        currentImages.push(e.target.result);
-        if (--pending === 0) {
-          // si no había imágenes, la primera pasa a ser principal
-          if (currentImages.length && mainIdx === 0) mainIdx = 0;
-          renderPreviews();
-        }
-      };
-      reader.readAsDataURL(file);
+    files.forEach((file) => {
+      const url = URL.createObjectURL(file);
+      currentFotos.push({ blob:file, previewUrl:url });
     });
-
+    renderPreviews();
     ev.target.value = '';
   });
 
   function renderPreviews() {
     const wrap = document.getElementById('image-preview');
     if (!wrap) return;
-    wrap.innerHTML = currentImages.map((src, i) => `
+    wrap.innerHTML = currentFotos.map((f, i) => f._removed ? '' : `
       <div class="relative group">
-        <img src="${src}" class="w-full h-20 object-cover rounded border">
+        <img src="${f.previewUrl}" class="w-full h-20 object-cover rounded border">
         <div class="absolute top-1 right-1 bg-black/60 text-white text-xs px-1 rounded">${i === mainIdx ? 'Principal' : i+1}</div>
         <button type="button" onclick="Turismo.removeImage(${i})" class="absolute top-1 left-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100">×</button>
         ${i===mainIdx ? '' : `<button type="button" onclick="Turismo.setMain(${i})" class="absolute bottom-1 left-1 bg-orange-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100">Principal</button>`}
@@ -316,37 +429,37 @@
   }
 
   function setMain(i) {
-    if (i<0 || i>=currentImages.length) return;
-    mainIdx = i;
-    // mover imagen elegida al frente para mantener consistencia visual
-    const chosen = currentImages.splice(i,1)[0];
-    currentImages.unshift(chosen);
+    if (i<0 || i>=currentFotos.length || currentFotos[i]._removed) return;
+    // move chosen photo to the front so indices stay intuitive
+    const chosen = currentFotos.splice(i,1)[0];
+    currentFotos.unshift(chosen);
     mainIdx = 0;
     renderPreviews();
   }
 
   function removeImage(i) {
-    if (i<0 || i>=currentImages.length) return;
-    currentImages.splice(i,1);
-    if (mainIdx >= currentImages.length) mainIdx = 0;
+    const f = currentFotos[i];
+    if (!f) return;
+    if (f.previewUrl) URL.revokeObjectURL(f.previewUrl);
+    f._removed = true;
+    if (mainIdx === i) mainIdx = 0;
     renderPreviews();
   }
 
-  // -------- acciones tarjeta --------
+  // ===== Tarjeta actions =====
   function edit(id){ openForm(id); }
 
   function removePlace(id){
     if (!confirm('¿Eliminar este lugar turístico?')) return;
-    const ix = lugares.findIndex(l => l.id === id);
-    if (ix !== -1) {
-      lugares.splice(ix,1);
-      save(lugares);
-      renderList();
-    }
+    const it = lugares.find(l=>l.id===id);
+    if (it?.fotoIds?.length) it.fotoIds.forEach(idbDelete); // cleanup blobs
+    lugares = lugares.filter(l => l.id !== id);
+    save(lugares);
+    renderList();
   }
 
-  // -------- visor de imágenes --------
-  function view(id){
+  // ===== Viewer =====
+  async function view(id){
     const l = lugares.find(x => x.id === id);
     if (!l) return;
     const modal = document.getElementById('image-viewer-modal');
@@ -356,11 +469,20 @@
     const info = document.getElementById('place-info');
 
     title.textContent = l.nombre;
-    main.src = (l.imagenes?.length ? (l.imagenes[l.imagenPrincipal] || l.imagenes[0]) : '');
+
+    // fetch blobs -> URLs (limit reasonable count if needed)
+    const urls = [];
+    for (const fid of (l.fotoIds||[])){
+      const blob = await idbGet(fid);
+      if (blob) urls.push(URL.createObjectURL(blob));
+    }
+
+    const mainIndex = Math.min(l.imagenPrincipal || 0, Math.max(urls.length - 1, 0));
+    main.src = urls[mainIndex] || '';
     main.alt = l.nombre;
 
-    thumbs.innerHTML = (l.imagenes || []).map((img, index) => `
-      <img src="${img}" class="w-16 h-16 object-cover rounded cursor-pointer border-2 ${index === (l.imagenPrincipal || 0) ? 'border-orange-500' : 'border-gray-200'}" onclick="Turismo.pick('${img}', ${index})">
+    thumbs.innerHTML = urls.map((u, index) => `
+      <img data-url-cleanup src="${u}" class="w-16 h-16 object-cover rounded cursor-pointer border-2 ${index === mainIndex ? 'border-orange-500' : 'border-gray-200'}" onclick="Turismo.pick(${id}, ${index})">
     `).join('');
 
     info.innerHTML = `
@@ -382,26 +504,40 @@
         </div>
       </div>
     `;
-
     modal.classList.remove('hidden');
   }
-  function closeViewer(){ document.getElementById('image-viewer-modal').classList.add('hidden'); }
-  function pick(src, index) {
-  const main = document.getElementById('main-viewer-image');
-  main.src = src;
+  function closeViewer(){
+    // cleanup any object URLs created inside viewer
+    document.querySelectorAll('#image-viewer-modal [data-url-cleanup], #image-viewer-modal img').forEach(img=>{
+      try { if (img.src && img.src.startsWith('blob:')) URL.revokeObjectURL(img.src); } catch {}
+    });
+    document.getElementById('image-viewer-modal').classList.add('hidden');
+  }
+  async function pick(placeId, index){
+    const l = lugares.find(x=>x.id===placeId); if(!l) return;
+    const main = document.getElementById('main-viewer-image');
 
-  // reset borders
-  document.querySelectorAll('#image-thumbnails img').forEach((img, i) => {
-    img.classList.remove('border-orange-500');
-    img.classList.add('border-gray-200');
-    if (i === index) {
-      img.classList.add('border-orange-500');
-      img.classList.remove('border-gray-200');
-    }
-  });
-}
+    const fid = (l.fotoIds||[])[index];
+    if (!fid) return;
+    const blob = await idbGet(fid);
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    // revoke previous main if it was a blob URL
+    try { if (main.src.startsWith('blob:')) URL.revokeObjectURL(main.src); } catch {}
+    main.src = url;
 
-  // -------- expose --------
+    // reset borders
+    document.querySelectorAll('#image-thumbnails img').forEach((img, i) => {
+      img.classList.remove('border-orange-500');
+      img.classList.add('border-gray-200');
+      if (i === index) {
+        img.classList.add('border-orange-500');
+        img.classList.remove('border-gray-200');
+      }
+    });
+  }
+
+  // ===== Expose =====
   window.Turismo = {
     openForm, closeForm,
     edit, remove: removePlace,
@@ -409,7 +545,6 @@
     setMain, removeImage
   };
 
-  // init
-  renderList();
 })();
 </script>
+
