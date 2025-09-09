@@ -111,10 +111,11 @@
     </header>
 
     <!-- Sidebar (preserved) -->
-    <aside
-      id="sidebar"
-      class="fixed left-0 top-16 h-full w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 sidebar-transition z-30"
-    >
+  <aside
+  id="sidebar"
+  class="fixed left-0 top-16 bottom-0 w-64 bg-white shadow-lg overflow-y-auto
+         transform -translate-x-full lg:translate-x-0 sidebar-transition z-30"
+>
      <nav class="p-6">
   <ul class="space-y-2">
     <!-- Equipo -->
@@ -126,7 +127,7 @@
         >
           <div class="flex items-center">
             <i class="fas fa-users-cog mr-3"></i>
-            Equipo de Gobierno
+            Equipo
           </div>
           <i id="equipo-arrow" class="fas fa-chevron-right transition-transform duration-200"></i>
         </button>
@@ -142,11 +143,11 @@
     <li>
       <div class="menu-parent">
         <button data-submenu="economia" class="nav-parent flex items-center justify-between w-full p-3 rounded-lg text-gov-gray hover:bg-gray-100">
-          <div class="flex items-center"><i class="fas fa-store mr-3"></i>Desarrollo Económico</div>
+          <div class="flex items-center"><i class="fas fa-store mr-3"></i>Finanzas</div>
           <i id="economia-arrow" class="fas fa-chevron-right transition-transform duration-200"></i>
         </button>
         <ul id="economia-submenu" class="ml-6 mt-2 space-y-1 hidden">
-          <li><a href="#negocios" data-route="negocios" class="spa-link nav-link flex items-center p-2 pl-4 rounded-lg text-sm hover:bg-gov-blue hover:text-white"><i class="fas fa-store mr-3 text-xs"></i>Negocios Registrados</a></li>
+          <li><a href="#negocios" data-route="negocios" class="spa-link nav-link flex items-center p-2 pl-4 rounded-lg text-sm hover:bg-gov-blue hover:text-white"><i class="fas fa-store mr-3 text-xs"></i>Negocios</a></li>
           <li><a href="#programas" data-route="programas" class="spa-link nav-link flex items-center p-2 pl-4 rounded-lg text-sm hover:bg-gov-blue hover:text-white"><i class="fas fa-heart mr-3 text-xs"></i>Programas</a></li>
           <li><a href="#apoyos" data-route="apoyos" class="spa-link nav-link flex items-center p-2 pl-4 rounded-lg text-sm hover:bg-gov-blue hover:text-white"><i class="fas fa-first-aid mr-3 text-xs"></i>Apoyos</a></li>
         </ul>
