@@ -1,481 +1,467 @@
-  
-   <div class="flex justify-between items-center mb-8">
-        <div>
-          <h1 class="text-3xl font-bold">Administración de Trámites</h1>
-          <p class="text-gov-gray">
-            Gestión de trámites y servicios municipales
-          </p>
-        </div>
-        <button
-          id="btnAdd"
-          class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-3 rounded-lg"
+<section class="section-content p-6">
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h1 class="text-3xl font-bold">Administración de Trámites</h1>
+      <p class="text-gov-gray">Gestión de trámites y servicios municipales</p>
+    </div>
+    <button
+      id="btnAdd"
+      class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-3 rounded-lg"
+    >
+      <i class="fa-solid fa-plus mr-2"></i> Agregar Trámite
+    </button>
+  </div>
+</section>
+
+<!-- Filtros -->
+<section class="bg-white rounded-xl shadow p-6 mb-6">
+  <h2 class="text-lg font-bold mb-4">Filtros</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div>
+      <label class="block text-sm font-medium mb-2">Categoría</label>
+      <select id="fCategoria" class="w-full px-3 py-2 border rounded-lg">
+        <option value="">Todas las categorías</option>
+        <option value="identificacion">Identificación y Documentos</option>
+        <option value="apoyos">Apoyos Económicos y Sociales</option>
+        <option value="salud">Salud</option>
+        <option value="educacion">Educación</option>
+        <option value="transito">Tránsito y Transporte</option>
+        <option value="comercio">Comercio y Negocios</option>
+        <option value="construccion">Construcción y Obras</option>
+        <option value="otros">Otros</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">Ubicación</label>
+      <select id="fUbicacion" class="w-full px-3 py-2 border rounded-lg">
+        <option value="">Todas las ubicaciones</option>
+        <option>Presidencia Municipal</option>
+        <option>DIF Municipal</option>
+        <option>Módulo de Tránsito</option>
+        <option>Registro Civil</option>
+        <option>Catastro</option>
+        <option>Desarrollo Económico</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">Costo</label>
+      <select id="fCosto" class="w-full px-3 py-2 border rounded-lg">
+        <option value="">Todos</option>
+        <option value="gratuito">Gratuitos</option>
+        <option value="costo">Con costo</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">Estado</label>
+      <select id="fEstado" class="w-full px-3 py-2 border rounded-lg">
+        <option value="">Todos</option>
+        <option value="destacado">Destacados</option>
+        <option value="normal">Normales</option>
+      </select>
+    </div>
+  </div>
+  <div class="mt-4 flex justify-between items-center">
+    <button id="btnClearFilters" class="text-teal-700 hover:underline text-sm">
+      <i class="fa-solid fa-xmark mr-1"></i> Limpiar filtros
+    </button>
+    <span id="resultCount" class="text-sm text-gov-gray"
+      >0 trámites encontrados</span
+    >
+  </div>
+</section>
+
+<!-- Tabla -->
+<section class="bg-white rounded-xl shadow overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead class="bg-gray-50 border-b">
+        <tr
+          class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
         >
-          <i class="fa-solid fa-plus mr-2"></i> Agregar Trámite
+          <th class="px-6 py-4">Trámite</th>
+          <th class="px-6 py-4">Categoría</th>
+          <th class="px-6 py-4">Costo</th>
+          <th class="px-6 py-4">Tiempo</th>
+          <th class="px-6 py-4">Ubicación</th>
+          <th class="px-6 py-4">Estado</th>
+          <th class="px-6 py-4">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tbody" class="divide-y"></tbody>
+    </table>
+  </div>
+  <div id="empty" class="text-center py-12 hidden">
+    <div
+      class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+    >
+      <i class="fas fa-file-alt text-gray-400 text-2xl"></i>
+    </div>
+    <h3 class="text-lg font-medium mb-2">No hay trámites registrados</h3>
+    <p class="text-gov-gray">Agrega tu primer trámite para empezar.</p>
+  </div>
+</section>
+
+<!-- Modal Alta/Edición -->
+<div
+  id="modal"
+  class="fixed inset-0 bg-black/50 modal-backdrop hidden z-50 p-4"
+>
+  <div
+    class="bg-white rounded-xl max-w-2xl w-full mx-auto max-h-[92vh] overflow-y-auto"
+  >
+    <div class="p-6 border-b flex justify-between items-center">
+      <h3 id="modalTitle" class="text-xl font-bold">Agregar Trámite</h3>
+      <button
+        class="text-gov-gray hover:text-gray-800"
+        onclick="UI.closeModal()"
+      >
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+    </div>
+    <form id="form" class="p-6 space-y-4">
+      <div>
+        <label class="block text-sm font-medium">Título del Trámite *</label>
+        <input
+          id="titulo"
+          required
+          class="w-full px-3 py-2 border rounded-lg"
+          placeholder="Ej. Renovación de Licencia de Conducir"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium">Descripción Corta *</label>
+        <textarea
+          id="descripcion"
+          required
+          rows="2"
+          class="w-full px-3 py-2 border rounded-lg"
+          placeholder="Breve descripción del trámite y para qué sirve..."
+        ></textarea>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium">Categoría *</label>
+          <select
+            id="categoria"
+            required
+            class="w-full px-3 py-2 border rounded-lg"
+          >
+            <option value="">Seleccionar categoría</option>
+            <option value="identificacion">Identificación y Documentos</option>
+            <option value="apoyos">Apoyos Económicos y Sociales</option>
+            <option value="salud">Salud</option>
+            <option value="educacion">Educación</option>
+            <option value="transito">Tránsito y Transporte</option>
+            <option value="comercio">Comercio y Negocios</option>
+            <option value="construccion">Construcción y Obras</option>
+            <option value="otros">Otros</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Costo *</label>
+          <input
+            id="costo"
+            required
+            class="w-full px-3 py-2 border rounded-lg"
+            placeholder="Ej. Gratuito, $850, $15 por m²"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium"
+            >Tiempo de Resolución *</label
+          >
+          <input
+            id="tiempo"
+            required
+            class="w-full px-3 py-2 border rounded-lg"
+            placeholder="Ej. 30 minutos, 15 días hábiles"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Ubicación *</label>
+          <select
+            id="ubicacion"
+            required
+            class="w-full px-3 py-2 border rounded-lg"
+          >
+            <option value="">Seleccionar ubicación</option>
+            <option>Presidencia Municipal</option>
+            <option>DIF Municipal</option>
+            <option>Módulo de Tránsito</option>
+            <option>Registro Civil</option>
+            <option>Catastro</option>
+            <option>Desarrollo Económico</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium">Horario de Atención *</label>
+        <input
+          id="horario"
+          required
+          class="w-full px-3 py-2 border rounded-lg"
+          placeholder="Ej. Lunes a Viernes 8:00–15:00 hrs"
+        />
+      </div>
+
+      <!-- Requisitos dinámicos -->
+      <div>
+        <div class="flex items-center justify-between">
+          <label class="block text-sm font-medium">Requisitos *</label>
+          <button
+            type="button"
+            class="text-teal-700 text-sm"
+            onclick="Form.addReq()"
+          >
+            <i class="fa-solid fa-plus mr-1"></i> Agregar requisito
+          </button>
+        </div>
+        <div id="reqList" class="space-y-2 mt-2"></div>
+      </div>
+
+      <!-- Procedimiento dinámico -->
+      <div>
+        <div class="flex items-center justify-between">
+          <label class="block text-sm font-medium"
+            >Procedimiento (Pasos) *</label
+          >
+          <button
+            type="button"
+            class="text-teal-700 text-sm"
+            onclick="Form.addPaso()"
+          >
+            <i class="fa-solid fa-plus mr-1"></i> Agregar paso
+          </button>
+        </div>
+        <div id="pasosList" class="space-y-2 mt-2"></div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium">Descripción Adicional</label>
+        <textarea
+          id="descripcionLarga"
+          rows="3"
+          class="w-full px-3 py-2 border rounded-lg"
+          placeholder="Información adicional, excepciones, notas..."
+        ></textarea>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium">Icono</label>
+          <select id="icono" class="w-full px-3 py-2 border rounded-lg">
+            <option value="fas fa-file-alt">Documento</option>
+            <option value="fas fa-id-card">Identificación</option>
+            <option value="fas fa-store">Negocio</option>
+            <option value="fas fa-hard-hat">Construcción</option>
+            <option value="fas fa-heart">Social</option>
+            <option value="fas fa-baby">Nacimiento</option>
+            <option value="fas fa-home">Domicilio</option>
+          </select>
+        </div>
+        <div class="flex items-center mt-6">
+          <input id="destacado" type="checkbox" class="mr-2" />
+          <label for="destacado">Marcar como trámite destacado</label>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-4">
+        <button
+          type="button"
+          class="px-4 py-2 border rounded-lg"
+          onclick="UI.closeModal()"
+        >
+          Cancelar
+        </button>
+        <button
+          class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg"
+        >
+          Guardar
         </button>
       </div>
+    </form>
+  </div>
+</div>
 
-      <!-- Filtros -->
-      <section class="bg-white rounded-xl shadow p-6 mb-6">
-        <h2 class="text-lg font-bold mb-4">Filtros</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
-            <label class="block text-sm font-medium mb-2">Categoría</label>
-            <select id="fCategoria" class="w-full px-3 py-2 border rounded-lg">
-              <option value="">Todas las categorías</option>
-              <option value="identificacion">
-                Identificación y Documentos
-              </option>
-              <option value="apoyos">Apoyos Económicos y Sociales</option>
-              <option value="salud">Salud</option>
-              <option value="educacion">Educación</option>
-              <option value="transito">Tránsito y Transporte</option>
-              <option value="comercio">Comercio y Negocios</option>
-              <option value="construccion">Construcción y Obras</option>
-              <option value="otros">Otros</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-2">Ubicación</label>
-            <select id="fUbicacion" class="w-full px-3 py-2 border rounded-lg">
-              <option value="">Todas las ubicaciones</option>
-              <option>Presidencia Municipal</option>
-              <option>DIF Municipal</option>
-              <option>Módulo de Tránsito</option>
-              <option>Registro Civil</option>
-              <option>Catastro</option>
-              <option>Desarrollo Económico</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-2">Costo</label>
-            <select id="fCosto" class="w-full px-3 py-2 border rounded-lg">
-              <option value="">Todos</option>
-              <option value="gratuito">Gratuitos</option>
-              <option value="costo">Con costo</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-2">Estado</label>
-            <select id="fEstado" class="w-full px-3 py-2 border rounded-lg">
-              <option value="">Todos</option>
-              <option value="destacado">Destacados</option>
-              <option value="normal">Normales</option>
-            </select>
-          </div>
-        </div>
-        <div class="mt-4 flex justify-between items-center">
-          <button
-            id="btnClearFilters"
-            class="text-teal-700 hover:underline text-sm"
-          >
-            <i class="fa-solid fa-xmark mr-1"></i> Limpiar filtros
-          </button>
-          <span id="resultCount" class="text-sm text-gov-gray"
-            >0 trámites encontrados</span
-          >
-        </div>
-      </section>
-
-      <!-- Tabla -->
-      <section class="bg-white rounded-xl shadow overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-50 border-b">
-              <tr
-                class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                <th class="px-6 py-4">Trámite</th>
-                <th class="px-6 py-4">Categoría</th>
-                <th class="px-6 py-4">Costo</th>
-                <th class="px-6 py-4">Tiempo</th>
-                <th class="px-6 py-4">Ubicación</th>
-                <th class="px-6 py-4">Estado</th>
-                <th class="px-6 py-4">Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tbody" class="divide-y"></tbody>
-          </table>
-        </div>
-        <div id="empty" class="text-center py-12 hidden">
-          <div
-            class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
-          >
-            <i class="fas fa-file-alt text-gray-400 text-2xl"></i>
-          </div>
-          <h3 class="text-lg font-medium mb-2">No hay trámites registrados</h3>
-          <p class="text-gov-gray">Agrega tu primer trámite para empezar.</p>
-        </div>
-      </section>
-
-    <!-- Modal Alta/Edición -->
-    <div
-      id="modal"
-      class="fixed inset-0 bg-black/50 modal-backdrop hidden z-50 p-4"
-    >
-      <div
-        class="bg-white rounded-xl max-w-2xl w-full mx-auto max-h-[92vh] overflow-y-auto"
+<!-- Modal Detalle -->
+<div
+  id="detail"
+  class="fixed inset-0 bg-black/50 modal-backdrop hidden z-50 p-4"
+>
+  <div
+    class="bg-white rounded-xl max-w-4xl w-full mx-auto max-h-[92vh] overflow-y-auto"
+  >
+    <div class="p-6 border-b flex justify-between items-center">
+      <h3 id="dTitulo" class="text-2xl font-bold">Detalle del Trámite</h3>
+      <button
+        class="text-gov-gray hover:text-gray-800"
+        onclick="UI.closeDetail()"
       >
-        <div class="p-6 border-b flex justify-between items-center">
-          <h3 id="modalTitle" class="text-xl font-bold">Agregar Trámite</h3>
-          <button
-            class="text-gov-gray hover:text-gray-800"
-            onclick="UI.closeModal()"
-          >
-            <i class="fa-solid fa-xmark text-xl"></i>
-          </button>
-        </div>
-        <form id="form" class="p-6 space-y-4">
-          <div>
-            <label class="block text-sm font-medium"
-              >Título del Trámite *</label
-            >
-            <input
-              id="titulo"
-              required
-              class="w-full px-3 py-2 border rounded-lg"
-              placeholder="Ej. Renovación de Licencia de Conducir"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium">Descripción Corta *</label>
-            <textarea
-              id="descripcion"
-              required
-              rows="2"
-              class="w-full px-3 py-2 border rounded-lg"
-              placeholder="Breve descripción del trámite y para qué sirve..."
-            ></textarea>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium">Categoría *</label>
-              <select
-                id="categoria"
-                required
-                class="w-full px-3 py-2 border rounded-lg"
-              >
-                <option value="">Seleccionar categoría</option>
-                <option value="identificacion">
-                  Identificación y Documentos
-                </option>
-                <option value="apoyos">Apoyos Económicos y Sociales</option>
-                <option value="salud">Salud</option>
-                <option value="educacion">Educación</option>
-                <option value="transito">Tránsito y Transporte</option>
-                <option value="comercio">Comercio y Negocios</option>
-                <option value="construccion">Construcción y Obras</option>
-                <option value="otros">Otros</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium">Costo *</label>
-              <input
-                id="costo"
-                required
-                class="w-full px-3 py-2 border rounded-lg"
-                placeholder="Ej. Gratuito, $850, $15 por m²"
-              />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium"
-                >Tiempo de Resolución *</label
-              >
-              <input
-                id="tiempo"
-                required
-                class="w-full px-3 py-2 border rounded-lg"
-                placeholder="Ej. 30 minutos, 15 días hábiles"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium">Ubicación *</label>
-              <select
-                id="ubicacion"
-                required
-                class="w-full px-3 py-2 border rounded-lg"
-              >
-                <option value="">Seleccionar ubicación</option>
-                <option>Presidencia Municipal</option>
-                <option>DIF Municipal</option>
-                <option>Módulo de Tránsito</option>
-                <option>Registro Civil</option>
-                <option>Catastro</option>
-                <option>Desarrollo Económico</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium"
-              >Horario de Atención *</label
-            >
-            <input
-              id="horario"
-              required
-              class="w-full px-3 py-2 border rounded-lg"
-              placeholder="Ej. Lunes a Viernes 8:00–15:00 hrs"
-            />
-          </div>
-
-          <!-- Requisitos dinámicos -->
-          <div>
-            <div class="flex items-center justify-between">
-              <label class="block text-sm font-medium">Requisitos *</label>
-              <button
-                type="button"
-                class="text-teal-700 text-sm"
-                onclick="Form.addReq()"
-              >
-                <i class="fa-solid fa-plus mr-1"></i> Agregar requisito
-              </button>
-            </div>
-            <div id="reqList" class="space-y-2 mt-2"></div>
-          </div>
-
-          <!-- Procedimiento dinámico -->
-          <div>
-            <div class="flex items-center justify-between">
-              <label class="block text-sm font-medium"
-                >Procedimiento (Pasos) *</label
-              >
-              <button
-                type="button"
-                class="text-teal-700 text-sm"
-                onclick="Form.addPaso()"
-              >
-                <i class="fa-solid fa-plus mr-1"></i> Agregar paso
-              </button>
-            </div>
-            <div id="pasosList" class="space-y-2 mt-2"></div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium"
-              >Descripción Adicional</label
-            >
-            <textarea
-              id="descripcionLarga"
-              rows="3"
-              class="w-full px-3 py-2 border rounded-lg"
-              placeholder="Información adicional, excepciones, notas..."
-            ></textarea>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium">Icono</label>
-              <select id="icono" class="w-full px-3 py-2 border rounded-lg">
-                <option value="fas fa-file-alt">Documento</option>
-                <option value="fas fa-id-card">Identificación</option>
-                <option value="fas fa-store">Negocio</option>
-                <option value="fas fa-hard-hat">Construcción</option>
-                <option value="fas fa-heart">Social</option>
-                <option value="fas fa-baby">Nacimiento</option>
-                <option value="fas fa-home">Domicilio</option>
-              </select>
-            </div>
-            <div class="flex items-center mt-6">
-              <input id="destacado" type="checkbox" class="mr-2" />
-              <label for="destacado">Marcar como trámite destacado</label>
-            </div>
-          </div>
-
-          <div class="flex justify-end gap-3 pt-4">
-            <button
-              type="button"
-              class="px-4 py-2 border rounded-lg"
-              onclick="UI.closeModal()"
-            >
-              Cancelar
-            </button>
-            <button
-              class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg"
-            >
-              Guardar
-            </button>
-          </div>
-        </form>
-      </div>
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
     </div>
 
-    <!-- Modal Detalle -->
-    <div
-      id="detail"
-      class="fixed inset-0 bg-black/50 modal-backdrop hidden z-50 p-4"
-    >
-      <div
-        class="bg-white rounded-xl max-w-4xl w-full mx-auto max-h-[92vh] overflow-y-auto"
-      >
-        <div class="p-6 border-b flex justify-between items-center">
-          <h3 id="dTitulo" class="text-2xl font-bold">Detalle del Trámite</h3>
-          <button
-            class="text-gov-gray hover:text-gray-800"
-            onclick="UI.closeDetail()"
-          >
-            <i class="fa-solid fa-xmark text-xl"></i>
-          </button>
-        </div>
-
-        <div id="dBody" class="p-6">
-          <!-- contenido dinámico -->
-        </div>
-      </div>
+    <div id="dBody" class="p-6">
+      <!-- contenido dinámico -->
     </div>
+  </div>
+</div>
 
-    <script>
-      // ======== Storage ========
-      const LS_KEY = "tramites";
-      const Storage = {
-        load() {
-          const raw = localStorage.getItem(LS_KEY);
-          if (!raw) {
-            // seed de ejemplo (solo la primera vez)
-            const seed = [
-              {
-                id: crypto.randomUUID(),
-                titulo: "Renovación de Licencia de Conducir",
-                descripcion:
-                  "Renovación de licencia de conducir vigente para vehículos particulares",
-                categoria: "transito",
-                categoriaNombre: "Tránsito y Transporte",
-                requisitos: [
-                  "Licencia anterior (original y copia)",
-                  "Identificación oficial vigente (INE/IFE)",
-                  "Comprobante de domicilio no mayor a 3 meses",
-                  "Examen médico vigente (no mayor a 6 meses)",
-                  "2 fotografías tamaño infantil a color",
-                ],
-                procedimiento: [
-                  "Presentarse en el Módulo de Tránsito con todos los documentos",
-                  "Entregar documentos en ventanilla de recepción",
-                  "Realizar pago correspondiente en caja",
-                  "Pasar a toma de fotografía y datos biométricos",
-                  "Esperar entrega de licencia (mismo día)",
-                ],
-                costo: "$850",
-                tiempo: "30 minutos",
-                ubicacion: "Módulo de Tránsito",
-                horario: "Lunes a Viernes 8:00–15:00 hrs",
-                descripcionLarga:
-                  "La renovación debe realizarse antes del vencimiento de la licencia anterior.",
-                icono: "fas fa-id-card",
-                destacado: true,
-              },
-            ];
-            localStorage.setItem(LS_KEY, JSON.stringify(seed));
-            return seed;
-          }
-          try {
-            return JSON.parse(raw);
-          } catch {
-            return [];
-          }
-        },
-        save(arr) {
-          localStorage.setItem(LS_KEY, JSON.stringify(arr));
-        },
-      };
+<script>
+  // ======== Storage ========
+  const LS_KEY = "tramites";
+  const Storage = {
+    load() {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) {
+        // seed de ejemplo (solo la primera vez)
+        const seed = [
+          {
+            id: crypto.randomUUID(),
+            titulo: "Renovación de Licencia de Conducir",
+            descripcion:
+              "Renovación de licencia de conducir vigente para vehículos particulares",
+            categoria: "transito",
+            categoriaNombre: "Tránsito y Transporte",
+            requisitos: [
+              "Licencia anterior (original y copia)",
+              "Identificación oficial vigente (INE/IFE)",
+              "Comprobante de domicilio no mayor a 3 meses",
+              "Examen médico vigente (no mayor a 6 meses)",
+              "2 fotografías tamaño infantil a color",
+            ],
+            procedimiento: [
+              "Presentarse en el Módulo de Tránsito con todos los documentos",
+              "Entregar documentos en ventanilla de recepción",
+              "Realizar pago correspondiente en caja",
+              "Pasar a toma de fotografía y datos biométricos",
+              "Esperar entrega de licencia (mismo día)",
+            ],
+            costo: "$850",
+            tiempo: "30 minutos",
+            ubicacion: "Módulo de Tránsito",
+            horario: "Lunes a Viernes 8:00–15:00 hrs",
+            descripcionLarga:
+              "La renovación debe realizarse antes del vencimiento de la licencia anterior.",
+            icono: "fas fa-id-card",
+            destacado: true,
+          },
+        ];
+        localStorage.setItem(LS_KEY, JSON.stringify(seed));
+        return seed;
+      }
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return [];
+      }
+    },
+    save(arr) {
+      localStorage.setItem(LS_KEY, JSON.stringify(arr));
+    },
+  };
 
-      // ======== State & DOM refs ========
-      let data = Storage.load();
-      let editingId = null;
+  // ======== State & DOM refs ========
+  let data = Storage.load();
+  let editingId = null;
 
-      const $ = (sel) => document.querySelector(sel);
-      const $$ = (sel) => document.querySelectorAll(sel);
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => document.querySelectorAll(sel);
 
-      const refs = {
-        tbody: $("#tbody"),
-        empty: $("#empty"),
-        resultCount: $("#resultCount"),
-        fCategoria: $("#fCategoria"),
-        fUbicacion: $("#fUbicacion"),
-        fCosto: $("#fCosto"),
-        fEstado: $("#fEstado"),
-        modal: $("#modal"),
-        modalTitle: $("#modalTitle"),
-        form: $("#form"),
-        reqList: $("#reqList"),
-        pasosList: $("#pasosList"),
-        detail: $("#detail"),
-        dTitulo: $("#dTitulo"),
-        dBody: $("#dBody"),
-      };
+  const refs = {
+    tbody: $("#tbody"),
+    empty: $("#empty"),
+    resultCount: $("#resultCount"),
+    fCategoria: $("#fCategoria"),
+    fUbicacion: $("#fUbicacion"),
+    fCosto: $("#fCosto"),
+    fEstado: $("#fEstado"),
+    modal: $("#modal"),
+    modalTitle: $("#modalTitle"),
+    form: $("#form"),
+    reqList: $("#reqList"),
+    pasosList: $("#pasosList"),
+    detail: $("#detail"),
+    dTitulo: $("#dTitulo"),
+    dBody: $("#dBody"),
+  };
 
-      // ======== UI helpers ========
-      const UI = {
-        openModal(editItem = null) {
-          refs.modal.classList.remove("hidden");
-          refs.form.reset();
-          refs.reqList.innerHTML = "";
-          refs.pasosList.innerHTML = "";
-          editingId = editItem ? editItem.id : null;
-          refs.modalTitle.textContent = editingId
-            ? "Editar Trámite"
-            : "Agregar Trámite";
+  // ======== UI helpers ========
+  const UI = {
+    openModal(editItem = null) {
+      refs.modal.classList.remove("hidden");
+      refs.form.reset();
+      refs.reqList.innerHTML = "";
+      refs.pasosList.innerHTML = "";
+      editingId = editItem ? editItem.id : null;
+      refs.modalTitle.textContent = editingId
+        ? "Editar Trámite"
+        : "Agregar Trámite";
 
-          // set values if editing
-          if (editItem) {
-            $("#titulo").value = editItem.titulo || "";
-            $("#descripcion").value = editItem.descripcion || "";
-            $("#categoria").value = editItem.categoria || "";
-            $("#costo").value = editItem.costo || "";
-            $("#tiempo").value = editItem.tiempo || "";
-            $("#ubicacion").value = editItem.ubicacion || "";
-            $("#horario").value = editItem.horario || "";
-            $("#descripcionLarga").value = editItem.descripcionLarga || "";
-            $("#icono").value = editItem.icono || "fas fa-file-alt";
-            $("#destacado").checked = !!editItem.destacado;
+      // set values if editing
+      if (editItem) {
+        $("#titulo").value = editItem.titulo || "";
+        $("#descripcion").value = editItem.descripcion || "";
+        $("#categoria").value = editItem.categoria || "";
+        $("#costo").value = editItem.costo || "";
+        $("#tiempo").value = editItem.tiempo || "";
+        $("#ubicacion").value = editItem.ubicacion || "";
+        $("#horario").value = editItem.horario || "";
+        $("#descripcionLarga").value = editItem.descripcionLarga || "";
+        $("#icono").value = editItem.icono || "fas fa-file-alt";
+        $("#destacado").checked = !!editItem.destacado;
 
-            (editItem.requisitos || []).forEach((v) => Form.addReq(v));
-            (editItem.procedimiento || []).forEach((v) => Form.addPaso(v));
-          } else {
-            // first row for each
-            Form.addReq();
-            Form.addPaso();
-          }
-        },
-        closeModal() {
-          refs.modal.classList.add("hidden");
-          editingId = null;
-        },
+        (editItem.requisitos || []).forEach((v) => Form.addReq(v));
+        (editItem.procedimiento || []).forEach((v) => Form.addPaso(v));
+      } else {
+        // first row for each
+        Form.addReq();
+        Form.addPaso();
+      }
+    },
+    closeModal() {
+      refs.modal.classList.add("hidden");
+      editingId = null;
+    },
 
-        openDetail(item) {
-          refs.detail.classList.remove("hidden");
-          refs.dTitulo.textContent = item.titulo;
+    openDetail(item) {
+      refs.detail.classList.remove("hidden");
+      refs.dTitulo.textContent = item.titulo;
 
-          const chipCat = `<span class="chip chip-blue"><i class="fa-solid fa-tags"></i> ${
-            item.categoriaNombre || mapCat(item.categoria)
-          }</span>`;
-          const chipDest = item.destacado
-            ? `<span class="chip chip-yellow">Destacado</span>`
-            : "";
+      const chipCat = `<span class="chip chip-blue"><i class="fa-solid fa-tags"></i> ${
+        item.categoriaNombre || mapCat(item.categoria)
+      }</span>`;
+      const chipDest = item.destacado
+        ? `<span class="chip chip-yellow">Destacado</span>`
+        : "";
 
-          const reqs = (item.requisitos || [])
-            .map(
-              (r, i) => `
+      const reqs = (item.requisitos || [])
+        .map(
+          (r, i) => `
         <div class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-xs">${
           i + 1
         }</span><span>${r}</span></div>
       `
-            )
-            .join("");
+        )
+        .join("");
 
-          const pasos = (item.procedimiento || [])
-            .map(
-              (r, i) => `
+      const pasos = (item.procedimiento || [])
+        .map(
+          (r, i) => `
         <div class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs">${
           i + 1
         }</span><span>${r}</span></div>
       `
-            )
-            .join("");
+        )
+        .join("");
 
-          refs.dBody.innerHTML = `
+      refs.dBody.innerHTML = `
         <div class="flex flex-wrap gap-2 mb-3">${chipCat}${chipDest}</div>
         <p class="text-gov-gray mb-4">${item.descripcion || ""}</p>
 
@@ -490,8 +476,8 @@
             <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></span><div><div class="text-xs text-gov-gray">Ubicación</div><div class="font-semibold">${
               item.ubicacion || "—"
             }</div><div class="text-xs text-gov-gray">${
-            item.horario || ""
-          }</div></div></div>
+        item.horario || ""
+      }</div></div></div>
           </div>
 
           <div class="space-y-4">
@@ -524,157 +510,157 @@
           }")'><i class="fa-solid fa-trash mr-2"></i>Eliminar</button>
         </div>
       `;
-        },
-        closeDetail() {
-          refs.detail.classList.add("hidden");
-        },
-      };
+    },
+    closeDetail() {
+      refs.detail.classList.add("hidden");
+    },
+  };
 
-      // ======== Form helpers ========
-      const Form = {
-        addReq(value = "") {
-          const id = crypto.randomUUID();
-          const row = document.createElement("div");
-          row.className = "flex gap-2";
-          row.innerHTML = `
+  // ======== Form helpers ========
+  const Form = {
+    addReq(value = "") {
+      const id = crypto.randomUUID();
+      const row = document.createElement("div");
+      row.className = "flex gap-2";
+      row.innerHTML = `
         <input data-kind="req" data-id="${id}" class="flex-1 px-3 py-2 border rounded-lg" placeholder="Ej. Identificación oficial vigente" value="${value.replaceAll(
-            '"',
-            "&quot;"
-          )}">
+        '"',
+        "&quot;"
+      )}">
         <button type="button" class="px-2 text-red-600" title="Eliminar" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>
       `;
-          refs.reqList.appendChild(row);
-        },
-        addPaso(value = "") {
-          const id = crypto.randomUUID();
-          const row = document.createElement("div");
-          row.className = "flex gap-2";
-          row.innerHTML = `
+      refs.reqList.appendChild(row);
+    },
+    addPaso(value = "") {
+      const id = crypto.randomUUID();
+      const row = document.createElement("div");
+      row.className = "flex gap-2";
+      row.innerHTML = `
         <input data-kind="paso" data-id="${id}" class="flex-1 px-3 py-2 border rounded-lg" placeholder="Ej. Presentarse en la oficina con documentos" value="${value.replaceAll(
-            '"',
-            "&quot;"
-          )}">
+        '"',
+        "&quot;"
+      )}">
         <button type="button" class="px-2 text-red-600" title="Eliminar" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>
       `;
-          refs.pasosList.appendChild(row);
-        },
-        collectList(kind) {
-          return [...document.querySelectorAll(`input[data-kind="${kind}"]`)]
-            .map((i) => i.value.trim())
-            .filter(Boolean);
-        },
+      refs.pasosList.appendChild(row);
+    },
+    collectList(kind) {
+      return [...document.querySelectorAll(`input[data-kind="${kind}"]`)]
+        .map((i) => i.value.trim())
+        .filter(Boolean);
+    },
+  };
+
+  // ======== Actions ========
+  const Actions = {
+    add() {
+      UI.openModal();
+    },
+    edit(id) {
+      const item = data.find((d) => d.id === id);
+      if (item) UI.openModal(item);
+    },
+    remove(id) {
+      if (!confirm("¿Eliminar este trámite?")) return;
+      data = data.filter((d) => d.id !== id);
+      Storage.save(data);
+      render();
+      UI.closeDetail();
+    },
+    save(e) {
+      e?.preventDefault?.();
+      // build object
+      const item = {
+        id: editingId || crypto.randomUUID(),
+        titulo: $("#titulo").value.trim(),
+        descripcion: $("#descripcion").value.trim(),
+        categoria: $("#categoria").value,
+        categoriaNombre: mapCat($("#categoria").value),
+        requisitos: Form.collectList("req"),
+        procedimiento: Form.collectList("paso"),
+        costo: $("#costo").value.trim(),
+        tiempo: $("#tiempo").value.trim(),
+        ubicacion: $("#ubicacion").value,
+        horario: $("#horario").value.trim(),
+        descripcionLarga: $("#descripcionLarga").value.trim(),
+        icono: $("#icono").value || "fas fa-file-alt",
+        destacado: $("#destacado").checked,
       };
 
-      // ======== Actions ========
-      const Actions = {
-        add() {
-          UI.openModal();
-        },
-        edit(id) {
-          const item = data.find((d) => d.id === id);
-          if (item) UI.openModal(item);
-        },
-        remove(id) {
-          if (!confirm("¿Eliminar este trámite?")) return;
-          data = data.filter((d) => d.id !== id);
-          Storage.save(data);
-          render();
-          UI.closeDetail();
-        },
-        save(e) {
-          e?.preventDefault?.();
-          // build object
-          const item = {
-            id: editingId || crypto.randomUUID(),
-            titulo: $("#titulo").value.trim(),
-            descripcion: $("#descripcion").value.trim(),
-            categoria: $("#categoria").value,
-            categoriaNombre: mapCat($("#categoria").value),
-            requisitos: Form.collectList("req"),
-            procedimiento: Form.collectList("paso"),
-            costo: $("#costo").value.trim(),
-            tiempo: $("#tiempo").value.trim(),
-            ubicacion: $("#ubicacion").value,
-            horario: $("#horario").value.trim(),
-            descripcionLarga: $("#descripcionLarga").value.trim(),
-            icono: $("#icono").value || "fas fa-file-alt",
-            destacado: $("#destacado").checked,
-          };
-
-          if (
-            !item.titulo ||
-            !item.descripcion ||
-            !item.categoria ||
-            !item.costo ||
-            !item.tiempo ||
-            !item.ubicacion ||
-            !item.horario ||
-            !item.requisitos.length ||
-            !item.procedimiento.length
-          ) {
-            alert("Completa los campos obligatorios.");
-            return;
-          }
-
-          const i = data.findIndex((d) => d.id === item.id);
-          if (i >= 0) data[i] = item;
-          else data.push(item);
-          Storage.save(data);
-          render();
-          UI.closeModal();
-        },
-      };
-
-      // ======== Filters & Render ========
-      function mapCat(c) {
-        const map = {
-          identificacion: "Identificación y Documentos",
-          apoyos: "Apoyos Económicos y Sociales",
-          salud: "Salud",
-          educacion: "Educación",
-          transito: "Tránsito y Transporte",
-          comercio: "Comercio y Negocios",
-          construccion: "Construcción y Obras",
-          otros: "Otros",
-        };
-        return map[c] || "Otros";
+      if (
+        !item.titulo ||
+        !item.descripcion ||
+        !item.categoria ||
+        !item.costo ||
+        !item.tiempo ||
+        !item.ubicacion ||
+        !item.horario ||
+        !item.requisitos.length ||
+        !item.procedimiento.length
+      ) {
+        alert("Completa los campos obligatorios.");
+        return;
       }
 
-      function passFilters(item) {
-        const c = refs.fCategoria.value;
-        const u = refs.fUbicacion.value;
-        const co = refs.fCosto.value;
-        const e = refs.fEstado.value;
+      const i = data.findIndex((d) => d.id === item.id);
+      if (i >= 0) data[i] = item;
+      else data.push(item);
+      Storage.save(data);
+      render();
+      UI.closeModal();
+    },
+  };
 
-        if (c && item.categoria !== c) return false;
-        if (u && item.ubicacion !== u) return false;
-        if (co) {
-          const isFree =
-            (item.costo || "").toLowerCase().includes("gratuito") ||
-            item.costo.trim() === "0" ||
-            item.costo.toLowerCase() === "$0";
-          if (co === "gratuito" && !isFree) return false;
-          if (co === "costo" && isFree) return false;
-        }
-        if (e) {
-          const isDest = !!item.destacado;
-          if (e === "destacado" && !isDest) return false;
-          if (e === "normal" && isDest) return false;
-        }
-        return true;
-      }
+  // ======== Filters & Render ========
+  function mapCat(c) {
+    const map = {
+      identificacion: "Identificación y Documentos",
+      apoyos: "Apoyos Económicos y Sociales",
+      salud: "Salud",
+      educacion: "Educación",
+      transito: "Tránsito y Transporte",
+      comercio: "Comercio y Negocios",
+      construccion: "Construcción y Obras",
+      otros: "Otros",
+    };
+    return map[c] || "Otros";
+  }
 
-      function render() {
-        refs.tbody.innerHTML = "";
-        const list = data.filter(passFilters);
-        refs.resultCount.textContent = `${list.length} trámite${
-          list.length !== 1 ? "s" : ""
-        } encontrados`;
-        refs.empty.classList.toggle("hidden", list.length > 0);
+  function passFilters(item) {
+    const c = refs.fCategoria.value;
+    const u = refs.fUbicacion.value;
+    const co = refs.fCosto.value;
+    const e = refs.fEstado.value;
 
-        for (const t of list) {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
+    if (c && item.categoria !== c) return false;
+    if (u && item.ubicacion !== u) return false;
+    if (co) {
+      const isFree =
+        (item.costo || "").toLowerCase().includes("gratuito") ||
+        item.costo.trim() === "0" ||
+        item.costo.toLowerCase() === "$0";
+      if (co === "gratuito" && !isFree) return false;
+      if (co === "costo" && isFree) return false;
+    }
+    if (e) {
+      const isDest = !!item.destacado;
+      if (e === "destacado" && !isDest) return false;
+      if (e === "normal" && isDest) return false;
+    }
+    return true;
+  }
+
+  function render() {
+    refs.tbody.innerHTML = "";
+    const list = data.filter(passFilters);
+    refs.resultCount.textContent = `${list.length} trámite${
+      list.length !== 1 ? "s" : ""
+    } encontrados`;
+    refs.empty.classList.toggle("hidden", list.length > 0);
+
+    for (const t of list) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
         <td class="px-6 py-4">
           <div class="flex items-start gap-3">
             <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0"><i class="${
@@ -715,27 +701,27 @@
           </div>
         </td>
       `;
-          refs.tbody.appendChild(tr);
-        }
-      }
+      refs.tbody.appendChild(tr);
+    }
+  }
 
-      // ======== Events ========
-      $("#btnAdd").addEventListener("click", () => Actions.add());
-      $("#btnClearFilters").addEventListener("click", () => {
-        refs.fCategoria.value = "";
-        refs.fUbicacion.value = "";
-        refs.fCosto.value = "";
-        refs.fEstado.value = "";
-        render();
-      });
-      [refs.fCategoria, refs.fUbicacion, refs.fCosto, refs.fEstado].forEach(
-        (el) => el.addEventListener("change", render)
-      );
-      refs.form.addEventListener("submit", (e) => Actions.save(e));
+  // ======== Events ========
+  $("#btnAdd").addEventListener("click", () => Actions.add());
+  $("#btnClearFilters").addEventListener("click", () => {
+    refs.fCategoria.value = "";
+    refs.fUbicacion.value = "";
+    refs.fCosto.value = "";
+    refs.fEstado.value = "";
+    render();
+  });
+  [refs.fCategoria, refs.fUbicacion, refs.fCosto, refs.fEstado].forEach((el) =>
+    el.addEventListener("change", render)
+  );
+  refs.form.addEventListener("submit", (e) => Actions.save(e));
 
-      // init
-      render();
-      window.UI = UI;
-      window.Form = Form;
-      window.Actions = Actions;
-    </script>
+  // init
+  render();
+  window.UI = UI;
+  window.Form = Form;
+  window.Actions = Actions;
+</script>
