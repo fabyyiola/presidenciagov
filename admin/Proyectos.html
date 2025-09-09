@@ -288,38 +288,27 @@
       <form id="projects-form" class="p-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <div class="lg:col-span-2">
-            <div class="grid grid-cols-3 gap-4 items-center mb-2">
-              <!-- Input on the left (span 2 cols) -->
-              <input
-                type="text"
-                id="projects-form-nombre"
-                required
-                class="col-span-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Nombre del Proyecto"
-              />
-              <!-- Label on the right -->
-              <label
-                for="projects-form-nombre"
-                class="block text-sm font-medium text-gray-700 text-right"
-              >
-                Nombre del Proyecto *
-              </label>
-            </div>
-
-            <!-- Checkbox row from (A) -->
-            <div class="mb-6">
-              <label
-                for="projects-form-show-home"
-                class="flex items-center w-full"
-              >
+            <label
+              for="projects-form-nombre"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Nombre del Proyecto *</label
+            >
+            <input
+              type="text"
+              id="projects-form-nombre"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <div>
+              <label class="inline-flex items-center flex">
                 <input
                   type="checkbox"
                   id="projects-form-show-home"
                   class="rounded border-gray-300 text-blue-600"
                 />
-                <span class="ml-3 text-sm text-gray-700 grow text-right">
-                  Mostrar en página de inicio
-                </span>
+                <span class="ml-2 text-sm text-gray-700"
+                  >Mostrar en página de inicio</span
+                >
               </label>
               <p class="text-xs text-gray-500 mt-1">
                 Si está marcado, el proyecto se destacará en la página
