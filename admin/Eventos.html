@@ -148,12 +148,13 @@
     </form>
   </div>
 </div>
+
 <script>
 (() => {
   const LS_KEY = "eventos";
   let eventos = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
   let editId = null;
-  let currentFotos = []; // array of {id, blob}
+  let currentFotos = [];
 
   // --- IndexedDB setup ---
   let db;
@@ -185,17 +186,13 @@
     tx.objectStore("imagenes").delete(id);
   }
 
-  // --- Render list with Blob URLs ---
+  // --- Render list ---
   async function render() {
     const body = document.getElementById("eventos-body");
     if (!body) return;
     body.innerHTML = "";
 
     for (const ev of eventos) {
-      const row = document.createElement("tr");
-      row.className = "border-t";
-
-      // Load first photo as preview
       let imgHtml = "";
       if (ev.fotoIds && ev.fotoIds.length) {
         const blob = await getImage(ev.fotoIds[0]);
@@ -205,27 +202,52 @@
         }
       }
 
-      row.innerHTML = `
-        <td class="px-4 py-3">
-          <div class="font-semibold">${ev.titulo}</div>
-          <div class="text-gray-500 text-xs">${ev.descripcion}</div>
-          ${ev.destacado ? `<span class="bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded">Destacado</span>` : ""}
-        </td>
-        <td class="px-4 py-3">${ev.fechaInicio}${ev.fechaFin ? " - " + ev.fechaFin : ""}<br><span class="text-gray-500 text-xs">${ev.hora}</span></td>
-        <td class="px-4 py-3">${ev.lugar}</td>
-        <td class="px-4 py-3">${ev.organizador}</td>
-        <td class="px-4 py-3">${ev.categoria}</td>
-        <td class="px-4 py-3 flex gap-2">
-          ${imgHtml}
-          <button onclick="Eventos.edit(${ev.id})" class="text-yellow-600"><i class="fas fa-edit"></i></button>
-          <button onclick="Eventos.remove(${ev.id})" class="text-red-600"><i class="fas fa-trash"></i></button>
-        </td>
+      body.innerHTML += `
+        <tr class="border-t">
+          <td class="px-4 py-3">
+            <div class="font-semibold">${ev.titulo}</div>
+            <div class="text-gray-500 text-xs">${ev.descripcion}</div>
+            ${ev.destacado ? `<span class="bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded">Destacado</span>` : ""}
+          </td>
+          <td class="px-4 py-3">${ev.fechaInicio}${ev.fechaFin ? " - " + ev.fechaFin : ""}<br><span class="text-gray-500 text-xs">${ev.hora}</span></td>
+          <td class="px-4 py-3">${ev.lugar}</td>
+          <td class="px-4 py-3">${ev.organizador}</td>
+          <td class="px-4 py-3">${ev.categoria}</td>
+          <td class="px-4 py-3 flex gap-2">
+            ${imgHtml}
+            <button onclick="Eventos.edit(${ev.id})" class="text-yellow-600"><i class="fas fa-edit"></i></button>
+            <button onclick="Eventos.remove(${ev.id})" class="text-red-600"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>
       `;
-      body.appendChild(row);
     }
   }
 
-  // --- Form submit with IndexedDB ---
+  // --- Filters (basic) ---
+  function applyFilters(){ /* you can reuse filter logic */ }
+  function clearFilters(){ render(); }
+
+  // --- Form ---
+  function openForm(id=null) {
+    editId = id;
+    document.getElementById("evento-modal").classList.remove("hidden");
+    document.getElementById("evento-modal-title").textContent = id ? "Editar Evento" : "Agregar Evento";
+    document.getElementById("evento-form").reset();
+    currentFotos = [];
+    document.getElementById("foto-preview").innerHTML = "";
+
+    if (id) {
+      const ev = eventos.find(e => e.id === id);
+      if (!ev) return;
+      ["titulo","descripcion","fechaInicio","fechaFin","hora","lugar","colonia","organizador","contacto","precio","categoria"].forEach(f => {
+        const el = document.getElementById(f);
+        if (el) el.value = ev[f] || "";
+      });
+      document.getElementById("destacado").checked = ev.destacado;
+    }
+  }
+  function closeForm(){ document.getElementById("evento-modal").classList.add("hidden"); }
+
   document.getElementById("evento-form").addEventListener("submit", async e => {
     e.preventDefault();
 
@@ -265,12 +287,10 @@
     closeForm();
   });
 
-  // --- File input handler ---
+  // --- Fotos ---
   document.getElementById("fotos").addEventListener("change", e => {
     const files = Array.from(e.target.files);
-    files.forEach(f => {
-      currentFotos.push({id:null, blob:f});
-    });
+    files.forEach(f => { currentFotos.push({blob:f}); });
     renderPreviews();
     e.target.value="";
   });
@@ -283,15 +303,12 @@
         <button type="button" onclick="Eventos.removeFoto(${i})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">×</button>
       </div>`).join("");
   }
-
   function removeFoto(i){ currentFotos.splice(i,1); renderPreviews(); }
 
-  // --- CRUD shortcuts ---
-  function openForm(id=null){ /* same as before, fill form */ }
-  function closeForm(){ document.getElementById("evento-modal").classList.add("hidden"); }
-  function edit(id){ /* load data and fetch fotos from IndexedDB */ }
+  // --- CRUD ---
+  function edit(id){ openForm(id); }
   function remove(id){
-    if (!confirm("¿Eliminar evento?")) return;
+    if (!confirm("¿Eliminar este evento?")) return;
     const ev = eventos.find(e=>e.id===id);
     if (ev?.fotoIds) ev.fotoIds.forEach(deleteImage);
     eventos = eventos.filter(e=>e.id!==id);
@@ -299,9 +316,8 @@
     render();
   }
 
-  // --- Expose globally ---
-  window.Eventos = { openForm, closeForm, edit, remove, removeFoto };
+  // --- Expose ---
+  window.Eventos = { openForm, closeForm, edit, remove, applyFilters, clearFilters, removeFoto };
 
 })();
 </script>
-
