@@ -1,77 +1,82 @@
 <!-- ServiciosPublicos.html (Public module) -->
 <section id="ServiciosPublicos" class="bg-gray-500 font-sans">
   <!-- Header / Hero Section -->
-<header class="relative text-white min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] overflow-hidden" id="HeroTransparencia">
-  <!-- Slides -->
-  <div id="transparencia-slides" class="absolute inset-0 w-full h-full"></div>
+  <header
+    class="relative text-white min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] overflow-hidden"
+    id="HeroTransparencia"
+  >
+    <!-- Slides -->
+    <div id="transparencia-slides" class="absolute inset-0 w-full h-full"></div>
 
-  <!-- Dark overlay -->
-  <div class="absolute inset-0 bg-black/60"></div>
+    <!-- Dark overlay -->
+    <div class="absolute inset-0 bg-black/60"></div>
 
-  <!-- Content -->
-  <div class="relative container mx-auto px-6 py-16 text-left z-10">
-    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-      Servicios Municipales y<br />
-      <span class="text-green-200">Apoyo Comunitario</span>
-    </h1>
-    <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
-      Programas y Beneficios para la Comunidad
-    </p>
-    <p class="text-lg mb-10 text-blue-50 max-w-2xl">
-      Descubre los programas sociales disponibles para ti y tu familia.
-      Estamos aquí para apoyarte en cada etapa de tu vida.
-    </p>
-    <button
-      onclick="openForm()"
-      class="bg-white text-blue-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl"
-    >
-      <i class="fas fa-edit mr-3"></i> Solicitar Apoyo Ahora
-    </button>
-  </div>
-</header>
-<script>
-(function () {
-  // ✅ Array of background images
-  const fotos = [
-    "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/536276326_1086609113647311_48730282605770136_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=100&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeGRPafL6L3wMshxfjt6HbfPVurNb8KCSk9W6s1vwoJKTx7vQnWhKmIMA273Xr3kzhToxGxXocF7EL-wse02jw4s&_nc_ohc=MdBEw8kSRxMQ7kNvwGauXAo&_nc_oc=Adl8Yw7OaALvjurEHojFktj8fhZ8iPwHY0MKQ4IXffTKjdu-dAb4dpscX3hd7Ien4bc9qs0K3Lo3VphvpA1X-LBb&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=0IdaEdKWPrZSwUeW0LHEHw&oh=00_AfZ_sDvKcsrxdnmM5YD5dbCJ712EVpeSQtM_QcPsfEzlUg&oe=68C69AD5",
-    "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/542140734_1092932586348297_7024981208695722785_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHkOxrijTr22uWOISoTHgcFQP-BOYdASblA_4E5h0BJuXRqq5KmPF7cS40tQtup5bAUyQJcyfqQnDyaTvPDQt8_&_nc_ohc=8TLYTFc34kkQ7kNvwEzx8zk&_nc_oc=AdkiQcoSPM79GpB49gHbyWb1SJpj_7CkbuVYu0gKKrMELh0D7bd-M4TgNV9EEebfRBWZctN8IuvDApQsCEup67yh&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=WttlK61UfXNoZ3W8jpl8ig&oh=00_Afad-Bl1PBm8QjR0oitcYV9LdX5cTg2LqDeeBrP1px7ZTA&oe=68C7733D",
-    "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518118923_1051063330535223_3369586990754245023_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHUzrGjtg8x6BIrfuMAY6WFMvLPh_ONxZ8y8s-H843Fn0O9o40xsOEN1fem8Ug2ZlXnBmK11oJ8tJFF_1cdIyI7&_nc_ohc=JSaNKB2t0dAQ7kNvwGBLWyq&_nc_oc=Adni9z1hDPT3TEmsA_suT4JxpctiTLnGcuh7EtSupDpxxYEwk9-3vDPY_9Js0aa6wx28eAJqhbRIL8Eny9IMZTly&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=vyK842C_IknTAAsZzQF-IA&oh=00_AfY467Tvy1YpjkG2WPhcKPbhG3gTachCwJaPpEU1b5ct7A&oe=68C75DF2"
-  ];
+    <!-- Content -->
+    <div class="relative container mx-auto px-6 py-16 text-left z-10">
+      <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+        Servicios Municipales y<br />
+        <span class="text-green-200">Apoyo Comunitario</span>
+      </h1>
+      <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
+        Programas y Beneficios para la Comunidad
+      </p>
+      <p class="text-lg mb-10 text-blue-50 max-w-2xl">
+        Descubre los programas sociales disponibles para ti y tu familia.
+        Estamos aquí para apoyarte en cada etapa de tu vida.
+      </p>
+      <button
+        onclick="openForm()"
+        class="bg-white text-blue-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl"
+      >
+        <i class="fas fa-edit mr-3"></i> Solicitar Apoyo Ahora
+      </button>
+    </div>
+  </header>
+  <script>
+    (function () {
+      // ✅ Array of background images
+      const fotos = [
+        "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/536276326_1086609113647311_48730282605770136_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=100&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeGRPafL6L3wMshxfjt6HbfPVurNb8KCSk9W6s1vwoJKTx7vQnWhKmIMA273Xr3kzhToxGxXocF7EL-wse02jw4s&_nc_ohc=MdBEw8kSRxMQ7kNvwGauXAo&_nc_oc=Adl8Yw7OaALvjurEHojFktj8fhZ8iPwHY0MKQ4IXffTKjdu-dAb4dpscX3hd7Ien4bc9qs0K3Lo3VphvpA1X-LBb&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=0IdaEdKWPrZSwUeW0LHEHw&oh=00_AfZ_sDvKcsrxdnmM5YD5dbCJ712EVpeSQtM_QcPsfEzlUg&oe=68C69AD5",
+        "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/542140734_1092932586348297_7024981208695722785_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHkOxrijTr22uWOISoTHgcFQP-BOYdASblA_4E5h0BJuXRqq5KmPF7cS40tQtup5bAUyQJcyfqQnDyaTvPDQt8_&_nc_ohc=8TLYTFc34kkQ7kNvwEzx8zk&_nc_oc=AdkiQcoSPM79GpB49gHbyWb1SJpj_7CkbuVYu0gKKrMELh0D7bd-M4TgNV9EEebfRBWZctN8IuvDApQsCEup67yh&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=WttlK61UfXNoZ3W8jpl8ig&oh=00_Afad-Bl1PBm8QjR0oitcYV9LdX5cTg2LqDeeBrP1px7ZTA&oe=68C7733D",
+        "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518118923_1051063330535223_3369586990754245023_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHUzrGjtg8x6BIrfuMAY6WFMvLPh_ONxZ8y8s-H843Fn0O9o40xsOEN1fem8Ug2ZlXnBmK11oJ8tJFF_1cdIyI7&_nc_ohc=JSaNKB2t0dAQ7kNvwGBLWyq&_nc_oc=Adni9z1hDPT3TEmsA_suT4JxpctiTLnGcuh7EtSupDpxxYEwk9-3vDPY_9Js0aa6wx28eAJqhbRIL8Eny9IMZTly&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=vyK842C_IknTAAsZzQF-IA&oh=00_AfY467Tvy1YpjkG2WPhcKPbhG3gTachCwJaPpEU1b5ct7A&oe=68C75DF2",
+      ];
 
-  const slidesContainer = document.getElementById("transparencia-slides");
+      const slidesContainer = document.getElementById("transparencia-slides");
 
-  // Crear slides
-  fotos.forEach((url, i) => {
-    const slide = document.createElement("div");
-    slide.className = `absolute inset-0 w-full h-full transition-opacity duration-1000 ${i === 0 ? "opacity-100" : "opacity-0"}`;
-    slide.style.backgroundImage = `url('${url}')`;
-    slide.style.backgroundSize = "cover";
-    slide.style.backgroundPosition = "center";
-    slidesContainer.appendChild(slide);
-  });
+      // Crear slides
+      fotos.forEach((url, i) => {
+        const slide = document.createElement("div");
+        slide.className = `absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+          i === 0 ? "opacity-100" : "opacity-0"
+        }`;
+        slide.style.backgroundImage = `url('${url}')`;
+        slide.style.backgroundSize = "cover";
+        slide.style.backgroundPosition = "center";
+        slidesContainer.appendChild(slide);
+      });
 
-  const slides = Array.from(slidesContainer.children);
-  let idx = 0;
+      const slides = Array.from(slidesContainer.children);
+      let idx = 0;
 
-  function showNext() {
-    slides[idx].classList.remove("opacity-100");
-    slides[idx].classList.add("opacity-0");
+      function showNext() {
+        slides[idx].classList.remove("opacity-100");
+        slides[idx].classList.add("opacity-0");
 
-    idx = (idx + 1) % slides.length;
+        idx = (idx + 1) % slides.length;
 
-    slides[idx].classList.remove("opacity-0");
-    slides[idx].classList.add("opacity-100");
-  }
+        slides[idx].classList.remove("opacity-0");
+        slides[idx].classList.add("opacity-100");
+      }
 
-  setInterval(showNext, 5000); // ⏱ cambia cada 5s
-})();
-</script>
+      setInterval(showNext, 5000); // ⏱ cambia cada 5s
+    })();
+  </script>
   <!-- Programs Section -->
   <section class="py-16 bg-white">
     <div class="container mx-auto px-6">
       <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-          Programas Disponibles
+        <h2 class="text-4xl font-bold text-municipal-blue text-center mb-6">
+          PROGRAMAS DISPONIBLES
         </h2>
         <p class="text-xl text-gray-600 max-w-2xl mx-auto">
           Conoce todos los programas sociales que tenemos para ti
