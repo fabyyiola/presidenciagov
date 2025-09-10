@@ -1040,15 +1040,20 @@
     <!-- Header -->
     <header class="bg-white shadow-sm">
       <!-- Top Bar -->
-      <div
-        class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"
-      >
+      <div class="px-4 smx-auto px-4 py-3 flex items-center justify-between">
         <!-- Left: Register (hidden on very small if you prefer) -->
-        <a
-          href="registrate.html"
-          class="hidden sm:inline text-municipal-blue hover:text-blue-700 font-medium"
-          >Regístrate</a
-        >
+        <div class="flex">
+          <!-- Logo -->
+          <div class="flex-1 flex justify-center md:justify-center">
+            <a href="index.html" class="block">
+              <img
+                src="logo.png"
+                alt="Logo Sabinas Hidalgo"
+                class="h-12 md:h-14 w-auto"
+              />
+            </a>
+          </div>
+        </div>
 
         <!-- Mobile: Hamburger -->
         <button
@@ -1061,19 +1066,136 @@
           <i class="fas fa-bars text-xl"></i>
         </button>
 
-        <!-- Logo -->
-        <div class="flex-1 flex justify-center md:justify-center">
-          <a href="index.html" class="block">
-            <img
-              src="logo.png"
-              alt="Logo Sabinas Hidalgo"
-              class="h-12 md:h-14 w-auto"
-            />
-          </a>
-        </div>
+        <!-- Desktop Nav -->
+        <nav class="bg-white">
+          <div class="max-w-7xl mx-auto px-4">
+            <div class="hidden md:flex justify-center space-x-8 py-4">
+              <a
+                href="#home"
+                data-route="home"
+                class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Inicio</a
+              >
+              <a
+                href="#programas"
+                data-route="programas"
+                class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Programas</a
+              >
+              <a
+                href="#equipo"
+                data-route="equipo"
+                class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Equipo</a
+              >
+              <a
+                href="#tuciudad"
+                data-route="tuciudad"
+                class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Directorio</a
+              >
+              <a
+                href="#tramites"
+                data-route="tramites"
+                class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Trámites</a
+              >
+              <a
+                href="#transp"
+                data-route="transp"
+                class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Transparencia</a
+              >
+              <a
+                href="#proyectos"
+                data-route="proyectos"
+                class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Proyectos</a
+              >
+            </div>
+          </div>
 
+          <!-- Mobile Nav (fixed overlay) -->
+          <div id="mobile-sheet" class="fixed inset-0 z-50 hidden">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-black/30" data-close></div>
+
+            <!-- Sheet panel (starts at header height, set via JS) -->
+            <div
+              id="mobile-sheet-panel"
+              class="absolute inset-x-0 bg-white border-t border-gray-200 shadow-lg"
+            >
+              <!-- Top row inside sheet -->
+              <div class="px-4 py-3 flex items-center justify-between">
+                <div
+                  class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-4 py-2 rounded-lg font-bold"
+                >
+                  Sabinas Hidalgo N.L.
+                </div>
+                <button
+                  id="mobile-menu-close"
+                  class="inline-flex items-center justify-center p-2 rounded-md text-municipal-blue hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-municipal-blue"
+                  aria-label="Cerrar menú"
+                >
+                  <i class="fas fa-times text-xl"></i>
+                </button>
+              </div>
+
+              <!-- Links -->
+              <div class="px-4 pb-6 space-y-1">
+                <a
+                  href="#home"
+                  data-route="home"
+                  class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                  >Inicio</a
+                >
+                <a
+                  href="#programas"
+                  data-route="programas"
+                  class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                  >Programas</a
+                >
+                <a
+                  href="#equipo"
+                  data-route="equipo"
+                  class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                  >Equipo</a
+                >
+                <a
+                  href="#tuciudad"
+                  data-route="tuciudad"
+                  class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                  >Tu Ciudad</a
+                >
+                <a
+                  href="#tramites"
+                  data-route="tramites"
+                  class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                  >Trámites</a
+                >
+                <a
+                  href="#transp"
+                  data-route="transp"
+                  class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                  >Transparencia</a
+                >
+                <a
+                  href="#proyectos"
+                  data-route="proyectos"
+                  class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                  >Proyectos</a
+                >
+              </div>
+            </div>
+          </div>
+        </nav>
         <!-- Right: Social -->
         <div class="flex items-center space-x-3">
+           <a
+            href="registrate.html"
+            class="hidden sm:inline text-municipal-blue hover:text-blue-700 font-medium"
+            >Regístrate</a
+          >
           <a
             href="registrate.html"
             class="sm:hidden text-municipal-blue hover:text-blue-700 font-medium"
@@ -1093,130 +1215,6 @@
           ></a>
         </div>
       </div>
-
-      <!-- Desktop Nav -->
-      <nav class="bg-white border-t border-gray-200">
-        <div class="max-w-7xl mx-auto px-4">
-          <div class="hidden md:flex justify-center space-x-8 py-4">
-            <a
-              href="#home"
-              data-route="home"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Inicio</a
-            >
-            <a
-              href="#programas"
-              data-route="programas"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Programas</a
-            >
-            <a
-              href="#equipo"
-              data-route="equipo"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Equipo</a
-            >
-            <a
-              href="#tuciudad"
-              data-route="tuciudad"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Directorio</a
-            >
-            <a
-              href="#tramites"
-              data-route="tramites"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Trámites</a
-            >
-            <a
-              href="#transp"
-              data-route="transp"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Transparencia</a
-            >
-            <a
-              href="#proyectos"
-              data-route="proyectos"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Proyectos</a
-            >
-          </div>
-        </div>
-
-        <!-- Mobile Nav (fixed overlay) -->
-        <div id="mobile-sheet" class="fixed inset-0 z-50 hidden">
-          <!-- Backdrop -->
-          <div class="absolute inset-0 bg-black/30" data-close></div>
-
-          <!-- Sheet panel (starts at header height, set via JS) -->
-          <div
-            id="mobile-sheet-panel"
-            class="absolute inset-x-0 bg-white border-t border-gray-200 shadow-lg"
-          >
-            <!-- Top row inside sheet -->
-            <div class="px-4 py-3 flex items-center justify-between">
-              <div
-                class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-4 py-2 rounded-lg font-bold"
-              >
-                Sabinas Hidalgo N.L.
-              </div>
-              <button
-                id="mobile-menu-close"
-                class="inline-flex items-center justify-center p-2 rounded-md text-municipal-blue hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-municipal-blue"
-                aria-label="Cerrar menú"
-              >
-                <i class="fas fa-times text-xl"></i>
-              </button>
-            </div>
-
-            <!-- Links -->
-            <div class="px-4 pb-6 space-y-1">
-              <a
-                href="#home"
-                data-route="home"
-                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-                >Inicio</a
-              >
-              <a
-                href="#programas"
-                data-route="programas"
-                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-                >Programas</a
-              >
-              <a
-                href="#equipo"
-                data-route="equipo"
-                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-                >Equipo</a
-              >
-              <a
-                href="#tuciudad"
-                data-route="tuciudad"
-                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-                >Tu Ciudad</a
-              >
-              <a
-                href="#tramites"
-                data-route="tramites"
-                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-                >Trámites</a
-              >
-              <a
-                href="#transp"
-                data-route="transp"
-                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-                >Transparencia</a
-              >
-              <a
-                href="#proyectos"
-                data-route="proyectos"
-                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-                >Proyectos</a
-              >
-            </div>
-          </div>
-        </div>
-      </nav>
     </header>
 
     <!-- Dynamic render area -->
