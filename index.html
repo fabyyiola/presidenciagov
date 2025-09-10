@@ -774,256 +774,300 @@
 
   <body class="font-sans bg-white">
     <!-- Header -->
-   <header class="bg-white shadow-sm">
-  <!-- Top Bar -->
-  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-    <!-- Left: Register (hidden on very small if you prefer) -->
-    <a
-      href="registrate.html"
-      class="hidden sm:inline text-municipal-blue hover:text-blue-700 font-medium"
-      >Regístrate</a
-    >
-
-    <!-- Mobile: Hamburger -->
-    <button
-      id="mobile-menu-toggle"
-      class="inline-flex items-center justify-center p-2 rounded-md text-municipal-blue hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-municipal-blue md:hidden"
-      aria-controls="mobile-menu"
-      aria-expanded="false"
-      aria-label="Abrir menú"
-    >
-      <i class="fas fa-bars text-xl"></i>
-    </button>
-
-    <!-- Logo -->
-    <div class="flex-1 flex justify-center md:justify-center">
+    <header class="bg-white shadow-sm">
+      <!-- Top Bar -->
       <div
-        class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-6 py-3 rounded-lg font-bold text-lg"
+        class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"
       >
-        Sabinas Hidalgo N.L.
-      </div>
-    </div>
+        <!-- Left: Register (hidden on very small if you prefer) -->
+        <a
+          href="registrate.html"
+          class="hidden sm:inline text-municipal-blue hover:text-blue-700 font-medium"
+          >Regístrate</a
+        >
 
-    <!-- Right: Social -->
-    <div class="flex items-center space-x-3">
-      <a href="registrate.html" class="sm:hidden text-municipal-blue hover:text-blue-700 font-medium">Regístrate</a>
-      <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
-        ><i class="fab fa-facebook"></i
-      ></a>
-      <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
-        ><i class="fab fa-twitter"></i
-      ></a>
-      <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
-        ><i class="fab fa-instagram"></i
-      ></a>
-      <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
-        ><i class="fab fa-youtube"></i
-      ></a>
-    </div>
-  </div>
+        <!-- Mobile: Hamburger -->
+        <button
+          id="mobile-menu-toggle"
+          class="inline-flex items-center justify-center p-2 rounded-md text-municipal-blue hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-municipal-blue md:hidden"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+          aria-label="Abrir menú"
+        >
+          <i class="fas fa-bars text-xl"></i>
+        </button>
 
-  <!-- Desktop Nav -->
-  <nav class="bg-white border-t border-gray-200">
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="hidden md:flex justify-center space-x-8 py-4">
-        <a
-          href="#home"
-          data-route="home"
-          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Inicio</a
-        >
-        <a
-          href="#programas"
-          data-route="programas"
-          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Programas</a
-        >
-        <a
-          href="#equipo"
-          data-route="equipo"
-          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Equipo</a
-        >
-        <a
-          href="#tuciudad"
-          data-route="tuciudad"
-          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Tu Ciudad</a
-        >
-        <a
-          href="#tramites"
-          data-route="tramites"
-          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Trámites</a
-        >
-        <a
-          href="#transp"
-          data-route="transp"
-          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Transparencia</a
-        >
-        <a
-          href="#proyectos"
-          data-route="proyectos"
-          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Proyectos</a
-        >
-      </div>
-    </div>
-
-    
-    <!-- Mobile Nav (fixed overlay) -->
-<div id="mobile-sheet" class="fixed inset-0 z-50 hidden">
-  <!-- Backdrop -->
-  <div class="absolute inset-0 bg-black/30" data-close></div>
-
-  <!-- Sheet panel (starts at header height, set via JS) -->
-  <div id="mobile-sheet-panel" class="absolute inset-x-0 bg-white border-t border-gray-200 shadow-lg">
-    <!-- Top row inside sheet -->
-    <div class="px-4 py-3 flex items-center justify-between">
-      <div
-        class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-4 py-2 rounded-lg font-bold"
-      >
-        Sabinas Hidalgo N.L.
-      </div>
-      <button
-        id="mobile-menu-close"
-        class="inline-flex items-center justify-center p-2 rounded-md text-municipal-blue hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-municipal-blue"
-        aria-label="Cerrar menú"
-      >
-        <i class="fas fa-times text-xl"></i>
-      </button>
-    </div>
-
-    <!-- Links -->
-    <div class="px-4 pb-6 space-y-1">
-      <a href="#home" data-route="home" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Inicio</a>
-      <a href="#programas" data-route="programas" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Programas</a>
-      <a href="#equipo" data-route="equipo" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Equipo</a>
-      <a href="#tuciudad" data-route="tuciudad" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Tu Ciudad</a>
-      <a href="#tramites" data-route="tramites" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Trámites</a>
-      <a href="#transp" data-route="transp" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Transparencia</a>
-      <a href="#proyectos" data-route="proyectos" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Proyectos</a>
-    </div>
-  </div>
+        <!-- Logo -->
+       <div class="flex-1 flex justify-center md:justify-center">
+  <a href="index.html" class="block">
+    <img
+      src="logo.png"
+      alt="Logo Sabinas Hidalgo"
+      class="h-12 md:h-14 w-auto"
+    />
+  </a>
 </div>
 
-  </nav>
-</header>
-
-<!-- Dynamic render area -->
-<main class="min-h-screen">
-  <section id="app"></section>
-</main>
-
-<!-- Footer -->
-<footer class="bg-municipal-blue text-white py-12">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div>
-        <h3 class="font-bold text-xl mb-4">CONTACTO</h3>
-        <p class="mb-2">📍 Palacio Municipal, Centro</p>
-        <p class="mb-2">📞 (824) 123-4567</p>
-        <p class="mb-2">✉️ contacto@sabinashidalgo.gob.mx</p>
-      </div>
-      <div>
-        <h3 class="font-bold text-xl mb-4">HORARIOS</h3>
-        <p class="mb-2">Lunes a Viernes: 8:00 - 16:00 hrs</p>
-        <p class="mb-2">Sábados: 9:00 - 13:00 hrs</p>
-        <p class="mb-2">Miércoles Ciudadano: 11:30 - 13:30 hrs</p>
-      </div>
-      <div>
-        <h3 class="font-bold text-xl mb-4">SÍGUENOS</h3>
-        <div class="flex space-x-4">
-          <a href="#" class="text-2xl hover:text-blue-300"
+        <!-- Right: Social -->
+        <div class="flex items-center space-x-3">
+          <a
+            href="registrate.html"
+            class="sm:hidden text-municipal-blue hover:text-blue-700 font-medium"
+            >Regístrate</a
+          >
+          <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
             ><i class="fab fa-facebook"></i
           ></a>
-          <a href="#" class="text-2xl hover:text-blue-300"
+          <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
             ><i class="fab fa-twitter"></i
           ></a>
-          <a href="#" class="text-2xl hover:text-blue-300"
+          <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
             ><i class="fab fa-instagram"></i
           ></a>
-          <a href="#" class="text-2xl hover:text-blue-300"
+          <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
             ><i class="fab fa-youtube"></i
           ></a>
         </div>
       </div>
-    </div>
-    <div class="border-t border-blue-400 mt-8 pt-8 text-center">
-      <p>
-        &copy; 2024 Gobierno Municipal de Sabinas Hidalgo, Nuevo León. Todos
-        los derechos reservados.
-      </p>
-    </div>
-  </div>
-</footer>
 
-<!-- Tiny script for mobile menu + active states -->
-<script>
-  (function () {
-    const btn = document.getElementById("mobile-menu-toggle");
-    const sheet = document.getElementById("mobile-sheet");
-    const panel = document.getElementById("mobile-sheet-panel");
-    const closeBtn = document.getElementById("mobile-menu-close");
-    const backdrop = sheet?.querySelector("[data-close]");
-    const links = document.querySelectorAll(".spa-link");
-    const header = document.querySelector("header");
+      <!-- Desktop Nav -->
+      <nav class="bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4">
+          <div class="hidden md:flex justify-center space-x-8 py-4">
+            <a
+              href="#home"
+              data-route="home"
+              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+              >Inicio</a
+            >
+            <a
+              href="#programas"
+              data-route="programas"
+              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+              >Programas</a
+            >
+            <a
+              href="#equipo"
+              data-route="equipo"
+              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+              >Equipo</a
+            >
+            <a
+              href="#tuciudad"
+              data-route="tuciudad"
+              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+              >Tu Ciudad</a
+            >
+            <a
+              href="#tramites"
+              data-route="tramites"
+              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+              >Trámites</a
+            >
+            <a
+              href="#transp"
+              data-route="transp"
+              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+              >Transparencia</a
+            >
+            <a
+              href="#proyectos"
+              data-route="proyectos"
+              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+              >Proyectos</a
+            >
+          </div>
+        </div>
 
-    function setPanelTop() {
-      if (!panel || !header) return;
-      panel.style.top = header.offsetHeight + "px";
-      panel.style.maxHeight = `calc(100vh - ${header.offsetHeight}px)`;
-      panel.style.overflowY = "auto";
-    }
+        <!-- Mobile Nav (fixed overlay) -->
+        <div id="mobile-sheet" class="fixed inset-0 z-50 hidden">
+          <!-- Backdrop -->
+          <div class="absolute inset-0 bg-black/30" data-close></div>
 
-    function openMenu() {
-      setPanelTop();
-      sheet.classList.remove("hidden");
-      document.body.classList.add("overflow-hidden");
-      btn?.setAttribute("aria-expanded", "true");
-      if (btn) btn.innerHTML = '<i class="fas fa-times text-xl"></i>';
-    }
+          <!-- Sheet panel (starts at header height, set via JS) -->
+          <div
+            id="mobile-sheet-panel"
+            class="absolute inset-x-0 bg-white border-t border-gray-200 shadow-lg"
+          >
+            <!-- Top row inside sheet -->
+            <div class="px-4 py-3 flex items-center justify-between">
+              <div
+                class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-4 py-2 rounded-lg font-bold"
+              >
+                Sabinas Hidalgo N.L.
+              </div>
+              <button
+                id="mobile-menu-close"
+                class="inline-flex items-center justify-center p-2 rounded-md text-municipal-blue hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-municipal-blue"
+                aria-label="Cerrar menú"
+              >
+                <i class="fas fa-times text-xl"></i>
+              </button>
+            </div>
 
-    function closeMenu() {
-      sheet.classList.add("hidden");
-      document.body.classList.remove("overflow-hidden");
-      btn?.setAttribute("aria-expanded", "false");
-      if (btn) btn.innerHTML = '<i class="fas fa-bars text-xl"></i>';
-    }
+            <!-- Links -->
+            <div class="px-4 pb-6 space-y-1">
+              <a
+                href="#home"
+                data-route="home"
+                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Inicio</a
+              >
+              <a
+                href="#programas"
+                data-route="programas"
+                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Programas</a
+              >
+              <a
+                href="#equipo"
+                data-route="equipo"
+                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Equipo</a
+              >
+              <a
+                href="#tuciudad"
+                data-route="tuciudad"
+                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Tu Ciudad</a
+              >
+              <a
+                href="#tramites"
+                data-route="tramites"
+                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Trámites</a
+              >
+              <a
+                href="#transp"
+                data-route="transp"
+                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Transparencia</a
+              >
+              <a
+                href="#proyectos"
+                data-route="proyectos"
+                class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+                >Proyectos</a
+              >
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
 
-    // Toggle
-    btn?.addEventListener("click", () => {
-      const isOpen = btn.getAttribute("aria-expanded") === "true";
-      isOpen ? closeMenu() : openMenu();
-    });
+    <!-- Dynamic render area -->
+    <main class="min-h-screen">
+      <section id="app"></section>
+    </main>
 
-    // Close actions
-    closeBtn?.addEventListener("click", closeMenu);
-    backdrop?.addEventListener("click", closeMenu);
-    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
+    <!-- Footer -->
+    <footer class="bg-municipal-blue text-white py-12">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="font-bold text-xl mb-4">CONTACTO</h3>
+            <p class="mb-2">📍 Palacio Municipal, Centro</p>
+            <p class="mb-2">📞 (824) 123-4567</p>
+            <p class="mb-2">✉️ contacto@sabinashidalgo.gob.mx</p>
+          </div>
+          <div>
+            <h3 class="font-bold text-xl mb-4">HORARIOS</h3>
+            <p class="mb-2">Lunes a Viernes: 8:00 - 16:00 hrs</p>
+            <p class="mb-2">Sábados: 9:00 - 13:00 hrs</p>
+            <p class="mb-2">Miércoles Ciudadano: 11:30 - 13:30 hrs</p>
+          </div>
+          <div>
+            <h3 class="font-bold text-xl mb-4">SÍGUENOS</h3>
+            <div class="flex space-x-4">
+              <a href="#" class="text-2xl hover:text-blue-300"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="#" class="text-2xl hover:text-blue-300"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" class="text-2xl hover:text-blue-300"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="text-2xl hover:text-blue-300"
+                ><i class="fab fa-youtube"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-blue-400 mt-8 pt-8 text-center">
+          <p>
+            &copy; 2024 Gobierno Municipal de Sabinas Hidalgo, Nuevo León. Todos
+            los derechos reservados.
+          </p>
+        </div>
+      </div>
+    </footer>
 
-    // Recompute on resize and also close on desktop
-    window.addEventListener("resize", () => {
-      if (window.innerWidth >= 768) closeMenu();
-      setPanelTop();
-    });
+    <!-- Tiny script for mobile menu + active states -->
+    <script>
+      (function () {
+        const btn = document.getElementById("mobile-menu-toggle");
+        const sheet = document.getElementById("mobile-sheet");
+        const panel = document.getElementById("mobile-sheet-panel");
+        const closeBtn = document.getElementById("mobile-menu-close");
+        const backdrop = sheet?.querySelector("[data-close]");
+        const links = document.querySelectorAll(".spa-link");
+        const header = document.querySelector("header");
 
-    // Close on link click (and mark active if you like)
-    links.forEach(a => {
-      a.addEventListener("click", () => {
-        links.forEach(l => l.classList.remove("bg-blue-50"));
-        a.classList.add("bg-blue-50");
-        closeMenu();
-      });
-    });
+        function setPanelTop() {
+          if (!panel || !header) return;
+          panel.style.top = header.offsetHeight + "px";
+          panel.style.maxHeight = `calc(100vh - ${header.offsetHeight}px)`;
+          panel.style.overflowY = "auto";
+        }
 
-    // Initial
-    setPanelTop();
-  })();
-</script>
+        function openMenu() {
+          setPanelTop();
+          sheet.classList.remove("hidden");
+          document.body.classList.add("overflow-hidden");
+          btn?.setAttribute("aria-expanded", "true");
+          if (btn) btn.innerHTML = '<i class="fas fa-times text-xl"></i>';
+        }
 
+        function closeMenu() {
+          sheet.classList.add("hidden");
+          document.body.classList.remove("overflow-hidden");
+          btn?.setAttribute("aria-expanded", "false");
+          if (btn) btn.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+        }
 
+        // Toggle
+        btn?.addEventListener("click", () => {
+          const isOpen = btn.getAttribute("aria-expanded") === "true";
+          isOpen ? closeMenu() : openMenu();
+        });
+
+        // Close actions
+        closeBtn?.addEventListener("click", closeMenu);
+        backdrop?.addEventListener("click", closeMenu);
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeMenu();
+        });
+
+        // Recompute on resize and also close on desktop
+        window.addEventListener("resize", () => {
+          if (window.innerWidth >= 768) closeMenu();
+          setPanelTop();
+        });
+
+        // Close on link click (and mark active if you like)
+        links.forEach((a) => {
+          a.addEventListener("click", () => {
+            links.forEach((l) => l.classList.remove("bg-blue-50"));
+            a.classList.add("bg-blue-50");
+            closeMenu();
+          });
+        });
+
+        // Initial
+        setPanelTop();
+      })();
+    </script>
 
     <script>
       // ---- Simple SPA loader (fragments) ----
