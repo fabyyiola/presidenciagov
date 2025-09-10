@@ -9,6 +9,19 @@
     </div>
   </section>
 
+  <!-- Search bar -->
+  <div class="px-4 py-6 max-w-4xl mx-auto">
+    <div class="relative">
+      <input 
+        id="tramites-search"
+        type="text"
+        placeholder="Buscar trámites por nombre, descripción o categoría..."
+        class="w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+      />
+      <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    </div>
+  </div>
+
   <!-- Grid -->
   <div id="tramites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4"></div>
 
@@ -35,6 +48,7 @@
 <script>
 (() => {
   const LS_KEY = "tramites";
+  let allTramites = [];
 
   function loadTramites() {
     try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
@@ -43,11 +57,18 @@
 
   const UI = {
     el(id){ return document.getElementById(id); },
-    render(){
-      const list = loadTramites();
+    render(filterText=""){
       const grid = this.el("tramites-grid");
       const empty = this.el("tramites-empty");
       grid.innerHTML = "";
+
+      const list = allTramites.filter(t=>{
+        if (!filterText) return true;
+        const q = filterText.toLowerCase();
+        return (t.titulo||"").toLowerCase().includes(q) ||
+               (t.descripcion||"").toLowerCase().includes(q) ||
+               (t.categoriaNombre||t.categoria||"").toLowerCase().includes(q);
+      });
 
       if (!list.length){ empty.classList.remove("hidden"); return; }
       empty.classList.add("hidden");
@@ -67,7 +88,6 @@
     },
     openDetail(item){
       this.el("dTitulo").textContent = item.titulo || "Detalle";
-
       this.el("dBody").innerHTML = `
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div class="space-y-3 text-sm">
@@ -79,7 +99,6 @@
             <div><i class="fas fa-hourglass-half text-orange-600 mr-2"></i><strong>Tiempo:</strong> ${item.tiempo || "—"}</div>
           </div>
         </div>
-
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
@@ -112,7 +131,15 @@
     closeDetail(){ this.el("tramite-detail").classList.add("hidden"); }
   };
 
+  // Init
+  allTramites = loadTramites();
   UI.render();
+
+  // Search binding
+  document.getElementById("tramites-search").addEventListener("input", e=>{
+    UI.render(e.target.value);
+  });
+
   window.UI = UI;
 })();
 </script>
