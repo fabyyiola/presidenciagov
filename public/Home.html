@@ -328,51 +328,99 @@
   }
 
   // ====== Events (fotoIds -> fotoUrls -> legacy imageId) ======
-  async function renderEvents(){
+   async function renderEvents(){
     const grid  = document.getElementById("events-grid");
     const empty = document.getElementById("events-empty");
-    const eventos = jget(EVENTOS_LS, []);
+    const eventos = (()=>{
+      try { return JSON.parse(localStorage.getItem("eventos") || "[]"); }
+      catch { return []; }
+    })();
     const today = new Date(new Date().toDateString());
 
+    const isHttpUrl = (u)=>{ try{ const x=new URL(u); return x.protocol==="http:"||x.protocol==="https:"; } catch { return false; } };
+    const makeBlobUrl = (blob)=> blob ? URL.createObjectURL(blob) : "";
+    async function idbOpen(name, store){
+      return new Promise((resolve)=>{
+        const req = indexedDB.open(name, 1);
+        req.onupgradeneeded = (e)=>{ const db=e.target.result; if(!db.objectStoreNames.contains(store)) db.createObjectStore(store); };
+        req.onsuccess = ()=>resolve(req.result);
+        req.onerror  = ()=>resolve(null);
+      });
+    }
+    async function idbGet(db, store, key){
+      return new Promise((resolve)=>{
+        if(!db || !db.objectStoreNames.contains(store)) return resolve(null);
+        const tx = db.transaction(store, "readonly");
+        const rq = tx.objectStore(store).get(key);
+        rq.onsuccess = ()=>resolve(rq.result||null);
+        rq.onerror   = ()=>resolve(null);
+      });
+    }
+
+    const eventosDb = await idbOpen("EventosDB","imagenes");
+
     async function coverFor(ev){
+      // fotoIds (IDB)
       if (Array.isArray(ev.fotoIds) && ev.fotoIds.length && eventosDb){
-        const blob = await idbGet(eventosDb, EVENTOS_STORE, ev.fotoIds[0]);
+        const blob = await idbGet(eventosDb, "imagenes", ev.fotoIds[0]);
         const u = makeBlobUrl(blob);
         if (u) return u;
       }
+      // fotoUrls (remotas)
       if (Array.isArray(ev.fotoUrls) && ev.fotoUrls.length){
         const u = ev.fotoUrls.find(isHttpUrl);
         if (u) return u;
       }
+      // legacy imageId (IDB)
       if (ev.imageId && eventosDb){
-        const blob = await idbGet(eventosDb, EVENTOS_STORE, ev.imageId);
+        const blob = await idbGet(eventosDb, "imagenes", ev.imageId);
         const u = makeBlobUrl(blob);
         if (u) return u;
       }
       return "";
     }
 
+    // upcoming sorted by date asc
     const upcoming = eventos
       .filter(e => !e.fechaInicio || new Date(e.fechaInicio) >= today)
-      .sort((a,b)=> new Date(a.fechaInicio||"2100-01-01") - new Date(b.fechaInicio||"2100-01-01"))
-      .slice(0,6);
+      .sort((a,b)=> new Date(a.fechaInicio||"2100-01-01") - new Date(b.fechaInicio||"2100-01-01"));
 
-    const pieces = await Promise.all(upcoming.map(async (e)=>{
+    // Featured first
+    const destacados = upcoming.filter(e => !!e.destacado);
+    const normales   = upcoming.filter(e => !e.destacado);
+    const ordered    = [...destacados, ...normales].slice(0, 8);
+
+    const cards = await Promise.all(ordered.map(async (e, idx) => {
       const img = await coverFor(e);
-      const when = e.fechaInicio && e.fechaFin ? `${e.fechaInicio} · ${e.fechaFin}` : e.fechaInicio || "Próximamente";
+      const when = e.fechaInicio && e.fechaFin
+        ? `${e.fechaInicio} · ${e.fechaFin}`
+        : (e.fechaInicio || "Próximamente");
+      const isFeatured = !!e.destacado;
+
+      // Outer wrapper lets featured span 2 cols on lg screens
       return `
-        <div class="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
-          ${img ? `<img src="${img}" class="w-full h-32 object-cover">` : `<div class="h-32 w-full bg-slate-100 flex items-center justify-center text-4xl">🎉</div>`}
-          <div class="p-4">
-            <div class="font-semibold text-slate-900 line-clamp-2">${e.titulo || "Evento"}</div>
-            <div class="text-slate-500 text-sm line-clamp-2 mt-1">${e.descripcion || ""}</div>
-            <div class="text-blue-700 text-xs font-semibold mt-2">${when}</div>
-          </div>
+        <div class="${isFeatured ? "lg:col-span-2" : ""}">
+          <article class="relative bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm ${isFeatured ? "ring-2 ring-amber-300" : ""}">
+            ${img
+              ? `<img src="${img}" class="w-full ${isFeatured ? "h-48" : "h-32"} object-cover">`
+              : `<div class="${isFeatured ? "h-48" : "h-32"} w-full bg-slate-100 flex items-center justify-center text-4xl">🎉</div>`
+            }
+            ${isFeatured ? `
+              <span class="absolute top-3 left-3 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
+                <i class="fas fa-star mr-1"></i> Destacado
+              </span>` : ``}
+            <div class="p-4">
+              <div class="font-semibold text-slate-900 line-clamp-2">${e.titulo || "Evento"}</div>
+              <div class="text-slate-500 text-sm line-clamp-2 mt-1">${e.descripcion || ""}</div>
+              <div class="text-blue-700 text-xs font-semibold mt-2">${when}</div>
+              ${e.precio ? `<div class="mt-2 text-xs text-slate-600"><i class="fas fa-dollar-sign mr-1"></i>${e.precio}</div>` : ""}
+            </div>
+          </article>
         </div>`;
     }));
 
-    grid.innerHTML = pieces.join("");
-    empty.classList.toggle("hidden", pieces.length > 0);
+    grid.innerHTML = cards.join("");
+    document.getElementById("events-empty").classList.toggle("hidden", ordered.length > 0);
   }
 
   // ====== Turismo stacked (right column) ======
