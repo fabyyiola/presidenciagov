@@ -52,18 +52,150 @@
   </div>
 </section>
 
+<!-- ===== Detail / Thread Modal ===== -->
+<div id="solicitud-modal" class="fixed inset-0 bg-black/50 z-50 hidden">
+  <div class="absolute inset-0 backdrop-blur-sm"></div>
+
+  <div class="relative mx-auto my-6 max-w-5xl w-[95%] bg-white rounded-2xl shadow-xl overflow-hidden">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-6 py-4 border-b">
+      <div class="flex items-center gap-3">
+        <div class="bg-blue-100 text-blue-700 w-10 h-10 rounded-full flex items-center justify-center">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <div>
+          <div class="text-sm text-gray-500">Solicitud</div>
+          <h3 id="sol-modal-title" class="text-xl font-bold text-gray-800">—</h3>
+        </div>
+      </div>
+      <button id="sol-modal-close" class="text-gray-500 hover:text-gray-800">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6 max-h-[78vh] overflow-y-auto">
+      <!-- Left: Details -->
+      <section class="lg:col-span-1">
+        <h4 class="text-sm font-semibold text-gray-700 mb-3">Detalles del Solicitante</h4>
+        <div id="sol-details" class="space-y-2 text-sm">
+          <!-- Filled by JS -->
+        </div>
+
+        <div class="mt-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Estado</label>
+          <select id="sol-status" class="w-full border rounded-lg px-3 py-2">
+            <option value="pending">Pendiente</option>
+            <option value="in-review">En Revisión</option>
+            <option value="approved">Aprobado</option>
+            <option value="rejected">Rechazado</option>
+          </select>
+          <button id="sol-status-save" class="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            Guardar Estado
+          </button>
+        </div>
+      </section>
+
+      <!-- Right: Thread -->
+      <section class="lg:col-span-2">
+        <h4 class="text-sm font-semibold text-gray-700 mb-3">Comentarios y Evidencias</h4>
+
+        <!-- New comment -->
+        <div class="border rounded-xl p-4 mb-4">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <div class="md:col-span-3">
+              <label class="block text-xs font-semibold text-gray-600 mb-1">Comentario</label>
+              <textarea id="sol-comment-text" rows="3" class="w-full border rounded-lg px-3 py-2" placeholder="Escribe un comentario para esta solicitud..."></textarea>
+            </div>
+            <div class="md:col-span-1">
+              <label class="block text-xs font-semibold text-gray-600 mb-1">Autor</label>
+              <input id="sol-comment-author" class="w-full border rounded-lg px-3 py-2" placeholder="Ej. Trabajo Social" />
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <label for="sol-files" class="block text-xs font-semibold text-gray-600 mb-1">Adjuntar archivos (imágenes, PDF, etc.)</label>
+            <input id="sol-files" type="file" multiple class="w-full text-sm" />
+            <div id="sol-files-list" class="mt-2 text-xs text-gray-600"></div>
+          </div>
+
+          <div class="mt-4">
+            <button id="sol-comment-add" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+              Agregar al expediente
+            </button>
+          </div>
+        </div>
+
+        <!-- Thread list -->
+        <div id="sol-thread" class="space-y-4">
+          <!-- Comments rendered here -->
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
 <script>
 (() => {
   const STORAGE_KEY = 'municipio.solicitudes.v1';
+
+  // ===== Files DB (IndexedDB) =====
+  const FILES_DB = 'ServiciosFilesDB';
+  const FILES_STORE = 'evidencias';
+  let filesDb = null;
+
+  function idbOpen(){
+    return new Promise((resolve)=>{
+      const req = indexedDB.open(FILES_DB, 1);
+      req.onupgradeneeded = (e)=>{
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(FILES_STORE)) db.createObjectStore(FILES_STORE);
+      };
+      req.onsuccess = ()=>resolve(req.result);
+      req.onerror = ()=>resolve(null);
+    });
+  }
+  function idbPut(key, blob){
+    return new Promise((resolve)=>{
+      if(!filesDb) return resolve(false);
+      const tx = filesDb.transaction(FILES_STORE, 'readwrite');
+      tx.objectStore(FILES_STORE).put(blob, key);
+      tx.oncomplete = ()=>resolve(true);
+      tx.onerror = ()=>resolve(false);
+    });
+  }
+  function idbGet(key){
+    return new Promise((resolve)=>{
+      if(!filesDb) return resolve(null);
+      const tx = filesDb.transaction(FILES_STORE, 'readonly');
+      const rq = tx.objectStore(FILES_STORE).get(key);
+      rq.onsuccess = ()=>resolve(rq.result||null);
+      rq.onerror = ()=>resolve(null);
+    });
+  }
+
+  // ===== State =====
   let solicitudes = [];
   let filtered = [];
+  let current = null; // current solicitud in modal
+  let objectUrls = []; // for cleanup
 
+  // ===== Utils =====
   const load = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
   const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(solicitudes));
-  const fmtDate = d => new Date(d).toLocaleDateString('es-MX',{year:'numeric',month:'short',day:'numeric'});
+  const fmtDate = d => {
+    try { return new Date(d).toLocaleDateString('es-MX',{year:'numeric',month:'short',day:'numeric'}) + ' ' + new Date(d).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}); }
+    catch { return d || ''; }
+  };
   const statusLabels = { pending:'Pendiente', 'in-review':'En Revisión', approved:'Aprobado', rejected:'Rechazado' };
+  const gid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,8);
 
-  // === Render ===
+  function cleanupObjectUrls(){
+    objectUrls.forEach(u=>{ try{ URL.revokeObjectURL(u); }catch{} });
+    objectUrls = [];
+  }
+
+  // ===== Render table =====
   function render() {
     const tbody = document.getElementById('solicitudes-body');
     const empty = document.getElementById('solicitudes-empty');
@@ -77,7 +209,8 @@
 
     for (const s of filtered) {
       const row = document.createElement('tr');
-      row.className = "hover:bg-gray-50";
+      row.className = "hover:bg-gray-50 cursor-pointer";
+      row.dataset.id = s.id;
       row.innerHTML = `
         <td class="px-6 py-3 text-sm font-mono text-blue-600">${s.id}</td>
         <td class="px-6 py-3 text-sm text-gray-800">${s.fullName}</td>
@@ -87,7 +220,7 @@
         <td class="px-6 py-3 text-sm text-gray-600">${s.address}</td>
         <td class="px-6 py-3 text-sm text-gray-600">${fmtDate(s.submissionDate)}</td>
         <td class="px-6 py-3">
-          <select onchange="ServiciosAdmin.updateStatus('${s.id}', this.value)" class="text-sm border rounded px-2 py-1">
+          <select data-status="${s.id}" class="text-sm border rounded px-2 py-1">
             ${Object.entries(statusLabels).map(([val,label]) =>
               `<option value="${val}" ${s.status===val?'selected':''}>${label}</option>`
             ).join('')}
@@ -96,39 +229,234 @@
       `;
       tbody.appendChild(row);
     }
+
+    // row click -> open modal
+    tbody.querySelectorAll('tr').forEach(tr=>{
+      tr.addEventListener('click', (e)=>{
+        // ignore clicks on the status select
+        if (e.target && e.target.matches('select[data-status], select[data-status] *')) return;
+        openModal(tr.dataset.id);
+      });
+    });
+
+    // status inline change (outside modal)
+    tbody.querySelectorAll('select[data-status]').forEach(sel=>{
+      sel.addEventListener('change', ()=>updateStatus(sel.getAttribute('data-status'), sel.value));
+    });
   }
 
-  // === Filters ===
+  // ===== Filters =====
   function applyFilters() {
-    const q = document.getElementById('solicitudes-search').value.toLowerCase();
+    const q = document.getElementById('solicitudes-search').value.toLowerCase().trim();
     const st = document.getElementById('solicitudes-status').value;
     filtered = solicitudes.filter(s => {
-      if (q && !s.fullName.toLowerCase().includes(q) && !s.curp.toLowerCase().includes(q) && !s.program.toLowerCase().includes(q)) return false;
+      const haystack = [s.fullName, s.curp, s.program].map(x => (x||'').toLowerCase()).join(' ');
+      if (q && !haystack.includes(q)) return false;
       if (st && s.status !== st) return false;
       return true;
     });
     render();
   }
 
-  // === Public actions ===
+  // ===== Status update =====
   function updateStatus(id, status) {
     const s = solicitudes.find(x => x.id === id);
     if (!s) return;
     s.status = status;
     save();
+    // also update in modal if open
+    if (current && current.id === id) document.getElementById('sol-status').value = status;
     applyFilters();
   }
 
-  // === Init ===
-  function init() {
+  // ===== Modal =====
+  function openModal(id){
+    cleanupObjectUrls();
+    const modal = document.getElementById('solicitud-modal');
+    current = solicitudes.find(x=>x.id === id);
+    if (!current) return;
+
+    // Ensure thread exists
+    if (!Array.isArray(current.thread)) current.thread = [];
+
+    // Header
+    document.getElementById('sol-modal-title').textContent = `${current.id} — ${current.fullName}`;
+
+    // Details
+    const details = document.getElementById('sol-details');
+    details.innerHTML = `
+      <div><span class="text-gray-500">Nombre:</span> <span class="font-medium">${current.fullName||''}</span></div>
+      <div><span class="text-gray-500">CURP:</span> <span class="font-medium">${current.curp||''}</span></div>
+      <div><span class="text-gray-500">Programa:</span> <span class="font-medium">${current.program||''}</span></div>
+      <div><span class="text-gray-500">Teléfono:</span> <span class="font-medium">${current.phone||''}</span></div>
+      <div><span class="text-gray-500">Dirección:</span> <span class="font-medium">${current.address||''}</span></div>
+      <div><span class="text-gray-500">Motivo:</span> <div class="mt-1 whitespace-pre-line text-gray-800">${current.reason||''}</div></div>
+      <div class="pt-2 text-xs text-gray-500">Enviado: ${fmtDate(current.submissionDate)}</div>
+    `;
+
+    // Status
+    document.getElementById('sol-status').value = current.status || 'pending';
+
+    // Reset comment inputs
+    document.getElementById('sol-comment-text').value = '';
+    document.getElementById('sol-comment-author').value = '';
+    document.getElementById('sol-files').value = '';
+    document.getElementById('sol-files-list').innerHTML = '';
+
+    // Render thread
+    renderThread();
+
+    // Bind buttons (ensure single-binded)
+    document.getElementById('sol-status-save').onclick = ()=> {
+      updateStatus(current.id, document.getElementById('sol-status').value);
+    };
+    document.getElementById('sol-comment-add').onclick = addComment;
+    document.getElementById('sol-files').onchange = renderSelectedFiles;
+
+    modal.classList.remove('hidden');
+  }
+
+  function closeModal(){
+    cleanupObjectUrls();
+    document.getElementById('solicitud-modal').classList.add('hidden');
+    current = null;
+  }
+
+  document.getElementById('sol-modal-close').addEventListener('click', closeModal);
+  document.getElementById('solicitud-modal').addEventListener('click', (e)=>{
+    if (e.target.id === 'solicitud-modal') closeModal();
+  });
+
+  // ===== Thread rendering =====
+  async function renderThread(){
+    const wrap = document.getElementById('sol-thread');
+    wrap.innerHTML = '';
+
+    if (!current || !Array.isArray(current.thread) || !current.thread.length){
+      wrap.innerHTML = `<div class="text-sm text-gray-500">Aún no hay comentarios ni evidencias para esta solicitud.</div>`;
+      return;
+    }
+
+    // newest first
+    const items = [...current.thread].sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+
+    for (const c of items){
+      const item = document.createElement('article');
+      item.className = 'border rounded-xl p-4';
+
+      // Files list (resolve blobs)
+      let filesHtml = '';
+      if (Array.isArray(c.files) && c.files.length){
+        const fileLinks = [];
+        for (const f of c.files){
+          const blob = await idbGet(f.id);
+          let linkHtml = `<span class="text-gray-500">(archivo no disponible)</span>`;
+          if (blob){
+            const url = URL.createObjectURL(blob);
+            objectUrls.push(url);
+            const isImg = /^image\//.test(f.type||'');
+            linkHtml = isImg
+              ? `<a href="${url}" target="_blank" class="text-blue-600 hover:underline flex items-center gap-2"><i class="far fa-image"></i> ${f.name}</a>`
+              : `<a href="${url}" download="${f.name}" class="text-blue-600 hover:underline flex items-center gap-2"><i class="far fa-file"></i> ${f.name}</a>`;
+          }
+          fileLinks.push(`<li>${linkHtml} <span class="text-xs text-gray-400">(${(f.size/1024).toFixed(1)} KB)</span></li>`);
+        }
+        filesHtml = `
+          <div class="mt-3">
+            <div class="text-xs font-semibold text-gray-600 mb-1">Evidencias</div>
+            <ul class="list-disc pl-5 space-y-1 text-sm">${fileLinks.join('')}</ul>
+          </div>`;
+      }
+
+      item.innerHTML = `
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="text-sm text-gray-800 whitespace-pre-line">${c.text || ''}</div>
+            ${filesHtml}
+          </div>
+          <div class="text-right">
+            <div class="text-xs text-gray-500">${fmtDate(c.createdAt)}</div>
+            <div class="text-xs text-gray-500">${c.author ? ('— ' + c.author) : ''}</div>
+          </div>
+        </div>
+      `;
+      wrap.appendChild(item);
+    }
+  }
+
+  // ===== New comment + files =====
+  function renderSelectedFiles(){
+    const list = document.getElementById('sol-files-list');
+    const input = document.getElementById('sol-files');
+    const files = Array.from(input.files||[]);
+    if (!files.length){ list.innerHTML=''; return; }
+    list.innerHTML = files.map(f=>`<div>• ${f.name} <span class="text-gray-400">(${f.type || 'desconocido'}, ${(f.size/1024).toFixed(1)} KB)</span></div>`).join('');
+  }
+
+  async function addComment(){
+    if (!current) return;
+    const text = (document.getElementById('sol-comment-text').value || '').trim();
+    const author = (document.getElementById('sol-comment-author').value || '').trim();
+    const fileInput = document.getElementById('sol-files');
+    const files = Array.from(fileInput.files || []);
+
+    if (!text && files.length===0){
+      alert('Agrega un comentario o al menos un archivo.'); return;
+    }
+
+    // Store files to IDB
+    const fileMetas = [];
+    for (const f of files){
+      const id = 'file_' + gid();
+      const ok = await idbPut(id, f);
+      if (ok) fileMetas.push({ id, name: f.name, type: f.type, size: f.size });
+    }
+
+    const comment = {
+      id: 'c_' + gid(),
+      author,
+      text,
+      createdAt: new Date().toISOString(),
+      files: fileMetas
+    };
+
+    if (!Array.isArray(current.thread)) current.thread = [];
+    current.thread.push(comment);
+
+    // Persist solicitud back to LS
+    const i = solicitudes.findIndex(x=>x.id===current.id);
+    if (i>-1) solicitudes[i] = { ...solicitudes[i], thread: current.thread };
+    save();
+
+    // Reset form and re-render
+    document.getElementById('sol-comment-text').value = '';
+    document.getElementById('sol-comment-author').value = '';
+    document.getElementById('sol-files').value = '';
+    document.getElementById('sol-files-list').innerHTML = '';
+    renderThread();
+  }
+
+  // ===== Init =====
+  async function init() {
+    filesDb = await idbOpen();
     solicitudes = load();
     filtered = [...solicitudes];
     applyFilters();
+
     document.getElementById('solicitudes-search').addEventListener('input', applyFilters);
     document.getElementById('solicitudes-status').addEventListener('change', applyFilters);
+
+    // Re-render if requests updated elsewhere
+    window.addEventListener('storage', (e)=>{
+      if (e.key === STORAGE_KEY){
+        solicitudes = load();
+        applyFilters();
+      }
+    });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 
+  // Public API (kept)
   window.ServiciosAdmin = { updateStatus };
 })();
 </script>

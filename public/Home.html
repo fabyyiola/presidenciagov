@@ -455,6 +455,32 @@
       estado: "Pendiente",
     },
   ];
+  const programas = [
+    {
+      id: 1,
+      name: "Desayunos Escolares",
+      desc: "Alimentación para estudiantes de primaria y secundaria",
+      requisitos: ["CURP del menor", "Comprobante escolar", "INE del tutor"],
+      dependencia: "DIF",
+      category: "Alimentación",
+      active: true,
+      updatedAt: "2025-09-09T19:46:26.554Z",
+    },
+    {
+      id: 2,
+      name: "Apoyo Económico Familiar",
+      desc: "Subsidio temporal para familias vulnerables",
+      requisitos: [
+        "Estudio socioeconómico",
+        "CURP",
+        "Comprobante de domicilio",
+      ],
+      dependencia: "Presidencia",
+      category: "Economía",
+      active: true,
+      updatedAt: "2025-09-09T19:46:26.554Z",
+    },
+  ];
 
   // ---- Seed util
   function seedIfEmpty(key, value) {
@@ -475,108 +501,144 @@
   seedIfEmpty("noticias.v1", noticias);
   seedIfEmpty("eventos", eventos);
   seedIfEmpty("municipio.contactos.emergencia.v1", contactos);
+  seedIfEmpty("municipio.programas.v1", programas);
 </script>
 <script>
-(() => {
-  const CONTACTS_KEY = "municipio.contactos.emergencia.v1";
+  (() => {
+    const CONTACTS_KEY = "municipio.contactos.emergencia.v1";
 
-  // same icon/tone map as admin (kept succinct)
-  const ICON = (cat)=>({
-    "Emergencias Médicas":"fas fa-kit-medical",
-    "Seguridad Pública":"fas fa-shield-halved",
-    "Bomberos":"fas fa-fire-extinguisher",
-    "Protección Civil":"fas fa-triangle-exclamation",
-    "Servicios Públicos":"fas fa-wrench",
-    "Gobierno Municipal":"fas fa-landmark",
-    "Otros Servicios":"fas fa-phone"
-  }[cat]||"fas fa-phone");
+    // same icon/tone map as admin (kept succinct)
+    const ICON = (cat) =>
+      ({
+        "Emergencias Médicas": "fas fa-kit-medical",
+        "Seguridad Pública": "fas fa-shield-halved",
+        Bomberos: "fas fa-fire-extinguisher",
+        "Protección Civil": "fas fa-triangle-exclamation",
+        "Servicios Públicos": "fas fa-wrench",
+        "Gobierno Municipal": "fas fa-landmark",
+        "Otros Servicios": "fas fa-phone",
+      }[cat] || "fas fa-phone");
 
-  const TONE = (cat)=>({
-    "Emergencias Médicas":["text-rose-600","bg-rose-100"],
-    "Seguridad Pública":["text-blue-600","bg-blue-100"],
-    "Bomberos":["text-orange-600","bg-orange-100"],
-    "Protección Civil":["text-amber-700","bg-amber-100"],
-    "Servicios Públicos":["text-green-600","bg-green-100"],
-    "Gobierno Municipal":["text-purple-600","bg-purple-100"],
-    "Otros Servicios":["text-slate-700","bg-slate-100"]
-  }[cat]||["text-slate-700","bg-slate-100"]);
+    const TONE = (cat) =>
+      ({
+        "Emergencias Médicas": ["text-rose-600", "bg-rose-100"],
+        "Seguridad Pública": ["text-blue-600", "bg-blue-100"],
+        Bomberos: ["text-orange-600", "bg-orange-100"],
+        "Protección Civil": ["text-amber-700", "bg-amber-100"],
+        "Servicios Públicos": ["text-green-600", "bg-green-100"],
+        "Gobierno Municipal": ["text-purple-600", "bg-purple-100"],
+        "Otros Servicios": ["text-slate-700", "bg-slate-100"],
+      }[cat] || ["text-slate-700", "bg-slate-100"]);
 
-  function getHomeContacts(){
-    try{
-      const raw = localStorage.getItem(CONTACTS_KEY);
-      if (!raw) return [];
-      return JSON.parse(raw)
-        .filter(c => c && c.activo === true && c.showInHome === true)
-        .sort((a,b)=>(a.prioridad||99)-(b.prioridad||99) || (a.nombre||"").localeCompare(b.nombre||""));
-    } catch { return []; }
-  }
+    function getHomeContacts() {
+      try {
+        const raw = localStorage.getItem(CONTACTS_KEY);
+        if (!raw) return [];
+        return JSON.parse(raw)
+          .filter((c) => c && c.activo === true && c.showInHome === true)
+          .sort(
+            (a, b) =>
+              (a.prioridad || 99) - (b.prioridad || 99) ||
+              (a.nombre || "").localeCompare(b.nombre || "")
+          );
+      } catch {
+        return [];
+      }
+    }
 
-  function telHref(val){
-    if (!val) return "";
-    // strip spaces/parentheses/dashes for tel: link
-    return "tel:" + String(val).replace(/[^\d+#*]/g,"");
-  }
+    function telHref(val) {
+      if (!val) return "";
+      // strip spaces/parentheses/dashes for tel: link
+      return "tel:" + String(val).replace(/[^\d+#*]/g, "");
+    }
 
-  function cardHTML(c){
-    const [txt,bg] = TONE(c.categoria);
-    const icon = ICON(c.categoria);
-    const telMain = telHref(c.telefono);
-    const telAlt  = telHref(c.telefonoAlt);
+    function cardHTML(c) {
+      const [txt, bg] = TONE(c.categoria);
+      const icon = ICON(c.categoria);
+      const telMain = telHref(c.telefono);
+      const telAlt = telHref(c.telefonoAlt);
 
-    return `
+      return `
       <article class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col">
         <div class="flex items-center gap-3 mb-3">
           <div class="${bg} w-12 h-12 rounded-xl flex items-center justify-center">
             <i class="${icon} ${txt} text-xl"></i>
           </div>
           <div>
-            <h3 class="font-bold text-slate-900 leading-tight">${c.nombre||""}</h3>
-            <div class="text-xs text-slate-500">${c.categoria||""} • ${c.disponibilidad||""}</div>
+            <h3 class="font-bold text-slate-900 leading-tight">${
+              c.nombre || ""
+            }</h3>
+            <div class="text-xs text-slate-500">${c.categoria || ""} • ${
+        c.disponibilidad || ""
+      }</div>
           </div>
         </div>
 
-        ${c.descripcion ? `<p class="text-sm text-slate-700 mb-3 line-clamp-3">${c.descripcion}</p>` : ""}
+        ${
+          c.descripcion
+            ? `<p class="text-sm text-slate-700 mb-3 line-clamp-3">${c.descripcion}</p>`
+            : ""
+        }
 
         <div class="mt-auto space-y-2">
-          ${c.telefono ? `
+          ${
+            c.telefono
+              ? `
             <a href="${telMain}" class="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-red-600 text-white text-sm hover:bg-red-700">
               <i class="fas fa-phone"></i><span>${c.telefono}</span>
-            </a>` : ``}
+            </a>`
+              : ``
+          }
 
-          ${c.telefonoAlt ? `
+          ${
+            c.telefonoAlt
+              ? `
             <a href="${telAlt}" class="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-slate-100 text-slate-800 text-xs hover:bg-slate-200">
               <i class="fas fa-phone"></i><span>Alterno: ${c.telefonoAlt}</span>
-            </a>` : ``}
+            </a>`
+              : ``
+          }
 
           <div class="flex gap-2 mt-1">
-            ${c.email ? `<a href="mailto:${c.email}" class="text-xs text-blue-700 hover:underline">Email</a>` : ``}
-            ${c.direccion ? `<span class="text-xs text-slate-500 line-clamp-1">${c.direccion}</span>` : ``}
+            ${
+              c.email
+                ? `<a href="mailto:${c.email}" class="text-xs text-blue-700 hover:underline">Email</a>`
+                : ``
+            }
+            ${
+              c.direccion
+                ? `<span class="text-xs text-slate-500 line-clamp-1">${c.direccion}</span>`
+                : ``
+            }
           </div>
         </div>
       </article>
     `;
-  }
+    }
 
-  function renderHomeContacts(){
-    const grid  = document.getElementById("home-contacts-grid");
-    const empty = document.getElementById("home-contacts-empty");
-    if (!grid) return;
+    function renderHomeContacts() {
+      const grid = document.getElementById("home-contacts-grid");
+      const empty = document.getElementById("home-contacts-empty");
+      if (!grid) return;
 
-    const list = getHomeContacts();
-    grid.innerHTML = list.map(cardHTML).join("");
-    empty.classList.toggle("hidden", list.length > 0);
-  }
+      const list = getHomeContacts();
+      grid.innerHTML = list.map(cardHTML).join("");
+      empty.classList.toggle("hidden", list.length > 0);
+    }
 
-  // live update when admin changes
-  window.addEventListener("storage", (e)=>{ if (e.key === CONTACTS_KEY) renderHomeContacts(); });
+    // live update when admin changes
+    window.addEventListener("storage", (e) => {
+      if (e.key === CONTACTS_KEY) renderHomeContacts();
+    });
 
-  // expose (optional)
-  window.renderHomeContacts = renderHomeContacts;
+    // expose (optional)
+    window.renderHomeContacts = renderHomeContacts;
 
-  // run now
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", renderHomeContacts);
-  else renderHomeContacts();
-})();
+    // run now
+    if (document.readyState === "loading")
+      document.addEventListener("DOMContentLoaded", renderHomeContacts);
+    else renderHomeContacts();
+  })();
 </script>
 
 <script>
