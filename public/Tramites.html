@@ -1,19 +1,19 @@
-<!-- TramitesPublicos.html (render trámites públicos) -->
-<section id="TramitesPublicos" class="section-content p-6">
+<!-- TramitesPublicos.html -->
+<section id="TramitesPublicos" class="section-content">
   <!-- Hero -->
-  <header class="relative bg-gradient-to-r from-teal-600 to-green-600 text-white rounded-2xl shadow-lg mb-10">
+  <header class="relative bg-gradient-to-r from-teal-600 to-green-600 text-white rounded-2xl shadow mb-10 mx-4 mt-6">
     <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
-    <div class="relative px-6 py-16 text-center max-w-3xl mx-auto">
-      <i class="fa-solid fa-clipboard-list text-6xl mb-4 opacity-90"></i>
-      <h1 class="text-4xl font-bold mb-4">Trámites Municipales</h1>
-      <p class="text-lg text-teal-100">
+    <div class="relative text-center max-w-3xl mx-auto py-8 px-4">
+      <i class="fa-solid fa-clipboard-list text-4xl mb-3 opacity-90"></i>
+      <h1 class="text-3xl font-bold mb-2">Trámites Municipales</h1>
+      <p class="text-base text-teal-100">
         Consulta los trámites y servicios disponibles, conoce requisitos, tiempos y ubicaciones.
       </p>
     </div>
   </header>
 
   <!-- Grid -->
-  <div id="tramites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  <div id="tramites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4"></div>
 
   <!-- Empty state -->
   <div id="tramites-empty" class="hidden text-center py-16">
@@ -43,7 +43,23 @@
   function loadTramites() {
     try {
       const arr = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-      return Array.isArray(arr) ? arr : [];
+      if (!arr.length) {
+        // Seed demo
+        return [{
+          id: "demo-1",
+          titulo: "Renovación de Licencia de Conducir",
+          descripcion: "Renueva tu licencia vigente para vehículos particulares",
+          categoriaNombre: "Tránsito y Transporte",
+          costo: "$850",
+          tiempo: "30 minutos",
+          ubicacion: "Módulo de Tránsito",
+          horario: "Lunes a Viernes 8:00–15:00 hrs",
+          requisitos: ["Licencia anterior", "INE vigente", "Comprobante de domicilio"],
+          procedimiento: ["Presentarse con documentos", "Realizar pago", "Toma de foto y huellas"],
+          icono: "fas fa-id-card",
+        }];
+      }
+      return arr;
     } catch {
       return [];
     }
@@ -113,7 +129,6 @@
             </div>
           </div>
         </div>
-        ${item.descripcionLarga ? `<div class="mt-6 p-4 bg-gray-50 rounded-lg text-sm">${item.descripcionLarga}</div>` : ""}
       `;
       this.el("tramite-detail").classList.remove("hidden");
     },
