@@ -774,141 +774,249 @@
 
   <body class="font-sans bg-white">
     <!-- Header -->
-    <header class="bg-white shadow-sm">
-      <!-- Top Bar -->
+   <header class="bg-white shadow-sm">
+  <!-- Top Bar -->
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Left: Register (hidden on very small if you prefer) -->
+    <a
+      href="registrate.html"
+      class="hidden sm:inline text-municipal-blue hover:text-blue-700 font-medium"
+      >Regístrate</a
+    >
+
+    <!-- Mobile: Hamburger -->
+    <button
+      id="mobile-menu-toggle"
+      class="inline-flex items-center justify-center p-2 rounded-md text-municipal-blue hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-municipal-blue md:hidden"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label="Abrir menú"
+    >
+      <i class="fas fa-bars text-xl"></i>
+    </button>
+
+    <!-- Logo -->
+    <div class="flex-1 flex justify-center md:justify-center">
       <div
-        class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center"
+        class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-6 py-3 rounded-lg font-bold text-lg"
       >
+        Sabinas Hidalgo N.L.
+      </div>
+    </div>
+
+    <!-- Right: Social -->
+    <div class="flex items-center space-x-3">
+      <a href="registrate.html" class="sm:hidden text-municipal-blue hover:text-blue-700 font-medium">Regístrate</a>
+      <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
+        ><i class="fab fa-facebook"></i
+      ></a>
+      <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
+        ><i class="fab fa-twitter"></i
+      ></a>
+      <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
+        ><i class="fab fa-instagram"></i
+      ></a>
+      <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
+        ><i class="fab fa-youtube"></i
+      ></a>
+    </div>
+  </div>
+
+  <!-- Desktop Nav -->
+  <nav class="bg-white border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="hidden md:flex justify-center space-x-8 py-4">
         <a
-          href="registrate.html"
-          class="text-municipal-blue hover:text-blue-700 font-medium"
-          >Regístrate</a
+          href="#home"
+          data-route="home"
+          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Inicio</a
         >
+        <a
+          href="#programas"
+          data-route="programas"
+          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Programas</a
+        >
+        <a
+          href="#equipo"
+          data-route="equipo"
+          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Equipo</a
+        >
+        <a
+          href="#tuciudad"
+          data-route="tuciudad"
+          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Tu Ciudad</a
+        >
+        <a
+          href="#tramites"
+          data-route="tramites"
+          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Trámites</a
+        >
+        <a
+          href="#transp"
+          data-route="transp"
+          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Transparencia</a
+        >
+        <a
+          href="#proyectos"
+          data-route="proyectos"
+          class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Proyectos</a
+        >
+      </div>
+    </div>
 
-        <!-- Logo -->
-        <div class="flex items-center">
-          <div
-            class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-6 py-3 rounded-lg font-bold text-lg"
-          >
-            Sabinas Hidalgo N.L.
-          </div>
-        </div>
+    <!-- Mobile Nav (collapsible) -->
+    <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200">
+      <div class="px-4 py-3 space-y-1">
+        <a
+          href="#home"
+          data-route="home"
+          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Inicio</a
+        >
+        <a
+          href="#programas"
+          data-route="programas"
+          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Programas</a
+        >
+        <a
+          href="#equipo"
+          data-route="equipo"
+          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Equipo</a
+        >
+        <a
+          href="#tuciudad"
+          data-route="tuciudad"
+          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Tu Ciudad</a
+        >
+        <a
+          href="#tramites"
+          data-route="tramites"
+          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Trámites</a
+        >
+        <a
+          href="#transp"
+          data-route="transp"
+          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Transparencia</a
+        >
+        <a
+          href="#proyectos"
+          data-route="proyectos"
+          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
+          >Proyectos</a
+        >
+      </div>
+    </div>
+  </nav>
+</header>
 
-        <!-- Social -->
-        <div class="flex space-x-3">
-          <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
+<!-- Dynamic render area -->
+<main class="min-h-screen">
+  <section id="app"></section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-municipal-blue text-white py-12">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="font-bold text-xl mb-4">CONTACTO</h3>
+        <p class="mb-2">📍 Palacio Municipal, Centro</p>
+        <p class="mb-2">📞 (824) 123-4567</p>
+        <p class="mb-2">✉️ contacto@sabinashidalgo.gob.mx</p>
+      </div>
+      <div>
+        <h3 class="font-bold text-xl mb-4">HORARIOS</h3>
+        <p class="mb-2">Lunes a Viernes: 8:00 - 16:00 hrs</p>
+        <p class="mb-2">Sábados: 9:00 - 13:00 hrs</p>
+        <p class="mb-2">Miércoles Ciudadano: 11:30 - 13:30 hrs</p>
+      </div>
+      <div>
+        <h3 class="font-bold text-xl mb-4">SÍGUENOS</h3>
+        <div class="flex space-x-4">
+          <a href="#" class="text-2xl hover:text-blue-300"
             ><i class="fab fa-facebook"></i
           ></a>
-          <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
+          <a href="#" class="text-2xl hover:text-blue-300"
             ><i class="fab fa-twitter"></i
           ></a>
-          <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
+          <a href="#" class="text-2xl hover:text-blue-300"
             ><i class="fab fa-instagram"></i
           ></a>
-          <a href="#" class="text-municipal-blue hover:text-blue-700 text-xl"
+          <a href="#" class="text-2xl hover:text-blue-300"
             ><i class="fab fa-youtube"></i
           ></a>
         </div>
       </div>
+    </div>
+    <div class="border-t border-blue-400 mt-8 pt-8 text-center">
+      <p>
+        &copy; 2024 Gobierno Municipal de Sabinas Hidalgo, Nuevo León. Todos
+        los derechos reservados.
+      </p>
+    </div>
+  </div>
+</footer>
 
-      <!-- Nav -->
-      <nav class="bg-white border-t border-gray-200">
-        <div class="max-w-7xl mx-auto px-4">
-          <div class="flex justify-center space-x-8 py-4">
-            <a
-              href="#home"
-              data-route="home"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Inicio</a
-            >
-            <a
-              href="#programas"
-              data-route="programas"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Programas</a
-            >
-            <a
-              href="#equipo"
-              data-route="equipo"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Equipo</a
-            >
-            <a
-              href="#tuciudad"
-              data-route="tuciudad"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Tu Ciudad</a
-            >
-            <a
-              href="#tramites"
-              data-route="tramites"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Trámites</a
-            >
-            <a
-              href="#transp"
-              data-route="transp"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Transparencia</a
-            >
-            <a
-              href="#proyectos"
-              data-route="proyectos"
-              class="spa-link font-medium px-3 py-2 rounded-md hover:bg-blue-50 text-municipal-blue"
-              >Proyectos</a
-            >
-          </div>
-        </div>
-      </nav>
-    </header>
+<!-- Tiny script for mobile menu + active states -->
+<script>
+  (function () {
+    const btn = document.getElementById("mobile-menu-toggle");
+    const menu = document.getElementById("mobile-menu");
+    const links = document.querySelectorAll('.spa-link');
 
-    <!-- Dynamic render area -->
-    <main class="min-h-screen">
-      <section id="app"></section>
-    </main>
+    function closeMenu() {
+      menu.classList.add("hidden");
+      document.body.classList.remove("overflow-hidden");
+      btn.setAttribute("aria-expanded", "false");
+      btn.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+    }
 
-    <!-- Footer -->
-    <footer class="bg-municipal-blue text-white py-12">
-      <div class="max-w-7xl mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 class="font-bold text-xl mb-4">CONTACTO</h3>
-            <p class="mb-2">📍 Palacio Municipal, Centro</p>
-            <p class="mb-2">📞 (824) 123-4567</p>
-            <p class="mb-2">✉️ contacto@sabinashidalgo.gob.mx</p>
-          </div>
-          <div>
-            <h3 class="font-bold text-xl mb-4">HORARIOS</h3>
-            <p class="mb-2">Lunes a Viernes: 8:00 - 16:00 hrs</p>
-            <p class="mb-2">Sábados: 9:00 - 13:00 hrs</p>
-            <p class="mb-2">Miércoles Ciudadano: 11:30 - 13:30 hrs</p>
-          </div>
-          <div>
-            <h3 class="font-bold text-xl mb-4">SÍGUENOS</h3>
-            <div class="flex space-x-4">
-              <a href="#" class="text-2xl hover:text-blue-300"
-                ><i class="fab fa-facebook"></i
-              ></a>
-              <a href="#" class="text-2xl hover:text-blue-300"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a href="#" class="text-2xl hover:text-blue-300"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="#" class="text-2xl hover:text-blue-300"
-                ><i class="fab fa-youtube"></i
-              ></a>
-            </div>
-          </div>
-        </div>
-        <div class="border-t border-blue-400 mt-8 pt-8 text-center">
-          <p>
-            &copy; 2024 Gobierno Municipal de Sabinas Hidalgo, Nuevo León. Todos
-            los derechos reservados.
-          </p>
-        </div>
-      </div>
-    </footer>
+    function openMenu() {
+      menu.classList.remove("hidden");
+      document.body.classList.add("overflow-hidden");
+      btn.setAttribute("aria-expanded", "true");
+      btn.innerHTML = '<i class="fas fa-times text-xl"></i>';
+    }
+
+    btn?.addEventListener("click", () => {
+      const isOpen = btn.getAttribute("aria-expanded") === "true";
+      isOpen ? closeMenu() : openMenu();
+    });
+
+    // Close on link click (helps SPA navigation)
+    links.forEach(a => {
+      a.addEventListener("click", () => {
+        // mark active (optional, keep your existing SPA logic if you have it)
+        links.forEach(l => l.classList.remove("bg-blue-50"));
+        a.classList.add("bg-blue-50");
+        closeMenu();
+      });
+    });
+
+    // Close on Escape
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeMenu();
+    });
+
+    // Close when resizing to desktop
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768) closeMenu();
+    });
+  })();
+</script>
+
 
     <script>
       // ---- Simple SPA loader (fragments) ----
