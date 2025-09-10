@@ -134,7 +134,7 @@
   // ✅ Easy-to-edit array of images
   const equipoImages = [
     { url: "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/520437805_1078194844488738_4955549635772773157_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF6AZ-YmiaGy1noQpAALgwWhvxLpjSHc76G_EumNIdzviKkgdDBud1PRQsEFVVt0W3dW8_W9EGgRfjnOVhC3OcZ&_nc_ohc=i6rrRAPS5-EQ7kNvwGnFhGG&_nc_oc=AdlCphKCL-a1Z6QjoKl1sxDSbTXD-x8BxWt5hw0yIhdpZFKeXHXSIWKDwOVBXKCwVz7AbiPAWdo4X3yZPvUFI2IJ&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=-7gbD8Lck1anXOLiBnLY8g&oh=00_AfaUiifRyFWPVUueYoQrNcfjoajuBlDYISBbihaRjHesjQ&oe=68C6B73D", alt: "Secretarías y Direcciones" },
-    { url: "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/534201554_1078194884488734_8131719880880222781_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHJxpsmDZR-AGEOtuDnnRRrs4DRAJE0ZtazgNEAkTRm1uMGKEcv9XT0SpXoZY3V_k8Oza67qwXHt883cPhhv08r&_nc_ohc=l0yT3cXSH9UQ7kNvwEywlDR&_nc_oc=AdkaGrY8MWsfwTr9Iya-N1mw7UqizDW4iCePiydznWcMrvNs29O9u6zacgShgSvQdjwRMmPuNOWcpe5D0mue8Lay&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=KBA_OOf0L1Uc0g5S3Vg7-A&oh=00_AfbTZ4IVM-FMDbC3cVMdCFUCnOv_mwqgNl6P9OwzjCQaBg&oe=68C6E487", alt: "Sesión de Cabildo" },
+    { url: "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/534201554_1078194884488734_8131719880880222781_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHJxpsmDZR-AGEOtuDnnRRrs4DRAJE0ZtazgNEAkTRm1uMGKEcv9XT0SpXoZY3V_k8Oza67qwXHt883cPhhv08r&_nc_ohc=l0yT3cXSH9UQ7kNvwEywlDR&_nc_oc=AdkaGrY8MWsfwTr9Iya-N1mw7UqizDW4iCePiydznWcMrvNs29O9u6zacgShgSvQdjwRMmPuNOWcpe5D0mue8Lay&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=KBA_OOf0L1Uc0g5S3Vg7-A&oh=00_AfbTZ4IVM-FMDbC3cVMdCFUCnOv_mwqgNl6P9OwzjCQaBg&oe=68C6E487", alt: "Sesión de Cabildo" }
     
   ];
 
@@ -214,105 +214,7 @@
   start();
 })();
 </script>
-  (function () {
-    const root = document.getElementById("EquipoHero");
-    if (!root) return;
 
-    const slideWrap = root.querySelector("#equipo-slides");
-    const slides = Array.from(slideWrap.children);
-    const prevBtn = root.querySelector('button[aria-label="Anterior"]');
-    const nextBtn = root.querySelector('button[aria-label="Siguiente"]');
-    const dotsWrap = root.querySelector("div.absolute.bottom-4");
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    let idx = 0;
-    let timer = null;
-    const intervalMs = 5000;
-
-    // Build dots
-    const dots = slides.map((_, i) => {
-      const b = document.createElement("button");
-      b.className =
-        "w-2.5 h-2.5 rounded-full bg-white/60 hover:bg-white ring-2 ring-white/40";
-      b.setAttribute("aria-label", "Ir al slide " + (i + 1));
-      b.addEventListener("click", () => goTo(i, true));
-      dotsWrap.appendChild(b);
-      return b;
-    });
-
-    function render() {
-      slides.forEach((s, i) => {
-        s.style.opacity = i === idx ? "1" : "0";
-        s.style.zIndex = i === idx ? "1" : "0";
-      });
-      dots.forEach((d, i) => {
-        d.classList.toggle("bg-white", i === idx);
-        d.classList.toggle("bg-white/60", i !== idx);
-        d.classList.toggle("scale-110", i === idx);
-      });
-    }
-
-    function goTo(i, manual = false) {
-      idx = (i + slides.length) % slides.length;
-      render();
-      if (manual) restart();
-    }
-
-    function next() {
-      goTo(idx + 1);
-    }
-    function prev() {
-      goTo(idx - 1);
-    }
-
-    function start() {
-      if (prefersReduced) return; // respect reduced motion
-      stop();
-      timer = setInterval(next, intervalMs);
-    }
-    function stop() {
-      if (timer) clearInterval(timer);
-      timer = null;
-    }
-    function restart() {
-      stop();
-      start();
-    }
-
-    // Events
-    nextBtn?.addEventListener("click", () => goTo(idx + 1, true));
-    prevBtn?.addEventListener("click", () => goTo(idx - 1, true));
-
-    // Pause on hover (desktop)
-    root.addEventListener("mouseenter", stop);
-    root.addEventListener("mouseleave", start);
-
-    // Swipe (basic)
-    let touchX = null;
-    root.addEventListener(
-      "touchstart",
-      (e) => {
-        touchX = e.touches[0].clientX;
-      },
-      { passive: true }
-    );
-    root.addEventListener("touchend", (e) => {
-      if (touchX === null) return;
-      const dx = e.changedTouches[0].clientX - touchX;
-      if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
-      touchX = null;
-    });
-
-    // Init
-    render();
-    start();
-
-    // Re-render on resize (keeps layout tight)
-    window.addEventListener("resize", render);
-  })();
-</script>
 <script>
   (() => {
     const fmtCard = (it, color = "blue") => `
