@@ -1,16 +1,13 @@
 <!-- TramitesPublicos.html -->
 <section id="TramitesPublicos" class="section-content">
   <!-- Hero -->
-  <header class="relative bg-gradient-to-r from-teal-600 to-green-600 text-white rounded-2xl shadow mb-10 mx-4 mt-6">
-    <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
-    <div class="relative text-center max-w-3xl mx-auto py-8 px-4">
-      <i class="fa-solid fa-clipboard-list text-4xl mb-3 opacity-90"></i>
-      <h1 class="text-3xl font-bold mb-2">Trámites Municipales</h1>
-      <p class="text-base text-teal-100">
-        Consulta los trámites y servicios disponibles, conoce requisitos, tiempos y ubicaciones.
-      </p>
-    </div>
-  </header>
+   <section class="relative h-64 bg-gradient-to-r from-municipal-blue to-purple-600 flex items-center justify-center">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="relative text-center text-white z-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">TRÁMITES Y SERVICIOS</h1>
+            <p class="text-xl text-blue-100">Facilitamos tus gestiones municipales</p>
+        </div>
+    </section>
 
   <!-- Grid -->
   <div id="tramites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4"></div>
@@ -19,7 +16,6 @@
   <div id="tramites-empty" class="hidden text-center py-16">
     <div class="text-6xl mb-3">📄</div>
     <p class="text-lg font-semibold">No hay trámites registrados aún.</p>
-    <p class="text-gov-gray">Regresa más tarde para consultar la información.</p>
   </div>
 
   <!-- Modal Detalle -->
@@ -42,24 +38,7 @@
 
   function loadTramites() {
     try {
-      const arr = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-      if (!arr.length) {
-        // Seed demo
-        return [{
-          id: "demo-1",
-          titulo: "Renovación de Licencia de Conducir",
-          descripcion: "Renueva tu licencia vigente para vehículos particulares",
-          categoriaNombre: "Tránsito y Transporte",
-          costo: "$850",
-          tiempo: "30 minutos",
-          ubicacion: "Módulo de Tránsito",
-          horario: "Lunes a Viernes 8:00–15:00 hrs",
-          requisitos: ["Licencia anterior", "INE vigente", "Comprobante de domicilio"],
-          procedimiento: ["Presentarse con documentos", "Realizar pago", "Toma de foto y huellas"],
-          icono: "fas fa-id-card",
-        }];
-      }
-      return arr;
+      return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
     } catch {
       return [];
     }
@@ -88,8 +67,8 @@
               <i class="${t.icono || 'fa-solid fa-file-alt'} text-xl"></i>
             </div>
             <div>
-              <h3 class="font-bold text-gray-800">${t.titulo}</h3>
-              <p class="text-sm text-gray-500">${t.categoriaNombre || ""}</p>
+              <h3 class="font-bold text-gray-800">${t.titulo || "—"}</h3>
+              <p class="text-sm text-gray-500">${t.categoriaNombre || t.categoria || ""}</p>
             </div>
           </div>
           <p class="text-sm text-gray-600 line-clamp-3 mb-3">${t.descripcion || ""}</p>
@@ -103,26 +82,26 @@
       });
     },
     openDetail(item) {
-      this.el("dTitulo").textContent = item.titulo;
+      this.el("dTitulo").textContent = item.titulo || "Detalle";
       this.el("dBody").innerHTML = `
         <p class="text-gray-600 mb-4">${item.descripcion || ""}</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-3">
-            <div><strong>Categoría:</strong> ${item.categoriaNombre || ""}</div>
-            <div><strong>Costo:</strong> ${item.costo || ""}</div>
-            <div><strong>Tiempo:</strong> ${item.tiempo || ""}</div>
-            <div><strong>Ubicación:</strong> ${item.ubicacion || ""}</div>
-            <div><strong>Horario:</strong> ${item.horario || ""}</div>
+            <div><strong>Categoría:</strong> ${item.categoriaNombre || item.categoria || "—"}</div>
+            <div><strong>Costo:</strong> ${item.costo || "—"}</div>
+            <div><strong>Tiempo:</strong> ${item.tiempo || "—"}</div>
+            <div><strong>Ubicación:</strong> ${item.ubicacion || "—"}</div>
+            <div><strong>Horario:</strong> ${item.horario || "—"}</div>
           </div>
           <div class="space-y-4">
             <div>
-              <strong>Requisitos</strong>
+              <div class="font-semibold mb-2">Requisitos</div>
               <ul class="list-disc pl-5 text-sm mt-1">
                 ${(item.requisitos || []).map(r => `<li>${r}</li>`).join("") || "<li>—</li>"}
               </ul>
             </div>
             <div>
-              <strong>Procedimiento</strong>
+              <div class="font-semibold mb-2">Procedimiento</div>
               <ol class="list-decimal pl-5 text-sm mt-1">
                 ${(item.procedimiento || []).map(p => `<li>${p}</li>`).join("") || "<li>—</li>"}
               </ol>
