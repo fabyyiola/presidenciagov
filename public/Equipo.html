@@ -1,0 +1,100 @@
+<!-- EquipoMunicipal.html (Public module) -->
+<section id="EquipoMunicipal" class="font-sans bg-white">
+  <!-- Hero -->
+  <header class="relative h-56 md:h-64 bg-gradient-to-r from-municipal-blue to-municipal-teal flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/20"></div>
+    <div class="relative text-center text-white z-10">
+      <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight">Nuestro Equipo</h1>
+      <p class="mt-2 text-blue-100 text-lg">Trabajando juntos por Sabinas Hidalgo</p>
+    </div>
+  </header>
+
+  <!-- Presidencia -->
+  <section class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold text-municipal-blue mb-8">Presidencia Municipal</h2>
+      <div class="max-w-3xl mx-auto bg-gradient-to-r from-municipal-blue to-blue-600 rounded-2xl p-8 text-white animate-fade-in">
+        <div class="flex flex-col md:flex-row items-center gap-6">
+          <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center text-5xl text-municipal-blue">
+            👨‍💼
+          </div>
+          <div class="text-center md:text-left">
+            <h3 class="text-2xl font-bold mb-2">LIC. Daniel Omar Gonzalez Garza</h3>
+            <p class="text-lg text-blue-200 mb-4">Presidente Municipal</p>
+            <p class="text-blue-100 leading-relaxed">
+              Comprometido con el desarrollo integral de nuestro municipio, trabajando día a día 
+              para mejorar la calidad de vida de todos los ciudadanos de Sabinas Hidalgo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Secretarías -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-municipal-blue text-center mb-12">Secretarías</h2>
+      <div id="public-secretarias" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+  </section>
+
+  <!-- Direcciones -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-municipal-blue text-center mb-12">Direcciones</h2>
+      <div id="public-direcciones" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+  </section>
+
+  <!-- Cabildo -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-municipal-blue text-center mb-12">Cabildo Municipal</h2>
+      <div id="public-cabildo" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+  </section>
+</section>
+
+<script>
+(() => {
+  const fmtCard = (it, color="blue") => `
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300 animate-fade-in">
+      <div class="text-center mb-4">
+        <div class="w-16 h-16 bg-${color}-100 text-${color}-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+          <i class="${it.icono || 'fas fa-user'}"></i>
+        </div>
+        <h3 class="font-bold text-municipal-blue text-lg">${it.nombre}</h3>
+        ${it.titulo ? `<p class="text-municipal-teal font-semibold">${it.titulo}</p>` : ""}
+      </div>
+      <p class="text-gray-600 text-sm mb-3">${it.descripcion || ''}</p>
+      <div class="text-sm text-gray-500 space-y-1">
+        ${it.responsable ? `<p><i class="fas fa-user mr-2"></i>${it.responsable}</p>` : ""}
+        ${it.telefono ? `<p><i class="fas fa-phone mr-2"></i>${it.telefono}</p>` : ""}
+        ${it.email ? `<p><i class="fas fa-envelope mr-2"></i>${it.email}</p>` : ""}
+        ${it.partido ? `<p><i class="fas fa-flag mr-2"></i>${it.partido}</p>` : ""}
+      </div>
+    </div>`;
+
+  function renderPublic(){
+    const secretarias = JSON.parse(localStorage.getItem('secretarias')||'[]');
+    const direcciones = JSON.parse(localStorage.getItem('direcciones')||'[]');
+    const cabildo = JSON.parse(localStorage.getItem('cabildo')||'[]');
+
+    document.getElementById('public-secretarias').innerHTML = secretarias.map(it=>fmtCard(it,"blue")).join('');
+    document.getElementById('public-direcciones').innerHTML = direcciones.map(it=>fmtCard(it,"green")).join('');
+    document.getElementById('public-cabildo').innerHTML = cabildo.map(it=>fmtCard(it,"purple")).join('');
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',renderPublic);
+  else renderPublic();
+})();
+</script>
+
+<style>
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in .7s ease-out; }
+</style>
