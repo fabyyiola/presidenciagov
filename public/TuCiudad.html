@@ -1,4 +1,5 @@
-
+<!-- TuCiudad_Negocios.html (Public module) -->
+<section id="TuCiudadNegocios" class="font-sans">
   <!-- Hero -->
   <section class="relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 py-10 md:py-14">
@@ -11,23 +12,23 @@
             Explora el directorio oficial creado por emprendedores de la comunidad. Filtra por nombre, giro, servicios, tipo de comida y más.
           </p>
         </div>
-        <div class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-5 md:p-6 shadow-soft">
+        <div class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-5 md:p-6 shadow">
           <!-- Search & Filters -->
           <div class="flex flex-col md:flex-row gap-3">
             <div class="relative flex-1">
               <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-              <input id="q" type="text" placeholder="Buscar: nombre, dirección, giro, 'tacos', 'tarjetas'…"
+              <input id="biz-q" type="text" placeholder="Buscar: nombre, giro, 'tacos', 'tarjetas'…"
                      class="w-full pl-10 pr-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue" />
             </div>
-            <select id="f-categoria" class="px-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue">
+            <select id="biz-cat" class="px-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue">
               <option value="">Todas las categorías</option>
             </select>
-            <select id="f-giro" class="px-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue">
+            <select id="biz-giro" class="px-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue">
               <option value="">Todos los giros</option>
             </select>
           </div>
-          <div class="mt-3 flex flex-wrap gap-2" id="service-chips"><!-- chips here --></div>
-          <div class="mt-2 text-xs text-gov-gray" id="match-hint"></div>
+          <div class="mt-3 flex flex-wrap gap-2" id="biz-service-chips"></div>
+          <div class="mt-2 text-xs text-gov-gray" id="biz-match-hint"></div>
         </div>
       </div>
     </div>
@@ -35,11 +36,9 @@
 
   <!-- Results -->
   <main class="max-w-7xl mx-auto px-4 pb-20">
-    <div id="stats" class="text-sm text-gov-gray mb-3"></div>
-    <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- cards -->
-    </div>
-    <div id="empty" class="hidden text-center py-16">
+    <div id="biz-stats" class="text-sm text-gov-gray mb-3"></div>
+    <div id="biz-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <div id="biz-empty" class="hidden text-center py-16">
       <div class="text-6xl mb-3">🔎</div>
       <p class="text-lg font-semibold">No encontramos coincidencias.</p>
       <p class="text-gov-gray">Ajusta los filtros o intenta otra búsqueda.</p>
@@ -55,7 +54,7 @@
             <div id="m-cat-pill" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700"></div>
             <div id="m-giro-pill" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700"></div>
           </div>
-          <button class="text-slate-500 hover:text-slate-800 text-xl" onclick="UI.closeModal()">
+          <button class="text-slate-500 hover:text-slate-800 text-xl" id="biz-modal-close">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
@@ -73,49 +72,17 @@
 
           <div class="mt-6 grid md:grid-cols-2 gap-6">
             <div class="space-y-3">
-              <div class="flex items-start gap-3">
-                <i class="fa-solid fa-user text-blue-600 mt-1"></i>
-                <div>
-                  <div class="text-xs text-slate-500">Propietario</div>
-                  <div id="m-owner" class="font-medium">—</div>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <i class="fa-solid fa-phone text-blue-600 mt-1"></i>
-                <div>
-                  <div class="text-xs text-slate-500">Teléfono</div>
-                  <div id="m-phone" class="font-medium">—</div>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <i class="fa-solid fa-envelope text-blue-600 mt-1"></i>
-                <div>
-                  <div class="text-xs text-slate-500">Email</div>
-                  <div id="m-email" class="font-medium">—</div>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <i class="fa-solid fa-map-marker-alt text-blue-600 mt-1"></i>
-                <div>
-                  <div class="text-xs text-slate-500">Dirección</div>
-                  <div id="m-address" class="font-medium">—</div>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <i class="fa-regular fa-clock text-blue-600 mt-1"></i>
-                <div>
-                  <div class="text-xs text-slate-500">Horario</div>
-                  <div id="m-hours" class="font-medium">—</div>
-                </div>
-              </div>
+              <div><div class="text-xs text-slate-500">Propietario</div><div id="m-owner" class="font-medium">—</div></div>
+              <div><div class="text-xs text-slate-500">Teléfono</div><div id="m-phone" class="font-medium">—</div></div>
+              <div><div class="text-xs text-slate-500">Email</div><div id="m-email" class="font-medium">—</div></div>
+              <div><div class="text-xs text-slate-500">Dirección</div><div id="m-address" class="font-medium">—</div></div>
+              <div><div class="text-xs text-slate-500">Horario</div><div id="m-hours" class="font-medium">—</div></div>
             </div>
-
             <div class="space-y-3">
               <div>
                 <div class="text-xs text-slate-500 mb-1">Servicios</div>
                 <div id="m-services" class="flex flex-wrap gap-2"></div>
               </div>
-
               <div id="m-food" class="hidden">
                 <div class="text-xs text-slate-500 mb-1">Tipo de comida</div>
                 <div id="m-food-tags" class="flex flex-wrap gap-2"></div>
@@ -127,348 +94,109 @@
             <h3 class="font-bold text-slate-900 mb-2"><i class="fa-solid fa-utensils mr-2 text-indigo-600"></i>Menú</h3>
             <div id="m-menu" class="grid sm:grid-cols-2 gap-3"></div>
           </div>
-
-          <div class="mt-6 flex flex-wrap gap-3">
-            <a id="m-call" href="#" class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"><i class="fa-solid fa-phone mr-2"></i>Llamar</a>
-            <a id="m-whatsapp" href="#" target="_blank" class="px-4 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700"><i class="fa-brands fa-whatsapp mr-2"></i>WhatsApp</a>
-            <a id="m-email-btn" href="#" class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"><i class="fa-regular fa-envelope mr-2"></i>Email</a>
-            <button class="px-4 py-2 rounded-lg border hover:bg-slate-50" onclick="UI.copyAddress()"><i class="fa-regular fa-copy mr-2"></i>Copiar dirección</button>
-          </div>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <script>
-    // ========= Source of truth from Admin =========
-    const STORAGE_KEY = "admin.negocios.v1";
+<script>
+(() => {
+  const STORAGE_KEY = "admin.negocios.v1";
+  const CATALOG = {
+    domicilio:{label:"Servicio a domicilio",icon:"fa-solid fa-truck"},
+    tarjetas:{label:"Acepta tarjetas",icon:"fa-solid fa-credit-card"},
+    whatsapp:{label:"WhatsApp",icon:"fa-brands fa-whatsapp"},
+    wifi:{label:"WiFi",icon:"fa-solid fa-wifi"},
+    aire:{label:"Aire",icon:"fa-regular fa-snowflake"}
+  };
 
-    // Same icons/labels used in Admin
-    const GENERAL_SERVICES_CATALOG = {
-      domicilio:{label:"Servicio a domicilio",icon:"fa-solid fa-truck"},
-      separado:{label:"Apartado/Separado",icon:"fa-solid fa-bookmark"},
-      credito:{label:"Venta a crédito",icon:"fa-solid fa-credit-card"},
-      whatsapp:{label:"Pedidos por WhatsApp",icon:"fa-brands fa-whatsapp"},
-      facebook:{label:"Ventas por Facebook",icon:"fa-brands fa-facebook"},
-      efectivo:{label:"Solo efectivo",icon:"fa-solid fa-money-bill-wave"},
-      tarjetas:{label:"Acepta tarjetas",icon:"fa-solid fa-credit-card"},
-      transferencia:{label:"Transferencias",icon:"fa-solid fa-mobile-screen"},
-      mayoreo:{label:"Venta al mayoreo",icon:"fa-solid fa-boxes-stacked"},
-      menudeo:{label:"Venta al menudeo",icon:"fa-solid fa-basket-shopping"},
-      instalacion:{label:"Instalación",icon:"fa-solid fa-screwdriver-wrench"},
-      garantia:{label:"Garantía",icon:"fa-solid fa-shield-halved"},
-      reparacion:{label:"Reparación",icon:"fa-solid fa-wrench"},
-      mantenimiento:{label:"Mantenimiento",icon:"fa-solid fa-gears"},
-      estacionamiento:{label:"Estacionamiento",icon:"fa-solid fa-square-parking"},
-      wifi:{label:"WiFi gratuito",icon:"fa-solid fa-wifi"},
-      aire:{label:"Aire acondicionado",icon:"fa-regular fa-snowflake"},
-      accesible:{label:"Acceso discapacitados",icon:"fa-solid fa-wheelchair"},
-    };
+  const els = id => document.getElementById(id);
 
-    const UI = {
-      el(id){ return document.getElementById(id); },
-      badge(txt, cls){ return `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs ${cls}">${txt}</span>`; },
-      serviceBadge(key){
-        const s = GENERAL_SERVICES_CATALOG[key]; if(!s) return "";
-        return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-blue-50 text-blue-700 border border-blue-100"><i class="${s.icon}"></i>${s.label}</span>`;
-      },
-      openModal(){ this.el('biz-modal').classList.remove('hidden'); },
-      closeModal(){ this.el('biz-modal').classList.add('hidden'); },
-      copyAddress(){
-        const txt = this.el('m-address')?.textContent || "";
-        navigator.clipboard.writeText(txt).then(()=> {
-          const btn = event.currentTarget;
-          const old = btn.innerHTML;
-          btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i>Copiado';
-          setTimeout(()=> btn.innerHTML = old, 900);
-        }).catch(()=>{});
-      }
-    };
-
-    // Load & normalize
-    function loadBusinesses(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        const arr = JSON.parse(raw || "[]");
-        if(!Array.isArray(arr)) return [];
-        // normalize + create search blob
-        return arr.map(n => {
-          const servicios = Array.isArray(n.servicios) ? n.servicios.filter(Boolean) : [];
-          const tiposComida = Array.isArray(n.tiposComida) ? n.tiposComida.filter(Boolean) : [];
-          const menu = Array.isArray(n.menu) ? n.menu.filter(m=>m && m.nombre) : [];
-          const blobPieces = [
-            n.nombre, n.propietario, n.telefono, n.email, n.direccion,
-            n.categoria, n.categoriaNombre, n.giro, n.giroNombre,
-            servicios.map(k => GENERAL_SERVICES_CATALOG[k]?.label).join(" "),
-            tiposComida.join(" "),
-            menu.map(m => `${m.nombre} ${m.precio}`).join(" "),
-          ].filter(Boolean);
-          const blob = blobPieces.join(" ").toLowerCase();
-          return {
-            id: n.id,
-            nombre: n.nombre || "",
-            propietario: n.propietario || "",
-            telefono: n.telefono || "",
-            email: n.email || "",
-            direccion: n.direccion || "",
-            horario: n.horario || "",
-            categoria: n.categoria || "",
-            categoriaNombre: n.categoriaNombre || n.categoria || "",
-            giro: n.giro || "",
-            giroNombre: n.giroNombre || n.giro || "",
-            servicios,
-            tiposComida,
-            menu,
-            _blob: blob
-          };
-        });
-      }catch{ return []; }
-    }
-
-    // State
-    let DATA = loadBusinesses();
-    let FILTER = { q:"", cat:"", giro:"", services:new Set() };
-
-    // Build filters dynamically
-    function buildFilterOptions(){
-      const catSel = UI.el('f-categoria');
-      const giroSel = UI.el('f-giro');
-      const chipsWrap = UI.el('service-chips');
-
-      // categories
-      const cats = Array.from(new Set(DATA.map(d => [d.categoria, d.categoriaNombre].join("|"))))
-                        .filter(s => s.split("|")[0]);
-      catSel.innerHTML = `<option value="">Todas las categorías</option>` +
-        cats.sort((a,b)=>a.split("|")[1].localeCompare(b.split("|")[1],'es'))
-            .map(s=>{
-              const [id,name] = s.split("|");
-              return `<option value="${id}">${name}</option>`;
-            }).join("");
-
-      // giros
-      const giros = Array.from(new Set(DATA.map(d => [d.giro, d.giroNombre].join("|"))))
-                         .filter(s => s.split("|")[0]);
-      giroSel.innerHTML = `<option value="">Todos los giros</option>` +
-        giros.sort((a,b)=>a.split("|")[1].localeCompare(b.split("|")[1],'es'))
-             .map(s=>{
-               const [id,name] = s.split("|");
-               return `<option value="${id}">${name}</option>`;
-             }).join("");
-
-      // service chips: only those that appear in data
-      const allServiceKeys = new Set();
-      DATA.forEach(d => d.servicios.forEach(k => allServiceKeys.add(k)));
-      const chips = [...allServiceKeys].map(k=>{
-        const meta = GENERAL_SERVICES_CATALOG[k];
-        if(!meta) return "";
-        return `<button type="button" data-k="${k}"
-                  class="chip inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs border bg-white hover:bg-slate-50">
-                  <i class="${meta.icon}"></i>${meta.label}
-                </button>`;
-      }).join("");
-      chipsWrap.innerHTML = chips;
-
-      // behaviors
-      chipsWrap.querySelectorAll('.chip').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const k = btn.getAttribute('data-k');
-          if(FILTER.services.has(k)){ FILTER.services.delete(k); btn.classList.remove("ring-2","ring-blue-500","bg-blue-50"); }
-          else { FILTER.services.add(k); btn.classList.add("ring-2","ring-blue-500","bg-blue-50"); }
-          applyFilters();
-        });
+  function load(){
+    try{
+      const arr = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      return arr.map(n => {
+        const servicios = Array.isArray(n.servicios)?n.servicios:[];
+        const tiposComida = Array.isArray(n.tiposComida)?n.tiposComida:[];
+        const menu = Array.isArray(n.menu)?n.menu:[];
+        const blob = [
+          n.nombre,n.propietario,n.direccion,n.giroNombre,
+          servicios.map(k=>CATALOG[k]?.label).join(" "),
+          tiposComida.join(" "),menu.map(m=>m.nombre).join(" ")
+        ].join(" ").toLowerCase();
+        return {...n,servicios,tiposComida,menu,_blob:blob};
       });
-    }
+    }catch{ return []; }
+  }
 
-    // Apply filters
-    function applyFilters(){
-      const qTokens = (FILTER.q || "").toLowerCase().split(/\s+/).filter(Boolean);
+  let DATA = load();
+  let FILTER={q:"",cat:"",giro:""};
 
-      let rows = DATA.filter(d => {
-        // text match: all tokens must appear somewhere in blob
-        const okQ = qTokens.every(t => d._blob.includes(t));
+  function renderFilters(){
+    const cats=[...new Set(DATA.map(d=>d.categoriaNombre).filter(Boolean))];
+    els("biz-cat").innerHTML='<option value="">Todas</option>'+cats.map(c=>`<option>${c}</option>`).join("");
+    const giros=[...new Set(DATA.map(d=>d.giroNombre).filter(Boolean))];
+    els("biz-giro").innerHTML='<option value="">Todos</option>'+giros.map(g=>`<option>${g}</option>`).join("");
+  }
 
-        // category
-        const okC = !FILTER.cat || d.categoria === FILTER.cat;
-
-        // giro
-        const okG = !FILTER.giro || d.giro === FILTER.giro;
-
-        // services: require all selected
-        const okS = !FILTER.services.size || [...FILTER.services].every(k => d.servicios.includes(k));
-
-        return okQ && okC && okG && okS;
-      });
-
-      renderStats(rows.length, DATA.length);
-      renderGrid(rows);
-    }
-
-    function renderStats(n, total){
-      UI.el('stats').textContent = `${n.toLocaleString('es-MX')} negocio${n===1?'':'s'} · de ${total.toLocaleString('es-MX')} registrados`;
-      const hint = [];
-      if(FILTER.cat){ hint.push(`Categoría: ${UI.el('f-categoria').selectedOptions[0]?.textContent||FILTER.cat}`); }
-      if(FILTER.giro){ hint.push(`Giro: ${UI.el('f-giro').selectedOptions[0]?.textContent||FILTER.giro}`); }
-      if(FILTER.services.size){ hint.push(`Servicios: ${[...FILTER.services].map(k=>GENERAL_SERVICES_CATALOG[k]?.label||k).join(", ")}`); }
-      UI.el('match-hint').textContent = hint.join(" · ");
-    }
-
-    // Cards
-    function renderGrid(rows){
-      const grid = UI.el('grid');
-      const empty = UI.el('empty');
-      if(!rows.length){
-        grid.innerHTML = "";
-        empty.classList.remove('hidden');
-        return;
-      }
-      empty.classList.add('hidden');
-
-      grid.innerHTML = rows.map(b=>{
-        const hasMenu = b.giro === "restaurante" && b.menu.length;
-        const tag = b.tiposComida?.[0] ? `<span class="ml-2 text-[11px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border">${b.tiposComida[0]}</span>` : "";
-        return `
-        <article class="bg-white rounded-2xl border shadow-sm hover:shadow-md transition animate-fade-in cursor-pointer group"
-                 onclick="openBusiness('${b.id}')">
-          <div class="p-5">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3 min-w-0">
-                <div class="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 grid place-items-center text-white">
-                  <i class="fa-solid fa-store"></i>
-                </div>
-                <div class="min-w-0">
-                  <h3 class="font-bold text-slate-900 truncate">${b.nombre}</h3>
-                  <div class="text-xs text-slate-600">
-                    ${b.categoriaNombre || ''} • ${b.giroNombre || b.giro || ''}
-                    ${tag}
-                  </div>
-                </div>
-              </div>
-              ${hasMenu ? '<span class="text-[11px] px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border">Con menú</span>' : ''}
-            </div>
-
-            ${b.direccion ? `<p class="mt-3 text-sm text-slate-600 line-clamp-2"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i>${b.direccion}</p>` : ''}
-
-            <div class="mt-4 flex flex-wrap gap-2">
-              ${b.servicios.slice(0,3).map(k=>{
-                const meta = GENERAL_SERVICES_CATALOG[k];
-                return meta ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] bg-blue-50 text-blue-700 border">
-                  <i class="${meta.icon}"></i>${meta.label}</span>` : '';
-              }).join("")}
-              ${b.servicios.length>3?`<span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border">+${b.servicios.length-3}</span>`:""}
-            </div>
-
-            <div class="mt-4 flex items-center justify-between text-sm text-slate-600">
-              <div class="flex items-center gap-4">
-                ${b.telefono ? `<span><i class="fa-solid fa-phone mr-1 text-slate-400"></i>${b.telefono}</span>` : ""}
-                ${b.horario ? `<span><i class="fa-regular fa-clock mr-1 text-slate-400"></i>${b.horario}</span>` : ""}
-              </div>
-              <span class="text-municipal-blue group-hover:underline">Ver detalle</span>
-            </div>
-          </div>
-        </article>`;
-      }).join("");
-    }
-
-    // Modal fill
-    function openBusiness(id){
-      const b = DATA.find(x=>String(x.id)===String(id));
-      if(!b) return;
-
-      UI.el('m-cat-pill').textContent = b.categoriaNombre || b.categoria || "—";
-      UI.el('m-giro-pill').textContent = b.giroNombre || b.giro || "—";
-
-      UI.el('m-title').textContent = b.nombre || "";
-      UI.el('m-desc').textContent = (b.giroNombre || "") + (b.tiposComida?.length ? ` · ${b.tiposComida.join(", ")}` : "");
-
-      UI.el('m-owner').textContent = b.propietario || "—";
-      UI.el('m-phone').textContent = b.telefono || "—";
-      UI.el('m-email').textContent = b.email || "—";
-      UI.el('m-address').textContent = b.direccion || "—";
-      UI.el('m-hours').textContent = b.horario || "—";
-
-      // services
-      UI.el('m-services').innerHTML = b.servicios.length
-        ? b.servicios.map(UI.serviceBadge).join("")
-        : `<span class="text-slate-500 text-sm">Sin servicios registrados</span>`;
-
-      // food tags
-      if(b.giro === "restaurante" && b.tiposComida?.length){
-        UI.el('m-food').classList.remove('hidden');
-        UI.el('m-food-tags').innerHTML = b.tiposComida.map(t =>
-          `<span class="px-2.5 py-1 rounded-full text-xs bg-emerald-50 text-emerald-700 border">${t}</span>`
-        ).join("");
-      } else {
-        UI.el('m-food').classList.add('hidden');
-        UI.el('m-food-tags').innerHTML = "";
-      }
-
-      // menu
-      if(b.giro === "restaurante" && b.menu?.length){
-        UI.el('m-menu-box').classList.remove('hidden');
-        UI.el('m-menu').innerHTML = b.menu.map(m => `
-          <div class="flex items-center justify-between p-3 rounded-lg border bg-white">
-            <span class="font-medium">${m.nombre}</span>
-            <span class="text-indigo-700 font-semibold">$ ${Number(m.precio||0).toFixed(2)}</span>
-          </div>
-        `).join("");
-      } else {
-        UI.el('m-menu-box').classList.add('hidden');
-        UI.el('m-menu').innerHTML = "";
-      }
-
-      // actions
-      const tel = (b.telefono||"").replace(/[^\d+]/g,"");
-      UI.el('m-call').style.display = tel ? "" : "none";
-      if(tel) UI.el('m-call').href = `tel:${tel}`;
-
-      const wa = tel ? `https://wa.me/${tel}` : "#";
-      UI.el('m-whatsapp').style.display = tel ? "" : "none";
-      if(tel) UI.el('m-whatsapp').href = wa;
-
-      UI.el('m-email-btn').style.display = b.email ? "" : "none";
-      if(b.email) UI.el('m-email-btn').href = `mailto:${b.email}`;
-
-      UI.openModal();
-    }
-
-    // Inputs wiring
-    function bindUI(){
-      UI.el('q').addEventListener('input', (e)=>{ FILTER.q = e.target.value || ""; applyFilters(); });
-      UI.el('f-categoria').addEventListener('change', (e)=>{ FILTER.cat = e.target.value || ""; applyFilters(); });
-      UI.el('f-giro').addEventListener('change', (e)=>{ FILTER.giro = e.target.value || ""; applyFilters(); });
-
-      // Open Admin wizard if present
-      UI.el('open-admin-wizard').addEventListener('click', (e)=>{
-        e.preventDefault();
-        if(typeof window.openWizard === "function"){ window.openWizard(); }
-        else { alert("Abre el módulo 'Directorio de Negocios (Admin)' para registrar un negocio."); }
-      });
-
-      // Close modal on bg click / ESC
-      UI.el('biz-modal').addEventListener('click', (e)=>{
-        if(e.target === UI.el('biz-modal')) UI.closeModal();
-      });
-      window.addEventListener('keydown', (e)=>{
-        if(e.key === 'Escape') UI.closeModal();
-      });
-    }
-
-    // Live reload if Admin changes in another tab
-    window.addEventListener('storage', (e)=>{
-      if(e.key === STORAGE_KEY){
-        DATA = loadBusinesses();
-        buildFilterOptions();
-        applyFilters();
-      }
+  function apply(){
+    let rows=DATA.filter(d=>{
+      const qok=!FILTER.q||FILTER.q.split(/\s+/).every(t=>d._blob.includes(t));
+      const cok=!FILTER.cat||d.categoriaNombre===FILTER.cat;
+      const gok=!FILTER.giro||d.giroNombre===FILTER.giro;
+      return qok&&cok&&gok;
     });
+    render(rows);
+  }
 
-    // Boot
-    document.addEventListener('DOMContentLoaded', ()=>{
-      buildFilterOptions();
-      bindUI();
-      applyFilters();
+  function render(rows){
+    els("biz-stats").textContent=`${rows.length} de ${DATA.length} negocios`;
+    const grid=els("biz-grid"); grid.innerHTML="";
+    if(!rows.length){els("biz-empty").classList.remove("hidden");return;} 
+    els("biz-empty").classList.add("hidden");
+    rows.forEach(b=>{
+      const card=document.createElement("article");
+      card.className="bg-white rounded-xl border p-5 shadow hover:shadow-md cursor-pointer animate-fade-in";
+      card.innerHTML=`
+        <h3 class="font-bold">${b.nombre}</h3>
+        <p class="text-sm text-slate-600">${b.giroNombre||""}</p>
+        <p class="text-xs text-slate-500">${b.direccion||""}</p>`;
+      card.addEventListener("click",()=>open(b));
+      grid.appendChild(card);
     });
+  }
 
-    // Expose for card onclick
-    window.openBusiness = openBusiness;
-  </script>
+  function open(b){
+    els("m-cat-pill").textContent=b.categoriaNombre||"";
+    els("m-giro-pill").textContent=b.giroNombre||"";
+    els("m-title").textContent=b.nombre||"";
+    els("m-desc").textContent=b.descripcion||"";
+    els("m-owner").textContent=b.propietario||"";
+    els("m-phone").textContent=b.telefono||"";
+    els("m-email").textContent=b.email||"";
+    els("m-address").textContent=b.direccion||"";
+    els("m-hours").textContent=b.horario||"";
+    els("m-services").innerHTML=b.servicios.map(k=>`<span class="text-xs border px-2 py-1 rounded">${CATALOG[k]?.label||k}</span>`).join("");
+    if(b.giro==="restaurante"&&b.tiposComida.length){
+      els("m-food").classList.remove("hidden");
+      els("m-food-tags").innerHTML=b.tiposComida.map(t=>`<span class="text-xs border px-2 py-1 rounded">${t}</span>`).join("");
+    } else els("m-food").classList.add("hidden");
+    if(b.giro==="restaurante"&&b.menu.length){
+      els("m-menu-box").classList.remove("hidden");
+      els("m-menu").innerHTML=b.menu.map(m=>`<div class="flex justify-between border p-2 rounded"><span>${m.nombre}</span><span>$${m.precio}</span></div>`).join("");
+    } else els("m-menu-box").classList.add("hidden");
+    els("biz-modal").classList.remove("hidden");
+  }
+
+  // Events
+  els("biz-q").addEventListener("input",e=>{FILTER.q=e.target.value.toLowerCase();apply();});
+  els("biz-cat").addEventListener("change",e=>{FILTER.cat=e.target.value;apply();});
+  els("biz-giro").addEventListener("change",e=>{FILTER.giro=e.target.value;apply();});
+  els("biz-modal-close").addEventListener("click",()=>els("biz-modal").classList.add("hidden"));
+  window.addEventListener("storage",e=>{if(e.key===STORAGE_KEY){DATA=load();renderFilters();apply();}});
+
+  // Init
+  renderFilters(); apply();
+})();
+</script>
