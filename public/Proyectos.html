@@ -1,25 +1,77 @@
 <!-- Proyectos.html (Público) -->
 <section id="ProyectosPublico" class="font-sans">
   <!-- Hero -->
-  <header class="relative">
-    <div class="absolute inset-0 bg-gradient-to-r from-municipal-blue to-municipal-teal"></div>
-    <div class="relative max-w-7xl mx-auto px-4 py-10 md:py-14 text-white">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Proyectos Municipales</h1>
-          <p class="mt-2 text-white/90 max-w-2xl">
-            Transparencia y resultados. Consulta el avance, inversión y cronograma de obras y programas clave del municipio.
-          </p>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg">
-            <i class="fas fa-shield-alt"></i>
-            <span class="text-sm">Gobierno Abierto</span>
-          </span>
-        </div>
-      </div>
-    </div>
-  </header>
+<header
+  class="relative text-white min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] overflow-hidden"
+  id="HeroTransparencia"
+>
+  <!-- Slides -->
+  <div id="transparencia-slides" class="absolute inset-0 w-full h-full"></div>
+
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-black/60"></div>
+
+  <!-- Content -->
+  <div class="relative container mx-auto px-6 py-16 text-left z-10">
+    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+      Proyectos<br />
+      <span class="text-green-200">Municipales</span>
+    </h1>
+    <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
+      Siempre Trabajando.
+    </p>
+    <p class="text-lg mb-10 text-blue-50 max-w-2xl">
+      Accede de forma rápida y sencilla a los trámites disponibles para ti y tu
+      familia.
+    </p>
+    <button
+      onclick="openForm()"
+      class="bg-white text-blue-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl"
+    >
+      <i class="fas fa-edit mr-3"></i> Solicitar Apoyo Ahora
+    </button>
+  </div>
+</header>
+<script>
+  (function () {
+    // ✅ Array of background images
+    const fotos = [
+      "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/544417000_1094678186173737_6109100192931889123_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGQ2Cc3XyEkwTvu-7tkTUF_PqTyAqUqERw-pPICpSoRHB3Px_vvHmIAFF4J9uHEUwHdRUKRsaA_60-k0lMq8XeL&_nc_ohc=UxuL2vQ9_qMQ7kNvwGoKxO0&_nc_oc=AdkCnjt2a7a2vvuACDxxkWYPcaYnf9dGFits0H5RVWIZFQZPfvU4E2q6LkBNQHXzREioOY1T6MXeSTFY1o-rLMpd&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=I47IWQJKHNIhTT9LeGtKzg&oh=00_Afb03IIAmjf0UfXuUIJNwWsVtLoXgKgiN_MaNndiP9h8YA&oe=68C78D20",
+      "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/538165276_1086461650328724_5052366737822557849_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEkDypM8IH3ns5D0bn0DX_taxF6Q3ve9BdrEXpDe970FxsKjc33ErNia8ikCjeDQfYwJCSINzpI420BGvxNDoXx&_nc_ohc=1MDII1bij6kQ7kNvwGfPQUr&_nc_oc=AdluSEkTj6TNrjxRxAJvQciIj94MSQYDAtFCoT_TLIE6tBSU8zlm_rVUudykyameWaIqhnVw8Oowr-bws7ro0qCB&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=vjChOseRHgv-GeMz3neItg&oh=00_Afbq-h-VJY-SyTcNopBbfWdz5qnnLkNiIUWddYGFeBO1bw&oe=68C7A306",
+      "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/543810022_18293228677264631_5207836924973580763_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeF2tY6E7g1LXsnkEJAMDNrNqjuApQISIduqO4ClAhIh22gjRtVxVQqpsAa3G0R38TMwBd8CKAK8zIV-_YKuS6-l&_nc_ohc=v-zzwO_mKU8Q7kNvwGM0-KH&_nc_oc=AdmXEAxGpxTCS3tMTDeMPivYLwMxx3UFkczJuBrnzefncRYerHgeZJKEB1dB0iNJhFOSnZ-_YWhBWakKBEJMTa9e&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=mN_DUuGa49_Zvi_CP62yGg&oh=00_AfabrLqzxDRf0FQ5X3rIkv1S6A_UCyqOzTZ2mYIszkAGQw&oe=68C79428",
+    ];
+
+    const slidesContainer = document.getElementById("transparencia-slides");
+
+    // Crear slides
+    fotos.forEach((url, i) => {
+      const slide = document.createElement("div");
+      slide.className = `absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+        i === 0 ? "opacity-100" : "opacity-0"
+      }`;
+      slide.style.backgroundImage = `url('${url}')`;
+      slide.style.backgroundSize = "cover";
+      slide.style.backgroundPosition = "center";
+      slidesContainer.appendChild(slide);
+    });
+
+    const slides = Array.from(slidesContainer.children);
+    let idx = 0;
+
+    function showNext() {
+      slides[idx].classList.remove("opacity-100");
+      slides[idx].classList.add("opacity-0");
+
+      idx = (idx + 1) % slides.length;
+
+      slides[idx].classList.remove("opacity-0");
+      slides[idx].classList.add("opacity-100");
+    }
+
+    setInterval(showNext, 5000); // ⏱ cambia cada 5s
+  })();
+</script>
+
 
   <!-- Controles -->
   <div class="border-b">
