@@ -470,6 +470,275 @@
           servicios: ["efectivo", "wifi", "aire"],
         },
       ];
+      const tramites = [
+        {
+          id: "1",
+          titulo: "Licencia de Funcionamiento de Negocio",
+          descripcion:
+            "Permiso para operar un establecimiento comercial en el municipio.",
+          categoria: "comercio",
+          categoriaNombre: "Comercio y Negocios",
+          requisitos: [
+            "Identificación oficial vigente",
+            "Comprobante de domicilio",
+            "Plano del local",
+            "Pago de derechos municipales",
+          ],
+          procedimiento: [
+            "Acudir a la ventanilla de Desarrollo Económico",
+            "Entregar la documentación requerida",
+            "Realizar el pago correspondiente",
+            "Recibir resolución en un plazo de 5 días hábiles",
+          ],
+          costo: "$1,200",
+          tiempo: "5 días hábiles",
+          ubicacion: "Oficinas de Desarrollo Económico",
+          horario: "Lunes a Viernes de 9:00 a 15:00 hrs",
+          descripcionLarga:
+            "La licencia de funcionamiento es obligatoria para todos los negocios que operen dentro del municipio.",
+          icono: "fas fa-store",
+          destacado: true,
+          createdAt: "2025-09-09T21:06:55.790Z",
+        },
+        {
+          id: "2",
+          titulo: "Registro de Nacimiento",
+          descripcion: "Inscripción oficial del nacimiento de un ciudadano.",
+          categoria: "identificacion",
+          categoriaNombre: "Identificación y Documentos",
+          requisitos: [
+            "Acta de nacimiento en formato hospitalario",
+            "Identificación oficial de los padres",
+            "Comprobante de domicilio",
+          ],
+          procedimiento: [
+            "Presentarse en el Registro Civil",
+            "Llenar el formato de solicitud",
+            "Entregar la documentación",
+            "Recibir acta en un plazo máximo de 24 horas",
+          ],
+          costo: "Gratuito",
+          tiempo: "1 día hábil",
+          ubicacion: "Registro Civil Municipal",
+          horario: "Lunes a Viernes de 9:00 a 14:00 hrs",
+          descripcionLarga:
+            "Todo ciudadano tiene derecho a ser registrado de manera gratuita al nacer.",
+          icono: "fas fa-baby",
+          destacado: true,
+          createdAt: "2025-09-09T21:10:00.000Z",
+        },
+        {
+          id: "3",
+          titulo: "Renovación de Licencia de Conducir",
+          descripcion:
+            "Trámite para renovar la licencia de conducir vehículos particulares.",
+          categoria: "transito",
+          categoriaNombre: "Tránsito y Transporte",
+          requisitos: [
+            "Licencia anterior",
+            "Identificación oficial",
+            "Comprobante de domicilio",
+            "Examen médico vigente",
+          ],
+          procedimiento: [
+            "Acudir al módulo de Tránsito",
+            "Realizar examen de la vista",
+            "Efectuar el pago correspondiente",
+            "Recibir licencia renovada el mismo día",
+          ],
+          costo: "$850",
+          tiempo: "30 minutos",
+          ubicacion: "Módulo de Tránsito Municipal",
+          horario: "Lunes a Viernes de 8:00 a 15:00 hrs",
+          descripcionLarga:
+            "La licencia debe renovarse cada 3 años para seguir siendo válida.",
+          icono: "fas fa-id-card",
+          destacado: false,
+          createdAt: "2025-09-09T21:11:37.068Z",
+        },
+        {
+          id: "4",
+          titulo: "Permiso de Construcción",
+          descripcion:
+            "Autorización para iniciar una obra de construcción en el municipio.",
+          categoria: "construccion",
+          categoriaNombre: "Construcción y Obras",
+          requisitos: [
+            "Plano arquitectónico aprobado",
+            "Identificación oficial del propietario",
+            "Pago de derechos de construcción",
+          ],
+          procedimiento: [
+            "Presentar planos y documentos en Obras Públicas",
+            "Realizar inspección de predio",
+            "Aprobar proyecto",
+            "Emitir permiso de construcción",
+          ],
+          costo: "$2,500",
+          tiempo: "10 días hábiles",
+          ubicacion: "Dirección de Obras Públicas",
+          horario: "Lunes a Viernes de 9:00 a 16:00 hrs",
+          descripcionLarga:
+            "Es indispensable contar con este permiso antes de iniciar cualquier obra mayor.",
+          icono: "fas fa-hard-hat",
+          destacado: true,
+          createdAt: "2025-09-09T21:12:00.000Z",
+        },
+        {
+          id: "5",
+          titulo: "Constancia de Residencia",
+          descripcion: "Documento que acredita la residencia en el municipio.",
+          categoria: "identificacion",
+          categoriaNombre: "Identificación y Documentos",
+          requisitos: [
+            "Identificación oficial",
+            "Comprobante de domicilio reciente",
+          ],
+          procedimiento: [
+            "Acudir a la ventanilla de Presidencia Municipal",
+            "Llenar solicitud",
+            "Recibir constancia firmada y sellada",
+          ],
+          costo: "$100",
+          tiempo: "1 día hábil",
+          ubicacion: "Presidencia Municipal",
+          horario: "Lunes a Viernes de 8:00 a 14:00 hrs",
+          descripcionLarga:
+            "Este documento es solicitado comúnmente para trámites legales y escolares.",
+          icono: "fas fa-home",
+          destacado: false,
+          createdAt: "2025-09-09T21:13:00.000Z",
+        },
+        {
+          id: "6",
+          titulo: "Atención Médica General",
+          descripcion: "Consulta médica general en clínicas municipales.",
+          categoria: "salud",
+          categoriaNombre: "Salud",
+          requisitos: ["CURP", "Comprobante de domicilio"],
+          procedimiento: [
+            "Agendar cita",
+            "Presentarse en la clínica",
+            "Recibir consulta",
+          ],
+          costo: "Gratuito",
+          tiempo: "1 hora",
+          ubicacion: "Clínicas Municipales",
+          horario: "Lunes a Viernes de 8:00 a 18:00 hrs",
+          descripcionLarga:
+            "Servicio básico de salud para todos los habitantes del municipio.",
+          icono: "fas fa-stethoscope",
+          destacado: true,
+          createdAt: "2025-09-09T21:15:00.000Z",
+        },
+        {
+          id: "7",
+          titulo: "Becas Escolares Municipales",
+          descripcion:
+            "Apoyo económico para estudiantes de primaria y secundaria.",
+          categoria: "educacion",
+          categoriaNombre: "Educación",
+          requisitos: [
+            "CURP del alumno",
+            "Comprobante de estudios vigente",
+            "Comprobante de ingresos del tutor",
+          ],
+          procedimiento: [
+            "Llenar solicitud en línea o en ventanilla",
+            "Entregar documentos",
+            "Esperar dictamen",
+            "Recibir apoyo económico en caso de aprobación",
+          ],
+          costo: "Gratuito",
+          tiempo: "15 días hábiles",
+          ubicacion: "Dirección de Educación Municipal",
+          horario: "Lunes a Viernes de 9:00 a 15:00 hrs",
+          descripcionLarga:
+            "Programa de apoyo económico para incentivar la permanencia escolar.",
+          icono: "fas fa-graduation-cap",
+          destacado: true,
+          createdAt: "2025-09-09T21:16:00.000Z",
+        },
+        {
+          id: "8",
+          titulo: "Registro de Vehículo",
+          descripcion: "Inscripción de un vehículo en el padrón municipal.",
+          categoria: "transito",
+          categoriaNombre: "Tránsito y Transporte",
+          requisitos: [
+            "Factura original del vehículo",
+            "Identificación oficial",
+            "Comprobante de domicilio",
+          ],
+          procedimiento: [
+            "Acudir al módulo de tránsito",
+            "Presentar documentación",
+            "Recibir placas y tarjeta de circulación",
+          ],
+          costo: "$1,500",
+          tiempo: "3 días hábiles",
+          ubicacion: "Módulo de Tránsito Municipal",
+          horario: "Lunes a Viernes de 8:00 a 15:00 hrs",
+          descripcionLarga:
+            "Es obligatorio registrar todo vehículo nuevo o usado adquirido en el municipio.",
+          icono: "fas fa-car",
+          destacado: false,
+          createdAt: "2025-09-09T21:17:00.000Z",
+        },
+        {
+          id: "9",
+          titulo: "Limpieza de Terreno Baldío",
+          descripcion:
+            "Solicitud de servicio de limpieza de lotes baldíos para seguridad pública.",
+          categoria: "limpieza",
+          categoriaNombre: "Limpieza y Servicios",
+          requisitos: [
+            "Solicitud escrita",
+            "Identificación oficial del propietario",
+          ],
+          procedimiento: [
+            "Presentar solicitud en Servicios Públicos",
+            "Agendar visita",
+            "Realizar limpieza en un plazo de 7 días",
+          ],
+          costo: "$500",
+          tiempo: "7 días hábiles",
+          ubicacion: "Dirección de Servicios Públicos",
+          horario: "Lunes a Viernes de 8:00 a 16:00 hrs",
+          descripcionLarga:
+            "Servicio de apoyo para mantener la ciudad limpia y segura.",
+          icono: "fas fa-broom",
+          destacado: false,
+          createdAt: "2025-09-09T21:18:00.000Z",
+        },
+        {
+          id: "10",
+          titulo: "Solicitud de Acta de Defunción",
+          descripcion: "Trámite para obtener el acta oficial de defunción.",
+          categoria: "identificacion",
+          categoriaNombre: "Identificación y Documentos",
+          requisitos: [
+            "CURP del fallecido",
+            "Certificado médico de defunción",
+            "Identificación del solicitante",
+          ],
+          procedimiento: [
+            "Acudir al Registro Civil",
+            "Entregar documentos",
+            "Recibir acta en un plazo de 48 horas",
+          ],
+          costo: "$150",
+          tiempo: "2 días hábiles",
+          ubicacion: "Registro Civil Municipal",
+          horario: "Lunes a Viernes de 9:00 a 14:00 hrs",
+          descripcionLarga:
+            "El acta de defunción es un documento legal indispensable para trámites posteriores.",
+          icono: "fas fa-file-alt",
+          destacado: false,
+          createdAt: "2025-09-09T21:20:00.000Z",
+        },
+      ];
+
       // ---- Seed util
       function seedIfEmpty(key, value) {
         try {
@@ -494,6 +763,7 @@
       seedIfEmpty("direcciones", direcciones);
       seedIfEmpty("cabildo", cabildo);
       seedIfEmpty("admin.negocios.v1", negocios);
+      seedIfEmpty("tramites", tramites);
     </script>
     <!-- Font Awesome -->
     <link
