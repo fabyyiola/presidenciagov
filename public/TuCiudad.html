@@ -1,51 +1,70 @@
 <!-- TuCiudad_Negocios.html (Public module) -->
 <section id="TuCiudadNegocios" class="font-sans">
-
   <!-- Hero Section -->
-<header 
-  class="relative text-white min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center"
-  style="background-image: url('https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518139577_1061598692815020_4654446006479060152_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=104&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEi7S5EjeuLq7F89axJdaex8goNa6t9JtbyCg1rq30m1md9T4rmjjt-IkzVNlNE6xGWtrE4WvYgEEXImg3K-88d&_nc_ohc=fTa-4WDpEp0Q7kNvwEJ3w5N&_nc_oc=AdkF0j13OrDtBsARBondAWtbUtMbqbAIMXDHLacsObarXZ8EyvFHdM5s67OmdD7Q3gxHw2BmozNQp6pYOiEP8ZI3&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=ens-ktojqmDXnjTbtydNWQ&oh=00_Afamq4Q8xBgemjfXTcRnlqsaDjWh67u239MPJ-qKwY5yzA&oe=68C6BDE3'); background-size: cover; background-position: center;"
->
-  <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/60"></div>
+  <header
+    class="relative text-white min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center"
+    style="
+      background-image: url('https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518139577_1061598692815020_4654446006479060152_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=104&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEi7S5EjeuLq7F89axJdaex8goNa6t9JtbyCg1rq30m1md9T4rmjjt-IkzVNlNE6xGWtrE4WvYgEEXImg3K-88d&_nc_ohc=fTa-4WDpEp0Q7kNvwEJ3w5N&_nc_oc=AdkF0j13OrDtBsARBondAWtbUtMbqbAIMXDHLacsObarXZ8EyvFHdM5s67OmdD7Q3gxHw2BmozNQp6pYOiEP8ZI3&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=ens-ktojqmDXnjTbtydNWQ&oh=00_Afamq4Q8xBgemjfXTcRnlqsaDjWh67u239MPJ-qKwY5yzA&oe=68C6BDE3');
+      background-size: cover;
+      background-position: center;
+    "
+  >
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/60"></div>
 
-  <!-- Content -->
-  <div class="relative container mx-auto px-6 text-left z-10">
-    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-      Directorio de <br />
-      <span class="text-green-200">Negocios Locales</span>
-    </h1>
-    <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
-      Programas y Beneficios para la Comunidad
-    </p>
-    <p class="text-lg mb-10 text-blue-50 max-w-2xl">
-      Descubre y apoya a los emprendedores de Sabinas Hidalgo.
-      Encuentra restaurantes, servicios, comercios y más. Filtra por nombre, giro, servicios y tipo de comida.
-    </p>
-  </div>
-</header>
+    <!-- Content -->
+    <div class="relative container mx-auto px-6 text-left z-10">
+      <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+        Directorio de <br />
+        <span class="text-green-200">Negocios Locales</span>
+      </h1>
+      <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
+        Programas y Beneficios para la Comunidad
+      </p>
+      <p class="text-lg mb-10 text-blue-50 max-w-2xl">
+        Descubre y apoya a los emprendedores de Sabinas Hidalgo. Encuentra
+        restaurantes, servicios, comercios y más. Filtra por nombre, giro,
+        servicios y tipo de comida.
+      </p>
+    </div>
+  </header>
 
   <!-- Hero (search & filters) -->
   <section class="relative overflow-hidden">
     <div class="mx-auto px-4 md:py-14">
       <div class="grid grid-cols-1 gap-8 items-center">
-      <h2 class="text-4xl font-bold text-municipal-blue text-center mb-6">
-        DIRECTORIO DE NEGOCIOS
-      </h2>
-        <div class="mx-auto max-w-4xl bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-5 md:p-6 shadow">
+        <h2 class="text-4xl font-bold text-municipal-blue text-center mb-6">
+          DIRECTORIO DE NEGOCIOS
+        </h2>
+        <div
+          class="mx-auto max-w-4xl bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-5 md:p-6 shadow"
+        >
           <!-- Search & Filters -->
-           <div class="relative flex-1">
-              <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-              <input id="biz-q" type="text" placeholder="Buscar: nombre, giro, 'tacos', 'tarjetas'…"
-                     class="w-full pl-10 pr-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue" />
-            </div>
+
           <div class="flex flex-col md:flex-row gap-3">
-            <select id="biz-cat" class="px-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue">
+            <select
+              id="biz-cat"
+              class="px-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue"
+            >
               <option value="">Todas las categorías</option>
             </select>
-            <select id="biz-giro" class="px-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue">
+            <select
+              id="biz-giro"
+              class="px-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue"
+            >
               <option value="">Todos los giros</option>
             </select>
+          </div>
+          <div class="relative flex-1">
+            <i
+              class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            ></i>
+            <input
+              id="biz-q"
+              type="text"
+              placeholder="Buscar: nombre, giro, 'tacos', 'tarjetas'…"
+              class="w-full pl-10 pr-3 py-3 rounded-xl border focus:ring-2 focus:ring-municipal-blue"
+            />
           </div>
           <div class="mt-3 flex flex-wrap gap-2" id="biz-service-chips"></div>
           <div class="mt-2 text-xs text-gov-gray" id="biz-match-hint"></div>
@@ -73,19 +92,30 @@
     <!-- Panel -->
     <div
       class="relative mx-auto my-10 max-w-3xl bg-white rounded-2xl shadow-xl border w-[92%] md:w-auto"
-      role="dialog" aria-modal="true" aria-labelledby="m-title"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="m-title"
     >
       <!-- Header -->
       <div class="flex items-start justify-between p-5 border-b">
         <div>
           <div class="flex gap-2 mb-2">
-            <span id="m-cat-pill" class="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200"></span>
-            <span id="m-giro-pill" class="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200"></span>
+            <span
+              id="m-cat-pill"
+              class="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200"
+            ></span>
+            <span
+              id="m-giro-pill"
+              class="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200"
+            ></span>
           </div>
           <h3 id="m-title" class="text-xl font-bold text-slate-800">Título</h3>
           <p id="m-desc" class="text-sm text-slate-600 mt-1"></p>
         </div>
-        <button id="biz-modal-close" class="text-slate-500 hover:text-slate-700 p-2 rounded">
+        <button
+          id="biz-modal-close"
+          class="text-slate-500 hover:text-slate-700 p-2 rounded"
+        >
           <i class="fas fa-times text-lg"></i>
         </button>
       </div>
@@ -134,175 +164,228 @@
       </div>
     </div>
   </div>
-
 </section>
 
 <script>
-(() => {
-  const STORAGE_KEYS = [
-    "admin.negocios.v1",
-    "negocios.registrados.v1",
-    "negocios.registrados",
-    "negocios.v1",
-    "negocios",
-    "TuCiudad.negocios"
-  ];
+  (() => {
+    const STORAGE_KEYS = [
+      "admin.negocios.v1",
+      "negocios.registrados.v1",
+      "negocios.registrados",
+      "negocios.v1",
+      "negocios",
+      "TuCiudad.negocios",
+    ];
 
-  const CATALOG = {
-    domicilio:{label:"Servicio a domicilio",icon:"fa-solid fa-truck"},
-    tarjetas:{label:"Acepta tarjetas",icon:"fa-solid fa-credit-card"},
-    whatsapp:{label:"WhatsApp",icon:"fa-brands fa-whatsapp"},
-    wifi:{label:"WiFi",icon:"fa-solid fa-wifi"},
-    aire:{label:"Aire",icon:"fa-regular fa-snowflake"}
-  };
+    const CATALOG = {
+      domicilio: { label: "Servicio a domicilio", icon: "fa-solid fa-truck" },
+      tarjetas: { label: "Acepta tarjetas", icon: "fa-solid fa-credit-card" },
+      whatsapp: { label: "WhatsApp", icon: "fa-brands fa-whatsapp" },
+      wifi: { label: "WiFi", icon: "fa-solid fa-wifi" },
+      aire: { label: "Aire", icon: "fa-regular fa-snowflake" },
+    };
 
-  const els = id => document.getElementById(id);
+    const els = (id) => document.getElementById(id);
 
-  function loadAll() {
-    const seen = new Set();
-    const rows = [];
+    function loadAll() {
+      const seen = new Set();
+      const rows = [];
 
-    for (const key of STORAGE_KEYS) {
-      try {
-        const arr = JSON.parse(localStorage.getItem(key) || "[]");
-        if (!Array.isArray(arr)) continue;
+      for (const key of STORAGE_KEYS) {
+        try {
+          const arr = JSON.parse(localStorage.getItem(key) || "[]");
+          if (!Array.isArray(arr)) continue;
 
-        for (const n of arr) {
-          const id = n.id || `${(n.nombre||"").trim()}|${(n.direccion||"").trim()}`;
-          if (seen.has(id)) continue;
-          seen.add(id);
+          for (const n of arr) {
+            const id =
+              n.id ||
+              `${(n.nombre || "").trim()}|${(n.direccion || "").trim()}`;
+            if (seen.has(id)) continue;
+            seen.add(id);
 
-          const servicios = Array.isArray(n.servicios) ? n.servicios : [];
-          const tiposComida = Array.isArray(n.tiposComida) ? n.tiposComida : [];
-          const menu = Array.isArray(n.menu) ? n.menu : [];
+            const servicios = Array.isArray(n.servicios) ? n.servicios : [];
+            const tiposComida = Array.isArray(n.tiposComida)
+              ? n.tiposComida
+              : [];
+            const menu = Array.isArray(n.menu) ? n.menu : [];
 
-          const blob = [
-            n.nombre, n.propietario, n.direccion, n.giroNombre,
-            servicios.map(k => CATALOG[k]?.label || k).join(" "),
-            tiposComida.join(" "),
-            menu.map(m => m?.nombre).join(" ")
-          ].filter(Boolean).join(" ").toLowerCase();
+            const blob = [
+              n.nombre,
+              n.propietario,
+              n.direccion,
+              n.giroNombre,
+              servicios.map((k) => CATALOG[k]?.label || k).join(" "),
+              tiposComida.join(" "),
+              menu.map((m) => m?.nombre).join(" "),
+            ]
+              .filter(Boolean)
+              .join(" ")
+              .toLowerCase();
 
-          rows.push({
-            ...n,
-            servicios, tiposComida, menu,
-            categoriaNombre: n.categoriaNombre || n.categoria || "",
-            giroNombre: n.giroNombre || n.giro || "",
-            _blob: blob
-          });
+            rows.push({
+              ...n,
+              servicios,
+              tiposComida,
+              menu,
+              categoriaNombre: n.categoriaNombre || n.categoria || "",
+              giroNombre: n.giroNombre || n.giro || "",
+              _blob: blob,
+            });
+          }
+        } catch {
+          /* ignore */
         }
-      } catch { /* ignore */ }
+      }
+      return rows;
     }
-    return rows;
-  }
 
-  let DATA = loadAll();
-  let FILTER = { q: "", cat: "", giro: "" };
+    let DATA = loadAll();
+    let FILTER = { q: "", cat: "", giro: "" };
 
-  function renderFilters() {
-    const cats = [...new Set(DATA.map(d => d.categoriaNombre).filter(Boolean))].sort();
-    els("biz-cat").innerHTML =
-      '<option value="">Todas las categorías</option>' +
-      cats.map(c => `<option value="${c}">${c}</option>`).join("");
+    function renderFilters() {
+      const cats = [
+        ...new Set(DATA.map((d) => d.categoriaNombre).filter(Boolean)),
+      ].sort();
+      els("biz-cat").innerHTML =
+        '<option value="">Todas las categorías</option>' +
+        cats.map((c) => `<option value="${c}">${c}</option>`).join("");
 
-    const giros = [...new Set(DATA.map(d => d.giroNombre).filter(Boolean))].sort();
-    els("biz-giro").innerHTML =
-      '<option value="">Todos los giros</option>' +
-      giros.map(g => `<option value="${g}">${g}</option>`).join("");
-  }
-
-  function apply() {
-    const terms = FILTER.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    let rows = DATA.filter(d => {
-      const qok = !terms.length || terms.every(t => d._blob.includes(t));
-      const cok = !FILTER.cat || d.categoriaNombre === FILTER.cat;
-      const gok = !FILTER.giro || d.giroNombre === FILTER.giro;
-      return qok && cok && gok;
-    });
-    render(rows);
-  }
-
-  function render(rows) {
-    const stats = els("biz-stats");
-    const grid = els("biz-grid");
-    const empty = els("biz-empty");
-
-    stats.textContent = `${rows.length} de ${DATA.length} negocios`;
-    grid.innerHTML = "";
-
-    if (!rows.length) {
-      empty.classList.remove("hidden");
-      return;
+      const giros = [
+        ...new Set(DATA.map((d) => d.giroNombre).filter(Boolean)),
+      ].sort();
+      els("biz-giro").innerHTML =
+        '<option value="">Todos los giros</option>' +
+        giros.map((g) => `<option value="${g}">${g}</option>`).join("");
     }
-    empty.classList.add("hidden");
 
-    rows.forEach(b => {
-      const card = document.createElement("article");
-      card.className = "bg-white rounded-xl border p-5 shadow hover:shadow-md cursor-pointer animate-fade-in";
-      card.innerHTML = `
+    function apply() {
+      const terms = FILTER.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      let rows = DATA.filter((d) => {
+        const qok = !terms.length || terms.every((t) => d._blob.includes(t));
+        const cok = !FILTER.cat || d.categoriaNombre === FILTER.cat;
+        const gok = !FILTER.giro || d.giroNombre === FILTER.giro;
+        return qok && cok && gok;
+      });
+      render(rows);
+    }
+
+    function render(rows) {
+      const stats = els("biz-stats");
+      const grid = els("biz-grid");
+      const empty = els("biz-empty");
+
+      stats.textContent = `${rows.length} de ${DATA.length} negocios`;
+      grid.innerHTML = "";
+
+      if (!rows.length) {
+        empty.classList.remove("hidden");
+        return;
+      }
+      empty.classList.add("hidden");
+
+      rows.forEach((b) => {
+        const card = document.createElement("article");
+        card.className =
+          "bg-white rounded-xl border p-5 shadow hover:shadow-md cursor-pointer animate-fade-in";
+        card.innerHTML = `
         <h3 class="font-bold">${b.nombre || ""}</h3>
         <p class="text-sm text-slate-600">${b.giroNombre || ""}</p>
         <p class="text-xs text-slate-500">${b.direccion || ""}</p>
       `;
-      card.addEventListener("click", () => open(b));
-      grid.appendChild(card);
-    });
-  }
-
-  function open(b) {
-    const get = id => document.getElementById(id);
-    if (!get("biz-modal")) return;
-
-    get("m-cat-pill").textContent = b.categoriaNombre || "";
-    get("m-giro-pill").textContent = b.giroNombre || "";
-    get("m-title").textContent = b.nombre || "";
-    get("m-desc").textContent = b.descripcion || "";
-    get("m-owner").textContent = b.propietario || "";
-    get("m-phone").textContent = b.telefono || "";
-    get("m-email").textContent = b.email || "";
-    get("m-address").textContent = b.direccion || "";
-    get("m-hours").textContent = b.horario || "";
-    get("m-services").innerHTML = (b.servicios || [])
-      .map(k => `<span class="text-xs border px-2 py-1 rounded">${CATALOG[k]?.label || k}</span>`).join("");
-
-    if ((b.giro || b.giroNombre || "").toLowerCase() === "restaurante" && (b.tiposComida || []).length) {
-      get("m-food").classList.remove("hidden");
-      get("m-food-tags").innerHTML = b.tiposComida.map(t => `<span class="text-xs border px-2 py-1 rounded">${t}</span>`).join("");
-    } else get("m-food").classList.add("hidden");
-
-    if ((b.giro || b.giroNombre || "").toLowerCase() === "restaurante" && (b.menu || []).length) {
-      get("m-menu-box").classList.remove("hidden");
-      get("m-menu").innerHTML = b.menu.map(m =>
-        `<div class="flex justify-between border p-2 rounded"><span>${m.nombre}</span><span>$${m.precio}</span></div>`
-      ).join("");
-    } else get("m-menu-box").classList.add("hidden");
-
-    get("biz-modal").classList.remove("hidden");
-  }
-
-  els("biz-q").addEventListener("input", (e) => { FILTER.q = e.target.value; apply(); });
-  els("biz-cat").addEventListener("change", (e) => { FILTER.cat = e.target.value; apply(); });
-  els("biz-giro").addEventListener("change", (e) => { FILTER.giro = e.target.value; apply(); });
-
-  const closeBtn = document.getElementById("biz-modal-close");
-  if (closeBtn) closeBtn.addEventListener("click", () => els("biz-modal").classList.add("hidden"));
-
-  document.getElementById("biz-modal-backdrop").addEventListener("click", () => els("biz-modal").classList.add("hidden"));
-
-  window.addEventListener("storage", (e) => {
-    if (STORAGE_KEYS.includes(e.key)) {
-      DATA = loadAll();
-      renderFilters();
-      apply();
+        card.addEventListener("click", () => open(b));
+        grid.appendChild(card);
+      });
     }
-  });
 
-  renderFilters();
-  apply();
+    function open(b) {
+      const get = (id) => document.getElementById(id);
+      if (!get("biz-modal")) return;
 
-  if (!DATA.length) {
-    els("biz-stats").textContent = "0 negocios (aún no hay registros)";
-    els("biz-empty").classList.remove("hidden");
-  }
-})();
+      get("m-cat-pill").textContent = b.categoriaNombre || "";
+      get("m-giro-pill").textContent = b.giroNombre || "";
+      get("m-title").textContent = b.nombre || "";
+      get("m-desc").textContent = b.descripcion || "";
+      get("m-owner").textContent = b.propietario || "";
+      get("m-phone").textContent = b.telefono || "";
+      get("m-email").textContent = b.email || "";
+      get("m-address").textContent = b.direccion || "";
+      get("m-hours").textContent = b.horario || "";
+      get("m-services").innerHTML = (b.servicios || [])
+        .map(
+          (k) =>
+            `<span class="text-xs border px-2 py-1 rounded">${
+              CATALOG[k]?.label || k
+            }</span>`
+        )
+        .join("");
+
+      if (
+        (b.giro || b.giroNombre || "").toLowerCase() === "restaurante" &&
+        (b.tiposComida || []).length
+      ) {
+        get("m-food").classList.remove("hidden");
+        get("m-food-tags").innerHTML = b.tiposComida
+          .map(
+            (t) => `<span class="text-xs border px-2 py-1 rounded">${t}</span>`
+          )
+          .join("");
+      } else get("m-food").classList.add("hidden");
+
+      if (
+        (b.giro || b.giroNombre || "").toLowerCase() === "restaurante" &&
+        (b.menu || []).length
+      ) {
+        get("m-menu-box").classList.remove("hidden");
+        get("m-menu").innerHTML = b.menu
+          .map(
+            (m) =>
+              `<div class="flex justify-between border p-2 rounded"><span>${m.nombre}</span><span>$${m.precio}</span></div>`
+          )
+          .join("");
+      } else get("m-menu-box").classList.add("hidden");
+
+      get("biz-modal").classList.remove("hidden");
+    }
+
+    els("biz-q").addEventListener("input", (e) => {
+      FILTER.q = e.target.value;
+      apply();
+    });
+    els("biz-cat").addEventListener("change", (e) => {
+      FILTER.cat = e.target.value;
+      apply();
+    });
+    els("biz-giro").addEventListener("change", (e) => {
+      FILTER.giro = e.target.value;
+      apply();
+    });
+
+    const closeBtn = document.getElementById("biz-modal-close");
+    if (closeBtn)
+      closeBtn.addEventListener("click", () =>
+        els("biz-modal").classList.add("hidden")
+      );
+
+    document
+      .getElementById("biz-modal-backdrop")
+      .addEventListener("click", () =>
+        els("biz-modal").classList.add("hidden")
+      );
+
+    window.addEventListener("storage", (e) => {
+      if (STORAGE_KEYS.includes(e.key)) {
+        DATA = loadAll();
+        renderFilters();
+        apply();
+      }
+    });
+
+    renderFilters();
+    apply();
+
+    if (!DATA.length) {
+      els("biz-stats").textContent = "0 negocios (aún no hay registros)";
+      els("biz-empty").classList.remove("hidden");
+    }
+  })();
 </script>
