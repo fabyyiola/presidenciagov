@@ -382,8 +382,8 @@
 
     // upcoming sorted by date asc
     const upcoming = eventos
-      .filter(e => !e.fechaInicio || new Date(e.fechaInicio) >= today)
-      //.sort((a,b)=> new Date(a.fechaInicio||"2100-01-01") - new Date(b.fechaInicio||"2100-01-01"));
+      //.filter(e => !e.fechaInicio || new Date(e.fechaInicio) >= today)
+      .sort((a,b)=> new Date(a.fechaInicio||"2100-01-01") - new Date(b.fechaInicio||"2100-01-01"));
 
     // Featured first
     const destacados = upcoming.filter(e => !!e.destacado);
