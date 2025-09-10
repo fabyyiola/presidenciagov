@@ -26,6 +26,9 @@
         >
           Descubre los rincones más representativos del municipio.
         </p>
+      <p class="text-lg mb-10 text-blue-50 max-w-2xl mx-auto">
+        Naturaleza, historia y cultura en un solo lugar.
+      </p>
         <a
           href="#lugares"
           class="bg-white text-blue-700 px-8 py-3 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl inline-block"
@@ -33,62 +36,6 @@
           <i class="fas fa-search-location mr-2"></i> Explorar Lugares
         </a>
       </div>
-    </div>
-  </section>
-
-  <script>
-    // Simple slideshow logic
-    (function () {
-      const slides = document.querySelectorAll("#hero-slides > div");
-      let current = 0;
-
-      function showSlide(index) {
-        slides.forEach((slide, i) => {
-          slide.style.opacity = i === index ? "1" : "0";
-        });
-      }
-
-      function nextSlide() {
-        current = (current + 1) % slides.length;
-        showSlide(current);
-      }
-
-      // Init
-      showSlide(current);
-      setInterval(nextSlide, 5000); // change every 5s
-    })();
-  </script>
-
-  <section
-    class="relative text-white"
-    style="
-      background-image: url('https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/536276326_1086609113647311_48730282605770136_n.jpg?...');
-      background-size: cover;
-      background-position: center;
-    "
-  >
-    <!-- Dark overlay -->
-    <div class="absolute inset-0 bg-black/60"></div>
-
-    <!-- Content -->
-    <div class="relative container mx-auto px-6 py-16 text-center max-w-4xl">
-      <i class="fas fa-map-marked-alt text-6xl mb-4 opacity-90"></i>
-      <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-        Sabinas Hidalgo — <br />
-        <span class="text-green-200">Lugares que Inspiran</span>
-      </h1>
-      <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
-        Descubre los rincones más representativos del municipio.
-      </p>
-      <p class="text-lg mb-10 text-blue-50 max-w-2xl mx-auto">
-        Naturaleza, historia y cultura en un solo lugar.
-      </p>
-      <a
-        href="#lugares"
-        class="bg-white text-blue-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl"
-      >
-        <i class="fas fa-search-location mr-3"></i> Explorar Lugares
-      </a>
     </div>
   </section>
 
@@ -142,7 +89,28 @@
       </section>
     </div>
   </section>
+  <script>
+    // Simple slideshow logic
+    (function () {
+      const slides = document.querySelectorAll("#hero-slides > div");
+      let current = 0;
 
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          slide.style.opacity = i === index ? "1" : "0";
+        });
+      }
+
+      function nextSlide() {
+        current = (current + 1) % slides.length;
+        showSlide(current);
+      }
+
+      // Init
+      showSlide(current);
+      setInterval(nextSlide, 5000); // change every 5s
+    })();
+  </script>
   <!-- TURISMO SHOW IN HOME -->
   <div class="p-1">
     <div class="flex items-center justify-between mb-4">
