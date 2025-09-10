@@ -21,9 +21,6 @@
       <p class="text-lg mb-8 text-blue-50">
         Encuentra restaurantes, servicios, comercios y más. Filtra por nombre, giro, servicios y tipo de comida.
       </p>
-      <a href="#biz-grid" class="bg-white text-blue-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl">
-        <i class="fas fa-magnifying-glass mr-2"></i> Explorar Negocios
-      </a>
     </div>
   </header>
 
@@ -80,7 +77,16 @@
 
 <script>
 (() => {
-  const STORAGE_KEY = "admin.negocios.v1";
+  // Lee de varias llaves posibles del admin/público
+  const STORAGE_KEYS = [
+    "admin.negocios.v1",
+    "negocios.registrados.v1",
+    "negocios.registrados",
+    "negocios.v1",
+    "negocios",
+    "TuCiudad.negocios"
+  ];
+
   const CATALOG = {
     domicilio:{label:"Servicio a domicilio",icon:"fa-solid fa-truck"},
     tarjetas:{label:"Acepta tarjetas",icon:"fa-solid fa-credit-card"},
@@ -91,90 +97,158 @@
 
   const els = id => document.getElementById(id);
 
-  function load(){
-    try{
-      const arr = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-      return arr.map(n => {
-        const servicios = Array.isArray(n.servicios)?n.servicios:[];
-        const tiposComida = Array.isArray(n.tiposComida)?n.tiposComida:[];
-        const menu = Array.isArray(n.menu)?n.menu:[];
-        const blob = [
-          n.nombre,n.propietario,n.direccion,n.giroNombre,
-          servicios.map(k=>CATALOG[k]?.label).join(" "),
-          tiposComida.join(" "),menu.map(m=>m.nombre).join(" ")
-        ].join(" ").toLowerCase();
-        return {...n,servicios,tiposComida,menu,_blob:blob};
-      });
-    }catch{ return []; }
+  // Fusiona arrays de varias llaves y deduplica (por id o nombre+dirección)
+  function loadAll() {
+    const seen = new Set();
+    const rows = [];
+
+    for (const key of STORAGE_KEYS) {
+      try {
+        const arr = JSON.parse(localStorage.getItem(key) || "[]");
+        if (!Array.isArray(arr)) continue;
+
+        for (const n of arr) {
+          const id = n.id || `${(n.nombre||"").trim()}|${(n.direccion||"").trim()}`;
+          if (seen.has(id)) continue;
+          seen.add(id);
+
+          const servicios = Array.isArray(n.servicios) ? n.servicios : [];
+          const tiposComida = Array.isArray(n.tiposComida) ? n.tiposComida : [];
+          const menu = Array.isArray(n.menu) ? n.menu : [];
+
+          const blob = [
+            n.nombre, n.propietario, n.direccion, n.giroNombre,
+            servicios.map(k => CATALOG[k]?.label || k).join(" "),
+            tiposComida.join(" "),
+            menu.map(m => m?.nombre).join(" ")
+          ].filter(Boolean).join(" ").toLowerCase();
+
+          rows.push({
+            ...n,
+            servicios, tiposComida, menu,
+            categoriaNombre: n.categoriaNombre || n.categoria || "",
+            giroNombre: n.giroNombre || n.giro || "",
+            _blob: blob
+          });
+        }
+      } catch { /* ignore */ }
+    }
+    return rows;
   }
 
-  let DATA = load();
-  let FILTER={q:"",cat:"",giro:""};
+  let DATA = loadAll();
 
-  function renderFilters(){
-    const cats=[...new Set(DATA.map(d=>d.categoriaNombre).filter(Boolean))];
-    els("biz-cat").innerHTML='<option value="">Todas</option>'+cats.map(c=>`<option>${c}</option>`).join("");
-    const giros=[...new Set(DATA.map(d=>d.giroNombre).filter(Boolean))];
-    els("biz-giro").innerHTML='<option value="">Todos</option>'+giros.map(g=>`<option>${g}</option>`).join("");
+  // Estado de filtros
+  let FILTER = { q: "", cat: "", giro: "" };
+
+  function renderFilters() {
+    const cats = [...new Set(DATA.map(d => d.categoriaNombre).filter(Boolean))].sort();
+    els("biz-cat").innerHTML =
+      '<option value="">Todas las categorías</option>' +
+      cats.map(c => `<option value="${c}">${c}</option>`).join("");
+
+    const giros = [...new Set(DATA.map(d => d.giroNombre).filter(Boolean))].sort();
+    els("biz-giro").innerHTML =
+      '<option value="">Todos los giros</option>' +
+      giros.map(g => `<option value="${g}">${g}</option>`).join("");
   }
 
-  function apply(){
-    let rows=DATA.filter(d=>{
-      const qok=!FILTER.q||FILTER.q.split(/\s+/).every(t=>d._blob.includes(t));
-      const cok=!FILTER.cat||d.categoriaNombre===FILTER.cat;
-      const gok=!FILTER.giro||d.giroNombre===FILTER.giro;
-      return qok&&cok&&gok;
+  function apply() {
+    const terms = FILTER.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    let rows = DATA.filter(d => {
+      const qok = !terms.length || terms.every(t => d._blob.includes(t));
+      const cok = !FILTER.cat || d.categoriaNombre === FILTER.cat;
+      const gok = !FILTER.giro || d.giroNombre === FILTER.giro;
+      return qok && cok && gok;
     });
     render(rows);
   }
 
-  function render(rows){
-    els("biz-stats").textContent=`${rows.length} de ${DATA.length} negocios`;
-    const grid=els("biz-grid"); grid.innerHTML="";
-    if(!rows.length){els("biz-empty").classList.remove("hidden");return;} 
-    els("biz-empty").classList.add("hidden");
-    rows.forEach(b=>{
-      const card=document.createElement("article");
-      card.className="bg-white rounded-xl border p-5 shadow hover:shadow-md cursor-pointer animate-fade-in";
-      card.innerHTML=`
-        <h3 class="font-bold">${b.nombre}</h3>
-        <p class="text-sm text-slate-600">${b.giroNombre||""}</p>
-        <p class="text-xs text-slate-500">${b.direccion||""}</p>`;
-      card.addEventListener("click",()=>open(b));
+  function render(rows) {
+    const stats = els("biz-stats");
+    const grid = els("biz-grid");
+    const empty = els("biz-empty");
+
+    stats.textContent = `${rows.length} de ${DATA.length} negocios`;
+    grid.innerHTML = "";
+
+    if (!rows.length) {
+      empty.classList.remove("hidden");
+      return;
+    }
+    empty.classList.add("hidden");
+
+    rows.forEach(b => {
+      const card = document.createElement("article");
+      card.className = "bg-white rounded-xl border p-5 shadow hover:shadow-md cursor-pointer animate-fade-in";
+      card.innerHTML = `
+        <h3 class="font-bold">${b.nombre || ""}</h3>
+        <p class="text-sm text-slate-600">${b.giroNombre || ""}</p>
+        <p class="text-xs text-slate-500">${b.direccion || ""}</p>
+      `;
+      card.addEventListener("click", () => open(b));
       grid.appendChild(card);
     });
   }
 
-  function open(b){
-    els("m-cat-pill").textContent=b.categoriaNombre||"";
-    els("m-giro-pill").textContent=b.giroNombre||"";
-    els("m-title").textContent=b.nombre||"";
-    els("m-desc").textContent=b.descripcion||"";
-    els("m-owner").textContent=b.propietario||"";
-    els("m-phone").textContent=b.telefono||"";
-    els("m-email").textContent=b.email||"";
-    els("m-address").textContent=b.direccion||"";
-    els("m-hours").textContent=b.horario||"";
-    els("m-services").innerHTML=b.servicios.map(k=>`<span class="text-xs border px-2 py-1 rounded">${CATALOG[k]?.label||k}</span>`).join("");
-    if(b.giro==="restaurante"&&b.tiposComida.length){
-      els("m-food").classList.remove("hidden");
-      els("m-food-tags").innerHTML=b.tiposComida.map(t=>`<span class="text-xs border px-2 py-1 rounded">${t}</span>`).join("");
-    } else els("m-food").classList.add("hidden");
-    if(b.giro==="restaurante"&&b.menu.length){
-      els("m-menu-box").classList.remove("hidden");
-      els("m-menu").innerHTML=b.menu.map(m=>`<div class="flex justify-between border p-2 rounded"><span>${m.nombre}</span><span>$${m.precio}</span></div>`).join("");
-    } else els("m-menu-box").classList.add("hidden");
-    els("biz-modal").classList.remove("hidden");
+  // Abre modal (si existe en la página)
+  function open(b) {
+    const get = id => document.getElementById(id);
+    if (!get("biz-modal")) return; // evita error si aún no insertas el modal
+
+    get("m-cat-pill").textContent = b.categoriaNombre || "";
+    get("m-giro-pill").textContent = b.giroNombre || "";
+    get("m-title").textContent = b.nombre || "";
+    get("m-desc").textContent = b.descripcion || "";
+    get("m-owner").textContent = b.propietario || "";
+    get("m-phone").textContent = b.telefono || "";
+    get("m-email").textContent = b.email || "";
+    get("m-address").textContent = b.direccion || "";
+    get("m-hours").textContent = b.horario || "";
+    get("m-services").innerHTML = (b.servicios || [])
+      .map(k => `<span class="text-xs border px-2 py-1 rounded">${CATALOG[k]?.label || k}</span>`).join("");
+
+    if (b.giro === "restaurante" && (b.tiposComida || []).length) {
+      get("m-food").classList.remove("hidden");
+      get("m-food-tags").innerHTML = b.tiposComida.map(t => `<span class="text-xs border px-2 py-1 rounded">${t}</span>`).join("");
+    } else get("m-food").classList.add("hidden");
+
+    if (b.giro === "restaurante" && (b.menu || []).length) {
+      get("m-menu-box").classList.remove("hidden");
+      get("m-menu").innerHTML = b.menu.map(m =>
+        `<div class="flex justify-between border p-2 rounded"><span>${m.nombre}</span><span>$${m.precio}</span></div>`
+      ).join("");
+    } else get("m-menu-box").classList.add("hidden");
+
+    get("biz-modal").classList.remove("hidden");
   }
 
-  // Events
-  els("biz-q").addEventListener("input",e=>{FILTER.q=e.target.value.toLowerCase();apply();});
-  els("biz-cat").addEventListener("change",e=>{FILTER.cat=e.target.value;apply();});
-  els("biz-giro").addEventListener("change",e=>{FILTER.giro=e.target.value;apply();});
-  els("biz-modal-close").addEventListener("click",()=>els("biz-modal").classList.add("hidden"));
-  window.addEventListener("storage",e=>{if(e.key===STORAGE_KEY){DATA=load();renderFilters();apply();}});
+  // Eventos de UI
+  els("biz-q").addEventListener("input", (e) => { FILTER.q = e.target.value; apply(); });
+  els("biz-cat").addEventListener("change", (e) => { FILTER.cat = e.target.value; apply(); });
+  els("biz-giro").addEventListener("change", (e) => { FILTER.giro = e.target.value; apply(); });
 
-  // Init
-  renderFilters(); apply();
+  const closeBtn = document.getElementById("biz-modal-close");
+  if (closeBtn) closeBtn.addEventListener("click", () => els("biz-modal").classList.add("hidden"));
+
+  // Escucha cambios desde el Admin (si guardan en cualquier llave)
+  window.addEventListener("storage", (e) => {
+    if (STORAGE_KEYS.includes(e.key)) {
+      DATA = loadAll();
+      renderFilters();
+      apply();
+    }
+  });
+
+  // Init: siempre muestra todo al cargar
+  renderFilters();
+  apply();
+
+  // Mensaje amistoso si no hay datos en ninguna llave
+  if (!DATA.length) {
+    els("biz-stats").textContent = "0 negocios (aún no hay registros)";
+    els("biz-empty").classList.remove("hidden");
+  }
 })();
 </script>
+
