@@ -27,7 +27,14 @@
         <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Programas Disponibles</h2>
         <p class="text-xl text-gray-600 max-w-2xl mx-auto">Conoce todos los programas sociales que tenemos para ti</p>
       </div>
+
+      <!-- Grid -->
       <div id="programs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+
+      <!-- Empty state -->
+      <div id="programs-empty" class="text-center text-gray-500 hidden">
+        Aún no hay programas activos para mostrar.
+      </div>
     </div>
   </section>
 
@@ -97,59 +104,140 @@
 <script>
 (() => {
   const STORAGE_KEY = 'municipio.solicitudes.v1';
-  const programs = [
-    { id:'desayunos-escolares', name:'Desayunos Escolares', desc:'Alimentación para estudiantes de primaria y secundaria', icon:'fas fa-utensils' },
-    { id:'apoyo-economico', name:'Apoyo Económico Familiar', desc:'Subsidio para familias en situación vulnerable', icon:'fas fa-hand-holding-usd' },
-    { id:'limpieza-fachadas', name:'Limpieza de Fachadas', desc:'Mantenimiento y limpieza de frentes de viviendas', icon:'fas fa-broom' },
-    { id:'campanas-salud', name:'Campañas de Salud', desc:'Consultas médicas, vacunación y estudios preventivos', icon:'fas fa-heartbeat' },
-    { id:'becas-educativas', name:'Becas Educativas', desc:'Apoyo económico a estudiantes de bajos recursos', icon:'fas fa-graduation-cap' },
-    { id:'adultos-mayores', name:'Programa Adultos Mayores', desc:'Servicios integrales para personas mayores', icon:'fas fa-user-friends' },
-    { id:'emprendimiento', name:'Apoyo al Emprendimiento', desc:'Capacitación y microcréditos para pequeños negocios', icon:'fas fa-store' },
-    { id:'deporte-cultura', name:'Deporte y Cultura', desc:'Talleres y actividades deportivas y culturales', icon:'fas fa-running' }
-  ];
-
   let requests = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(requests)); }
-  function generateId(){ const y=new Date().getFullYear(); return `REQ-${y}-${(requests.length+1).toString().padStart(3,'0')}`; }
 
-  // Render program cards
-  function renderPrograms(){
-    const grid=document.getElementById('programs-grid');
-    grid.innerHTML=programs.map(p=>`
-      <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 flex flex-col">
-        <div class="flex items-center mb-4">
-          <div class="bg-blue-100 text-blue-600 rounded-full p-4 mr-4"><i class="${p.icon} text-2xl"></i></div>
-          <div>
-            <h3 class="text-lg font-bold text-gray-800">${p.name}</h3>
-            <p class="text-sm text-gray-600">${p.desc}</p>
-          </div>
-        </div>
-        <button onclick="selectProgram('${p.id}')" class="mt-auto bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Solicitar</button>
-      </div>
-    `).join('');
-    document.getElementById('program').innerHTML='<option value="">Selecciona un programa</option>'+programs.map(p=>`<option value="${p.name}">${p.name}</option>`).join('');
+  // ---- Helpers ----
+  const iconByCategory = (cat) => ({
+    'Alimentación': 'fas fa-utensils',
+    'Salud': 'fas fa-heartbeat',
+    'Economía': 'fas fa-hand-holding-usd',
+    'Vivienda': 'fas fa-home',
+    'Educación': 'fas fa-graduation-cap',
+    'Limpieza/Servicios': 'fas fa-broom',
+    'Cultura/Deporte': 'fas fa-running',
+    'Otros': 'fas fa-hands-helping'
+  }[cat] || 'fas fa-hands-helping');
+
+  const getPublicPrograms = () => {
+    try {
+      // Prefer official getter from the admin module
+      if (window.Programas && typeof window.Programas.getPublic === 'function') {
+        return window.Programas.getPublic(); // [{id,name,desc,requisitos,dependencia,category}]
+      }
+      // Fallback: read LS and filter active=true
+      const raw = JSON.parse(localStorage.getItem('municipio.programas.v1') || '[]');
+      return raw.filter(p => p && p.active).map(p => ({
+        id: p.id, name: p.name, desc: p.desc, requisitos: p.requisitos, dependencia: p.dependencia, category: p.category
+      }));
+    } catch {
+      return [];
+    }
+  };
+
+  function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(requests)); }
+  function generateId(){
+    const y = new Date().getFullYear();
+    // ensure unique even if tab refreshes
+    const seq = (Date.now()%1e7).toString(36);
+    return `REQ-${y}-${seq.toUpperCase()}`;
   }
 
-  // Form submission
-  document.getElementById('support-form').addEventListener('submit',e=>{
+  // ---- Rendering ----
+  function renderPrograms(){
+    const list = getPublicPrograms();
+    const grid  = document.getElementById('programs-grid');
+    const empty = document.getElementById('programs-empty');
+
+    grid.innerHTML = '';
+    document.getElementById('program').innerHTML = '<option value="">Selecciona un programa</option>';
+
+    if (!list.length){
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+
+    // Cards
+    list.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 flex flex-col';
+      const icon = iconByCategory(p.category);
+      card.innerHTML = `
+        <div class="flex items-center mb-4">
+          <div class="bg-blue-100 text-blue-600 rounded-full p-4 mr-4"><i class="${icon} text-2xl"></i></div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-800">${p.name || 'Programa'}</h3>
+            <p class="text-sm text-gray-600">${p.desc || ''}</p>
+            <div class="text-xs text-gray-500 mt-1">${p.dependencia ? ('Dependencia: ' + p.dependencia) : ''}</div>
+          </div>
+        </div>
+        ${
+          Array.isArray(p.requisitos) && p.requisitos.length
+            ? `<div class="text-xs text-gray-600 mb-4">
+                 <div class="font-semibold text-gray-700 mb-1">Requisitos:</div>
+                 <ul class="list-disc pl-5 space-y-0.5">
+                   ${p.requisitos.map(r=>`<li>${r}</li>`).join('')}
+                 </ul>
+               </div>`
+            : ''
+        }
+        <button data-program="${String(p.name||'')}"
+          class="mt-auto bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+          Solicitar
+        </button>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Dropdown (form)
+    const options = list.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+    document.getElementById('program').insertAdjacentHTML('beforeend', options);
+
+    // Bind “Solicitar” buttons
+    grid.querySelectorAll('button[data-program]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.getElementById('program').value = btn.dataset.program || '';
+        openForm();
+      });
+    });
+  }
+
+  // Re-render if admin updates programs in another tab
+  window.addEventListener('storage', (e)=>{
+    if (e.key === 'municipio.programas.v1') renderPrograms();
+  });
+
+  // ---- Form submission ----
+  document.getElementById('support-form').addEventListener('submit', e=>{
     e.preventDefault();
-    const data=Object.fromEntries(new FormData(e.target).entries());
-    const request={id:generateId(),...data,status:'pending',submissionDate:new Date().toISOString().split('T')[0]};
+    const data = Object.fromEntries(new FormData(e.target).entries());
+    const request = {
+      id: generateId(),
+      ...data,
+      status: 'pending',
+      submissionDate: new Date().toISOString().split('T')[0]
+    };
     requests.unshift(request); save();
-    document.getElementById('request-id').textContent=request.id;
-    closeForm(); document.getElementById('success-modal').classList.remove('hidden');
+
+    document.getElementById('request-id').textContent = request.id;
+    closeForm();
+    document.getElementById('success-modal').classList.remove('hidden');
     e.target.reset();
   });
 
-  // Modal controls
-  window.openForm=()=>document.getElementById('form-modal').classList.remove('hidden');
-  window.closeForm=()=>document.getElementById('form-modal').classList.add('hidden');
-  window.selectProgram=id=>{const p=programs.find(x=>x.id===id); if(p){document.getElementById('program').value=p.name; openForm();}};
-  window.closeSuccessModal=()=>document.getElementById('success-modal').classList.add('hidden');
+  // ---- Modal controls ----
+  window.openForm  = () => document.getElementById('form-modal').classList.remove('hidden');
+  window.closeForm = () => document.getElementById('form-modal').classList.add('hidden');
+  window.closeSuccessModal = () => document.getElementById('success-modal').classList.add('hidden');
 
-  // Expose for admin
-  window.Servicios={getSolicitudes:()=>JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')};
+  // ---- Expose for admin dashboards if needed ----
+  window.Servicios = { getSolicitudes: () => JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') };
 
-  renderPrograms();
+  // Init
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderPrograms);
+  } else {
+    renderPrograms();
+  }
 })();
 </script>
