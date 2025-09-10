@@ -174,7 +174,7 @@
   </section>
 
   <!-- Modal Detalles -->
-  <div id="pp-modal" class="fixed inset-0 z-50 hidden" style="max-height: 80vh;overflow: auto;">
+  <div id="pp-modal" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/40" data-close></div>
     <div class="relative max-w-4xl mx-auto mt-10 mb-10 bg-white rounded-2xl shadow-2xl overflow-hidden">
       <header class="px-6 py-4 bg-gradient-to-r from-municipal-blue to-municipal-teal text-white">
@@ -183,7 +183,7 @@
           <button id="pp-modal-close" class="text-white/90 hover:text-white"><i class="fas fa-times text-xl"></i></button>
         </div>
       </header>
-      <div id="pp-modal-body" class="p-6 space-y-6"></div>
+      <div id="pp-modal-body" class="p-6 space-y-6" style="max-height: 80vh;overflow: auto;"></div>
     </div>
   </div>
 </section>
