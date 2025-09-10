@@ -1,0 +1,439 @@
+<!-- GobiernoEstructuraAdmin.html (Unified: Cabildo + Secretarías + Direcciones) -->
+<section id="GobEstructuraAdmin" class="section-content p-6" data-bound="0">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Estructura de Gobierno</h2>
+      <p class="text-gov-gray">Gestión unificada de Cabildo, Secretarías y Direcciones</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="add-btn" class="bg-gov-blue text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition flex items-center">
+        <i class="fas fa-plus mr-2"></i> <span id="add-btn-label">Agregar</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+    <div class="border-b bg-gray-50">
+      <nav class="flex flex-wrap">
+        <button data-tab="cabildo" class="tab-btn px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-white focus:outline-none border-b-2 border-transparent">Cabildo</button>
+        <button data-tab="secretarias" class="tab-btn px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-white focus:outline-none border-b-2 border-transparent">Secretarías</button>
+        <button data-tab="direcciones" class="tab-btn px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-white focus:outline-none border-b-2 border-transparent">Direcciones</button>
+        <div class="ml-auto px-4 py-2 text-xs text-gray-500">Click una tarjeta para editar</div>
+      </nav>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6">
+      <div id="cabildo-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <div id="secretarias-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"></div>
+      <div id="direcciones-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"></div>
+
+      <div id="empty-state" class="text-center py-16 hidden">
+        <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-database text-gray-400 text-2xl"></i>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Aún no hay registros</h3>
+        <p class="text-gray-600 mb-4">Agrega el primero para comenzar.</p>
+        <button id="empty-add" class="bg-gov-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+          <i class="fas fa-plus mr-2"></i> Agregar
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Shared Modal (Create/Edit) ===== -->
+<div id="modal" class="fixed inset-0 bg-black/50 hidden z-50">
+  <div class="absolute inset-0 backdrop-blur-sm"></div>
+  <div class="relative mx-auto my-10 max-w-3xl bg-white rounded-2xl shadow-xl overflow-hidden" style="max-height: 90vh;">
+    <div class="flex items-center justify-between px-6 py-4 border-b">
+      <h3 id="modal-title" class="text-xl font-bold text-gray-800">Nuevo</h3>
+      <button id="modal-close" class="text-gray-500 hover:text-gray-800">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+    <form id="modal-form" class="p-6 space-y-5 overflow-y-auto" style="max-height: calc(90vh - 64px);">
+      <div id="form-fields"></div>
+      <div class="flex items-center justify-between pt-2">
+        <button type="button" id="modal-delete" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 hidden">
+          <i class="fas fa-trash mr-2"></i>Eliminar
+        </button>
+        <div class="ml-auto flex gap-2">
+          <button type="button" id="modal-cancel" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">Cancelar</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-gov-blue text-white hover:bg-blue-700">Guardar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== Confirm Delete ===== -->
+<div id="confirm-modal" class="fixed inset-0 bg-black/50 hidden z-50">
+  <div class="absolute inset-0 backdrop-blur-sm"></div>
+  <div class="relative mx-auto my-20 max-w-md bg-white rounded-2xl shadow-xl p-6">
+    <h4 class="text-lg font-bold text-gray-800 mb-2">Confirmar eliminación</h4>
+    <p class="text-gray-600 mb-6">Esta acción no se puede deshacer.</p>
+    <div class="flex justify-end gap-2">
+      <button id="confirm-cancel-btn" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">Cancelar</button>
+      <button id="confirm-delete-btn" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  // ===== Storage keys =====
+  const KEYS = {
+    cabildo: 'cabildo',
+    secretarias: 'secretarias',
+    direcciones: 'direcciones'
+  };
+
+  // ===== State =====
+  let activeTab = 'cabildo';
+  let editingId = null;
+
+  // ===== Seeds (same spirit as your modules) =====
+  const SEEDS = {
+    cabildo: [
+      { id: 1, nombre: "Lic. José Manuel Rodríguez", titulo: "Primer Regidor", descripcion: "Comisión de Hacienda y Patrimonio", telefono: "(873) 742-0040", email: "regidor1@sabinashidalgo.gob.mx", partido: "Partido Acción Nacional", icono: "fas fa-user-tie" },
+      { id: 2, nombre: "Lic. Carmen Beatriz López", titulo: "Segunda Regidora", descripcion: "Comisión de Desarrollo Social", telefono: "(873) 742-0041", email: "regidor2@sabinashidalgo.gob.mx", partido: "Movimiento Ciudadano", icono: "fas fa-female" },
+      { id: 3, nombre: "Ing. Fernando Castillo Vega", titulo: "Tercer Regidor", descripcion: "Comisión de Obras Públicas", telefono: "(873) 742-0042", email: "regidor3@sabinashidalgo.gob.mx", partido: "Partido Revolucionario Institucional", icono: "fas fa-user-tie" }
+    ],
+    secretarias: [
+      { id: 1, nombre: "Secretaría del Ayuntamiento", responsable: "Lic. Carlos Mendoza Ruiz", titulo: "Secretario del Ayuntamiento", descripcion: "Administración general y actas de cabildo", telefono: "(873) 742-0001", email: "secretaria@sabinashidalgo.gob.mx", icono: "fas fa-gavel" },
+      { id: 2, nombre: "Secretaría de Finanzas", responsable: "C.P. María Elena Torres", titulo: "Secretaria de Finanzas", descripcion: "Administración de recursos financieros municipales", telefono: "(873) 742-0015", email: "finanzas@sabinashidalgo.gob.mx", icono: "fas fa-coins" },
+      { id: 3, nombre: "Secretaría de Desarrollo Social", responsable: "Lic. Roberto Hernández", titulo: "Secretario de Desarrollo Social", descripcion: "Programas sociales y desarrollo comunitario", telefono: "(873) 742-0020", email: "desarrollo@sabinashidalgo.gob.mx", icono: "fas fa-heart" }
+    ],
+    direcciones: [
+      { id: 1, nombre: "Dirección de Salud", responsable: "Dra. Patricia Flores Vega", titulo: "Directora de Salud", descripcion: "Programas de salud pública y prevención", telefono: "(873) 742-0025", email: "salud@sabinashidalgo.gob.mx", icono: "fas fa-heartbeat" },
+      { id: 2, nombre: "Dirección de Obras Públicas", responsable: "Ing. Miguel Ángel Sánchez", titulo: "Director de Obras Públicas", descripcion: "Infraestructura y mantenimiento urbano", telefono: "(873) 742-0030", email: "obras@sabinashidalgo.gob.mx", icono: "fas fa-hard-hat" },
+      { id: 3, nombre: "Dirección de Educación y Cultura", responsable: "Profra. Ana Lucía Morales", titulo: "Directora de Educación", descripcion: "Programas educativos y actividades culturales", telefono: "(873) 742-0035", email: "educacion@sabinashidalgo.gob.mx", icono: "fas fa-graduation-cap" }
+    ]
+  };
+
+  // ===== Storage helpers =====
+  const loadAll = (k) => {
+    const raw = localStorage.getItem(KEYS[k]);
+    if (!raw) { localStorage.setItem(KEYS[k], JSON.stringify(SEEDS[k])); return SEEDS[k].slice(); }
+    try { return JSON.parse(raw); } catch { return SEEDS[k].slice(); }
+  };
+  const saveAll = (k, arr) => localStorage.setItem(KEYS[k], JSON.stringify(arr));
+
+  // ===== UI helpers =====
+  const $ = (q) => document.querySelector(q);
+  const $$ = (q) => Array.from(document.querySelectorAll(q));
+  const gid = ()=> Date.now();
+
+  function setActiveTab(tab){
+    activeTab = tab;
+    $$('.tab-btn').forEach(b=>{
+      const on = b.dataset.tab === tab;
+      b.classList.toggle('border-gov-blue', on);
+      b.classList.toggle('text-gov-blue', on);
+      b.classList.toggle('bg-white', on);
+      b.classList.toggle('border-b-2', true);
+    });
+
+    // Switch grids
+    $('#cabildo-grid').classList.toggle('hidden', tab!=='cabildo');
+    $('#secretarias-grid').classList.toggle('hidden', tab!=='secretarias');
+    $('#direcciones-grid').classList.toggle('hidden', tab!=='direcciones');
+
+    // Update Add button label
+    $('#add-btn-label').textContent =
+      tab==='cabildo' ? 'Agregar Miembro'
+      : tab==='secretarias' ? 'Agregar Secretaría'
+      : 'Agregar Dirección';
+
+    renderGrid(tab);
+  }
+
+  function cardCabildo(it){
+    return `
+      <article class="bg-white rounded-xl shadow-sm p-6 card-hover fade-in cursor-pointer" data-id="${it.id}" data-kind="cabildo">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center">
+            <div class="bg-gov-blue/10 p-3 rounded-lg mr-3"><i class="${it.icono||'fas fa-user-tie'} text-gov-blue text-xl"></i></div>
+            <div>
+              <h3 class="font-bold text-gray-800 text-lg">${it.nombre||''}</h3>
+              <p class="text-gov-gray text-sm">${it.titulo||''}</p>
+            </div>
+          </div>
+          <button class="text-red-600 hover:bg-red-50 p-2 rounded-lg transition del-btn" title="Eliminar" data-id="${it.id}" data-kind="cabildo"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="space-y-2 mb-2">
+          <p class="text-sm text-gov-gray"><i class="fas fa-phone mr-2"></i>${it.telefono||''}</p>
+          <p class="text-sm text-gov-gray"><i class="fas fa-envelope mr-2"></i>${it.email||''}</p>
+          <p class="text-sm text-gov-gray"><i class="fas fa-flag mr-2"></i>${it.partido||''}</p>
+        </div>
+        <p class="text-gray-700 text-sm">${it.descripcion||''}</p>
+      </article>`;
+  }
+  function cardSecretaria(it){
+    return `
+      <article class="bg-white rounded-xl shadow-sm p-6 card-hover fade-in cursor-pointer" data-id="${it.id}" data-kind="secretarias">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center">
+            <div class="bg-gov-blue/10 p-3 rounded-lg mr-3"><i class="${it.icono||'fas fa-building'} text-gov-blue text-xl"></i></div>
+            <div>
+              <h3 class="font-bold text-gray-800 text-lg">${it.nombre||''}</h3>
+              <p class="text-gov-gray text-sm">${it.titulo||''}</p>
+            </div>
+          </div>
+          <button class="text-red-600 hover:bg-red-50 p-2 rounded-lg transition del-btn" title="Eliminar" data-id="${it.id}" data-kind="secretarias"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="space-y-2 mb-2">
+          <p class="text-sm text-gov-gray"><i class="fas fa-user mr-2"></i>${it.responsable||''}</p>
+          <p class="text-sm text-gov-gray"><i class="fas fa-phone mr-2"></i>${it.telefono||''}</p>
+          <p class="text-sm text-gov-gray"><i class="fas fa-envelope mr-2"></i>${it.email||''}</p>
+        </div>
+        <p class="text-gray-700 text-sm">${it.descripcion||''}</p>
+      </article>`;
+  }
+  function cardDireccion(it){
+    return `
+      <article class="bg-white rounded-xl shadow-sm p-6 card-hover fade-in cursor-pointer" data-id="${it.id}" data-kind="direcciones">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center">
+            <div class="bg-gov-blue/10 p-3 rounded-lg mr-3"><i class="${it.icono||'fas fa-building'} text-gov-blue text-xl"></i></div>
+            <div>
+              <h3 class="font-bold text-gray-800 text-lg">${it.nombre||''}</h3>
+              <p class="text-gov-gray text-sm">${it.titulo||''}</p>
+            </div>
+          </div>
+          <button class="text-red-600 hover:bg-red-50 p-2 rounded-lg transition del-btn" title="Eliminar" data-id="${it.id}" data-kind="direcciones"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="space-y-2 mb-2">
+          <p class="text-sm text-gov-gray"><i class="fas fa-user mr-2"></i>${it.responsable||''}</p>
+          <p class="text-sm text-gov-gray"><i class="fas fa-phone mr-2"></i>${it.telefono||''}</p>
+          <p class="text-sm text-gov-gray"><i class="fas fa-envelope mr-2"></i>${it.email||''}</p>
+        </div>
+        <p class="text-gray-700 text-sm">${it.descripcion||''}</p>
+      </article>`;
+  }
+
+  function renderGrid(kind){
+    const data = loadAll(kind);
+    const gridId = kind + '-grid';
+    const grid = document.getElementById(gridId);
+    const empty = document.getElementById('empty-state');
+
+    grid.innerHTML =
+      kind==='cabildo' ? data.map(cardCabildo).join('') :
+      kind==='secretarias' ? data.map(cardSecretaria).join('') :
+      data.map(cardDireccion).join('');
+
+    // Empty state toggle
+    const other1 = kind==='cabildo' ? $('#secretarias-grid') : $('#cabildo-grid');
+    const other2 = $('#direcciones-grid');
+    const visibleCount = grid.querySelectorAll('article').length;
+    empty.classList.toggle('hidden', visibleCount>0);
+    if (visibleCount===0){
+      // keep the empty state inside container visually
+      $('#empty-add').onclick = ()=> openModal(kind);
+    }
+
+    // Bind: open edit on card click, delete on trash button
+    grid.querySelectorAll('article').forEach(card=>{
+      const id = +card.dataset.id;
+      const k  = card.dataset.kind;
+      card.addEventListener('click', (e)=>{
+        // ignore clicks on delete button; those bubble from inside
+        if (e.target.closest('.del-btn')) return;
+        openModal(k, id);
+      });
+    });
+    grid.querySelectorAll('.del-btn').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        confirmDelete(btn.dataset.kind, +btn.dataset.id);
+      });
+    });
+  }
+
+  // ===== Modal (dynamic fields) =====
+  function fieldsFor(kind){
+    if (kind==='cabildo'){
+      return `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="block text-sm font-medium mb-2">Nombre *</label><input id="f-nombre" required class="w-full px-4 py-2 border rounded-lg"></div>
+          <div><label class="block text-sm font-medium mb-2">Título/Cargo *</label><input id="f-titulo" required class="w-full px-4 py-2 border rounded-lg"></div>
+        </div>
+        <div><label class="block text-sm font-medium mb-2">Descripción *</label><textarea id="f-descripcion" rows="3" required class="w-full px-4 py-2 border rounded-lg"></textarea></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="block text-sm font-medium mb-2">Teléfono *</label><input id="f-telefono" required class="w-full px-4 py-2 border rounded-lg"></div>
+          <div><label class="block text-sm font-medium mb-2">Email *</label><input id="f-email" type="email" required class="w-full px-4 py-2 border rounded-lg"></div>
+        </div>
+        <div><label class="block text-sm font-medium mb-2">Partido Político</label>
+          <select id="f-partido" class="w-full px-4 py-2 border rounded-lg">
+            <option value="">Seleccionar</option>
+            <option>Partido Acción Nacional</option>
+            <option>Partido Revolucionario Institucional</option>
+            <option>Movimiento Ciudadano</option>
+            <option>MORENA</option>
+            <option>Independiente</option>
+          </select>
+        </div>
+        <div><label class="block text-sm font-medium mb-2">Icono</label>
+          <select id="f-icono" class="w-full px-4 py-2 border rounded-lg">
+            <option value="fas fa-user-tie">Usuario Formal</option>
+            <option value="fas fa-female">Mujer</option>
+          </select>
+        </div>`;
+    }
+    // Secretarías & Direcciones share same fields
+    return `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div><label class="block text-sm font-medium mb-2">Nombre *</label><input id="f-nombre" required class="w-full px-4 py-2 border rounded-lg"></div>
+        <div><label class="block text-sm font-medium mb-2">${kind==='secretarias'?'Responsable *':'Responsable *'}</label><input id="f-responsable" required class="w-full px-4 py-2 border rounded-lg"></div>
+      </div>
+      <div><label class="block text-sm font-medium mb-2">Título/Cargo *</label><input id="f-titulo" required class="w-full px-4 py-2 border rounded-lg"></div>
+      <div><label class="block text-sm font-medium mb-2">Descripción *</label><textarea id="f-descripcion" rows="3" required class="w-full px-4 py-2 border rounded-lg"></textarea></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div><label class="block text-sm font-medium mb-2">Teléfono *</label><input id="f-telefono" required class="w-full px-4 py-2 border rounded-lg"></div>
+        <div><label class="block text-sm font-medium mb-2">Email *</label><input id="f-email" type="email" required class="w-full px-4 py-2 border rounded-lg"></div>
+      </div>
+      <div><label class="block text-sm font-medium mb-2">Icono</label>
+        <select id="f-icono" class="w-full px-4 py-2 border rounded-lg">
+          <option value="fas fa-building">Edificio</option>
+          <option value="fas fa-gavel">Martillo</option>
+          <option value="fas fa-coins">Monedas</option>
+          <option value="fas fa-heart">Corazón</option>
+          <option value="fas fa-heartbeat">Salud</option>
+          <option value="fas fa-hard-hat">Obras</option>
+          <option value="fas fa-graduation-cap">Educación</option>
+          <option value="fas fa-user-tie">Usuario Formal</option>
+          <option value="fas fa-female">Mujer</option>
+          <option value="fas fa-leaf">Ecología</option>
+          <option value="fas fa-shield-alt">Seguridad</option>
+        </select>
+      </div>`;
+  }
+
+  function openModal(kind=activeTab, id=null){
+    editingId = id;
+    $('#modal-title').textContent = (id ? 'Editar ' : 'Agregar ') +
+      (kind==='cabildo' ? 'Miembro de Cabildo' : kind==='secretarias' ? 'Secretaría' : 'Dirección');
+
+    $('#form-fields').innerHTML = fieldsFor(kind);
+    $('#modal').classList.remove('hidden');
+    $('#modal-delete').classList.toggle('hidden', !id);
+    $('#modal-delete').onclick = ()=> confirmDelete(kind, id);
+
+    if (id){
+      const it = loadAll(kind).find(x=>x.id===id);
+      if (it){
+        // Common fields
+        setVal('f-nombre', it.nombre);
+        setVal('f-titulo', it.titulo);
+        setVal('f-descripcion', it.descripcion);
+        setVal('f-telefono', it.telefono);
+        setVal('f-email', it.email);
+        setVal('f-icono', it.icono);
+
+        // Specifics
+        if (kind==='cabildo'){
+          setVal('f-partido', it.partido || '');
+        } else {
+          setVal('f-responsable', it.responsable);
+        }
+      }
+    }
+
+    // Submit
+    $('#modal-form').onsubmit = (e)=>{
+      e.preventDefault();
+      const data = collectData(kind);
+      if (!data) return; // minimal guard
+
+      const arr = loadAll(kind);
+      if (id){
+        const i = arr.findIndex(x=>x.id===id);
+        if (i>-1) arr[i] = { ...arr[i], ...data };
+      } else {
+        arr.push({ id: gid(), ...data });
+      }
+      saveAll(kind, arr);
+      closeModal();
+      renderGrid(kind);
+    };
+  }
+  function closeModal(){
+    $('#modal').classList.add('hidden');
+    editingId = null;
+  }
+  function setVal(id,val){ const el = document.getElementById(id); if (el!=null) el.value = val ?? ''; }
+
+  function collectData(kind){
+    const nombre = $('#f-nombre')?.value.trim();
+    const titulo = $('#f-titulo')?.value.trim();
+    const descripcion = $('#f-descripcion')?.value.trim();
+    const telefono = $('#f-telefono')?.value.trim();
+    const email = $('#f-email')?.value.trim();
+    const icono = $('#f-icono')?.value || '';
+    if (!nombre || !titulo || !descripcion || !telefono || !email) { alert('Completa los campos obligatorios (*)'); return null; }
+
+    if (kind==='cabildo'){
+      const partido = $('#f-partido')?.value || '';
+      return { nombre, titulo, descripcion, telefono, email, partido, icono };
+    } else {
+      const responsable = $('#f-responsable')?.value.trim();
+      if (!responsable) { alert('Completa el Responsable (*)'); return null; }
+      return { nombre, responsable, titulo, descripcion, telefono, email, icono };
+    }
+  }
+
+  // ===== Delete flow =====
+  let pendingDelete = { kind:null, id:null };
+  function confirmDelete(kind, id){
+    pendingDelete = { kind, id };
+    $('#confirm-modal').classList.remove('hidden');
+  }
+  function doDelete(){
+    const { kind, id } = pendingDelete;
+    if (!kind || !id) return;
+    const arr = loadAll(kind).filter(x=>x.id!==id);
+    saveAll(kind, arr);
+    $('#confirm-modal').classList.add('hidden');
+    renderGrid(kind);
+    pendingDelete = { kind:null, id:null };
+  }
+
+  // ===== Init / Bindings =====
+  function bind(){
+    // Tabs
+    $$('.tab-btn').forEach(b=> b.addEventListener('click', ()=> setActiveTab(b.dataset.tab)));
+    // Add buttons
+    $('#add-btn').addEventListener('click', ()=> openModal(activeTab));
+    $('#empty-add').addEventListener('click', ()=> openModal(activeTab));
+    // Modal controls
+    $('#modal-close').addEventListener('click', closeModal);
+    $('#modal-cancel').addEventListener('click', closeModal);
+    // Confirm modal
+    $('#confirm-cancel-btn').addEventListener('click', ()=> $('#confirm-modal').classList.add('hidden'));
+    $('#confirm-delete-btn').addEventListener('click', doDelete);
+  }
+
+  function init(){
+    const root = document.getElementById('GobEstructuraAdmin');
+    if (!root || root.dataset.bound==='1') return;
+    root.dataset.bound = '1';
+
+    // Prime storage with seeds if empty
+    ['cabildo','secretarias','direcciones'].forEach(k=>{
+      const raw = localStorage.getItem(KEYS[k]);
+      if (!raw) localStorage.setItem(KEYS[k], JSON.stringify(SEEDS[k]));
+    });
+
+    bind();
+    setActiveTab('cabildo'); // default
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>

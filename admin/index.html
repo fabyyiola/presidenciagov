@@ -111,11 +111,10 @@
     </header>
 
     <!-- Sidebar (preserved) -->
-<aside
-  id="sidebar"
-  class="fixed left-0 top-16 bottom-0 w-64 bg-white shadow-lg overflow-y-auto
-         transform -translate-x-full lg:translate-x-0 sidebar-transition z-30"
->
+    <aside
+      id="sidebar"
+      class="fixed left-0 top-16 bottom-0 w-64 bg-white shadow-lg overflow-y-auto transform -translate-x-full lg:translate-x-0 sidebar-transition z-30"
+    >
       <nav class="p-6">
         <ul class="space-y-2">
           <!-- Equipo -->
@@ -182,37 +181,37 @@
               data-route="turismo"
               class="spa-link nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200"
             >
-                <i class="fas fa-map-marked-alt mr-3"></i> Turismo
+              <i class="fas fa-map-marked-alt mr-3"></i> Turismo
             </a>
-          </li> 
+          </li>
           <li>
             <a
               href="#eventos"
               data-route="eventos"
               class="spa-link nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200"
             >
-             <i class="fas fa-calendar-alt mr-3"></i> Eventos
+              <i class="fas fa-calendar-alt mr-3"></i> Eventos
             </a>
           </li>
-           <li>
+          <li>
             <a
               href="#tramites"
               data-route="tramites"
               class="spa-link nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200"
             >
-               <i class="fas fa-file-signature mr-3"></i> Tramites
+              <i class="fas fa-file-signature mr-3"></i> Tramites
             </a>
           </li>
-            <li>
+          <li>
             <a
               href="#transparencia"
               data-route="transparencia"
               class="spa-link nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200"
             >
-               <i class="fas fa-file-alt mr-3"></i> Transparencia
+              <i class="fas fa-file-alt mr-3"></i> Transparencia
             </a>
           </li>
-           <li>
+          <li>
             <a
               href="#proyectos"
               data-route="proyectos"
@@ -221,7 +220,7 @@
               <i class="fas fa-project-diagram mr-3"></i>Proyectos
             </a>
           </li>
-           <li>
+          <li>
             <a
               href="#contactos"
               data-route="contactos"
@@ -256,13 +255,23 @@
             >
               <i class="fas fa-heart mr-3"></i>Programas
             </a>
-          </li> <li>
+          </li>
+          <li>
             <a
               href="#apoyos"
               data-route="apoyos"
               class="spa-link nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200"
             >
               <i class="fas fa-first-aid mr-3"></i>Apoyos
+            </a>
+          </li>
+          <li>
+            <a
+              href="#equipo"
+              data-route="equipo"
+              class="spa-link nav-link flex items-center p-3 rounded-lg text-gov-gray hover:bg-gov-blue hover:text-white transition duration-200"
+            >
+              <i class="fas fa-first-aid mr-3"></i>Equipo
             </a>
           </li>
         </ul>
@@ -398,7 +407,8 @@
         noticias: "Noticias.html",
         accesos: "AccesosDir.html",
         programas: "Programas.html",
-        apoyos:"Apoyos.html"
+        apoyos: "Apoyos.html",
+        equipo: "Equipo.html",
       };
 
       const app = document.getElementById("app");
