@@ -1,1065 +1,1605 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro Ciudadano - Sabinas Hidalgo, Nuevo León</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'municipal-blue': '#2563eb',
-                        'municipal-teal': '#14b8a6',
-                        'municipal-pink': '#f87171',
-                        'municipal-green': '#22c55e'
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "municipal-blue": "#2563eb",
+              "municipal-teal": "#14b8a6",
+              "municipal-pink": "#f87171",
+              "municipal-green": "#22c55e",
+            },
+          },
+        },
+      };
     </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        .step-indicator {
-            transition: all 0.3s ease;
+      .step-indicator {
+        transition: all 0.3s ease;
+      }
+      .step-active {
+        background: linear-gradient(135deg, #2563eb, #14b8a6);
+        color: white;
+      }
+      .step-completed {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: white;
+      }
+      .camera-preview {
+        border: 3px dashed #2563eb;
+        border-radius: 12px;
+        background: #f8fafc;
+      }
+      .upload-zone {
+        border: 2px dashed #cbd5e1;
+        transition: all 0.3s ease;
+      }
+      .upload-zone:hover {
+        border-color: #2563eb;
+        background-color: #f1f5f9;
+      }
+      .upload-zone.dragover {
+        border-color: #2563eb;
+        background-color: #dbeafe;
+      }
+      .form-section {
+        display: none;
+      }
+      .form-section.active {
+        display: block;
+        animation: fadeIn 0.5s ease-in;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
         }
-        .step-active {
-            background: linear-gradient(135deg, #2563eb, #14b8a6);
-            color: white;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        .step-completed {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-        }
-        .camera-preview {
-            border: 3px dashed #2563eb;
-            border-radius: 12px;
-            background: #f8fafc;
-        }
-        .upload-zone {
-            border: 2px dashed #cbd5e1;
-            transition: all 0.3s ease;
-        }
-        .upload-zone:hover {
-            border-color: #2563eb;
-            background-color: #f1f5f9;
-        }
-        .upload-zone.dragover {
-            border-color: #2563eb;
-            background-color: #dbeafe;
-        }
-        .form-section {
-            display: none;
-        }
-        .form-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .progress-bar {
-            transition: width 0.5s ease;
-        }
+      }
+      .progress-bar {
+        transition: width 0.5s ease;
+      }
     </style>
-</head>
-<body class="font-sans bg-gray-50">
+  </head>
+  <body class="font-sans bg-gray-50">
     <!-- Header -->
     <header class="bg-white shadow-sm">
-        <!-- Top Bar -->
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="text-municipal-blue hover:text-blue-700 font-medium">← Volver al Inicio</a>
-            
-            <!-- Logo -->
-            <div class="flex items-center">
-                <div class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-6 py-3 rounded-lg font-bold text-lg">
-                    Sabinas Hidalgo N.L.
-                </div>
-            </div>
-            
-            <!-- Help -->
-            <div class="flex items-center space-x-2 text-municipal-blue">
-                <i class="fas fa-question-circle"></i>
-                <span class="font-medium">¿Necesitas ayuda?</span>
-            </div>
+      <!-- Top Bar -->
+      <div
+        class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <a
+          href="index.html"
+          class="text-municipal-blue hover:text-blue-700 font-medium"
+          >← Volver al Inicio</a
+        >
+
+        <!-- Logo -->
+        <div class="flex-1 flex justify-center md:justify-center">
+          <a href="index.html" class="block">
+            <img
+              src="logo.png"
+              alt="Logo Sabinas Hidalgo"
+              class="h-12 md:h-14 w-auto"
+            />
+          </a>
         </div>
+
+        <!-- Help -->
+        <div class="flex items-center space-x-2 text-municipal-blue">
+          <i class="fas fa-question-circle"></i>
+          <span class="font-medium">¿Necesitas ayuda?</span>
+        </div>
+      </div>
     </header>
 
     <!-- Progress Bar -->
     <div class="bg-white border-b">
-        <div class="max-w-4xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between mb-4">
-                <h1 class="text-2xl font-bold text-municipal-blue">Registro Ciudadano</h1>
-                <div class="text-sm text-gray-600">
-                    Paso <span class="mr-2" id="currentStep">1</span> de 4
-                </div>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-                <div id="progressBar" class="progress-bar bg-gradient-to-r from-municipal-blue to-municipal-teal h-2 rounded-full" style="width: 25%"></div>
-            </div>
+      <div class="max-w-4xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-2xl font-bold text-municipal-blue">
+            Registro Ciudadano
+          </h1>
+          <div class="text-sm text-gray-600">
+            Paso <span class="mr-2" id="currentStep">1</span> de 4
+          </div>
         </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            id="progressBar"
+            class="progress-bar bg-gradient-to-r from-municipal-blue to-municipal-teal h-2 rounded-full"
+            style="width: 25%"
+          ></div>
+        </div>
+      </div>
     </div>
 
     <!-- Step Indicators -->
     <div class="bg-white border-b">
-        <div class="max-w-4xl mx-auto px-4 py-6">
-            <div class="flex justify-between">
-                <div class="flex items-center step-indicator step-active" id="step1-indicator">
-                    <div class="w-10 h-10 rounded-full text-4xl flex items-center justify-center font-bold mr-4">1</div>
-                    <div>
-                        <div class="font-semibold">Documentos INE</div>
-                        <div class="text-sm opacity-80">Fotografías de identificación</div>
-                    </div>
-                </div>
-                
-                <div class="flex items-center step-indicator" id="step2-indicator">
-                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold mr-3">2</div>
-                    <div>
-                        <div class="font-semibold text-gray-600">Datos Personales</div>
-                        <div class="text-sm text-gray-500">Información básica</div>
-                    </div>
-                </div>
-                
-                <div class="flex items-center step-indicator" id="step3-indicator">
-                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold mr-3">3</div>
-                    <div>
-                        <div class="font-semibold text-gray-600">Domicilio</div>
-                        <div class="text-sm text-gray-500">Dirección completa</div>
-                    </div>
-                </div>
-                
-                <div class="flex items-center step-indicator" id="step4-indicator">
-                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold mr-3">4</div>
-                    <div>
-                        <div class="font-semibold text-gray-600">Confirmación</div>
-                        <div class="text-sm text-gray-500">Revisar y enviar</div>
-                    </div>
-                </div>
+      <div class="max-w-4xl mx-auto px-4 py-6">
+        <div class="flex justify-between">
+          <div
+            class="flex items-center step-indicator step-active"
+            id="step1-indicator"
+          >
+            <div
+              class="w-10 h-10 rounded-full text-4xl flex items-center justify-center font-bold mr-4"
+            >
+              1
             </div>
+            <div>
+              <div class="font-semibold">Documentos INE</div>
+              <div class="text-sm opacity-80">
+                Fotografías de identificación
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center step-indicator" id="step2-indicator">
+            <div
+              class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold mr-3"
+            >
+              2
+            </div>
+            <div>
+              <div class="font-semibold text-gray-600">Datos Personales</div>
+              <div class="text-sm text-gray-500">Información básica</div>
+            </div>
+          </div>
+
+          <div class="flex items-center step-indicator" id="step3-indicator">
+            <div
+              class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold mr-3"
+            >
+              3
+            </div>
+            <div>
+              <div class="font-semibold text-gray-600">Domicilio</div>
+              <div class="text-sm text-gray-500">Dirección completa</div>
+            </div>
+          </div>
+
+          <div class="flex items-center step-indicator" id="step4-indicator">
+            <div
+              class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold mr-3"
+            >
+              4
+            </div>
+            <div>
+              <div class="font-semibold text-gray-600">Confirmación</div>
+              <div class="text-sm text-gray-500">Revisar y enviar</div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Main Content -->
     <div class="max-w-4xl mx-auto px-4 py-8">
-        <!-- Step 1: INE Documents -->
-        <div id="step1" class="form-section active">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <div class="text-center mb-8">
-                    <div class="bg-municipal-blue rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-id-card text-white text-3xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-municipal-blue mb-2">Documentos de Identificación</h2>
-                    <p class="text-gray-600">Necesitamos fotografías de ambos lados de tu INE para verificar tu identidad</p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- INE Front -->
-                    <div>
-                        <h3 class="text-xl font-bold text-municipal-blue mb-4 flex items-center">
-                            <i class="fas fa-camera mr-2"></i>
-                            INE - Lado Frontal
-                        </h3>
-                        
-                        <!-- Camera Preview -->
-                        <div id="frontCameraContainer" class="camera-preview p-6 text-center mb-4" style="display: none;">
-                            <video id="frontCamera" class="w-full rounded-lg mb-4" autoplay playsinline></video>
-                            <button id="captureFront" class="bg-municipal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                                <i class="fas fa-camera mr-2"></i>Capturar Foto
-                            </button>
-                            <button id="cancelFrontCamera" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition duration-300 ml-2">
-                                Cancelar
-                            </button>
-                        </div>
-
-                        <!-- Upload Zone -->
-                        <div id="frontUploadZone" class="upload-zone p-8 text-center rounded-lg mb-4">
-                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
-                            <p class="text-lg font-semibold text-gray-700 mb-2">Sube la foto del frente de tu INE</p>
-                            <p class="text-gray-500 mb-4">Arrastra y suelta la imagen aquí o haz clic para seleccionar</p>
-                            <input type="file" id="frontFileInput" accept="image/*" class="hidden">
-                            <button id="frontUploadBtn" class="bg-municipal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300 mr-2">
-                                <i class="fas fa-upload mr-2"></i>Seleccionar Archivo
-                            </button>
-                            <button id="frontCameraBtn" class="bg-municipal-green text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
-                                <i class="fas fa-camera mr-2"></i>Usar Cámara
-                            </button>
-                        </div>
-
-                        <!-- Preview -->
-                        <div id="frontPreview" class="hidden">
-                            <img id="frontImage" class="w-full rounded-lg border-2 border-municipal-blue">
-                            <div class="flex justify-center mt-4 space-x-2">
-                                <button id="retakeFront" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">
-                                    <i class="fas fa-redo mr-2"></i>Tomar Otra
-                                </button>
-                                <button id="confirmFront" class="bg-municipal-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
-                                    <i class="fas fa-check mr-2"></i>Confirmar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- INE Back -->
-                    <div>
-                        <h3 class="text-xl font-bold text-municipal-blue mb-4 flex items-center">
-                            <i class="fas fa-camera mr-2"></i>
-                            INE - Lado Posterior
-                        </h3>
-                        
-                        <!-- Camera Preview -->
-                        <div id="backCameraContainer" class="camera-preview p-6 text-center mb-4" style="display: none;">
-                            <video id="backCamera" class="w-full rounded-lg mb-4" autoplay playsinline></video>
-                            <button id="captureBack" class="bg-municipal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                                <i class="fas fa-camera mr-2"></i>Capturar Foto
-                            </button>
-                            <button id="cancelBackCamera" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition duration-300 ml-2">
-                                Cancelar
-                            </button>
-                        </div>
-
-                        <!-- Upload Zone -->
-                        <div id="backUploadZone" class="upload-zone p-8 text-center rounded-lg mb-4">
-                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
-                            <p class="text-lg font-semibold text-gray-700 mb-2">Sube la foto del reverso de tu INE</p>
-                            <p class="text-gray-500 mb-4">Arrastra y suelta la imagen aquí o haz clic para seleccionar</p>
-                            <input type="file" id="backFileInput" accept="image/*" class="hidden">
-                            <button id="backUploadBtn" class="bg-municipal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300 mr-2">
-                                <i class="fas fa-upload mr-2"></i>Seleccionar Archivo
-                            </button>
-                            <button id="backCameraBtn" class="bg-municipal-green text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
-                                <i class="fas fa-camera mr-2"></i>Usar Cámara
-                            </button>
-                        </div>
-
-                        <!-- Preview -->
-                        <div id="backPreview" class="hidden">
-                            <img id="backImage" class="w-full rounded-lg border-2 border-municipal-blue">
-                            <div class="flex justify-center mt-4 space-x-2">
-                                <button id="retakeBack" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">
-                                    <i class="fas fa-redo mr-2"></i>Tomar Otra
-                                </button>
-                                <button id="confirmBack" class="bg-municipal-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
-                                    <i class="fas fa-check mr-2"></i>Confirmar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Important Notes -->
-                <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-                    <h4 class="font-bold text-municipal-blue mb-3 flex items-center">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        Recomendaciones para las fotografías
-                    </h4>
-                    <ul class="space-y-2 text-gray-700">
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-municipal-green mr-2 mt-1"></i>
-                            Asegúrate de que la imagen esté bien iluminada y enfocada
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-municipal-green mr-2 mt-1"></i>
-                            Toda la información debe ser legible
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-municipal-green mr-2 mt-1"></i>
-                            No debe haber reflejos o sombras que oculten datos
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-municipal-green mr-2 mt-1"></i>
-                            La INE debe estar vigente (no vencida)
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Navigation -->
-                <div class="flex justify-end mt-8">
-                    <button id="nextStep1" class="bg-municipal-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
-                        Continuar
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
+      <!-- Step 1: INE Documents -->
+      <div id="step1" class="form-section active">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+          <div class="text-center mb-8">
+            <div
+              class="bg-municipal-blue rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4"
+            >
+              <i class="fas fa-id-card text-white text-3xl"></i>
             </div>
-        </div>
+            <h2 class="text-3xl font-bold text-municipal-blue mb-2">
+              Documentos de Identificación
+            </h2>
+            <p class="text-gray-600">
+              Necesitamos fotografías de ambos lados de tu INE para verificar tu
+              identidad
+            </p>
+          </div>
 
-        <!-- Step 2: Personal Information -->
-        <div id="step2" class="form-section">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <div class="text-center mb-8">
-                    <div class="bg-municipal-green rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-user text-white text-3xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-municipal-blue mb-2">Datos Personales</h2>
-                    <p class="text-gray-600">Completa tu información personal básica</p>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- INE Front -->
+            <div>
+              <h3
+                class="text-xl font-bold text-municipal-blue mb-4 flex items-center"
+              >
+                <i class="fas fa-camera mr-2"></i>
+                INE - Lado Frontal
+              </h3>
+
+              <!-- Camera Preview -->
+              <div
+                id="frontCameraContainer"
+                class="camera-preview p-6 text-center mb-4"
+                style="display: none"
+              >
+                <video
+                  id="frontCamera"
+                  class="w-full rounded-lg mb-4"
+                  autoplay
+                  playsinline
+                ></video>
+                <button
+                  id="captureFront"
+                  class="bg-municipal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+                >
+                  <i class="fas fa-camera mr-2"></i>Capturar Foto
+                </button>
+                <button
+                  id="cancelFrontCamera"
+                  class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition duration-300 ml-2"
+                >
+                  Cancelar
+                </button>
+              </div>
+
+              <!-- Upload Zone -->
+              <div
+                id="frontUploadZone"
+                class="upload-zone p-8 text-center rounded-lg mb-4"
+              >
+                <i
+                  class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"
+                ></i>
+                <p class="text-lg font-semibold text-gray-700 mb-2">
+                  Sube la foto del frente de tu INE
+                </p>
+                <p class="text-gray-500 mb-4">
+                  Arrastra y suelta la imagen aquí o haz clic para seleccionar
+                </p>
+                <input
+                  type="file"
+                  id="frontFileInput"
+                  accept="image/*"
+                  class="hidden"
+                />
+                <button
+                  id="frontUploadBtn"
+                  class="bg-municipal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300 mr-2"
+                >
+                  <i class="fas fa-upload mr-2"></i>Seleccionar Archivo
+                </button>
+                <button
+                  id="frontCameraBtn"
+                  class="bg-municipal-green text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300"
+                >
+                  <i class="fas fa-camera mr-2"></i>Usar Cámara
+                </button>
+              </div>
+
+              <!-- Preview -->
+              <div id="frontPreview" class="hidden">
+                <img
+                  id="frontImage"
+                  class="w-full rounded-lg border-2 border-municipal-blue"
+                />
+                <div class="flex justify-center mt-4 space-x-2">
+                  <button
+                    id="retakeFront"
+                    class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300"
+                  >
+                    <i class="fas fa-redo mr-2"></i>Tomar Otra
+                  </button>
+                  <button
+                    id="confirmFront"
+                    class="bg-municipal-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300"
+                  >
+                    <i class="fas fa-check mr-2"></i>Confirmar
+                  </button>
                 </div>
-
-                <form id="personalForm" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nombre(s) *</label>
-                            <input type="text" id="nombres" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Apellido Paterno *</label>
-                            <input type="text" id="apellidoPaterno" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Apellido Materno</label>
-                            <input type="text" id="apellidoMaterno" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">CURP *</label>
-                            <input type="text" id="curp" maxlength="18" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent uppercase">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Nacimiento *</label>
-                            <input type="date" id="fechaNacimiento" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Sexo *</label>
-                            <select id="sexo" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                                <option value="">Seleccionar</option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Femenino</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Estado Civil *</label>
-                            <select id="estadoCivil" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                                <option value="">Seleccionar</option>
-                                <option value="soltero">Soltero(a)</option>
-                                <option value="casado">Casado(a)</option>
-                                <option value="divorciado">Divorciado(a)</option>
-                                <option value="viudo">Viudo(a)</option>
-                                <option value="union_libre">Unión Libre</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono Celular *</label>
-                            <input type="tel" id="telefono" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico *</label>
-                            <input type="email" id="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Ocupación *</label>
-                            <input type="text" id="ocupacion" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Escolaridad *</label>
-                            <select id="escolaridad" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                                <option value="">Seleccionar</option>
-                                <option value="primaria">Primaria</option>
-                                <option value="secundaria">Secundaria</option>
-                                <option value="preparatoria">Preparatoria</option>
-                                <option value="tecnico">Técnico</option>
-                                <option value="licenciatura">Licenciatura</option>
-                                <option value="posgrado">Posgrado</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-
-                <!-- Navigation -->
-                <div class="flex justify-between mt-8">
-                    <button id="prevStep2" class="bg-gray-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Anterior
-                    </button>
-                    <button id="nextStep2" class="bg-municipal-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-                        Continuar
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
+              </div>
             </div>
-        </div>
 
-        <!-- Step 3: Address Information -->
-        <div id="step3" class="form-section">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <div class="text-center mb-8">
-                    <div class="bg-municipal-pink rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-home text-white text-3xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-municipal-blue mb-2">Información de Domicilio</h2>
-                    <p class="text-gray-600">Proporciona tu dirección completa y actual</p>
+            <!-- INE Back -->
+            <div>
+              <h3
+                class="text-xl font-bold text-municipal-blue mb-4 flex items-center"
+              >
+                <i class="fas fa-camera mr-2"></i>
+                INE - Lado Posterior
+              </h3>
+
+              <!-- Camera Preview -->
+              <div
+                id="backCameraContainer"
+                class="camera-preview p-6 text-center mb-4"
+                style="display: none"
+              >
+                <video
+                  id="backCamera"
+                  class="w-full rounded-lg mb-4"
+                  autoplay
+                  playsinline
+                ></video>
+                <button
+                  id="captureBack"
+                  class="bg-municipal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+                >
+                  <i class="fas fa-camera mr-2"></i>Capturar Foto
+                </button>
+                <button
+                  id="cancelBackCamera"
+                  class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition duration-300 ml-2"
+                >
+                  Cancelar
+                </button>
+              </div>
+
+              <!-- Upload Zone -->
+              <div
+                id="backUploadZone"
+                class="upload-zone p-8 text-center rounded-lg mb-4"
+              >
+                <i
+                  class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"
+                ></i>
+                <p class="text-lg font-semibold text-gray-700 mb-2">
+                  Sube la foto del reverso de tu INE
+                </p>
+                <p class="text-gray-500 mb-4">
+                  Arrastra y suelta la imagen aquí o haz clic para seleccionar
+                </p>
+                <input
+                  type="file"
+                  id="backFileInput"
+                  accept="image/*"
+                  class="hidden"
+                />
+                <button
+                  id="backUploadBtn"
+                  class="bg-municipal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300 mr-2"
+                >
+                  <i class="fas fa-upload mr-2"></i>Seleccionar Archivo
+                </button>
+                <button
+                  id="backCameraBtn"
+                  class="bg-municipal-green text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300"
+                >
+                  <i class="fas fa-camera mr-2"></i>Usar Cámara
+                </button>
+              </div>
+
+              <!-- Preview -->
+              <div id="backPreview" class="hidden">
+                <img
+                  id="backImage"
+                  class="w-full rounded-lg border-2 border-municipal-blue"
+                />
+                <div class="flex justify-center mt-4 space-x-2">
+                  <button
+                    id="retakeBack"
+                    class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300"
+                  >
+                    <i class="fas fa-redo mr-2"></i>Tomar Otra
+                  </button>
+                  <button
+                    id="confirmBack"
+                    class="bg-municipal-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300"
+                  >
+                    <i class="fas fa-check mr-2"></i>Confirmar
+                  </button>
                 </div>
-
-                <form id="addressForm" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Calle *</label>
-                            <input type="text" id="calle" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Número Exterior *</label>
-                            <input type="text" id="numeroExterior" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Número Interior</label>
-                            <input type="text" id="numeroInterior" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Colonia *</label>
-                            <input type="text" id="colonia" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Código Postal *</label>
-                            <input type="text" id="codigoPostal" required maxlength="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Municipio *</label>
-                            <input type="text" id="municipio" value="Sabinas Hidalgo" readonly class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Estado *</label>
-                            <input type="text" id="estado" value="Nuevo León" readonly class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">País *</label>
-                            <input type="text" id="pais" value="México" readonly class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Entre Calles</label>
-                            <input type="text" id="entreCalles" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent" placeholder="Calle 1 y Calle 2">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Referencias</label>
-                            <input type="text" id="referencias" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent" placeholder="Casa azul, portón negro, etc.">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Vivienda *</label>
-                        <select id="tipoVivienda" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent">
-                            <option value="">Seleccionar</option>
-                            <option value="propia">Propia</option>
-                            <option value="rentada">Rentada</option>
-                            <option value="prestada">Prestada</option>
-                            <option value="familiar">Familiar</option>
-                            <option value="otra">Otra</option>
-                        </select>
-                    </div>
-                </form>
-
-                <!-- Navigation -->
-                <div class="flex justify-between mt-8">
-                    <button id="prevStep3" class="bg-gray-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Anterior
-                    </button>
-                    <button id="nextStep3" class="bg-municipal-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-                        Continuar
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
+              </div>
             </div>
+          </div>
+
+          <!-- Important Notes -->
+          <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <h4 class="font-bold text-municipal-blue mb-3 flex items-center">
+              <i class="fas fa-info-circle mr-2"></i>
+              Recomendaciones para las fotografías
+            </h4>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start">
+                <i
+                  class="fas fa-check-circle text-municipal-green mr-2 mt-1"
+                ></i>
+                Asegúrate de que la imagen esté bien iluminada y enfocada
+              </li>
+              <li class="flex items-start">
+                <i
+                  class="fas fa-check-circle text-municipal-green mr-2 mt-1"
+                ></i>
+                Toda la información debe ser legible
+              </li>
+              <li class="flex items-start">
+                <i
+                  class="fas fa-check-circle text-municipal-green mr-2 mt-1"
+                ></i>
+                No debe haber reflejos o sombras que oculten datos
+              </li>
+              <li class="flex items-start">
+                <i
+                  class="fas fa-check-circle text-municipal-green mr-2 mt-1"
+                ></i>
+                La INE debe estar vigente (no vencida)
+              </li>
+            </ul>
+          </div>
+
+          <!-- Navigation -->
+          <div class="flex justify-end mt-8">
+            <button
+              id="nextStep1"
+              class="bg-municipal-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              disabled
+            >
+              Continuar
+              <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+          </div>
         </div>
+      </div>
 
-        <!-- Step 4: Confirmation -->
-        <div id="step4" class="form-section">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <div class="text-center mb-8">
-                    <div class="bg-municipal-teal rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-check-circle text-white text-3xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-municipal-blue mb-2">Confirmación de Datos</h2>
-                    <p class="text-gray-600">Revisa toda la información antes de enviar tu registro</p>
-                </div>
-
-                <!-- Summary Cards -->
-                <div class="space-y-6">
-                    <!-- Documents Summary -->
-                    <div class="border border-gray-200 rounded-lg p-6">
-                        <h3 class="text-xl font-bold text-municipal-blue mb-4 flex items-center">
-                            <i class="fas fa-id-card mr-2"></i>
-                            Documentos INE
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <p class="font-semibold text-gray-700 mb-2">Lado Frontal:</p>
-                                <div id="frontSummary" class="text-green-600 flex items-center">
-                                    <i class="fas fa-check-circle mr-2"></i>
-                                    Documento cargado correctamente
-                                </div>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-700 mb-2">Lado Posterior:</p>
-                                <div id="backSummary" class="text-green-600 flex items-center">
-                                    <i class="fas fa-check-circle mr-2"></i>
-                                    Documento cargado correctamente
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Personal Information Summary -->
-                    <div class="border border-gray-200 rounded-lg p-6">
-                        <h3 class="text-xl font-bold text-municipal-blue mb-4 flex items-center">
-                            <i class="fas fa-user mr-2"></i>
-                            Datos Personales
-                        </h3>
-                        <div id="personalSummary" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-                            <!-- Will be populated by JavaScript -->
-                        </div>
-                    </div>
-
-                    <!-- Address Summary -->
-                    <div class="border border-gray-200 rounded-lg p-6">
-                        <h3 class="text-xl font-bold text-municipal-blue mb-4 flex items-center">
-                            <i class="fas fa-home mr-2"></i>
-                            Domicilio
-                        </h3>
-                        <div id="addressSummary" class="text-gray-700">
-                            <!-- Will be populated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Terms and Conditions -->
-                <div class="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-6">
-                    <div class="flex items-start">
-                        <input type="checkbox" id="acceptTerms" class="mt-1 mr-3 w-4 h-4 text-municipal-blue border-gray-300 rounded focus:ring-municipal-blue">
-                        <div>
-                            <label for="acceptTerms" class="font-semibold text-gray-700 cursor-pointer">
-                                Acepto los términos y condiciones
-                            </label>
-                            <p class="text-sm text-gray-600 mt-1">
-                                Al registrarme, acepto que mis datos personales sean utilizados conforme a la 
-                                <a href="#" class="text-municipal-blue hover:underline">Política de Privacidad</a> 
-                                y el <a href="#" class="text-municipal-blue hover:underline">Aviso de Privacidad</a> 
-                                del Gobierno Municipal de Sabinas Hidalgo.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation -->
-                <div class="flex justify-between mt-8">
-                    <button id="prevStep4" class="bg-gray-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Anterior
-                    </button>
-                    <button id="submitRegistration" class="bg-municipal-green text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
-                        <i class="fas fa-paper-plane mr-2"></i>
-                        Enviar Registro
-                    </button>
-                </div>
+      <!-- Step 2: Personal Information -->
+      <div id="step2" class="form-section">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+          <div class="text-center mb-8">
+            <div
+              class="bg-municipal-green rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4"
+            >
+              <i class="fas fa-user text-white text-3xl"></i>
             </div>
+            <h2 class="text-3xl font-bold text-municipal-blue mb-2">
+              Datos Personales
+            </h2>
+            <p class="text-gray-600">Completa tu información personal básica</p>
+          </div>
+
+          <form id="personalForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Nombre(s) *</label
+                >
+                <input
+                  type="text"
+                  id="nombres"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Apellido Paterno *</label
+                >
+                <input
+                  type="text"
+                  id="apellidoPaterno"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Apellido Materno</label
+                >
+                <input
+                  type="text"
+                  id="apellidoMaterno"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >CURP *</label
+                >
+                <input
+                  type="text"
+                  id="curp"
+                  maxlength="18"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent uppercase"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Fecha de Nacimiento *</label
+                >
+                <input
+                  type="date"
+                  id="fechaNacimiento"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Sexo *</label
+                >
+                <select
+                  id="sexo"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                >
+                  <option value="">Seleccionar</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Estado Civil *</label
+                >
+                <select
+                  id="estadoCivil"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                >
+                  <option value="">Seleccionar</option>
+                  <option value="soltero">Soltero(a)</option>
+                  <option value="casado">Casado(a)</option>
+                  <option value="divorciado">Divorciado(a)</option>
+                  <option value="viudo">Viudo(a)</option>
+                  <option value="union_libre">Unión Libre</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Teléfono Celular *</label
+                >
+                <input
+                  type="tel"
+                  id="telefono"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Correo Electrónico *</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Ocupación *</label
+                >
+                <input
+                  type="text"
+                  id="ocupacion"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Escolaridad *</label
+                >
+                <select
+                  id="escolaridad"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                >
+                  <option value="">Seleccionar</option>
+                  <option value="primaria">Primaria</option>
+                  <option value="secundaria">Secundaria</option>
+                  <option value="preparatoria">Preparatoria</option>
+                  <option value="tecnico">Técnico</option>
+                  <option value="licenciatura">Licenciatura</option>
+                  <option value="posgrado">Posgrado</option>
+                </select>
+              </div>
+            </div>
+          </form>
+
+          <!-- Navigation -->
+          <div class="flex justify-between mt-8">
+            <button
+              id="prevStep2"
+              class="bg-gray-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300"
+            >
+              <i class="fas fa-arrow-left mr-2"></i>
+              Anterior
+            </button>
+            <button
+              id="nextStep2"
+              class="bg-municipal-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+            >
+              Continuar
+              <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- Step 3: Address Information -->
+      <div id="step3" class="form-section">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+          <div class="text-center mb-8">
+            <div
+              class="bg-municipal-pink rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4"
+            >
+              <i class="fas fa-home text-white text-3xl"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-municipal-blue mb-2">
+              Información de Domicilio
+            </h2>
+            <p class="text-gray-600">
+              Proporciona tu dirección completa y actual
+            </p>
+          </div>
+
+          <form id="addressForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Calle *</label
+                >
+                <input
+                  type="text"
+                  id="calle"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Número Exterior *</label
+                >
+                <input
+                  type="text"
+                  id="numeroExterior"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Número Interior</label
+                >
+                <input
+                  type="text"
+                  id="numeroInterior"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Colonia *</label
+                >
+                <input
+                  type="text"
+                  id="colonia"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Código Postal *</label
+                >
+                <input
+                  type="text"
+                  id="codigoPostal"
+                  required
+                  maxlength="5"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Municipio *</label
+                >
+                <input
+                  type="text"
+                  id="municipio"
+                  value="Sabinas Hidalgo"
+                  readonly
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Estado *</label
+                >
+                <input
+                  type="text"
+                  id="estado"
+                  value="Nuevo León"
+                  readonly
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >País *</label
+                >
+                <input
+                  type="text"
+                  id="pais"
+                  value="México"
+                  readonly
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Entre Calles</label
+                >
+                <input
+                  type="text"
+                  id="entreCalles"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                  placeholder="Calle 1 y Calle 2"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Referencias</label
+                >
+                <input
+                  type="text"
+                  id="referencias"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+                  placeholder="Casa azul, portón negro, etc."
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Tipo de Vivienda *</label
+              >
+              <select
+                id="tipoVivienda"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-municipal-blue focus:border-transparent"
+              >
+                <option value="">Seleccionar</option>
+                <option value="propia">Propia</option>
+                <option value="rentada">Rentada</option>
+                <option value="prestada">Prestada</option>
+                <option value="familiar">Familiar</option>
+                <option value="otra">Otra</option>
+              </select>
+            </div>
+          </form>
+
+          <!-- Navigation -->
+          <div class="flex justify-between mt-8">
+            <button
+              id="prevStep3"
+              class="bg-gray-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300"
+            >
+              <i class="fas fa-arrow-left mr-2"></i>
+              Anterior
+            </button>
+            <button
+              id="nextStep3"
+              class="bg-municipal-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+            >
+              Continuar
+              <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Confirmation -->
+      <div id="step4" class="form-section">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+          <div class="text-center mb-8">
+            <div
+              class="bg-municipal-teal rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4"
+            >
+              <i class="fas fa-check-circle text-white text-3xl"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-municipal-blue mb-2">
+              Confirmación de Datos
+            </h2>
+            <p class="text-gray-600">
+              Revisa toda la información antes de enviar tu registro
+            </p>
+          </div>
+
+          <!-- Summary Cards -->
+          <div class="space-y-6">
+            <!-- Documents Summary -->
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h3
+                class="text-xl font-bold text-municipal-blue mb-4 flex items-center"
+              >
+                <i class="fas fa-id-card mr-2"></i>
+                Documentos INE
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p class="font-semibold text-gray-700 mb-2">Lado Frontal:</p>
+                  <div
+                    id="frontSummary"
+                    class="text-green-600 flex items-center"
+                  >
+                    <i class="fas fa-check-circle mr-2"></i>
+                    Documento cargado correctamente
+                  </div>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-700 mb-2">
+                    Lado Posterior:
+                  </p>
+                  <div
+                    id="backSummary"
+                    class="text-green-600 flex items-center"
+                  >
+                    <i class="fas fa-check-circle mr-2"></i>
+                    Documento cargado correctamente
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Personal Information Summary -->
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h3
+                class="text-xl font-bold text-municipal-blue mb-4 flex items-center"
+              >
+                <i class="fas fa-user mr-2"></i>
+                Datos Personales
+              </h3>
+              <div
+                id="personalSummary"
+                class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700"
+              >
+                <!-- Will be populated by JavaScript -->
+              </div>
+            </div>
+
+            <!-- Address Summary -->
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h3
+                class="text-xl font-bold text-municipal-blue mb-4 flex items-center"
+              >
+                <i class="fas fa-home mr-2"></i>
+                Domicilio
+              </h3>
+              <div id="addressSummary" class="text-gray-700">
+                <!-- Will be populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Terms and Conditions -->
+          <div class="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-6">
+            <div class="flex items-start">
+              <input
+                type="checkbox"
+                id="acceptTerms"
+                class="mt-1 mr-3 w-4 h-4 text-municipal-blue border-gray-300 rounded focus:ring-municipal-blue"
+              />
+              <div>
+                <label
+                  for="acceptTerms"
+                  class="font-semibold text-gray-700 cursor-pointer"
+                >
+                  Acepto los términos y condiciones
+                </label>
+                <p class="text-sm text-gray-600 mt-1">
+                  Al registrarme, acepto que mis datos personales sean
+                  utilizados conforme a la
+                  <a href="#" class="text-municipal-blue hover:underline"
+                    >Política de Privacidad</a
+                  >
+                  y el
+                  <a href="#" class="text-municipal-blue hover:underline"
+                    >Aviso de Privacidad</a
+                  >
+                  del Gobierno Municipal de Sabinas Hidalgo.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation -->
+          <div class="flex justify-between mt-8">
+            <button
+              id="prevStep4"
+              class="bg-gray-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300"
+            >
+              <i class="fas fa-arrow-left mr-2"></i>
+              Anterior
+            </button>
+            <button
+              id="submitRegistration"
+              class="bg-municipal-green text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              disabled
+            >
+              <i class="fas fa-paper-plane mr-2"></i>
+              Enviar Registro
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Success Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg max-w-md w-full p-8 text-center">
-            <div class="bg-municipal-green rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-check text-white text-3xl"></i>
-            </div>
-            <h3 class="text-2xl font-bold text-municipal-blue mb-4">¡Registro Exitoso!</h3>
-            <p class="text-gray-600 mb-6">
-                Tu registro ha sido enviado correctamente. Recibirás un correo de confirmación 
-                con tu número de folio en los próximos minutos.
-            </p>
-            <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                <p class="font-semibold text-municipal-blue">Número de Folio:</p>
-                <p class="text-2xl font-bold text-municipal-green" id="folioNumber">REG-2024-001234</p>
-            </div>
-            <button id="closeSuccessModal" class="bg-municipal-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-                Continuar
-            </button>
+    <div
+      id="successModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"
+    >
+      <div class="bg-white rounded-lg max-w-md w-full p-8 text-center">
+        <div
+          class="bg-municipal-green rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6"
+        >
+          <i class="fas fa-check text-white text-3xl"></i>
         </div>
+        <h3 class="text-2xl font-bold text-municipal-blue mb-4">
+          ¡Registro Exitoso!
+        </h3>
+        <p class="text-gray-600 mb-6">
+          Tu registro ha sido enviado correctamente. Recibirás un correo de
+          confirmación con tu número de folio en los próximos minutos.
+        </p>
+        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+          <p class="font-semibold text-municipal-blue">Número de Folio:</p>
+          <p class="text-2xl font-bold text-municipal-green" id="folioNumber">
+            REG-2024-001234
+          </p>
+        </div>
+        <button
+          id="closeSuccessModal"
+          class="bg-municipal-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+        >
+          Continuar
+        </button>
+      </div>
     </div>
 
     <script>
-        // Global variables
-        let currentStep = 1;
-        let frontImageData = null;
-        let backImageData = null;
-        let frontStream = null;
-        let backStream = null;
+      // Global variables
+      let currentStep = 1;
+      let frontImageData = null;
+      let backImageData = null;
+      let frontStream = null;
+      let backStream = null;
 
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeEventListeners();
-            updateStepIndicators();
+      // Initialize the application
+      document.addEventListener("DOMContentLoaded", function () {
+        initializeEventListeners();
+        updateStepIndicators();
+      });
+
+      function initializeEventListeners() {
+        // Step navigation
+        document
+          .getElementById("nextStep1")
+          .addEventListener("click", () => goToStep(2));
+        document
+          .getElementById("nextStep2")
+          .addEventListener("click", () => goToStep(3));
+        document
+          .getElementById("nextStep3")
+          .addEventListener("click", () => goToStep(4));
+        document
+          .getElementById("prevStep2")
+          .addEventListener("click", () => goToStep(1));
+        document
+          .getElementById("prevStep3")
+          .addEventListener("click", () => goToStep(2));
+        document
+          .getElementById("prevStep4")
+          .addEventListener("click", () => goToStep(3));
+
+        // INE Front side
+        document
+          .getElementById("frontUploadBtn")
+          .addEventListener("click", () => {
+            document.getElementById("frontFileInput").click();
+          });
+        document
+          .getElementById("frontFileInput")
+          .addEventListener("change", handleFrontFileSelect);
+        document
+          .getElementById("frontCameraBtn")
+          .addEventListener("click", startFrontCamera);
+        document
+          .getElementById("captureFront")
+          .addEventListener("click", captureFrontPhoto);
+        document
+          .getElementById("cancelFrontCamera")
+          .addEventListener("click", stopFrontCamera);
+        document
+          .getElementById("retakeFront")
+          .addEventListener("click", retakeFrontPhoto);
+        document
+          .getElementById("confirmFront")
+          .addEventListener("click", confirmFrontPhoto);
+
+        // INE Back side
+        document
+          .getElementById("backUploadBtn")
+          .addEventListener("click", () => {
+            document.getElementById("backFileInput").click();
+          });
+        document
+          .getElementById("backFileInput")
+          .addEventListener("change", handleBackFileSelect);
+        document
+          .getElementById("backCameraBtn")
+          .addEventListener("click", startBackCamera);
+        document
+          .getElementById("captureBack")
+          .addEventListener("click", captureBackPhoto);
+        document
+          .getElementById("cancelBackCamera")
+          .addEventListener("click", stopBackCamera);
+        document
+          .getElementById("retakeBack")
+          .addEventListener("click", retakeBackPhoto);
+        document
+          .getElementById("confirmBack")
+          .addEventListener("click", confirmBackPhoto);
+
+        // Drag and drop
+        setupDragAndDrop("frontUploadZone", "frontFileInput");
+        setupDragAndDrop("backUploadZone", "backFileInput");
+
+        // Form validation
+        document
+          .getElementById("acceptTerms")
+          .addEventListener("change", updateSubmitButton);
+        document
+          .getElementById("submitRegistration")
+          .addEventListener("click", submitRegistration);
+        document
+          .getElementById("closeSuccessModal")
+          .addEventListener("click", () => {
+            document.getElementById("successModal").classList.add("hidden");
+            window.location.href = "#"; // Redirect to home or dashboard
+          });
+
+        // CURP validation
+        document.getElementById("curp").addEventListener("input", function (e) {
+          e.target.value = e.target.value.toUpperCase();
+          validateCURP(e.target.value);
         });
 
-        function initializeEventListeners() {
-            // Step navigation
-            document.getElementById('nextStep1').addEventListener('click', () => goToStep(2));
-            document.getElementById('nextStep2').addEventListener('click', () => goToStep(3));
-            document.getElementById('nextStep3').addEventListener('click', () => goToStep(4));
-            document.getElementById('prevStep2').addEventListener('click', () => goToStep(1));
-            document.getElementById('prevStep3').addEventListener('click', () => goToStep(2));
-            document.getElementById('prevStep4').addEventListener('click', () => goToStep(3));
+        // Phone validation
+        document
+          .getElementById("telefono")
+          .addEventListener("input", function (e) {
+            e.target.value = e.target.value.replace(/\D/g, "");
+          });
 
-            // INE Front side
-            document.getElementById('frontUploadBtn').addEventListener('click', () => {
-                document.getElementById('frontFileInput').click();
-            });
-            document.getElementById('frontFileInput').addEventListener('change', handleFrontFileSelect);
-            document.getElementById('frontCameraBtn').addEventListener('click', startFrontCamera);
-            document.getElementById('captureFront').addEventListener('click', captureFrontPhoto);
-            document.getElementById('cancelFrontCamera').addEventListener('click', stopFrontCamera);
-            document.getElementById('retakeFront').addEventListener('click', retakeFrontPhoto);
-            document.getElementById('confirmFront').addEventListener('click', confirmFrontPhoto);
+        // Postal code validation
+        document
+          .getElementById("codigoPostal")
+          .addEventListener("input", function (e) {
+            e.target.value = e.target.value.replace(/\D/g, "");
+          });
+      }
 
-            // INE Back side
-            document.getElementById('backUploadBtn').addEventListener('click', () => {
-                document.getElementById('backFileInput').click();
-            });
-            document.getElementById('backFileInput').addEventListener('change', handleBackFileSelect);
-            document.getElementById('backCameraBtn').addEventListener('click', startBackCamera);
-            document.getElementById('captureBack').addEventListener('click', captureBackPhoto);
-            document.getElementById('cancelBackCamera').addEventListener('click', stopBackCamera);
-            document.getElementById('retakeBack').addEventListener('click', retakeBackPhoto);
-            document.getElementById('confirmBack').addEventListener('click', confirmBackPhoto);
+      function goToStep(step) {
+        if (step < 1 || step > 4) return;
 
-            // Drag and drop
-            setupDragAndDrop('frontUploadZone', 'frontFileInput');
-            setupDragAndDrop('backUploadZone', 'backFileInput');
-
-            // Form validation
-            document.getElementById('acceptTerms').addEventListener('change', updateSubmitButton);
-            document.getElementById('submitRegistration').addEventListener('click', submitRegistration);
-            document.getElementById('closeSuccessModal').addEventListener('click', () => {
-                document.getElementById('successModal').classList.add('hidden');
-                window.location.href = '#'; // Redirect to home or dashboard
-            });
-
-            // CURP validation
-            document.getElementById('curp').addEventListener('input', function(e) {
-                e.target.value = e.target.value.toUpperCase();
-                validateCURP(e.target.value);
-            });
-
-            // Phone validation
-            document.getElementById('telefono').addEventListener('input', function(e) {
-                e.target.value = e.target.value.replace(/\D/g, '');
-            });
-
-            // Postal code validation
-            document.getElementById('codigoPostal').addEventListener('input', function(e) {
-                e.target.value = e.target.value.replace(/\D/g, '');
-            });
+        // Validate current step before proceeding
+        if (step > currentStep && !validateCurrentStep()) {
+          return;
         }
 
-        function goToStep(step) {
-            if (step < 1 || step > 4) return;
+        // Hide current step
+        document
+          .getElementById(`step${currentStep}`)
+          .classList.remove("active");
 
-            // Validate current step before proceeding
-            if (step > currentStep && !validateCurrentStep()) {
-                return;
-            }
+        // Show new step
+        document.getElementById(`step${step}`).classList.add("active");
 
-            // Hide current step
-            document.getElementById(`step${currentStep}`).classList.remove('active');
-            
-            // Show new step
-            document.getElementById(`step${step}`).classList.add('active');
-            
-            // Update current step
-            currentStep = step;
-            
-            // Update UI
-            updateStepIndicators();
-            updateProgressBar();
-            document.getElementById('currentStep').textContent = step;
+        // Update current step
+        currentStep = step;
 
-            // Populate summary if going to step 4
-            if (step === 4) {
-                populateSummary();
-            }
+        // Update UI
+        updateStepIndicators();
+        updateProgressBar();
+        document.getElementById("currentStep").textContent = step;
 
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Populate summary if going to step 4
+        if (step === 4) {
+          populateSummary();
         }
 
-        function validateCurrentStep() {
-            switch (currentStep) {
-                case 1:
-                    return frontImageData && backImageData;
-                case 2:
-                    return validatePersonalForm();
-                case 3:
-                    return validateAddressForm();
-                default:
-                    return true;
-            }
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function validateCurrentStep() {
+        switch (currentStep) {
+          case 1:
+            return frontImageData && backImageData;
+          case 2:
+            return validatePersonalForm();
+          case 3:
+            return validateAddressForm();
+          default:
+            return true;
+        }
+      }
+
+      function validatePersonalForm() {
+        const requiredFields = [
+          "nombres",
+          "apellidoPaterno",
+          "curp",
+          "fechaNacimiento",
+          "sexo",
+          "estadoCivil",
+          "telefono",
+          "email",
+          "ocupacion",
+          "escolaridad",
+        ];
+        return requiredFields.every((field) => {
+          const element = document.getElementById(field);
+          return element && element.value.trim() !== "";
+        });
+      }
+
+      function validateAddressForm() {
+        const requiredFields = [
+          "calle",
+          "numeroExterior",
+          "colonia",
+          "codigoPostal",
+          "tipoVivienda",
+        ];
+        return requiredFields.every((field) => {
+          const element = document.getElementById(field);
+          return element && element.value.trim() !== "";
+        });
+      }
+
+      function updateStepIndicators() {
+        for (let i = 1; i <= 4; i++) {
+          const indicator = document.getElementById(`step${i}-indicator`);
+          const circle = indicator.querySelector("div");
+          const title = indicator.querySelector(
+            "div:last-child div:first-child"
+          );
+          const subtitle = indicator.querySelector(
+            "div:last-child div:last-child"
+          );
+
+          if (i < currentStep) {
+            // Completed step
+            indicator.className =
+              "flex items-center step-indicator step-completed";
+            circle.className =
+              "w-10 h-10 rounded-full flex items-center justify-center font-bold mr-3";
+            circle.innerHTML = '<i class="fas fa-check"></i>';
+            title.className = "text-white text-3xl mr-2";
+            subtitle.className = "text-sm text-green-100";
+          } else if (i === currentStep) {
+            // Active step
+            indicator.className =
+              "flex items-center step-indicator step-active";
+            circle.className =
+              "w-10 h-10 rounded-full flex items-center justify-center font-bold mr-3";
+            circle.textContent = i;
+            title.className = "text-white text-3xl mx-2";
+            subtitle.className = "text-sm text-blue-100";
+          } else {
+            // Future step
+            indicator.className = "flex items-center step-indicator";
+            circle.className =
+              "w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold mr-3";
+            circle.textContent = i;
+            title.className = "text-white text-3xl mx-2";
+            subtitle.className = "text-sm text-gray-500";
+          }
+        }
+      }
+
+      function updateProgressBar() {
+        const progress = (currentStep / 4) * 100;
+        document.getElementById("progressBar").style.width = `${progress}%`;
+      }
+
+      // Camera and file handling functions
+      function setupDragAndDrop(zoneId, inputId) {
+        const zone = document.getElementById(zoneId);
+        const input = document.getElementById(inputId);
+
+        zone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          zone.classList.add("dragover");
+        });
+
+        zone.addEventListener("dragleave", () => {
+          zone.classList.remove("dragover");
+        });
+
+        zone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          zone.classList.remove("dragover");
+          const files = e.dataTransfer.files;
+          if (files.length > 0) {
+            handleFileSelect(
+              files[0],
+              zoneId.includes("front") ? "front" : "back"
+            );
+          }
+        });
+      }
+
+      function handleFrontFileSelect(e) {
+        const file = e.target.files[0];
+        if (file) {
+          handleFileSelect(file, "front");
+        }
+      }
+
+      function handleBackFileSelect(e) {
+        const file = e.target.files[0];
+        if (file) {
+          handleFileSelect(file, "back");
+        }
+      }
+
+      function handleFileSelect(file, side) {
+        if (!file.type.startsWith("image/")) {
+          alert("Por favor selecciona un archivo de imagen válido.");
+          return;
         }
 
-        function validatePersonalForm() {
-            const requiredFields = ['nombres', 'apellidoPaterno', 'curp', 'fechaNacimiento', 'sexo', 'estadoCivil', 'telefono', 'email', 'ocupacion', 'escolaridad'];
-            return requiredFields.every(field => {
-                const element = document.getElementById(field);
-                return element && element.value.trim() !== '';
-            });
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          if (side === "front") {
+            frontImageData = e.target.result;
+            showImagePreview("front", e.target.result);
+          } else {
+            backImageData = e.target.result;
+            showImagePreview("back", e.target.result);
+          }
+          checkStep1Completion();
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function showImagePreview(side, imageSrc) {
+        const preview = document.getElementById(`${side}Preview`);
+        const image = document.getElementById(`${side}Image`);
+        const uploadZone = document.getElementById(`${side}UploadZone`);
+
+        image.src = imageSrc;
+        preview.classList.remove("hidden");
+        uploadZone.style.display = "none";
+      }
+
+      function startFrontCamera() {
+        startCamera("front");
+      }
+
+      function startBackCamera() {
+        startCamera("back");
+      }
+
+      async function startCamera(side) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: "environment",
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+            },
+          });
+
+          const video = document.getElementById(`${side}Camera`);
+          const container = document.getElementById(`${side}CameraContainer`);
+          const uploadZone = document.getElementById(`${side}UploadZone`);
+
+          video.srcObject = stream;
+          container.style.display = "block";
+          uploadZone.style.display = "none";
+
+          if (side === "front") {
+            frontStream = stream;
+          } else {
+            backStream = stream;
+          }
+        } catch (error) {
+          console.error("Error accessing camera:", error);
+          alert(
+            "No se pudo acceder a la cámara. Por favor, verifica los permisos o usa la opción de subir archivo."
+          );
+        }
+      }
+
+      function captureFrontPhoto() {
+        capturePhoto("front");
+      }
+
+      function captureBackPhoto() {
+        capturePhoto("back");
+      }
+
+      function capturePhoto(side) {
+        const video = document.getElementById(`${side}Camera`);
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0);
+
+        const imageData = canvas.toDataURL("image/jpeg", 0.8);
+
+        if (side === "front") {
+          frontImageData = imageData;
+          stopFrontCamera();
+          showImagePreview("front", imageData);
+        } else {
+          backImageData = imageData;
+          stopBackCamera();
+          showImagePreview("back", imageData);
         }
 
-        function validateAddressForm() {
-            const requiredFields = ['calle', 'numeroExterior', 'colonia', 'codigoPostal', 'tipoVivienda'];
-            return requiredFields.every(field => {
-                const element = document.getElementById(field);
-                return element && element.value.trim() !== '';
-            });
+        checkStep1Completion();
+      }
+
+      function stopFrontCamera() {
+        stopCamera("front");
+      }
+
+      function stopBackCamera() {
+        stopCamera("back");
+      }
+
+      function stopCamera(side) {
+        const stream = side === "front" ? frontStream : backStream;
+        const container = document.getElementById(`${side}CameraContainer`);
+        const uploadZone = document.getElementById(`${side}UploadZone`);
+
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+          if (side === "front") {
+            frontStream = null;
+          } else {
+            backStream = null;
+          }
         }
 
-        function updateStepIndicators() {
-            for (let i = 1; i <= 4; i++) {
-                const indicator = document.getElementById(`step${i}-indicator`);
-                const circle = indicator.querySelector('div');
-                const title = indicator.querySelector('div:last-child div:first-child');
-                const subtitle = indicator.querySelector('div:last-child div:last-child');
+        container.style.display = "none";
+        uploadZone.style.display = "block";
+      }
 
-                if (i < currentStep) {
-                    // Completed step
-                    indicator.className = 'flex items-center step-indicator step-completed';
-                    circle.className = 'w-10 h-10 rounded-full flex items-center justify-center font-bold mr-3';
-                    circle.innerHTML = '<i class="fas fa-check"></i>';
-                    title.className = 'text-white text-3xl mr-2';
-                    subtitle.className = 'text-sm text-green-100';
-                } else if (i === currentStep) {
-                    // Active step
-                    indicator.className = 'flex items-center step-indicator step-active';
-                    circle.className = 'w-10 h-10 rounded-full flex items-center justify-center font-bold mr-3';
-                    circle.textContent = i; 
-                    title.className = 'text-white text-3xl mx-2';
-                    subtitle.className = 'text-sm text-blue-100';
-                } else {
-                    // Future step
-                    indicator.className = 'flex items-center step-indicator';
-                    circle.className = 'w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold mr-3';
-                    circle.textContent = i;
-                    title.className = 'text-white text-3xl mx-2';
-                    subtitle.className = 'text-sm text-gray-500';
-                }
-            }
+      function retakeFrontPhoto() {
+        retakePhoto("front");
+      }
+
+      function retakeBackPhoto() {
+        retakePhoto("back");
+      }
+
+      function retakePhoto(side) {
+        const preview = document.getElementById(`${side}Preview`);
+        const uploadZone = document.getElementById(`${side}UploadZone`);
+
+        preview.classList.add("hidden");
+        uploadZone.style.display = "block";
+
+        if (side === "front") {
+          frontImageData = null;
+        } else {
+          backImageData = null;
         }
 
-        function updateProgressBar() {
-            const progress = (currentStep / 4) * 100;
-            document.getElementById('progressBar').style.width = `${progress}%`;
+        checkStep1Completion();
+      }
+
+      function confirmFrontPhoto() {
+        // Photo is already confirmed when captured/uploaded
+        checkStep1Completion();
+      }
+
+      function confirmBackPhoto() {
+        // Photo is already confirmed when captured/uploaded
+        checkStep1Completion();
+      }
+
+      function checkStep1Completion() {
+        const nextButton = document.getElementById("nextStep1");
+        if (frontImageData && backImageData) {
+          nextButton.disabled = false;
+          nextButton.classList.remove(
+            "disabled:bg-gray-400",
+            "disabled:cursor-not-allowed"
+          );
+        } else {
+          nextButton.disabled = true;
+          nextButton.classList.add(
+            "disabled:bg-gray-400",
+            "disabled:cursor-not-allowed"
+          );
         }
+      }
 
-        // Camera and file handling functions
-        function setupDragAndDrop(zoneId, inputId) {
-            const zone = document.getElementById(zoneId);
-            const input = document.getElementById(inputId);
+      function validateCURP(curp) {
+        const curpRegex =
+          /^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}$/;
 
-            zone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                zone.classList.add('dragover');
-            });
-
-            zone.addEventListener('dragleave', () => {
-                zone.classList.remove('dragover');
-            });
-
-            zone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                zone.classList.remove('dragover');
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    handleFileSelect(files[0], zoneId.includes('front') ? 'front' : 'back');
-                }
-            });
+        const input = document.getElementById("curp");
+        if (curp.length === 18) {
+          if (curpRegex.test(curp)) {
+            input.classList.remove("border-red-500");
+            input.classList.add("border-green-500");
+          } else {
+            input.classList.remove("border-green-500");
+            input.classList.add("border-red-500");
+          }
+        } else {
+          input.classList.remove("border-green-500", "border-red-500");
         }
+      }
 
-        function handleFrontFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                handleFileSelect(file, 'front');
-            }
+      function populateSummary() {
+        // Personal information summary
+        const personalSummary = document.getElementById("personalSummary");
+        const personalData = {
+          "Nombre Completo": `${document.getElementById("nombres").value} ${
+            document.getElementById("apellidoPaterno").value
+          } ${document.getElementById("apellidoMaterno").value}`,
+          CURP: document.getElementById("curp").value,
+          "Fecha de Nacimiento":
+            document.getElementById("fechaNacimiento").value,
+          Sexo:
+            document.getElementById("sexo").value === "M"
+              ? "Masculino"
+              : "Femenino",
+          "Estado Civil": document.getElementById("estadoCivil").value,
+          Teléfono: document.getElementById("telefono").value,
+          Email: document.getElementById("email").value,
+          Ocupación: document.getElementById("ocupacion").value,
+          Escolaridad: document.getElementById("escolaridad").value,
+        };
+
+        personalSummary.innerHTML = Object.entries(personalData)
+          .map(([key, value]) => `<div><strong>${key}:</strong> ${value}</div>`)
+          .join("");
+
+        // Address summary
+        const addressSummary = document.getElementById("addressSummary");
+        const addressData = {
+          Dirección: `${document.getElementById("calle").value} ${
+            document.getElementById("numeroExterior").value
+          }${
+            document.getElementById("numeroInterior").value
+              ? " Int. " + document.getElementById("numeroInterior").value
+              : ""
+          }`,
+          Colonia: document.getElementById("colonia").value,
+          "Código Postal": document.getElementById("codigoPostal").value,
+          Municipio: document.getElementById("municipio").value,
+          Estado: document.getElementById("estado").value,
+          "Entre Calles":
+            document.getElementById("entreCalles").value || "No especificado",
+          Referencias:
+            document.getElementById("referencias").value || "No especificado",
+          "Tipo de Vivienda": document.getElementById("tipoVivienda").value,
+        };
+
+        addressSummary.innerHTML = Object.entries(addressData)
+          .map(
+            ([key, value]) =>
+              `<div class="mb-2"><strong>${key}:</strong> ${value}</div>`
+          )
+          .join("");
+      }
+
+      function updateSubmitButton() {
+        const acceptTerms = document.getElementById("acceptTerms").checked;
+        const submitButton = document.getElementById("submitRegistration");
+
+        if (acceptTerms) {
+          submitButton.disabled = false;
+          submitButton.classList.remove(
+            "disabled:bg-gray-400",
+            "disabled:cursor-not-allowed"
+          );
+        } else {
+          submitButton.disabled = true;
+          submitButton.classList.add(
+            "disabled:bg-gray-400",
+            "disabled:cursor-not-allowed"
+          );
         }
+      }
 
-        function handleBackFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                handleFileSelect(file, 'back');
-            }
-        }
+      function submitRegistration() {
+        // Simulate form submission
+        const submitButton = document.getElementById("submitRegistration");
+        submitButton.innerHTML =
+          '<i class="fas fa-spinner fa-spin mr-2"></i>Enviando...';
+        submitButton.disabled = true;
 
-        function handleFileSelect(file, side) {
-            if (!file.type.startsWith('image/')) {
-                alert('Por favor selecciona un archivo de imagen válido.');
-                return;
-            }
+        // Simulate API call
+        setTimeout(() => {
+          // Generate folio number
+          const folio =
+            "REG-" +
+            new Date().getFullYear() +
+            "-" +
+            Math.floor(Math.random() * 900000 + 100000);
+          document.getElementById("folioNumber").textContent = folio;
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                if (side === 'front') {
-                    frontImageData = e.target.result;
-                    showImagePreview('front', e.target.result);
-                } else {
-                    backImageData = e.target.result;
-                    showImagePreview('back', e.target.result);
-                }
-                checkStep1Completion();
-            };
-            reader.readAsDataURL(file);
-        }
+          // Show success modal
+          document.getElementById("successModal").classList.remove("hidden");
 
-        function showImagePreview(side, imageSrc) {
-            const preview = document.getElementById(`${side}Preview`);
-            const image = document.getElementById(`${side}Image`);
-            const uploadZone = document.getElementById(`${side}UploadZone`);
-
-            image.src = imageSrc;
-            preview.classList.remove('hidden');
-            uploadZone.style.display = 'none';
-        }
-
-        function startFrontCamera() {
-            startCamera('front');
-        }
-
-        function startBackCamera() {
-            startCamera('back');
-        }
-
-        async function startCamera(side) {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { 
-                        facingMode: 'environment',
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    } 
-                });
-                
-                const video = document.getElementById(`${side}Camera`);
-                const container = document.getElementById(`${side}CameraContainer`);
-                const uploadZone = document.getElementById(`${side}UploadZone`);
-
-                video.srcObject = stream;
-                container.style.display = 'block';
-                uploadZone.style.display = 'none';
-
-                if (side === 'front') {
-                    frontStream = stream;
-                } else {
-                    backStream = stream;
-                }
-            } catch (error) {
-                console.error('Error accessing camera:', error);
-                alert('No se pudo acceder a la cámara. Por favor, verifica los permisos o usa la opción de subir archivo.');
-            }
-        }
-
-        function captureFrontPhoto() {
-            capturePhoto('front');
-        }
-
-        function captureBackPhoto() {
-            capturePhoto('back');
-        }
-
-        function capturePhoto(side) {
-            const video = document.getElementById(`${side}Camera`);
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0);
-
-            const imageData = canvas.toDataURL('image/jpeg', 0.8);
-            
-            if (side === 'front') {
-                frontImageData = imageData;
-                stopFrontCamera();
-                showImagePreview('front', imageData);
-            } else {
-                backImageData = imageData;
-                stopBackCamera();
-                showImagePreview('back', imageData);
-            }
-            
-            checkStep1Completion();
-        }
-
-        function stopFrontCamera() {
-            stopCamera('front');
-        }
-
-        function stopBackCamera() {
-            stopCamera('back');
-        }
-
-        function stopCamera(side) {
-            const stream = side === 'front' ? frontStream : backStream;
-            const container = document.getElementById(`${side}CameraContainer`);
-            const uploadZone = document.getElementById(`${side}UploadZone`);
-
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                if (side === 'front') {
-                    frontStream = null;
-                } else {
-                    backStream = null;
-                }
-            }
-
-            container.style.display = 'none';
-            uploadZone.style.display = 'block';
-        }
-
-        function retakeFrontPhoto() {
-            retakePhoto('front');
-        }
-
-        function retakeBackPhoto() {
-            retakePhoto('back');
-        }
-
-        function retakePhoto(side) {
-            const preview = document.getElementById(`${side}Preview`);
-            const uploadZone = document.getElementById(`${side}UploadZone`);
-
-            preview.classList.add('hidden');
-            uploadZone.style.display = 'block';
-
-            if (side === 'front') {
-                frontImageData = null;
-            } else {
-                backImageData = null;
-            }
-
-            checkStep1Completion();
-        }
-
-        function confirmFrontPhoto() {
-            // Photo is already confirmed when captured/uploaded
-            checkStep1Completion();
-        }
-
-        function confirmBackPhoto() {
-            // Photo is already confirmed when captured/uploaded
-            checkStep1Completion();
-        }
-
-        function checkStep1Completion() {
-            const nextButton = document.getElementById('nextStep1');
-            if (frontImageData && backImageData) {
-                nextButton.disabled = false;
-                nextButton.classList.remove('disabled:bg-gray-400', 'disabled:cursor-not-allowed');
-            } else {
-                nextButton.disabled = true;
-                nextButton.classList.add('disabled:bg-gray-400', 'disabled:cursor-not-allowed');
-            }
-        }
-
-        function validateCURP(curp) {
-            const curpRegex = /^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}$/;
-            
-            const input = document.getElementById('curp');
-            if (curp.length === 18) {
-                if (curpRegex.test(curp)) {
-                    input.classList.remove('border-red-500');
-                    input.classList.add('border-green-500');
-                } else {
-                    input.classList.remove('border-green-500');
-                    input.classList.add('border-red-500');
-                }
-            } else {
-                input.classList.remove('border-green-500', 'border-red-500');
-            }
-        }
-
-        function populateSummary() {
-            // Personal information summary
-            const personalSummary = document.getElementById('personalSummary');
-            const personalData = {
-                'Nombre Completo': `${document.getElementById('nombres').value} ${document.getElementById('apellidoPaterno').value} ${document.getElementById('apellidoMaterno').value}`,
-                'CURP': document.getElementById('curp').value,
-                'Fecha de Nacimiento': document.getElementById('fechaNacimiento').value,
-                'Sexo': document.getElementById('sexo').value === 'M' ? 'Masculino' : 'Femenino',
-                'Estado Civil': document.getElementById('estadoCivil').value,
-                'Teléfono': document.getElementById('telefono').value,
-                'Email': document.getElementById('email').value,
-                'Ocupación': document.getElementById('ocupacion').value,
-                'Escolaridad': document.getElementById('escolaridad').value
-            };
-
-            personalSummary.innerHTML = Object.entries(personalData).map(([key, value]) => 
-                `<div><strong>${key}:</strong> ${value}</div>`
-            ).join('');
-
-            // Address summary
-            const addressSummary = document.getElementById('addressSummary');
-            const addressData = {
-                'Dirección': `${document.getElementById('calle').value} ${document.getElementById('numeroExterior').value}${document.getElementById('numeroInterior').value ? ' Int. ' + document.getElementById('numeroInterior').value : ''}`,
-                'Colonia': document.getElementById('colonia').value,
-                'Código Postal': document.getElementById('codigoPostal').value,
-                'Municipio': document.getElementById('municipio').value,
-                'Estado': document.getElementById('estado').value,
-                'Entre Calles': document.getElementById('entreCalles').value || 'No especificado',
-                'Referencias': document.getElementById('referencias').value || 'No especificado',
-                'Tipo de Vivienda': document.getElementById('tipoVivienda').value
-            };
-
-            addressSummary.innerHTML = Object.entries(addressData).map(([key, value]) => 
-                `<div class="mb-2"><strong>${key}:</strong> ${value}</div>`
-            ).join('');
-        }
-
-        function updateSubmitButton() {
-            const acceptTerms = document.getElementById('acceptTerms').checked;
-            const submitButton = document.getElementById('submitRegistration');
-            
-            if (acceptTerms) {
-                submitButton.disabled = false;
-                submitButton.classList.remove('disabled:bg-gray-400', 'disabled:cursor-not-allowed');
-            } else {
-                submitButton.disabled = true;
-                submitButton.classList.add('disabled:bg-gray-400', 'disabled:cursor-not-allowed');
-            }
-        }
-
-        function submitRegistration() {
-            // Simulate form submission
-            const submitButton = document.getElementById('submitRegistration');
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Enviando...';
-            submitButton.disabled = true;
-
-            // Simulate API call
-            setTimeout(() => {
-                // Generate folio number
-                const folio = 'REG-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 900000 + 100000);
-                document.getElementById('folioNumber').textContent = folio;
-                
-                // Show success modal
-                document.getElementById('successModal').classList.remove('hidden');
-                
-                // Reset button
-                submitButton.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Enviar Registro';
-                submitButton.disabled = false;
-            }, 3000);
-        }
+          // Reset button
+          submitButton.innerHTML =
+            '<i class="fas fa-paper-plane mr-2"></i>Enviar Registro';
+          submitButton.disabled = false;
+        }, 3000);
+      }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976f9c4b07d8f863',t:'MTc1NjUwNzg1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'976f9c4b07d8f863',t:'MTc1NjUwNzg1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
 </html>
