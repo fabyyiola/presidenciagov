@@ -1,0 +1,921 @@
+<!-- Hero Section -->
+<header
+  class="relative text-white min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] overflow-hidden"
+  id="HeroTransparencia"
+>
+  <!-- Slides -->
+  <div id="transparencia-slides" class="absolute inset-0 w-full h-full"></div>
+
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-black/60"></div>
+
+  <!-- Content -->
+  <div class="relative container mx-auto px-6 py-16 text-left z-10">
+    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+      Transparencia<br />
+      <span class="text-green-200">Rendición de Cuentas</span>
+    </h1>
+    <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
+      Accede de forma rápida y sencilla a los trámites disponibles para ti y tu
+      familia.
+    </p>
+    <p class="text-lg mb-10 text-blue-50 max-w-2xl">
+      Consulta requisitos, costos y horarios. Estamos para ayudarte a realizar
+      tus gestiones de manera clara y transparente.
+    </p>
+  </div>
+</header>
+<script>
+  (function () {
+    // ✅ Array of background images
+    const fotos = [
+      "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/537443703_1083175363990686_8045232977682833621_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHFKmSngXodx6ohCkdwY33quu5ihEImdb667mKEQiZ1vtGT4xomiZqx4UJbjiOfpcA53iME9KPTybE-mq7RK--L&_nc_ohc=RNl-MM1NnbQQ7kNvwF8V5kj&_nc_oc=AdmYrMgG5oeODvMZHwxTnylSDoqnu0xc2K9zvF9R8EvWOmf8veDSqjhfLu248IWHP4QfSHvpcGpv2Q9pLBqbhavE&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=NqYF_VNV5jMZdbeupbxu-g&oh=00_AfaVuQtXw0xJXuwprnRn0KusoJgXq3lxKcyfUz3P-uNXfA&oe=68C78C49",
+      "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/543411036_18293228668264631_1528231244587165159_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeG3yBqAEhz_OD-CKfjFY8KaUjQRTyWT1iNSNBFPJZPWI2mnHJ1s1_uCkuzSX3GAzgwN9EV6uM6BxZY_qW6bss_R&_nc_ohc=ULaepqrpGqMQ7kNvwF2ln-j&_nc_oc=AdkEUiWQoVpAq6mx0q6llN4CdS38RtzYCaiga8JV-gt7LuXShMXkWSvYrPTn_z_zTpS8cqYNuCNUvuNc62n4BESx&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=04YgI-7VC-wWMbfI3J65Bg&oh=00_AfZT5X2CfAeqQ5oKePddszfKs387PgNnyP347NKvUoHyvQ&oe=68C78DFA",
+      "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/541385071_18293106994264631_2069341172021805007_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHFTmGfs-V6kGm-O13RO7_dH5DXY-TNmK0fkNdj5M2YreM-ePEeRhjg8gK9FLELKiE4SpUEHBSqFdaESz5hal1W&_nc_ohc=IIk7hLrXKawQ7kNvwHx8GCn&_nc_oc=AdkunGtpsvJf3ZRmeTdQArO7wt3KfUypCZcKDM4M03qjssfvHFV6c2reKmWQpX-9pyzNwbdh_Vka540VICvZuBjH&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=x2L9cfLnKC_37zEyuLLMSw&oh=00_Afbbc29JERQcirwkn1WspzRM8Qp4H5YGqsMgPYB2Gis-pA&oe=68C7885E",
+    ];
+
+    const slidesContainer = document.getElementById("transparencia-slides");
+
+    // Crear slides
+    fotos.forEach((url, i) => {
+      const slide = document.createElement("div");
+      slide.className = `absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+        i === 0 ? "opacity-100" : "opacity-0"
+      }`;
+      slide.style.backgroundImage = `url('${url}')`;
+      slide.style.backgroundSize = "cover";
+      slide.style.backgroundPosition = "center";
+      slidesContainer.appendChild(slide);
+    });
+
+    const slides = Array.from(slidesContainer.children);
+    let idx = 0;
+
+    function showNext() {
+      slides[idx].classList.remove("opacity-100");
+      slides[idx].classList.add("opacity-0");
+
+      idx = (idx + 1) % slides.length;
+
+      slides[idx].classList.remove("opacity-0");
+      slides[idx].classList.add("opacity-100");
+    }
+
+    setInterval(showNext, 5000); // ⏱ cambia cada 5s
+  })();
+</script>
+
+<!-- Search Section -->
+<section class="py-8 bg-white border-b">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="bg-gray-50 rounded-lg p-6">
+       <h2 class="text-4xl font-bold text-municipal-blue text-center mb-6">
+        BUSCAR DOCUMENTOS
+      </h2>
+
+      <div class="flex flex-col md:flex-row gap-4 mb-4">
+        <input
+          type="text"
+          id="documentSearch"
+          placeholder="Buscar documentos, actas, presupuestos, normativas..."
+          class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-municipal-blue text-lg"
+        />
+        <select
+          id="categoryFilter"
+          class="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-municipal-blue"
+        >
+          <option value="">Todas las categorías</option>
+          <option value="recursos-humanos">Recursos Humanos</option>
+          <option value="finanzas">Finanzas</option>
+          <option value="normatividad">Normatividad</option>
+          <option value="gobierno-abierto">Gobierno Abierto</option>
+          <option value="ayuntamiento">Ayuntamiento</option>
+          <option value="planeacion">Planeación</option>
+          <option value="obras">Obras Públicas</option>
+          <option value="servicios">Servicios Públicos</option>
+        </select>
+        <select
+          id="yearFilter"
+          class="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-municipal-blue"
+        >
+          <option value="">Todos los años</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+        </select>
+      </div>
+
+      <div class="text-center">
+        <p class="text-gray-600 text-sm">
+          💡 <strong>Tip:</strong> Usa palabras clave como "presupuesto",
+          "acta", "reglamento" o "licitación"
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quick Stats -->
+<section class="py-8 bg-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="text-center">
+        <div
+          class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3"
+        >
+          <i class="fas fa-file-alt text-2xl text-municipal-blue"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-municipal-blue">1,247</h3>
+        <p class="text-gray-600">Documentos Publicados</p>
+      </div>
+
+      <div class="text-center">
+        <div
+          class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3"
+        >
+          <i class="fas fa-calendar text-2xl text-municipal-green"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-municipal-green">Diario</h3>
+        <p class="text-gray-600">Actualización</p>
+      </div>
+
+      <div class="text-center">
+        <div
+          class="bg-teal-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3"
+        >
+          <i class="fas fa-download text-2xl text-municipal-teal"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-municipal-teal">24/7</h3>
+        <p class="text-gray-600">Acceso Libre</p>
+      </div>
+
+      <div class="text-center">
+        <div
+          class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3"
+        >
+          <i class="fas fa-shield-alt text-2xl text-purple-600"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-purple-600">100%</h3>
+        <p class="text-gray-600">Transparente</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Document Categories -->
+<section class="py-12 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-municipal-blue text-center mb-12">
+      CATEGORÍAS DE DOCUMENTOS
+    </h2>
+
+    <div
+      id="categoriesGrid"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+    >
+      <!-- Row 1 -->
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="recursos-humanos"
+      >
+        <div class="text-center">
+          <div
+            class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-users text-2xl text-municipal-blue"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Recursos Humanos</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Nóminas, contratos y estructura organizacional
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-blue-50 px-2 py-1 rounded">47 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="finanzas"
+      >
+        <div class="text-center">
+          <div
+            class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-chart-line text-2xl text-municipal-green"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Finanzas</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Presupuestos, estados financieros y gastos
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-green-50 px-2 py-1 rounded">89 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="normatividad"
+      >
+        <div class="text-center">
+          <div
+            class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-gavel text-2xl text-purple-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Normatividad</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Reglamentos, ordenanzas y disposiciones
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-purple-50 px-2 py-1 rounded">34 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="gobierno-abierto"
+      >
+        <div class="text-center">
+          <div
+            class="bg-teal-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-eye text-2xl text-municipal-teal"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Gobierno Abierto</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Transparencia proactiva y datos abiertos
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-teal-50 px-2 py-1 rounded">62 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="ayuntamiento"
+      >
+        <div class="text-center">
+          <div
+            class="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-landmark text-2xl text-red-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Ayuntamiento</h3>
+          <p class="text-gray-600 text-sm mb-3">Actas de cabildo y sesiones</p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-red-50 px-2 py-1 rounded">156 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="planeacion"
+      >
+        <div class="text-center">
+          <div
+            class="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-map text-2xl text-orange-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Planeación</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Planes de desarrollo y programas
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-orange-50 px-2 py-1 rounded">28 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="obras"
+      >
+        <div class="text-center">
+          <div
+            class="bg-yellow-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-hard-hat text-2xl text-yellow-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Obras Públicas</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Licitaciones, contratos y avances
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-yellow-50 px-2 py-1 rounded">73 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="servicios"
+      >
+        <div class="text-center">
+          <div
+            class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-cogs text-2xl text-indigo-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Servicios Públicos</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Agua, limpia, alumbrado y mantenimiento
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-indigo-50 px-2 py-1 rounded">91 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="seguridad"
+      >
+        <div class="text-center">
+          <div
+            class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-shield-alt text-2xl text-blue-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Seguridad Pública</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Estadísticas y programas de seguridad
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-blue-50 px-2 py-1 rounded">45 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="desarrollo-social"
+      >
+        <div class="text-center">
+          <div
+            class="bg-pink-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-heart text-2xl text-pink-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Desarrollo Social</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Programas sociales y padrones
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-pink-50 px-2 py-1 rounded">67 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="catastro"
+      >
+        <div class="text-center">
+          <div
+            class="bg-emerald-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-home text-2xl text-emerald-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Catastro</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Valores catastrales y predial
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-emerald-50 px-2 py-1 rounded">52 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="medio-ambiente"
+      >
+        <div class="text-center">
+          <div
+            class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-leaf text-2xl text-green-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Medio Ambiente</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Programas ambientales y ecología
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-green-50 px-2 py-1 rounded">29 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="turismo"
+      >
+        <div class="text-center">
+          <div
+            class="bg-cyan-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-camera text-2xl text-cyan-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Turismo</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Promoción turística y eventos
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-cyan-50 px-2 py-1 rounded">18 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="educacion"
+      >
+        <div class="text-center">
+          <div
+            class="bg-violet-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-graduation-cap text-2xl text-violet-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Educación</h3>
+          <p class="text-gray-600 text-sm mb-3">Programas educativos y becas</p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-violet-50 px-2 py-1 rounded">36 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="salud"
+      >
+        <div class="text-center">
+          <div
+            class="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-heartbeat text-2xl text-red-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Salud</h3>
+          <p class="text-gray-600 text-sm mb-3">Programas de salud pública</p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-red-50 px-2 py-1 rounded">41 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="cultura"
+      >
+        <div class="text-center">
+          <div
+            class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-theater-masks text-2xl text-purple-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Cultura</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Eventos culturales y patrimonio
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-purple-50 px-2 py-1 rounded">23 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="deportes"
+      >
+        <div class="text-center">
+          <div
+            class="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-futbol text-2xl text-orange-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Deportes</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Programas deportivos y recreativos
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-orange-50 px-2 py-1 rounded">31 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="comunicacion"
+      >
+        <div class="text-center">
+          <div
+            class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-bullhorn text-2xl text-blue-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Comunicación</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Boletines y comunicados oficiales
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-blue-50 px-2 py-1 rounded">84 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="juridico"
+      >
+        <div class="text-center">
+          <div
+            class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-balance-scale text-2xl text-gray-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Jurídico</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Contratos, convenios y litigios
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-gray-50 px-2 py-1 rounded">58 documentos</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 cursor-pointer category-card"
+        data-category="tecnologia"
+      >
+        <div class="text-center">
+          <div
+            class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-laptop text-2xl text-indigo-600"></i>
+          </div>
+          <h3 class="font-bold text-municipal-blue mb-2">Tecnología</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Sistemas y modernización digital
+          </p>
+          <div class="text-xs text-gray-500">
+            <span class="bg-indigo-50 px-2 py-1 rounded">15 documentos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Document Modal -->
+<div
+  id="documentModal"
+  class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"
+>
+  <div
+    class="bg-white rounded-lg max-w-4xl w-full max-h-screen overflow-y-auto"
+  >
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="modalTitle" class="text-2xl font-bold text-municipal-blue"></h3>
+        <button
+          id="closeModal"
+          class="text-gray-500 hover:text-gray-700 text-2xl"
+        >
+          &times;
+        </button>
+      </div>
+
+      <div id="modalContent" class="space-y-4">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Sample documents database
+  const documentsDatabase = {
+    "recursos-humanos": [
+      {
+        name: "Nómina Enero 2024",
+        type: "PDF",
+        size: "2.3 MB",
+        date: "2024-01-31",
+      },
+      {
+        name: "Estructura Organizacional 2024",
+        type: "PDF",
+        size: "1.8 MB",
+        date: "2024-01-15",
+      },
+      {
+        name: "Contratos de Personal",
+        type: "PDF",
+        size: "4.2 MB",
+        date: "2024-01-10",
+      },
+      {
+        name: "Tabulador de Sueldos",
+        type: "PDF",
+        size: "856 KB",
+        date: "2024-01-05",
+      },
+      {
+        name: "Manual de Procedimientos RH",
+        type: "PDF",
+        size: "3.1 MB",
+        date: "2023-12-20",
+      },
+    ],
+    finanzas: [
+      {
+        name: "Presupuesto de Egresos 2024",
+        type: "PDF",
+        size: "5.7 MB",
+        date: "2024-01-01",
+      },
+      {
+        name: "Estado Financiero Diciembre 2023",
+        type: "PDF",
+        size: "2.9 MB",
+        date: "2023-12-31",
+      },
+      {
+        name: "Cuenta Pública 2023",
+        type: "PDF",
+        size: "8.4 MB",
+        date: "2023-12-31",
+      },
+      {
+        name: "Ingresos Municipales Enero 2024",
+        type: "PDF",
+        size: "1.2 MB",
+        date: "2024-01-31",
+      },
+      {
+        name: "Deuda Pública Municipal",
+        type: "PDF",
+        size: "967 KB",
+        date: "2024-01-15",
+      },
+    ],
+    ayuntamiento: [
+      {
+        name: "Acta de Cabildo No. 15",
+        type: "PDF",
+        size: "1.4 MB",
+        date: "2024-02-15",
+      },
+      {
+        name: "Acta de Cabildo No. 14",
+        type: "PDF",
+        size: "1.6 MB",
+        date: "2024-02-01",
+      },
+      {
+        name: "Acta de Cabildo No. 13",
+        type: "PDF",
+        size: "1.3 MB",
+        date: "2024-01-15",
+      },
+      {
+        name: "Orden del Día - Sesión Extraordinaria",
+        type: "PDF",
+        size: "245 KB",
+        date: "2024-02-10",
+      },
+      {
+        name: "Reglamento Interior del Ayuntamiento",
+        type: "PDF",
+        size: "2.1 MB",
+        date: "2023-10-01",
+      },
+    ],
+  };
+
+  // Search and filter functionality
+  const searchInput = document.getElementById("documentSearch");
+  const categoryFilter = document.getElementById("categoryFilter");
+  const yearFilter = document.getElementById("yearFilter");
+  const categoryCards = document.querySelectorAll(".category-card");
+
+  function filterCategories() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedCategory = categoryFilter.value;
+    const selectedYear = yearFilter.value;
+
+    categoryCards.forEach((card) => {
+      const cardTitle = card.querySelector("h3").textContent.toLowerCase();
+      const cardDescription = card.querySelector("p").textContent.toLowerCase();
+      const cardCategory = card.getAttribute("data-category");
+
+      const matchesSearch =
+        cardTitle.includes(searchTerm) || cardDescription.includes(searchTerm);
+      const matchesCategory =
+        !selectedCategory || cardCategory === selectedCategory;
+
+      if (matchesSearch && matchesCategory) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  }
+
+  searchInput.addEventListener("input", filterCategories);
+  categoryFilter.addEventListener("change", filterCategories);
+  yearFilter.addEventListener("change", filterCategories);
+
+  // Modal functionality
+  const modal = document.getElementById("documentModal");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalContent = document.getElementById("modalContent");
+  const closeModal = document.getElementById("closeModal");
+
+  function showCategoryDocuments(category) {
+    const categoryNames = {
+      "recursos-humanos": "Recursos Humanos",
+      finanzas: "Finanzas",
+      normatividad: "Normatividad",
+      "gobierno-abierto": "Gobierno Abierto",
+      ayuntamiento: "Ayuntamiento",
+      planeacion: "Planeación",
+      obras: "Obras Públicas",
+      servicios: "Servicios Públicos",
+    };
+
+    modalTitle.textContent = categoryNames[category] || "Documentos";
+
+    const documents = documentsDatabase[category] || [
+      {
+        name: "Documento de ejemplo 1",
+        type: "PDF",
+        size: "1.2 MB",
+        date: "2024-01-15",
+      },
+      {
+        name: "Documento de ejemplo 2",
+        type: "PDF",
+        size: "856 KB",
+        date: "2024-01-10",
+      },
+      {
+        name: "Documento de ejemplo 3",
+        type: "PDF",
+        size: "2.1 MB",
+        date: "2024-01-05",
+      },
+    ];
+
+    modalContent.innerHTML = `
+                <div class="mb-4">
+                    <input type="text" placeholder="Buscar en esta categoría..." 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-municipal-blue">
+                </div>
+                
+                <div class="space-y-3">
+                    ${documents
+                      .map(
+                        (doc) => `
+                        <div class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition duration-300 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="bg-red-100 rounded p-2 mr-3">
+                                        <i class="fas fa-file-pdf text-red-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-municipal-blue">${doc.name}</h4>
+                                        <p class="text-sm text-gray-600">${doc.type} • ${doc.size} • ${doc.date}</p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="bg-municipal-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition duration-300">
+                                        <i class="fas fa-eye mr-1"></i>Ver
+                                    </button>
+                                    <button class="bg-municipal-green text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition duration-300">
+                                        <i class="fas fa-download mr-1"></i>Descargar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                      )
+                      .join("")}
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600 text-sm">
+                        📄 Mostrando ${documents.length} documentos • 
+                        Última actualización: ${new Date().toLocaleDateString(
+                          "es-MX"
+                        )}
+                    </p>
+                </div>
+            `;
+
+    modal.classList.remove("hidden");
+  }
+
+  closeModal.addEventListener("click", () => {
+    modal.classList.add("hidden");
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.add("hidden");
+    }
+  });
+
+  // Add click events to category cards
+  categoryCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const category = card.getAttribute("data-category");
+      showCategoryDocuments(category);
+    });
+  });
+
+  // Document action handlers
+  document.addEventListener("click", (e) => {
+    if (
+      e.target.closest("button") &&
+      e.target.closest("button").textContent.includes("Ver")
+    ) {
+      //alert("Abriendo visor de documentos...");
+    }
+    if (
+      e.target.closest("button") &&
+      e.target.closest("button").textContent.includes("Descargar")
+    ) {
+      //alert("Iniciando descarga del documento...");
+    }
+  });
+
+  // Emergency numbers click to call
+  document.querySelectorAll(".bg-red-600 .bg-white").forEach((card) => {
+    card.addEventListener("click", () => {
+      const phoneNumber = card.querySelector("h3").textContent;
+      if (phoneNumber !== "911" && phoneNumber.includes("(824)")) {
+        window.open(`tel:${phoneNumber}`, "_self");
+      } else if (phoneNumber === "911") {
+        alert(
+          "⚠️ Número de emergencia 911\n\nUsa solo en caso de emergencia real."
+        );
+      }
+    });
+  });
+  const style = document.createElement("style");
+  style.textContent = `
+            @keyframes fade-in {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in {
+                animation: fade-in 1s ease-out;
+            }
+        `;
+  document.head.appendChild(style);
+</script>
+<script>
+  (function () {
+    function c() {
+      var b = a.contentDocument || a.contentWindow.document;
+      if (b) {
+        var d = b.createElement("script");
+        d.innerHTML =
+          "window.__CF$cv$params={r:'976f44a6b3f5f863',t:'MTc1NjUwNDI3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+        b.getElementsByTagName("head")[0].appendChild(d);
+      }
+    }
+    if (document.body) {
+      var a = document.createElement("iframe");
+      a.height = 1;
+      a.width = 1;
+      a.style.position = "absolute";
+      a.style.top = 0;
+      a.style.left = 0;
+      a.style.border = "none";
+      a.style.visibility = "hidden";
+      document.body.appendChild(a);
+      if ("loading" !== document.readyState) c();
+      else if (window.addEventListener)
+        document.addEventListener("DOMContentLoaded", c);
+      else {
+        var e = document.onreadystatechange || function () {};
+        document.onreadystatechange = function (b) {
+          e(b);
+          "loading" !== document.readyState &&
+            ((document.onreadystatechange = e), c());
+        };
+      }
+    }
+  })();
+</script>
