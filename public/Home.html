@@ -132,13 +132,13 @@
         </div>
 
         <!-- Turismo -->
-        <div style="display:none">
+        <div style="display: none">
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">
-            </h2>
-            <a href="#/turismo" class="text-sm text-blue-600 hover:underline"
-              ></a
-            >
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900"></h2>
+            <a
+              href="#/turismo"
+              class="text-sm text-blue-600 hover:underline"
+            ></a>
           </div>
           <div id="turismo-stack" class="space-y-4"></div>
           <div id="turismo-empty" class="text-slate-500 text-sm">
@@ -150,24 +150,23 @@
   </section>
 
   <!-- EMERGENCY STRIP -->
-  <section class="py-10 bg-white border-t">
+  <section id="HomeContacts" class="py-12">
     <div class="max-w-7xl mx-auto px-4">
-      <div class="flex items-end justify-between mb-6">
-        <h2
-          id="emerg-title"
-          class="text-2xl md:text-3xl font-bold text-red-600"
-        >
-          Números de Emergencia
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl md:text-3xl font-bold text-slate-900">
+          Contactos de Emergencia
         </h2>
-        <p class="text-sm text-slate-500">Atención 24/7</p>
+        <a href="#/contactos" class="text-sm text-blue-600 hover:underline"
+          >Ver todos</a
+        >
       </div>
+
       <div
-        id="emerg-grid"
-        class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"
+        id="home-contacts-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
       ></div>
-      <div id="emerg-empty" class="text-slate-500 text-sm">
-        Marca “Mostrar en página de inicio” en
-        <em>Contactos de Emergencia</em> para verlos aquí.
+      <div id="home-contacts-empty" class="text-slate-500 text-sm">
+        No hay contactos destacados para la página de inicio.
       </div>
     </div>
   </section>
@@ -340,6 +339,98 @@
       activo: true,
     },
   ];
+  const contactos = [
+    {
+      id: "1",
+      nombre: "Cruz Roja Mexicana",
+      categoria: "Emergencias Médicas",
+      telefono: "911",
+      telefonoAlt: "065",
+      disponibilidad: "24/7",
+      prioridad: 1,
+      descripcion:
+        "Atención médica de emergencia, ambulancias y primeros auxilios",
+      direccion: "Av. Principal #123, Centro",
+      email: "emergencias@cruzroja.org.mx",
+      activo: true,
+      fechaCreacion: "2024-01-15",
+      showInHome: true,
+    },
+    {
+      id: "2",
+      nombre: "Policía Municipal",
+      categoria: "Seguridad Pública",
+      telefono: "911",
+      telefonoAlt: "(555) 123-4567",
+      disponibilidad: "24/7",
+      prioridad: 1,
+      descripcion: "Seguridad pública, emergencias y denuncia de delitos",
+      direccion: "Comandancia Municipal, Col. Centro",
+      email: "policia@municipio.gob.mx",
+      activo: true,
+      fechaCreacion: "2024-01-15",
+    },
+    {
+      id: "3",
+      nombre: "Bomberos",
+      categoria: "Bomberos",
+      telefono: "911",
+      telefonoAlt: "(555) 234-5678",
+      disponibilidad: "24/7",
+      prioridad: 1,
+      descripcion: "Combate de incendios, rescates y emergencias químicas",
+      direccion: "Estación Central de Bomberos",
+      email: "bomberos@municipio.gob.mx",
+      activo: true,
+      fechaCreacion: "2024-01-15",
+      showInHome: false,
+    },
+    {
+      id: "4",
+      nombre: "Protección Civil",
+      categoria: "Protección Civil",
+      telefono: "(555) 345-6789",
+      telefonoAlt: "",
+      disponibilidad: "24/7",
+      prioridad: 1,
+      descripcion: "Prevención y atención de desastres naturales",
+      direccion: "Coordinación Municipal de Protección Civil",
+      email: "proteccioncivil@municipio.gob.mx",
+      activo: true,
+      fechaCreacion: "2024-01-15",
+      showInHome: true,
+    },
+    {
+      id: "5",
+      nombre: "Servicios Públicos",
+      categoria: "Servicios Públicos",
+      telefono: "(555) 456-7890",
+      telefonoAlt: "",
+      disponibilidad: "Horario Laboral",
+      prioridad: 2,
+      descripcion:
+        "Reportes de fallas en agua, luz, drenaje y recolección de basura",
+      direccion: "Dirección de Servicios Públicos",
+      email: "servicios@municipio.gob.mx",
+      activo: true,
+      fechaCreacion: "2024-01-15",
+    },
+    {
+      id: "6",
+      nombre: "Presidencia Municipal",
+      categoria: "Gobierno Municipal",
+      telefono: "(555) 567-8901",
+      telefonoAlt: "",
+      disponibilidad: "Horario Laboral",
+      prioridad: 3,
+      descripcion: "Información general y trámites municipales",
+      direccion: "Palacio Municipal",
+      email: "presidencia@municipio.gob.mx",
+      activo: true,
+      fechaCreacion: "2024-01-15",
+      showInHome: true,
+    },
+  ];
   const eventos = [
     {
       id: 1,
@@ -383,73 +474,194 @@
   seedIfEmpty("municipio.quicklinks.v1", shortcuts);
   seedIfEmpty("noticias.v1", noticias);
   seedIfEmpty("eventos", eventos);
+  seedIfEmpty("municipio.contactos.emergencia.v1", contactos);
 </script>
 <script>
 (() => {
-  const STORAGE_KEY = 'municipio.quicklinks.v1';
+  const CONTACTS_KEY = "municipio.contactos.emergencia.v1";
 
-  function safeGetQuickLinks(){
-    // Prefer the admin helper if present
-    if (typeof window.getQuickLinks === 'function') {
-      try { return window.getQuickLinks(); } catch { /* fall back */ }
-    }
-    // Fallback: read, filter activos, sort by order then title
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      const list = raw ? JSON.parse(raw) : [];
-      return list
-        .filter(x => x && x.activo)
-        .sort((a,b)=>(a.order??0)-(b.order??0) || (a.titulo||'').localeCompare(b.titulo||''));
+  // same icon/tone map as admin (kept succinct)
+  const ICON = (cat)=>({
+    "Emergencias Médicas":"fas fa-kit-medical",
+    "Seguridad Pública":"fas fa-shield-halved",
+    "Bomberos":"fas fa-fire-extinguisher",
+    "Protección Civil":"fas fa-triangle-exclamation",
+    "Servicios Públicos":"fas fa-wrench",
+    "Gobierno Municipal":"fas fa-landmark",
+    "Otros Servicios":"fas fa-phone"
+  }[cat]||"fas fa-phone");
+
+  const TONE = (cat)=>({
+    "Emergencias Médicas":["text-rose-600","bg-rose-100"],
+    "Seguridad Pública":["text-blue-600","bg-blue-100"],
+    "Bomberos":["text-orange-600","bg-orange-100"],
+    "Protección Civil":["text-amber-700","bg-amber-100"],
+    "Servicios Públicos":["text-green-600","bg-green-100"],
+    "Gobierno Municipal":["text-purple-600","bg-purple-100"],
+    "Otros Servicios":["text-slate-700","bg-slate-100"]
+  }[cat]||["text-slate-700","bg-slate-100"]);
+
+  function getHomeContacts(){
+    try{
+      const raw = localStorage.getItem(CONTACTS_KEY);
+      if (!raw) return [];
+      return JSON.parse(raw)
+        .filter(c => c && c.activo === true && c.showInHome === true)
+        .sort((a,b)=>(a.prioridad||99)-(b.prioridad||99) || (a.nombre||"").localeCompare(b.nombre||""));
     } catch { return []; }
   }
 
-  const isHttp = (u)=>/^https?:\/\//i.test(u);
-  function go(href){
-    if (!href) return;
-    if (href.startsWith('#'))      location.hash = href;
-    else if (isHttp(href))         window.open(href, '_blank', 'noopener');
-    else                           location.href = href; // site-relative
+  function telHref(val){
+    if (!val) return "";
+    // strip spaces/parentheses/dashes for tel: link
+    return "tel:" + String(val).replace(/[^\d+#*]/g,"");
   }
 
-  function cardHTML(i){
-    const iconClass = i.iconClass || 'fas fa-circle';
-    const iconColor = i.iconColor || '#0f172a';
-    const titleColor= i.titleColor|| '#0f172a';
-    const bgColor   = i.bgColor   || '#ffffff';
+  function cardHTML(c){
+    const [txt,bg] = TONE(c.categoria);
+    const icon = ICON(c.categoria);
+    const telMain = telHref(c.telefono);
+    const telAlt  = telHref(c.telefonoAlt);
 
     return `
-      <button data-href="${i.href||'#'}"
+      <article class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="${bg} w-12 h-12 rounded-xl flex items-center justify-center">
+            <i class="${icon} ${txt} text-xl"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900 leading-tight">${c.nombre||""}</h3>
+            <div class="text-xs text-slate-500">${c.categoria||""} • ${c.disponibilidad||""}</div>
+          </div>
+        </div>
+
+        ${c.descripcion ? `<p class="text-sm text-slate-700 mb-3 line-clamp-3">${c.descripcion}</p>` : ""}
+
+        <div class="mt-auto space-y-2">
+          ${c.telefono ? `
+            <a href="${telMain}" class="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-red-600 text-white text-sm hover:bg-red-700">
+              <i class="fas fa-phone"></i><span>${c.telefono}</span>
+            </a>` : ``}
+
+          ${c.telefonoAlt ? `
+            <a href="${telAlt}" class="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-slate-100 text-slate-800 text-xs hover:bg-slate-200">
+              <i class="fas fa-phone"></i><span>Alterno: ${c.telefonoAlt}</span>
+            </a>` : ``}
+
+          <div class="flex gap-2 mt-1">
+            ${c.email ? `<a href="mailto:${c.email}" class="text-xs text-blue-700 hover:underline">Email</a>` : ``}
+            ${c.direccion ? `<span class="text-xs text-slate-500 line-clamp-1">${c.direccion}</span>` : ``}
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderHomeContacts(){
+    const grid  = document.getElementById("home-contacts-grid");
+    const empty = document.getElementById("home-contacts-empty");
+    if (!grid) return;
+
+    const list = getHomeContacts();
+    grid.innerHTML = list.map(cardHTML).join("");
+    empty.classList.toggle("hidden", list.length > 0);
+  }
+
+  // live update when admin changes
+  window.addEventListener("storage", (e)=>{ if (e.key === CONTACTS_KEY) renderHomeContacts(); });
+
+  // expose (optional)
+  window.renderHomeContacts = renderHomeContacts;
+
+  // run now
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", renderHomeContacts);
+  else renderHomeContacts();
+})();
+</script>
+
+<script>
+  (() => {
+    const STORAGE_KEY = "municipio.quicklinks.v1";
+
+    function safeGetQuickLinks() {
+      // Prefer the admin helper if present
+      if (typeof window.getQuickLinks === "function") {
+        try {
+          return window.getQuickLinks();
+        } catch {
+          /* fall back */
+        }
+      }
+      // Fallback: read, filter activos, sort by order then title
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const list = raw ? JSON.parse(raw) : [];
+        return list
+          .filter((x) => x && x.activo)
+          .sort(
+            (a, b) =>
+              (a.order ?? 0) - (b.order ?? 0) ||
+              (a.titulo || "").localeCompare(b.titulo || "")
+          );
+      } catch {
+        return [];
+      }
+    }
+
+    const isHttp = (u) => /^https?:\/\//i.test(u);
+    function go(href) {
+      if (!href) return;
+      if (href.startsWith("#")) location.hash = href;
+      else if (isHttp(href)) window.open(href, "_blank", "noopener");
+      else location.href = href; // site-relative
+    }
+
+    function cardHTML(i) {
+      const iconClass = i.iconClass || "fas fa-circle";
+      const iconColor = i.iconColor || "#0f172a";
+      const titleColor = i.titleColor || "#0f172a";
+      const bgColor = i.bgColor || "#ffffff";
+
+      return `
+      <button data-href="${i.href || "#"}"
         class="group bg-white p-10 rounded-2xl shadow hover:shadow-lg hover:-translate-y-1 transition flex flex-col items-center text-center border border-slate-200"
         style="background:${bgColor}">
         <i class="${iconClass} text-5xl mb-6" style="color:${iconColor}"></i>
         <h3 class="text-xl font-semibold"
-            style="color:${titleColor}">${i.titulo||''}</h3>
-        ${i.href ? `<div class="mt-2 text-xs text-slate-500 break-all">${""}</div>`:''}
+            style="color:${titleColor}">${i.titulo || ""}</h3>
+        ${
+          i.href
+            ? `<div class="mt-2 text-xs text-slate-500 break-all">${""}</div>`
+            : ""
+        }
       </button>
-    `;//poner una descripcion despues
-  }
+    `; //poner una descripcion despues
+    }
 
-  function renderQL(){
-    const grid  = document.getElementById('ql-home-grid');
-    const empty = document.getElementById('ql-home-empty');
-    if (!grid) return;
+    function renderQL() {
+      const grid = document.getElementById("ql-home-grid");
+      const empty = document.getElementById("ql-home-empty");
+      if (!grid) return;
 
-    const list = safeGetQuickLinks();
-    grid.innerHTML = list.map(cardHTML).join('');
-    empty?.classList.toggle('hidden', list.length > 0);
+      const list = safeGetQuickLinks();
+      grid.innerHTML = list.map(cardHTML).join("");
+      empty?.classList.toggle("hidden", list.length > 0);
 
-    // wire clicks
-    grid.querySelectorAll('[data-href]').forEach(el=>{
-      el.onclick = () => go(el.dataset.href);
+      // wire clicks
+      grid.querySelectorAll("[data-href]").forEach((el) => {
+        el.onclick = () => go(el.dataset.href);
+      });
+    }
+
+    // live updates if admin changes in another tab
+    window.addEventListener("storage", (e) => {
+      if (e.key === STORAGE_KEY) renderQL();
     });
-  }
 
-  // live updates if admin changes in another tab
-  window.addEventListener('storage', (e)=>{ if (e.key === STORAGE_KEY) renderQL(); });
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderQL);
-  else renderQL();
-})();
+    if (document.readyState === "loading")
+      document.addEventListener("DOMContentLoaded", renderQL);
+    else renderQL();
+  })();
 </script>
 
 <!-- ============ HOME (Turismo + Eventos + Hero) ============ -->
@@ -1174,4 +1386,3 @@
     else renderHomeNews();
   })();
 </script>
-
