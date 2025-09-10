@@ -871,53 +871,43 @@
       </div>
     </div>
 
-    <!-- Mobile Nav (collapsible) -->
-    <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200">
-      <div class="px-4 py-3 space-y-1">
-        <a
-          href="#home"
-          data-route="home"
-          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Inicio</a
-        >
-        <a
-          href="#programas"
-          data-route="programas"
-          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Programas</a
-        >
-        <a
-          href="#equipo"
-          data-route="equipo"
-          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Equipo</a
-        >
-        <a
-          href="#tuciudad"
-          data-route="tuciudad"
-          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Tu Ciudad</a
-        >
-        <a
-          href="#tramites"
-          data-route="tramites"
-          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Trámites</a
-        >
-        <a
-          href="#transp"
-          data-route="transp"
-          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Transparencia</a
-        >
-        <a
-          href="#proyectos"
-          data-route="proyectos"
-          class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue"
-          >Proyectos</a
-        >
+    
+    <!-- Mobile Nav (fixed overlay) -->
+<div id="mobile-sheet" class="fixed inset-0 z-50 hidden">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-black/30" data-close></div>
+
+  <!-- Sheet panel (starts at header height, set via JS) -->
+  <div id="mobile-sheet-panel" class="absolute inset-x-0 bg-white border-t border-gray-200 shadow-lg">
+    <!-- Top row inside sheet -->
+    <div class="px-4 py-3 flex items-center justify-between">
+      <div
+        class="bg-gradient-to-r from-municipal-blue to-municipal-teal text-white px-4 py-2 rounded-lg font-bold"
+      >
+        Sabinas Hidalgo N.L.
       </div>
+      <button
+        id="mobile-menu-close"
+        class="inline-flex items-center justify-center p-2 rounded-md text-municipal-blue hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-municipal-blue"
+        aria-label="Cerrar menú"
+      >
+        <i class="fas fa-times text-xl"></i>
+      </button>
     </div>
+
+    <!-- Links -->
+    <div class="px-4 pb-6 space-y-1">
+      <a href="#home" data-route="home" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Inicio</a>
+      <a href="#programas" data-route="programas" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Programas</a>
+      <a href="#equipo" data-route="equipo" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Equipo</a>
+      <a href="#tuciudad" data-route="tuciudad" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Tu Ciudad</a>
+      <a href="#tramites" data-route="tramites" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Trámites</a>
+      <a href="#transp" data-route="transp" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Transparencia</a>
+      <a href="#proyectos" data-route="proyectos" class="spa-link block w-full text-left font-medium px-3 py-3 rounded-md hover:bg-blue-50 text-municipal-blue">Proyectos</a>
+    </div>
+  </div>
+</div>
+
   </nav>
 </header>
 
@@ -973,49 +963,66 @@
 <script>
   (function () {
     const btn = document.getElementById("mobile-menu-toggle");
-    const menu = document.getElementById("mobile-menu");
-    const links = document.querySelectorAll('.spa-link');
+    const sheet = document.getElementById("mobile-sheet");
+    const panel = document.getElementById("mobile-sheet-panel");
+    const closeBtn = document.getElementById("mobile-menu-close");
+    const backdrop = sheet?.querySelector("[data-close]");
+    const links = document.querySelectorAll(".spa-link");
+    const header = document.querySelector("header");
 
-    function closeMenu() {
-      menu.classList.add("hidden");
-      document.body.classList.remove("overflow-hidden");
-      btn.setAttribute("aria-expanded", "false");
-      btn.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+    function setPanelTop() {
+      if (!panel || !header) return;
+      panel.style.top = header.offsetHeight + "px";
+      panel.style.maxHeight = `calc(100vh - ${header.offsetHeight}px)`;
+      panel.style.overflowY = "auto";
     }
 
     function openMenu() {
-      menu.classList.remove("hidden");
+      setPanelTop();
+      sheet.classList.remove("hidden");
       document.body.classList.add("overflow-hidden");
-      btn.setAttribute("aria-expanded", "true");
-      btn.innerHTML = '<i class="fas fa-times text-xl"></i>';
+      btn?.setAttribute("aria-expanded", "true");
+      if (btn) btn.innerHTML = '<i class="fas fa-times text-xl"></i>';
     }
 
+    function closeMenu() {
+      sheet.classList.add("hidden");
+      document.body.classList.remove("overflow-hidden");
+      btn?.setAttribute("aria-expanded", "false");
+      if (btn) btn.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+    }
+
+    // Toggle
     btn?.addEventListener("click", () => {
       const isOpen = btn.getAttribute("aria-expanded") === "true";
       isOpen ? closeMenu() : openMenu();
     });
 
-    // Close on link click (helps SPA navigation)
+    // Close actions
+    closeBtn?.addEventListener("click", closeMenu);
+    backdrop?.addEventListener("click", closeMenu);
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
+
+    // Recompute on resize and also close on desktop
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768) closeMenu();
+      setPanelTop();
+    });
+
+    // Close on link click (and mark active if you like)
     links.forEach(a => {
       a.addEventListener("click", () => {
-        // mark active (optional, keep your existing SPA logic if you have it)
         links.forEach(l => l.classList.remove("bg-blue-50"));
         a.classList.add("bg-blue-50");
         closeMenu();
       });
     });
 
-    // Close on Escape
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeMenu();
-    });
-
-    // Close when resizing to desktop
-    window.addEventListener("resize", () => {
-      if (window.innerWidth >= 768) closeMenu();
-    });
+    // Initial
+    setPanelTop();
   })();
 </script>
+
 
 
     <script>
