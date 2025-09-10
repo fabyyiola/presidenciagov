@@ -26,8 +26,31 @@
           transparencia y servicio.
         </p>
       </div>
+      <div style="display:none">
+ <!-- Controls -->
+    <button
+      type="button"
+      aria-label="Anterior"
+      class="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/70 hover:bg-white shadow items-center justify-center"
+    >
+      <i class="fas fa-chevron-left text-blue-700"></i>
+    </button>
+    <button
+      type="button"
+      aria-label="Siguiente"
+      class="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/70 hover:bg-white shadow items-center justify-center"
+    >
+      <i class="fas fa-chevron-right text-blue-700"></i>
+    </button>
+
+    <!-- Dots -->
+    <div
+      class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2"
+    ></div>
+      </div>
     </div>
   </header>
+
 
   <!-- Presidencia -->
   <section class="py-16 bg-white">
