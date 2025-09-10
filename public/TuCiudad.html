@@ -4,7 +4,7 @@
   <!-- Hero Section -->
   <header 
     class="relative text-white"
-    style="background-image: url('https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518139577_1061598692815020_4654446006479060152_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=104&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEi7S5EjeuLq7F89axJdaex8goNa6t9JtbyCg1rq30m1md9T4rmjjt-IkzVNlNE6xGWtrE4WvYgEEXImg3K-88d&_nc_ohc=fTa-4WDpEp0Q7kNvwEJ3w5N&_nc_oc=AdkF0j13OrDtBsARBondAWtbUtMbqbAIMXDHLacsObarXZ8EyvFHdM5s67OmdD7Q3gxHw2BmozNQp6pYOiEP8ZI3&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=ens-ktojqmDXnjTbtydNWQ&oh=00_Afamq4Q8xBgemjfXTcRnlqsaDjWh67u239MPJ-qKwY5yzA&oe=68C6BDE3'); background-size: cover; background-position: center;"
+    style="background-image: url('https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518139577_1061598692815020_4654446006479060152_n.jpg?...'); background-size: cover; background-position: center;"
   >
     <!-- Overlay -->
     <div class="absolute inset-0 bg-black/60"></div>
@@ -70,14 +70,79 @@
   </main>
 
   <!-- Business Modal -->
-  <!-- (keep the same modal code you already have) -->
+  <div id="biz-modal" class="fixed inset-0 z-50 hidden">
+    <!-- Backdrop -->
+    <div id="biz-modal-backdrop" class="absolute inset-0 bg-black/50"></div>
+
+    <!-- Panel -->
+    <div
+      class="relative mx-auto my-10 max-w-3xl bg-white rounded-2xl shadow-xl border w-[92%] md:w-auto"
+      role="dialog" aria-modal="true" aria-labelledby="m-title"
+    >
+      <!-- Header -->
+      <div class="flex items-start justify-between p-5 border-b">
+        <div>
+          <div class="flex gap-2 mb-2">
+            <span id="m-cat-pill" class="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200"></span>
+            <span id="m-giro-pill" class="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200"></span>
+          </div>
+          <h3 id="m-title" class="text-xl font-bold text-slate-800">Título</h3>
+          <p id="m-desc" class="text-sm text-slate-600 mt-1"></p>
+        </div>
+        <button id="biz-modal-close" class="text-slate-500 hover:text-slate-700 p-2 rounded">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-5 space-y-4">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="text-sm">
+            <div class="text-slate-500">Propietario</div>
+            <div id="m-owner" class="font-medium"></div>
+          </div>
+          <div class="text-sm">
+            <div class="text-slate-500">Teléfono</div>
+            <div id="m-phone" class="font-medium"></div>
+          </div>
+          <div class="text-sm">
+            <div class="text-slate-500">Correo</div>
+            <div id="m-email" class="font-medium"></div>
+          </div>
+          <div class="text-sm">
+            <div class="text-slate-500">Dirección</div>
+            <div id="m-address" class="font-medium"></div>
+          </div>
+          <div class="text-sm">
+            <div class="text-slate-500">Horario</div>
+            <div id="m-hours" class="font-medium"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-slate-500 text-sm mb-1">Servicios</div>
+          <div id="m-services" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Tipos de comida -->
+        <div id="m-food" class="hidden">
+          <div class="text-slate-500 text-sm mb-1">Tipos de comida</div>
+          <div id="m-food-tags" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Menú -->
+        <div id="m-menu-box" class="hidden">
+          <div class="text-slate-500 text-sm mb-1">Menú</div>
+          <div id="m-menu" class="space-y-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </section>
 
-
 <script>
 (() => {
-  // Lee de varias llaves posibles del admin/público
   const STORAGE_KEYS = [
     "admin.negocios.v1",
     "negocios.registrados.v1",
@@ -97,7 +162,6 @@
 
   const els = id => document.getElementById(id);
 
-  // Fusiona arrays de varias llaves y deduplica (por id o nombre+dirección)
   function loadAll() {
     const seen = new Set();
     const rows = [];
@@ -137,8 +201,6 @@
   }
 
   let DATA = loadAll();
-
-  // Estado de filtros
   let FILTER = { q: "", cat: "", giro: "" };
 
   function renderFilters() {
@@ -191,10 +253,9 @@
     });
   }
 
-  // Abre modal (si existe en la página)
   function open(b) {
     const get = id => document.getElementById(id);
-    if (!get("biz-modal")) return; // evita error si aún no insertas el modal
+    if (!get("biz-modal")) return;
 
     get("m-cat-pill").textContent = b.categoriaNombre || "";
     get("m-giro-pill").textContent = b.giroNombre || "";
@@ -208,12 +269,12 @@
     get("m-services").innerHTML = (b.servicios || [])
       .map(k => `<span class="text-xs border px-2 py-1 rounded">${CATALOG[k]?.label || k}</span>`).join("");
 
-    if (b.giro === "restaurante" && (b.tiposComida || []).length) {
+    if ((b.giro || b.giroNombre || "").toLowerCase() === "restaurante" && (b.tiposComida || []).length) {
       get("m-food").classList.remove("hidden");
       get("m-food-tags").innerHTML = b.tiposComida.map(t => `<span class="text-xs border px-2 py-1 rounded">${t}</span>`).join("");
     } else get("m-food").classList.add("hidden");
 
-    if (b.giro === "restaurante" && (b.menu || []).length) {
+    if ((b.giro || b.giroNombre || "").toLowerCase() === "restaurante" && (b.menu || []).length) {
       get("m-menu-box").classList.remove("hidden");
       get("m-menu").innerHTML = b.menu.map(m =>
         `<div class="flex justify-between border p-2 rounded"><span>${m.nombre}</span><span>$${m.precio}</span></div>`
@@ -223,7 +284,6 @@
     get("biz-modal").classList.remove("hidden");
   }
 
-  // Eventos de UI
   els("biz-q").addEventListener("input", (e) => { FILTER.q = e.target.value; apply(); });
   els("biz-cat").addEventListener("change", (e) => { FILTER.cat = e.target.value; apply(); });
   els("biz-giro").addEventListener("change", (e) => { FILTER.giro = e.target.value; apply(); });
@@ -231,7 +291,8 @@
   const closeBtn = document.getElementById("biz-modal-close");
   if (closeBtn) closeBtn.addEventListener("click", () => els("biz-modal").classList.add("hidden"));
 
-  // Escucha cambios desde el Admin (si guardan en cualquier llave)
+  document.getElementById("biz-modal-backdrop").addEventListener("click", () => els("biz-modal").classList.add("hidden"));
+
   window.addEventListener("storage", (e) => {
     if (STORAGE_KEYS.includes(e.key)) {
       DATA = loadAll();
@@ -240,15 +301,12 @@
     }
   });
 
-  // Init: siempre muestra todo al cargar
   renderFilters();
   apply();
 
-  // Mensaje amistoso si no hay datos en ninguna llave
   if (!DATA.length) {
     els("biz-stats").textContent = "0 negocios (aún no hay registros)";
     els("biz-empty").classList.remove("hidden");
   }
 })();
 </script>
-
