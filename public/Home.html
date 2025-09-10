@@ -1,12 +1,19 @@
 <section id="HomeContent" class="min-h-screen bg-slate-50">
   <!-- HERO -->
   <section class="section-content">
-    <div id="hero-wrap" class="relative h-[20vh] md:h-[30vh] lg:h-[50vh] overflow-hidden">
+    <div
+      id="hero-wrap"
+      class="relative h-[20vh] md:h-[30vh] lg:h-[50vh] overflow-hidden"
+    >
       <div id="hero-slides" class="absolute inset-0"></div>
       <div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
       <div class="absolute inset-x-0 bottom-0 p-6 md:p-10 text-white">
-        <h1 class="text-2xl md:text-4xl font-extrabold drop-shadow">Sabinas Hidalgo — Lugares que inspiran</h1>
-        <p class="mt-2 text-sm md:text-base opacity-90">Descubre los rincones más representativos del municipio.</p>
+        <h1 class="text-2xl md:text-4xl font-extrabold drop-shadow">
+          Sabinas Hidalgo — Lugares que inspiran
+        </h1>
+        <p class="mt-2 text-sm md:text-base opacity-90">
+          Descubre los rincones más representativos del municipio.
+        </p>
       </div>
     </div>
   </section>
@@ -25,44 +32,47 @@
       <div id="home-news" class="mb-10">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-2xl font-bold text-municipal-blue">Featured News</h2>
-          <a href="#/noticias" class="text-sm text-blue-600 hover:underline">View all</a>
+          <a href="#/noticias" class="text-sm text-blue-600 hover:underline"
+            >View all</a
+          >
         </div>
-        <div id="home-news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-        <div id="home-news-empty" class="text-gray-500 text-sm hidden">No featured news yet.</div>
+        <div
+          id="home-news-grid"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        ></div>
+        <div id="home-news-empty" class="text-gray-500 text-sm hidden">
+          No featured news yet.
+        </div>
       </div>
 
       <!-- Quick Links -->
       <section id="Servicios" class="py-16 bg-gray-50">
         <div class="max-w-6xl mx-auto px-4">
-          <h2 class="text-3xl md:text-4xl font-bold text-municipal-blue text-center mb-12">Accesos Rápidos</h2>
+          <h2
+            class="text-3xl md:text-4xl font-bold text-municipal-blue text-center mb-12"
+          >
+            Accesos Rápidos
+          </h2>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <a href="/pagos/multas" class="group bg-white p-10 rounded-2xl shadow hover:shadow-lg hover:-translate-y-1 transition flex flex-col items-center text-center">
-              <i class="fas fa-car text-5xl text-municipal-blue mb-6"></i>
-              <h3 class="text-xl font-semibold text-gray-800 group-hover:text-municipal-blue">Servicios Municipales</h3>
-            </a>
-
-            <a href="/tramites" class="group bg-white p-10 rounded-2xl shadow hover:shadow-lg hover:-translate-y-1 transition flex flex-col items-center text-center">
-              <i class="fas fa-file-alt text-5xl text-municipal-teal mb-6"></i>
-              <h3 class="text-xl font-semibold text-gray-800 group-hover:text-municipal-teal">Trámites Municipales</h3>
-            </a>
-
-            <a href="/eventos" class="group bg-white p-10 rounded-2xl shadow hover:shadow-lg hover:-translate-y-1 transition flex flex-col items-center text-center">
-              <i class="fas fa-calendar-alt text-5xl text-municipal-green mb-6"></i>
-              <h3 class="text-xl font-semibold text-gray-800 group-hover:text-municipal-green">Eventos</h3>
-            </a>
-
-            <a href="/transparencia" class="group bg-white p-10 rounded-2xl shadow hover:shadow-lg hover:-translate-y-1 transition flex flex-col items-center text-center">
-              <i class="fas fa-balance-scale text-5xl text-municipal-pink mb-6"></i>
-              <h3 class="text-xl font-semibold text-gray-800 group-hover:text-municipal-pink">Transparencia</h3>
-            </a>
+          <div
+            id="ql-home-grid"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          ></div>
+          <div
+            id="ql-home-empty"
+            class="text-center text-slate-500 text-sm hidden"
+          >
+            Sin accesos configurados.
           </div>
         </div>
       </section>
 
       <!-- CTA -->
       <div class="mt-12 text-center">
-        <a href="/servicios" class="inline-flex items-center gap-2 rounded-full bg-municipal-blue px-6 py-3 text-white font-semibold hover:bg-blue-700 transition">
+        <a
+          href="/servicios"
+          class="inline-flex items-center gap-2 rounded-full bg-municipal-blue px-6 py-3 text-white font-semibold hover:bg-blue-700 transition"
+        >
           Ver todos los servicios
           <i class="fas fa-arrow-right"></i>
         </a>
@@ -74,21 +84,36 @@
   <div class="p-6">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-2xl font-bold text-gray-800">Turismo Sabinense</h2>
-      <div class="text-sm text-gov-gray">Explora nuestros lugares recomendados</div>
+      <div class="text-sm text-gov-gray">
+        Explora nuestros lugares recomendados
+      </div>
     </div>
 
     <!-- Grid simple (<=4) -->
-    <div id="home-grid" style="display:none" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-    <div id="turismo-stack" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    <div
+      id="home-grid"
+      style="display: none"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+    ></div>
+    <div
+      id="turismo-stack"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+    ></div>
     <!-- Reel (>4) -->
     <div id="home-reel" class="relative hidden">
-      <button id="reel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow p-3 rounded-full">
+      <button
+        id="reel-prev"
+        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow p-3 rounded-full"
+      >
         <i class="fas fa-chevron-left"></i>
       </button>
       <div id="reel-track" class="overflow-hidden">
         <div id="reel-inner" class="flex gap-4 will-change-transform"></div>
       </div>
-      <button id="reel-next" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow p-3 rounded-full">
+      <button
+        id="reel-next"
+        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow p-3 rounded-full"
+      >
         <i class="fas fa-chevron-right"></i>
       </button>
     </div>
@@ -101,21 +126,36 @@
         <!-- Events -->
         <div class="lg:col-span-1">
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Próximos Eventos</h2>
-            <a href="#/eventos" class="text-sm text-blue-600 hover:underline">Calendario</a>
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">
+              Próximos Eventos
+            </h2>
+            <a href="#/eventos" class="text-sm text-blue-600 hover:underline"
+              >Calendario</a
+            >
           </div>
-          <div id="events-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
-          <div id="events-empty" class="text-slate-500 text-sm">No hay eventos próximos.</div>
+          <div
+            id="events-grid"
+            class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
+          ></div>
+          <div id="events-empty" class="text-slate-500 text-sm">
+            No hay eventos próximos.
+          </div>
         </div>
 
         <!-- Turismo -->
         <div>
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Turismo</h2>
-            <a href="#/turismo" class="text-sm text-blue-600 hover:underline">Ver más</a>
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">
+              Turismo
+            </h2>
+            <a href="#/turismo" class="text-sm text-blue-600 hover:underline"
+              >Ver más</a
+            >
           </div>
           <div id="turismo-stack" class="space-y-4"></div>
-          <div id="turismo-empty" class="text-slate-500 text-sm">Aún no hay lugares turísticos.</div>
+          <div id="turismo-empty" class="text-slate-500 text-sm">
+            Aún no hay lugares turísticos.
+          </div>
         </div>
       </div>
     </div>
@@ -125,510 +165,818 @@
   <section class="py-10 bg-white border-t">
     <div class="max-w-7xl mx-auto px-4">
       <div class="flex items-end justify-between mb-6">
-        <h2 id="emerg-title" class="text-2xl md:text-3xl font-bold text-red-600">Números de Emergencia</h2>
+        <h2
+          id="emerg-title"
+          class="text-2xl md:text-3xl font-bold text-red-600"
+        >
+          Números de Emergencia
+        </h2>
         <p class="text-sm text-slate-500">Atención 24/7</p>
       </div>
-      <div id="emerg-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
+      <div
+        id="emerg-grid"
+        class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"
+      ></div>
       <div id="emerg-empty" class="text-slate-500 text-sm">
-        Marca “Mostrar en página de inicio” en <em>Contactos de Emergencia</em> para verlos aquí.
+        Marca “Mostrar en página de inicio” en
+        <em>Contactos de Emergencia</em> para verlos aquí.
       </div>
     </div>
   </section>
 </section>
+<script>
+(() => {
+  const STORAGE_KEY = 'municipio.quicklinks.v1';
+
+  function safeGetQuickLinks(){
+    // Prefer the admin helper if present
+    if (typeof window.getQuickLinks === 'function') {
+      try { return window.getQuickLinks(); } catch { /* fall back */ }
+    }
+    // Fallback: read, filter activos, sort by order then title
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      return list
+        .filter(x => x && x.activo)
+        .sort((a,b)=>(a.order??0)-(b.order??0) || (a.titulo||'').localeCompare(b.titulo||''));
+    } catch { return []; }
+  }
+
+  const isHttp = (u)=>/^https?:\/\//i.test(u);
+  function go(href){
+    if (!href) return;
+    if (href.startsWith('#'))      location.hash = href;
+    else if (isHttp(href))         window.open(href, '_blank', 'noopener');
+    else                           location.href = href; // site-relative
+  }
+
+  function cardHTML(i){
+    const iconClass = i.iconClass || 'fas fa-circle';
+    const iconColor = i.iconColor || '#0f172a';
+    const titleColor= i.titleColor|| '#0f172a';
+    const bgColor   = i.bgColor   || '#ffffff';
+
+    return `
+      <button data-href="${i.href||'#'}"
+        class="group bg-white p-10 rounded-2xl shadow hover:shadow-lg hover:-translate-y-1 transition flex flex-col items-center text-center border border-slate-200"
+        style="background:${bgColor}">
+        <i class="${iconClass} text-5xl mb-6" style="color:${iconColor}"></i>
+        <h3 class="text-xl font-semibold"
+            style="color:${titleColor}">${i.titulo||''}</h3>
+        ${i.href ? `<div class="mt-2 text-xs text-slate-500 break-all">${i.href}</div>`:''}
+      </button>
+    `;
+  }
+
+  function renderQL(){
+    const grid  = document.getElementById('ql-home-grid');
+    const empty = document.getElementById('ql-home-empty');
+    if (!grid) return;
+
+    const list = safeGetQuickLinks();
+    grid.innerHTML = list.map(cardHTML).join('');
+    empty?.classList.toggle('hidden', list.length > 0);
+
+    // wire clicks
+    grid.querySelectorAll('[data-href]').forEach(el=>{
+      el.onclick = () => go(el.dataset.href);
+    });
+  }
+
+  // live updates if admin changes in another tab
+  window.addEventListener('storage', (e)=>{ if (e.key === STORAGE_KEY) renderQL(); });
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderQL);
+  else renderQL();
+})();
+</script>
 
 <!-- ============ HOME (Turismo + Eventos + Hero) ============ -->
 <script>
-(() => {
-  // ====== Constants (must match your admin modules) ======
-  const TURISMO_LS   = "lugaresTuristicos";
-  const TURISMO_IDB  = "TurismoDB";
-  const TURISMO_STORE= "imagenes";
+  (() => {
+    // ====== Constants (must match your admin modules) ======
+    const TURISMO_LS = "lugaresTuristicos";
+    const TURISMO_IDB = "TurismoDB";
+    const TURISMO_STORE = "imagenes";
 
-  const EVENTOS_LS   = "eventos";
-  const EVENTOS_IDB  = "EventosDB";
-  const EVENTOS_STORE= "imagenes";
+    const EVENTOS_LS = "eventos";
+    const EVENTOS_IDB = "EventosDB";
+    const EVENTOS_STORE = "imagenes";
 
-  // ====== State ======
-  let turismoDb = null;
-  let eventosDb = null;
-  let heroTimer = null;
-  let currentSlide = 0;
-  let blobUrls = [];
+    // ====== State ======
+    let turismoDb = null;
+    let eventosDb = null;
+    let heroTimer = null;
+    let currentSlide = 0;
+    let blobUrls = [];
 
-  // ====== Helpers ======
-  const jget = (k, d=[]) => { try { return JSON.parse(localStorage.getItem(k)||JSON.stringify(d)); } catch { return d; } };
-  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
-  const isHttpUrl = (u) => { try { const x=new URL(u); return x.protocol==="http:"||x.protocol==="https:"; } catch { return false; } };
-  const makeBlobUrl = (blob) => { if(!blob) return ""; const u=URL.createObjectURL(blob); blobUrls.push(u); return u; };
-  const cleanupBlobs = () => { blobUrls.forEach(u=>{ try{URL.revokeObjectURL(u);}catch{} }); blobUrls=[]; };
+    // ====== Helpers ======
+    const jget = (k, d = []) => {
+      try {
+        return JSON.parse(localStorage.getItem(k) || JSON.stringify(d));
+      } catch {
+        return d;
+      }
+    };
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    const isHttpUrl = (u) => {
+      try {
+        const x = new URL(u);
+        return x.protocol === "http:" || x.protocol === "https:";
+      } catch {
+        return false;
+      }
+    };
+    const makeBlobUrl = (blob) => {
+      if (!blob) return "";
+      const u = URL.createObjectURL(blob);
+      blobUrls.push(u);
+      return u;
+    };
+    const cleanupBlobs = () => {
+      blobUrls.forEach((u) => {
+        try {
+          URL.revokeObjectURL(u);
+        } catch {}
+      });
+      blobUrls = [];
+    };
 
-  function idbOpen(name, store){
-    return new Promise((resolve)=>{
-      const req = indexedDB.open(name, 1);
-      req.onupgradeneeded = (e)=>{
-        const db = e.target.result;
-        if(!db.objectStoreNames.contains(store)) db.createObjectStore(store);
-      };
-      req.onsuccess = ()=>resolve(req.result);
-      req.onerror  = ()=>resolve(null);
-    });
-  }
-  function idbGet(db, store, key){
-    return new Promise((resolve)=>{
-      if(!db || !db.objectStoreNames.contains(store)) return resolve(null);
-      const tx = db.transaction(store, "readonly");
-      const rq = tx.objectStore(store).get(key);
-      rq.onsuccess = ()=>resolve(rq.result||null);
-      rq.onerror   = ()=>resolve(null);
-    });
-  }
+    function idbOpen(name, store) {
+      return new Promise((resolve) => {
+        const req = indexedDB.open(name, 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(store)) db.createObjectStore(store);
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => resolve(null);
+      });
+    }
+    function idbGet(db, store, key) {
+      return new Promise((resolve) => {
+        if (!db || !db.objectStoreNames.contains(store)) return resolve(null);
+        const tx = db.transaction(store, "readonly");
+        const rq = tx.objectStore(store).get(key);
+        rq.onsuccess = () => resolve(rq.result || null);
+        rq.onerror = () => resolve(null);
+      });
+    }
 
-  // ====== HERO (uses Turismo images: fotoIds -> fotoUrls -> legacy imagenes) ======
-  async function buildHero(lugares){
-    const hero = document.getElementById("hero-slides");
-    hero.innerHTML = "";
+    // ====== HERO (uses Turismo images: fotoIds -> fotoUrls -> legacy imagenes) ======
+    async function buildHero(lugares) {
+      const hero = document.getElementById("hero-slides");
+      hero.innerHTML = "";
 
-    const heroes = lugares.filter(l => l.useAsHero);
-    const candidates = heroes.length ? heroes : lugares.filter(l => l.showInHome);
-    const top = candidates.slice(0,3);
+      const heroes = lugares.filter((l) => l.useAsHero);
+      const candidates = heroes.length
+        ? heroes
+        : lugares.filter((l) => l.showInHome);
+      const top = candidates.slice(0, 3);
 
-    const heroImages = [];
-    for(const l of top){
-      const ids  = Array.isArray(l.fotoIds)  ? [...l.fotoIds]  : [];
-      const urls = Array.isArray(l.fotoUrls) ? [...l.fotoUrls].filter(isHttpUrl) : [];
-      const legacy = Array.isArray(l.imagenes) ? [...l.imagenes] : [];
+      const heroImages = [];
+      for (const l of top) {
+        const ids = Array.isArray(l.fotoIds) ? [...l.fotoIds] : [];
+        const urls = Array.isArray(l.fotoUrls)
+          ? [...l.fotoUrls].filter(isHttpUrl)
+          : [];
+        const legacy = Array.isArray(l.imagenes) ? [...l.imagenes] : [];
 
-      if(ids.length && turismoDb){
-        const mainIdx = clamp(l.imagenPrincipal||0, 0, ids.length-1);
-        const ordered = [ids[mainIdx], ...ids.filter((_,i)=>i!==mainIdx)].slice(0,6);
-        for(const fid of ordered){
-          const blob = await idbGet(turismoDb, TURISMO_STORE, fid);
-          const src = makeBlobUrl(blob);
-          if (src) heroImages.push({ src, alt: l.nombre });
+        if (ids.length && turismoDb) {
+          const mainIdx = clamp(l.imagenPrincipal || 0, 0, ids.length - 1);
+          const ordered = [
+            ids[mainIdx],
+            ...ids.filter((_, i) => i !== mainIdx),
+          ].slice(0, 6);
+          for (const fid of ordered) {
+            const blob = await idbGet(turismoDb, TURISMO_STORE, fid);
+            const src = makeBlobUrl(blob);
+            if (src) heroImages.push({ src, alt: l.nombre });
+          }
+        }
+        if (!heroImages.length && urls.length) {
+          urls
+            .slice(0, 6)
+            .forEach((u) => heroImages.push({ src: u, alt: l.nombre }));
+        }
+        if (!heroImages.length && legacy.length) {
+          legacy
+            .slice(0, 6)
+            .forEach((u) => heroImages.push({ src: u, alt: l.nombre }));
         }
       }
-      if(!heroImages.length && urls.length){
-        urls.slice(0,6).forEach(u => heroImages.push({ src:u, alt:l.nombre }));
+
+      if (!heroImages.length) {
+        const ph = document.createElement("div");
+        ph.className =
+          "w-full h-full bg-gradient-to-br from-slate-200 to-slate-300";
+        hero.appendChild(ph);
+        return;
       }
-      if(!heroImages.length && legacy.length){
-        legacy.slice(0,6).forEach(u => heroImages.push({ src:u, alt:l.nombre }));
+
+      heroImages.forEach((img, i) => {
+        const el = document.createElement("img");
+        el.src = img.src;
+        el.alt = img.alt || "";
+        el.className =
+          "absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 ease-in-out";
+        if (i === 0) el.classList.add("opacity-100");
+        hero.appendChild(el);
+      });
+
+      const slides = Array.from(hero.querySelectorAll("img"));
+      currentSlide = 0;
+      if (heroTimer) {
+        clearInterval(heroTimer);
+        heroTimer = null;
       }
+      heroTimer = setInterval(() => {
+        const prev = currentSlide;
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[prev].classList.remove("opacity-100");
+        slides[currentSlide].classList.add("opacity-100");
+      }, 5000);
     }
 
-    if(!heroImages.length){
-      const ph = document.createElement("div");
-      ph.className = "w-full h-full bg-gradient-to-br from-slate-200 to-slate-300";
-      hero.appendChild(ph);
-      return;
-    }
-
-    heroImages.forEach((img,i)=>{
-      const el = document.createElement("img");
-      el.src = img.src;
-      el.alt = img.alt || "";
-      el.className = "absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 ease-in-out";
-      if(i===0) el.classList.add("opacity-100");
-      hero.appendChild(el);
-    });
-
-    const slides = Array.from(hero.querySelectorAll("img"));
-    currentSlide = 0;
-    if (heroTimer){ clearInterval(heroTimer); heroTimer=null; }
-    heroTimer = setInterval(()=>{
-      const prev = currentSlide;
-      currentSlide = (currentSlide + 1) % slides.length;
-      slides[prev].classList.remove("opacity-100");
-      slides[currentSlide].classList.add("opacity-100");
-    }, 5000);
-  }
-
-  // ====== Turismo cards (Home grid) ======
-  function turismoCard({ url, lugar }){
-    return `
+    // ====== Turismo cards (Home grid) ======
+    function turismoCard({ url, lugar }) {
+      return `
       <div class="bg-white rounded-2xl shadow-sm overflow-hidden min-w-[260px] max-w-[320px]">
         <div class="relative">
-          <img src="${url}" alt="${lugar.nombre}" class="w-full h-40 object-cover">
+          <img src="${url}" alt="${
+        lugar.nombre
+      }" class="w-full h-40 object-cover">
           <div class="absolute top-3 left-3 flex gap-2">
-            <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-medium">${lugar.categoria || ""}</span>
+            <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-medium">${
+              lugar.categoria || ""
+            }</span>
           </div>
         </div>
         <div class="p-4">
           <div class="flex items-start justify-between mb-2">
-            <h3 class="text-lg font-bold text-gray-800 line-clamp-2">${lugar.nombre}</h3>
+            <h3 class="text-lg font-bold text-gray-800 line-clamp-2">${
+              lugar.nombre
+            }</h3>
             <div class="bg-orange-100 p-2 rounded-lg ml-3">
-              <i class="${lugar.icono || "fas fa-map-marked-alt"} text-orange-600"></i>
+              <i class="${
+                lugar.icono || "fas fa-map-marked-alt"
+              } text-orange-600"></i>
             </div>
           </div>
-          <p class="text-gray-600 text-sm line-clamp-3 mb-3">${lugar.descripcion || ""}</p>
+          <p class="text-gray-600 text-sm line-clamp-3 mb-3">${
+            lugar.descripcion || ""
+          }</p>
           <div class="flex gap-2">
             <button onclick="Home.viewPlace(${JSON.stringify(lugar.id)})"
               class="flex-1 bg-orange-500 text-white py-2 px-3 rounded-lg hover:bg-orange-600 transition text-sm font-medium">
               <i class="fas fa-images mr-2"></i>Ver
             </button>
-            ${lugar.googleMaps ? `<a href="${lugar.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>` : ""}
+            ${
+              lugar.googleMaps
+                ? `<a href="${lugar.googleMaps}" target="_blank" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 transition text-sm"><i class="fas fa-map"></i></a>`
+                : ""
+            }
           </div>
         </div>
       </div>
     `;
-  }
-
-  async function turismoCover(l){
-    if (Array.isArray(l.fotoIds) && l.fotoIds.length && turismoDb){
-      const mainIdx = clamp(l.imagenPrincipal||0, 0, l.fotoIds.length-1);
-      const blob = await idbGet(turismoDb, TURISMO_STORE, l.fotoIds[mainIdx]);
-      const u = makeBlobUrl(blob);
-      if (u) return u;
-    }
-    if (Array.isArray(l.fotoUrls)){
-      const u = l.fotoUrls.find(isHttpUrl);
-      if (u) return u;
-    }
-    if (Array.isArray(l.imagenes) && l.imagenes.length){
-      return l.imagenes[l.imagenPrincipal||0] || l.imagenes[0];
-    }
-    return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='360'%3E%3Crect width='100%25' height='100%25' fill='%23f5f5f5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='Arial' font-size='16'%3ESin imagen%3C/text%3E%3C/svg%3E";
-  }
-
-  async function buildHomeCards(lugares){
-    const list = lugares.filter(l => l.showInHome);
-    const grid  = document.getElementById("home-grid");
-    const reel  = document.getElementById("home-reel");
-    const track = document.getElementById("reel-track");
-    const inner = document.getElementById("reel-inner");
-
-    grid.innerHTML = "";
-    inner.innerHTML = "";
-    reel.classList.add("hidden");
-
-    if(!list.length) return;
-
-    const cards = [];
-    for(const l of list){
-      const url = await turismoCover(l);
-      cards.push({ url, lugar:l });
     }
 
-    if(cards.length <= 4){
-      cards.forEach(c => {
-        const wrap = document.createElement("div");
-        wrap.innerHTML = turismoCard(c);
-        grid.appendChild(wrap.firstElementChild);
-      });
-    } else {
-      reel.classList.remove("hidden");
-      inner.style.transition = "transform 400ms ease";
-      cards.forEach(c => {
-        const item = document.createElement("div");
-        item.innerHTML = turismoCard(c);
-        inner.appendChild(item.firstElementChild);
-      });
-      document.getElementById("reel-prev").onclick = () => track.scrollBy({ left: -Math.floor(track.clientWidth*0.9), behavior:"smooth" });
-      document.getElementById("reel-next").onclick = () => track.scrollBy({ left:  Math.floor(track.clientWidth*0.9), behavior:"smooth" });
-    }
-  }
-
-  // ====== Events (fotoIds -> fotoUrls -> legacy imageId) ======
-   async function renderEvents(){
-    const grid  = document.getElementById("events-grid");
-    const empty = document.getElementById("events-empty");
-    const eventos = (()=>{
-      try { return JSON.parse(localStorage.getItem("eventos") || "[]"); }
-      catch { return []; }
-    })();
-    const today = new Date(new Date().toDateString());
-
-    const isHttpUrl = (u)=>{ try{ const x=new URL(u); return x.protocol==="http:"||x.protocol==="https:"; } catch { return false; } };
-    const makeBlobUrl = (blob)=> blob ? URL.createObjectURL(blob) : "";
-    async function idbOpen(name, store){
-      return new Promise((resolve)=>{
-        const req = indexedDB.open(name, 1);
-        req.onupgradeneeded = (e)=>{ const db=e.target.result; if(!db.objectStoreNames.contains(store)) db.createObjectStore(store); };
-        req.onsuccess = ()=>resolve(req.result);
-        req.onerror  = ()=>resolve(null);
-      });
-    }
-    async function idbGet(db, store, key){
-      return new Promise((resolve)=>{
-        if(!db || !db.objectStoreNames.contains(store)) return resolve(null);
-        const tx = db.transaction(store, "readonly");
-        const rq = tx.objectStore(store).get(key);
-        rq.onsuccess = ()=>resolve(rq.result||null);
-        rq.onerror   = ()=>resolve(null);
-      });
-    }
-
-    const eventosDb = await idbOpen("EventosDB","imagenes");
-
-    async function coverFor(ev){
-      // fotoIds (IDB)
-      if (Array.isArray(ev.fotoIds) && ev.fotoIds.length && eventosDb){
-        const blob = await idbGet(eventosDb, "imagenes", ev.fotoIds[0]);
+    async function turismoCover(l) {
+      if (Array.isArray(l.fotoIds) && l.fotoIds.length && turismoDb) {
+        const mainIdx = clamp(l.imagenPrincipal || 0, 0, l.fotoIds.length - 1);
+        const blob = await idbGet(turismoDb, TURISMO_STORE, l.fotoIds[mainIdx]);
         const u = makeBlobUrl(blob);
         if (u) return u;
       }
-      // fotoUrls (remotas)
-      if (Array.isArray(ev.fotoUrls) && ev.fotoUrls.length){
-        const u = ev.fotoUrls.find(isHttpUrl);
+      if (Array.isArray(l.fotoUrls)) {
+        const u = l.fotoUrls.find(isHttpUrl);
         if (u) return u;
       }
-      // legacy imageId (IDB)
-      if (ev.imageId && eventosDb){
-        const blob = await idbGet(eventosDb, "imagenes", ev.imageId);
-        const u = makeBlobUrl(blob);
-        if (u) return u;
+      if (Array.isArray(l.imagenes) && l.imagenes.length) {
+        return l.imagenes[l.imagenPrincipal || 0] || l.imagenes[0];
       }
-      return "";
+      return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='360'%3E%3Crect width='100%25' height='100%25' fill='%23f5f5f5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='Arial' font-size='16'%3ESin imagen%3C/text%3E%3C/svg%3E";
     }
 
-    // upcoming sorted by date asc
-    const upcoming = eventos
-      //.filter(e => !e.fechaInicio || new Date(e.fechaInicio) >= today)
-      .sort((a,b)=> new Date(a.fechaInicio||"2100-01-01") - new Date(b.fechaInicio||"2100-01-01"));
+    async function buildHomeCards(lugares) {
+      const list = lugares.filter((l) => l.showInHome);
+      const grid = document.getElementById("home-grid");
+      const reel = document.getElementById("home-reel");
+      const track = document.getElementById("reel-track");
+      const inner = document.getElementById("reel-inner");
 
-    // Featured first
-    const destacados = upcoming.filter(e => !!e.destacado);
-    const normales   = upcoming.filter(e => !e.destacado);
-    const ordered    = [...destacados, ...normales].slice(0, 8);
+      grid.innerHTML = "";
+      inner.innerHTML = "";
+      reel.classList.add("hidden");
 
-    const cards = await Promise.all(ordered.map(async (e, idx) => {
-      const img = await coverFor(e);
-      const when = e.fechaInicio && e.fechaFin
-        ? `${e.fechaInicio} · ${e.fechaFin}`
-        : (e.fechaInicio || "Próximamente");
-      const isFeatured = !!e.destacado;
+      if (!list.length) return;
 
-      // Outer wrapper lets featured span 2 cols on lg screens
-      return `
+      const cards = [];
+      for (const l of list) {
+        const url = await turismoCover(l);
+        cards.push({ url, lugar: l });
+      }
+
+      if (cards.length <= 4) {
+        cards.forEach((c) => {
+          const wrap = document.createElement("div");
+          wrap.innerHTML = turismoCard(c);
+          grid.appendChild(wrap.firstElementChild);
+        });
+      } else {
+        reel.classList.remove("hidden");
+        inner.style.transition = "transform 400ms ease";
+        cards.forEach((c) => {
+          const item = document.createElement("div");
+          item.innerHTML = turismoCard(c);
+          inner.appendChild(item.firstElementChild);
+        });
+        document.getElementById("reel-prev").onclick = () =>
+          track.scrollBy({
+            left: -Math.floor(track.clientWidth * 0.9),
+            behavior: "smooth",
+          });
+        document.getElementById("reel-next").onclick = () =>
+          track.scrollBy({
+            left: Math.floor(track.clientWidth * 0.9),
+            behavior: "smooth",
+          });
+      }
+    }
+
+    // ====== Events (fotoIds -> fotoUrls -> legacy imageId) ======
+    async function renderEvents() {
+      const grid = document.getElementById("events-grid");
+      const empty = document.getElementById("events-empty");
+      const eventos = (() => {
+        try {
+          return JSON.parse(localStorage.getItem("eventos") || "[]");
+        } catch {
+          return [];
+        }
+      })();
+      const today = new Date(new Date().toDateString());
+
+      const isHttpUrl = (u) => {
+        try {
+          const x = new URL(u);
+          return x.protocol === "http:" || x.protocol === "https:";
+        } catch {
+          return false;
+        }
+      };
+      const makeBlobUrl = (blob) => (blob ? URL.createObjectURL(blob) : "");
+      async function idbOpen(name, store) {
+        return new Promise((resolve) => {
+          const req = indexedDB.open(name, 1);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(store))
+              db.createObjectStore(store);
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        });
+      }
+      async function idbGet(db, store, key) {
+        return new Promise((resolve) => {
+          if (!db || !db.objectStoreNames.contains(store)) return resolve(null);
+          const tx = db.transaction(store, "readonly");
+          const rq = tx.objectStore(store).get(key);
+          rq.onsuccess = () => resolve(rq.result || null);
+          rq.onerror = () => resolve(null);
+        });
+      }
+
+      const eventosDb = await idbOpen("EventosDB", "imagenes");
+
+      async function coverFor(ev) {
+        // fotoIds (IDB)
+        if (Array.isArray(ev.fotoIds) && ev.fotoIds.length && eventosDb) {
+          const blob = await idbGet(eventosDb, "imagenes", ev.fotoIds[0]);
+          const u = makeBlobUrl(blob);
+          if (u) return u;
+        }
+        // fotoUrls (remotas)
+        if (Array.isArray(ev.fotoUrls) && ev.fotoUrls.length) {
+          const u = ev.fotoUrls.find(isHttpUrl);
+          if (u) return u;
+        }
+        // legacy imageId (IDB)
+        if (ev.imageId && eventosDb) {
+          const blob = await idbGet(eventosDb, "imagenes", ev.imageId);
+          const u = makeBlobUrl(blob);
+          if (u) return u;
+        }
+        return "";
+      }
+
+      // upcoming sorted by date asc
+      const upcoming = eventos
+        //.filter(e => !e.fechaInicio || new Date(e.fechaInicio) >= today)
+        .sort(
+          (a, b) =>
+            new Date(a.fechaInicio || "2100-01-01") -
+            new Date(b.fechaInicio || "2100-01-01")
+        );
+
+      // Featured first
+      const destacados = upcoming.filter((e) => !!e.destacado);
+      const normales = upcoming.filter((e) => !e.destacado);
+      const ordered = [...destacados, ...normales].slice(0, 8);
+
+      const cards = await Promise.all(
+        ordered.map(async (e, idx) => {
+          const img = await coverFor(e);
+          const when =
+            e.fechaInicio && e.fechaFin
+              ? `${e.fechaInicio} · ${e.fechaFin}`
+              : e.fechaInicio || "Próximamente";
+          const isFeatured = !!e.destacado;
+
+          // Outer wrapper lets featured span 2 cols on lg screens
+          return `
         <div class="${isFeatured ? "lg:col-span-2" : ""}">
-          <article class="relative bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm ${isFeatured ? "ring-2 ring-amber-300" : ""}">
-            ${img
-              ? `<img src="${img}" class="w-full ${isFeatured ? "h-48" : "h-32"} object-cover">`
-              : `<div class="${isFeatured ? "h-48" : "h-32"} w-full bg-slate-100 flex items-center justify-center text-4xl">🎉</div>`
+          <article class="relative bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm ${
+            isFeatured ? "ring-2 ring-amber-300" : ""
+          }">
+            ${
+              img
+                ? `<img src="${img}" class="w-full ${
+                    isFeatured ? "h-48" : "h-32"
+                  } object-cover">`
+                : `<div class="${
+                    isFeatured ? "h-48" : "h-32"
+                  } w-full bg-slate-100 flex items-center justify-center text-4xl">🎉</div>`
             }
-            ${isFeatured ? `
+            ${
+              isFeatured
+                ? `
               <span class="absolute top-3 left-3 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
                 <i class="fas fa-star mr-1"></i> Destacado
-              </span>` : ``}
+              </span>`
+                : ``
+            }
             <div class="p-4">
-              <div class="font-semibold text-slate-900 line-clamp-2">${e.titulo || "Evento"}</div>
-              <div class="text-slate-500 text-sm line-clamp-2 mt-1">${e.descripcion || ""}</div>
+              <div class="font-semibold text-slate-900 line-clamp-2">${
+                e.titulo || "Evento"
+              }</div>
+              <div class="text-slate-500 text-sm line-clamp-2 mt-1">${
+                e.descripcion || ""
+              }</div>
               <div class="text-blue-700 text-xs font-semibold mt-2">${when}</div>
-              ${e.precio ? `<div class="mt-2 text-xs text-slate-600"><i class="fas fa-dollar-sign mr-1"></i>${e.precio}</div>` : ""}
+              ${
+                e.precio
+                  ? `<div class="mt-2 text-xs text-slate-600"><i class="fas fa-dollar-sign mr-1"></i>${e.precio}</div>`
+                  : ""
+              }
             </div>
           </article>
         </div>`;
-    }));
+        })
+      );
 
-    grid.innerHTML = cards.join("");
-    document.getElementById("events-empty").classList.toggle("hidden", ordered.length > 0);
-  }
+      grid.innerHTML = cards.join("");
+      document
+        .getElementById("events-empty")
+        .classList.toggle("hidden", ordered.length > 0);
+    }
 
-  // ====== Turismo stacked (right column) ======
-  async function renderTurismoStack(){
-    const stack = document.getElementById("turismo-stack");
-    const empty = document.getElementById("turismo-empty");
-    const lugares = jget(TURISMO_LS, []);
+    // ====== Turismo stacked (right column) ======
+    async function renderTurismoStack() {
+      const stack = document.getElementById("turismo-stack");
+      const empty = document.getElementById("turismo-empty");
+      const lugares = jget(TURISMO_LS, []);
 
-    const picks = [...lugares]
-      .sort((a,b)=>( (b.fotoIds?.length||b.fotoUrls?.length||b.imagenes?.length||0) - (a.fotoIds?.length||a.fotoUrls?.length||a.imagenes?.length||0) ))
-      .slice(0,4);
+      const picks = [...lugares]
+        .sort(
+          (a, b) =>
+            (b.fotoIds?.length ||
+              b.fotoUrls?.length ||
+              b.imagenes?.length ||
+              0) -
+            (a.fotoIds?.length || a.fotoUrls?.length || a.imagenes?.length || 0)
+        )
+        .slice(0, 4);
 
-    const cards = await Promise.all(picks.map(async (l)=>{
-      const img = await turismoCover(l);
-      return `
+      const cards = await Promise.all(
+        picks.map(async (l) => {
+          const img = await turismoCover(l);
+          return `
         <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-          ${img ? `<img src="${img}" class="w-full h-40 object-cover">` : `<div class="h-40 bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center text-3xl">📍</div>`}
+          ${
+            img
+              ? `<img src="${img}" class="w-full h-40 object-cover">`
+              : `<div class="h-40 bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center text-3xl">📍</div>`
+          }
           <div class="p-4">
             <div class="flex items-start justify-between">
               <h4 class="font-bold text-slate-900">${l.nombre || ""}</h4>
-              <i class="${l.icono || "fas fa-map-marked-alt"} text-orange-600"></i>
+              <i class="${
+                l.icono || "fas fa-map-marked-alt"
+              } text-orange-600"></i>
             </div>
             <div class="text-slate-500 text-xs mt-1">${l.categoria || ""}</div>
-            <p class="text-slate-600 text-sm mt-2 line-clamp-3">${l.descripcion || ""}</p>
+            <p class="text-slate-600 text-sm mt-2 line-clamp-3">${
+              l.descripcion || ""
+            }</p>
             <div class="mt-3 flex gap-2">
-              ${l.googleMaps ? `<a target="_blank" href="${l.googleMaps}" class="px-3 py-1.5 rounded-lg text-white bg-blue-600 text-xs hover:bg-blue-700">Mapa</a>` : ""}
+              ${
+                l.googleMaps
+                  ? `<a target="_blank" href="${l.googleMaps}" class="px-3 py-1.5 rounded-lg text-white bg-blue-600 text-xs hover:bg-blue-700">Mapa</a>`
+                  : ""
+              }
               <a href="#/turismo" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs hover:bg-slate-200">Ver más</a>
             </div>
           </div>
         </div>`;
-    }));
+        })
+      );
 
-    stack.innerHTML = cards.join("");
-    empty.classList.toggle("hidden", cards.length > 0);
-  }
-
-  // ====== Emergency (unchanged logic) ======
-  function getEmergencyContactsForHome(){
-    if (typeof window.getEmergencyContactsForHome === "function") {
-      try { return window.getEmergencyContactsForHome(); } catch {}
+      stack.innerHTML = cards.join("");
+      empty.classList.toggle("hidden", cards.length > 0);
     }
-    const stored = localStorage.getItem("municipio.contactos.emergencia.v1");
-    if (!stored) return [];
-    try { return JSON.parse(stored).filter(c => c && c.activo===true && c.showInHome===true); }
-    catch { return []; }
-  }
-  function renderEmergency(){
-    const contacts = getEmergencyContactsForHome()
-      .sort((a,b)=>(a.prioridad||99)-(b.prioridad||99) || (a.nombre||"").localeCompare(b.nombre||""))
-      .slice(0,12);
-    const icon = (cat)=>({ "Emergencias Médicas":"fas fa-kit-medical","Seguridad Pública":"fas fa-shield-halved","Bomberos":"fas fa-fire-extinguisher","Protección Civil":"fas fa-triangle-exclamation","Servicios Públicos":"fas fa-wrench","Gobierno Municipal":"fas fa-landmark","Otros Servicios":"fas fa-phone"})[cat]||"fas fa-phone";
-    const tone = (cat)=>({ "Emergencias Médicas":["rose","text-rose-600","bg-rose-100"],"Seguridad Pública":["blue","text-blue-600","bg-blue-100"],"Bomberos":["orange","text-orange-600","bg-orange-100"],"Protección Civil":["amber","text-amber-700","bg-amber-100"],"Servicios Públicos":["green","text-green-600","bg-green-100"],"Gobierno Municipal":["purple","text-purple-600","bg-purple-100"],"Otros Servicios":["slate","text-slate-700","bg-slate-100"]})[cat]||["slate","text-slate-700","bg-slate-100"];
-    const grid = document.getElementById("emerg-grid");
-    grid.innerHTML = contacts.map(c=>{
-      const [, txt, bg] = tone(c.categoria);
-      return `
+
+    // ====== Emergency (unchanged logic) ======
+    function getEmergencyContactsForHome() {
+      if (typeof window.getEmergencyContactsForHome === "function") {
+        try {
+          return window.getEmergencyContactsForHome();
+        } catch {}
+      }
+      const stored = localStorage.getItem("municipio.contactos.emergencia.v1");
+      if (!stored) return [];
+      try {
+        return JSON.parse(stored).filter(
+          (c) => c && c.activo === true && c.showInHome === true
+        );
+      } catch {
+        return [];
+      }
+    }
+    function renderEmergency() {
+      const contacts = getEmergencyContactsForHome()
+        .sort(
+          (a, b) =>
+            (a.prioridad || 99) - (b.prioridad || 99) ||
+            (a.nombre || "").localeCompare(b.nombre || "")
+        )
+        .slice(0, 12);
+      const icon = (cat) =>
+        ({
+          "Emergencias Médicas": "fas fa-kit-medical",
+          "Seguridad Pública": "fas fa-shield-halved",
+          Bomberos: "fas fa-fire-extinguisher",
+          "Protección Civil": "fas fa-triangle-exclamation",
+          "Servicios Públicos": "fas fa-wrench",
+          "Gobierno Municipal": "fas fa-landmark",
+          "Otros Servicios": "fas fa-phone",
+        }[cat] || "fas fa-phone");
+      const tone = (cat) =>
+        ({
+          "Emergencias Médicas": ["rose", "text-rose-600", "bg-rose-100"],
+          "Seguridad Pública": ["blue", "text-blue-600", "bg-blue-100"],
+          Bomberos: ["orange", "text-orange-600", "bg-orange-100"],
+          "Protección Civil": ["amber", "text-amber-700", "bg-amber-100"],
+          "Servicios Públicos": ["green", "text-green-600", "bg-green-100"],
+          "Gobierno Municipal": ["purple", "text-purple-600", "bg-purple-100"],
+          "Otros Servicios": ["slate", "text-slate-700", "bg-slate-100"],
+        }[cat] || ["slate", "text-slate-700", "bg-slate-100"]);
+      const grid = document.getElementById("emerg-grid");
+      grid.innerHTML = contacts
+        .map((c) => {
+          const [, txt, bg] = tone(c.categoria);
+          return `
         <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm text-center">
           <div class="${bg} w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-2">
             <i class="${icon(c.categoria)} ${txt} text-xl"></i>
           </div>
           <div class="text-lg font-extrabold ${txt}">${c.telefono || ""}</div>
           <div class="text-slate-800 font-medium">${c.nombre || ""}</div>
-          <div class="text-slate-500 text-xs">${c.descripcion || c.disponibilidad || ""}</div>
+          <div class="text-slate-500 text-xs">${
+            c.descripcion || c.disponibilidad || ""
+          }</div>
         </div>`;
-    }).join("");
-    document.getElementById("emerg-empty").classList.toggle("hidden", contacts.length>0);
-  }
+        })
+        .join("");
+      document
+        .getElementById("emerg-empty")
+        .classList.toggle("hidden", contacts.length > 0);
+    }
 
-  // ====== KPI (placeholder) ======
-  function renderKpiStrip(){ document.getElementById("kpi-strip").innerHTML = ""; }
+    // ====== KPI (placeholder) ======
+    function renderKpiStrip() {
+      document.getElementById("kpi-strip").innerHTML = "";
+    }
 
-  // ====== Public hook ======
-  async function viewPlace(id){
-    if (window.Turismo && typeof window.Turismo.view === "function") { window.Turismo.view(id); return; }
-    alert("Visor de imágenes no disponible en este contexto.");
-  }
+    // ====== Public hook ======
+    async function viewPlace(id) {
+      if (window.Turismo && typeof window.Turismo.view === "function") {
+        window.Turismo.view(id);
+        return;
+      }
+      alert("Visor de imágenes no disponible en este contexto.");
+    }
 
-  // ====== Init ======
-  async function initHome(){
-    cleanupBlobs();
-    turismoDb = await idbOpen(TURISMO_IDB, TURISMO_STORE);
-    eventosDb = await idbOpen(EVENTOS_IDB, EVENTOS_STORE);
+    // ====== Init ======
+    async function initHome() {
+      cleanupBlobs();
+      turismoDb = await idbOpen(TURISMO_IDB, TURISMO_STORE);
+      eventosDb = await idbOpen(EVENTOS_IDB, EVENTOS_STORE);
 
-    const lugares = jget(TURISMO_LS, []);
-    await buildHero(lugares);
-    await buildHomeCards(lugares);
-    await renderEvents();
-    await renderTurismoStack();
-    renderEmergency();
-    renderKpiStrip();
-  }
+      const lugares = jget(TURISMO_LS, []);
+      await buildHero(lugares);
+      await buildHomeCards(lugares);
+      await renderEvents();
+      await renderTurismoStack();
+      renderEmergency();
+      renderKpiStrip();
+    }
 
-  window.addEventListener("storage", (e)=>{ if([TURISMO_LS, EVENTOS_LS].includes(e.key)) initHome(); });
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initHome);
-  else initHome();
+    window.addEventListener("storage", (e) => {
+      if ([TURISMO_LS, EVENTOS_LS].includes(e.key)) initHome();
+    });
+    if (document.readyState === "loading")
+      document.addEventListener("DOMContentLoaded", initHome);
+    else initHome();
 
-  window.addEventListener("beforeunload", cleanupBlobs);
-  window.Home = { viewPlace };
-})();
+    window.addEventListener("beforeunload", cleanupBlobs);
+    window.Home = { viewPlace };
+  })();
 </script>
 
 <!-- ============ FEATURED NEWS (supports imageIds + imageUrls + legacy imagenes) ============ -->
 <script>
-(() => {
-  const NEWS_LS_KEY   = "noticias.v1";
-  const NEWS_IDB_NAME = "NoticiasDB";
-  const NEWS_STORE    = "imagenes";
+  (() => {
+    const NEWS_LS_KEY = "noticias.v1";
+    const NEWS_IDB_NAME = "NoticiasDB";
+    const NEWS_STORE = "imagenes";
 
-  let newsDb = null;
-  let blobUrls = [];
-  const makeBlobUrl = (b)=>{ if(!b) return ""; const u=URL.createObjectURL(b); blobUrls.push(u); return u; };
-  const cleanup = ()=>{ blobUrls.forEach(u=>{ try{URL.revokeObjectURL(u);}catch{} }); blobUrls=[]; };
-  const isHttpUrl = (u)=>{ try{ const x=new URL(u); return x.protocol==="http:"||x.protocol==="https:"; } catch { return false; } };
+    let newsDb = null;
+    let blobUrls = [];
+    const makeBlobUrl = (b) => {
+      if (!b) return "";
+      const u = URL.createObjectURL(b);
+      blobUrls.push(u);
+      return u;
+    };
+    const cleanup = () => {
+      blobUrls.forEach((u) => {
+        try {
+          URL.revokeObjectURL(u);
+        } catch {}
+      });
+      blobUrls = [];
+    };
+    const isHttpUrl = (u) => {
+      try {
+        const x = new URL(u);
+        return x.protocol === "http:" || x.protocol === "https:";
+      } catch {
+        return false;
+      }
+    };
 
-  function loadNews(){ try{ return JSON.parse(localStorage.getItem(NEWS_LS_KEY)||"[]"); } catch { return []; } }
-  function sortDesc(a,b){ return new Date(b.date||"1970-01-01") - new Date(a.date||"1970-01-01"); }
-  function fmtDateShort(d){ try{ const dt=new Date(d); return dt.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'2-digit'}); } catch { return d||""; } }
-
-  function idbOpen(){
-    return new Promise((resolve)=>{
-      const req = indexedDB.open(NEWS_IDB_NAME,1);
-      req.onupgradeneeded = (e)=>{
-        const db = e.target.result;
-        if(!db.objectStoreNames.contains(NEWS_STORE)) db.createObjectStore(NEWS_STORE);
-      };
-      req.onsuccess = ()=>resolve(req.result);
-      req.onerror  = ()=>resolve(null);
-    });
-  }
-  function idbGet(id){
-    return new Promise((resolve)=>{
-      if(!newsDb) return resolve(null);
-      const tx = newsDb.transaction(NEWS_STORE,"readonly");
-      const rq = tx.objectStore(NEWS_STORE).get(id);
-      rq.onsuccess = ()=>resolve(rq.result||null);
-      rq.onerror   = ()=>resolve(null);
-    });
-  }
-
-  async function coverUrl(item){
-    // 1) imageIds (IDB)
-    if (Array.isArray(item.imageIds) && item.imageIds.length && newsDb){
-      const idx = Math.min(item.coverIndex || 0, item.imageIds.length - 1);
-      const blob = await idbGet(item.imageIds[idx]);
-      const u = makeBlobUrl(blob);
-      if (u) return u;
+    function loadNews() {
+      try {
+        return JSON.parse(localStorage.getItem(NEWS_LS_KEY) || "[]");
+      } catch {
+        return [];
+      }
     }
-    // 2) imageUrls (remote)
-    if (Array.isArray(item.imageUrls) && item.imageUrls.length){
-      const u = item.imageUrls.find(isHttpUrl);
-      if (u) return u;
+    function sortDesc(a, b) {
+      return (
+        new Date(b.date || "1970-01-01") - new Date(a.date || "1970-01-01")
+      );
     }
-    // 3) legacy base64 array
-    if (Array.isArray(item.imagenes) && item.imagenes.length){
-      const idx = Math.min(item.coverIndex || 0, item.imagenes.length - 1);
-      return item.imagenes[idx] || item.imagenes[0];
+    function fmtDateShort(d) {
+      try {
+        const dt = new Date(d);
+        return dt.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "2-digit",
+        });
+      } catch {
+        return d || "";
+      }
     }
-    return "";
-  }
 
-  async function renderHomeNews(){
-    cleanup();
-    if(!newsDb) newsDb = await idbOpen();
+    function idbOpen() {
+      return new Promise((resolve) => {
+        const req = indexedDB.open(NEWS_IDB_NAME, 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(NEWS_STORE))
+            db.createObjectStore(NEWS_STORE);
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => resolve(null);
+      });
+    }
+    function idbGet(id) {
+      return new Promise((resolve) => {
+        if (!newsDb) return resolve(null);
+        const tx = newsDb.transaction(NEWS_STORE, "readonly");
+        const rq = tx.objectStore(NEWS_STORE).get(id);
+        rq.onsuccess = () => resolve(rq.result || null);
+        rq.onerror = () => resolve(null);
+      });
+    }
 
-    const grid  = document.getElementById("home-news-grid");
-    const empty = document.getElementById("home-news-empty");
-    if(!grid) return;
+    async function coverUrl(item) {
+      // 1) imageIds (IDB)
+      if (Array.isArray(item.imageIds) && item.imageIds.length && newsDb) {
+        const idx = Math.min(item.coverIndex || 0, item.imageIds.length - 1);
+        const blob = await idbGet(item.imageIds[idx]);
+        const u = makeBlobUrl(blob);
+        if (u) return u;
+      }
+      // 2) imageUrls (remote)
+      if (Array.isArray(item.imageUrls) && item.imageUrls.length) {
+        const u = item.imageUrls.find(isHttpUrl);
+        if (u) return u;
+      }
+      // 3) legacy base64 array
+      if (Array.isArray(item.imagenes) && item.imagenes.length) {
+        const idx = Math.min(item.coverIndex || 0, item.imagenes.length - 1);
+        return item.imagenes[idx] || item.imagenes[0];
+      }
+      return "";
+    }
 
-    const list = loadNews().filter(n => !n.archived && n.showInHome).sort(sortDesc).slice(0,6);
-    grid.innerHTML = "";
-    if(!list.length){ empty?.classList.remove("hidden"); return; }
-    empty?.classList.add("hidden");
+    async function renderHomeNews() {
+      cleanup();
+      if (!newsDb) newsDb = await idbOpen();
 
-    for(const n of list){
-      const cover = await coverUrl(n);
-      const card = document.createElement("article");
-      card.className = "bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-200 flex flex-col";
-      card.innerHTML = `
+      const grid = document.getElementById("home-news-grid");
+      const empty = document.getElementById("home-news-empty");
+      if (!grid) return;
+
+      const list = loadNews()
+        .filter((n) => !n.archived && n.showInHome)
+        .sort(sortDesc)
+        .slice(0, 6);
+      grid.innerHTML = "";
+      if (!list.length) {
+        empty?.classList.remove("hidden");
+        return;
+      }
+      empty?.classList.add("hidden");
+
+      for (const n of list) {
+        const cover = await coverUrl(n);
+        const card = document.createElement("article");
+        card.className =
+          "bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-200 flex flex-col";
+        card.innerHTML = `
         <div class="relative">
-          ${cover ? `<img src="${cover}" class="w-full h-40 object-cover">` : `<div class="h-40 w-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-3xl">📰</div>`}
+          ${
+            cover
+              ? `<img src="${cover}" class="w-full h-40 object-cover">`
+              : `<div class="h-40 w-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-3xl">📰</div>`
+          }
           <div class="absolute top-3 left-3">
-            <span class="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-700">${n.category || ""}</span>
+            <span class="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-700">${
+              n.category || ""
+            }</span>
           </div>
         </div>
         <div class="p-5 flex flex-col gap-2 flex-1">
-          <h3 class="text-lg font-bold text-slate-900 line-clamp-2">${n.title || ""}</h3>
-          <div class="text-gray-500 text-xs">${fmtDateShort(n.date)} · ${n.author || ""}</div>
+          <h3 class="text-lg font-bold text-slate-900 line-clamp-2">${
+            n.title || ""
+          }</h3>
+          <div class="text-gray-500 text-xs">${fmtDateShort(n.date)} · ${
+          n.author || ""
+        }</div>
           <p class="text-sm text-gray-700 line-clamp-3">${n.summary || ""}</p>
           <div class="mt-auto pt-2 flex gap-2">
             <button class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs hover:bg-blue-700"
-              onclick="(window.Noticias&&Noticias.view)?Noticias.view(${n.id}):location.hash='#/noticias'">Read</button>
+              onclick="(window.Noticias&&Noticias.view)?Noticias.view(${
+                n.id
+              }):location.hash='#/noticias'">Read</button>
             <a href="#/noticias" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs hover:bg-slate-200">All news</a>
           </div>
         </div>`;
-      grid.appendChild(card);
+        grid.appendChild(card);
+      }
     }
-  }
 
-  window.addEventListener("storage", (e)=>{ if(e.key === NEWS_LS_KEY) renderHomeNews(); });
-  window.addEventListener("beforeunload", cleanup);
+    window.addEventListener("storage", (e) => {
+      if (e.key === NEWS_LS_KEY) renderHomeNews();
+    });
+    window.addEventListener("beforeunload", cleanup);
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", renderHomeNews);
-  else renderHomeNews();
-})();
+    if (document.readyState === "loading")
+      document.addEventListener("DOMContentLoaded", renderHomeNews);
+    else renderHomeNews();
+  })();
 </script>
 
 <script>
-    // ---- Flip to true if you want to overwrite even when data exists
+  // ---- Flip to true if you want to overwrite even when data exists
   const FORCE = false;
 
   // ---- Your seed data
@@ -653,7 +1001,7 @@
       fotoUrls: [
         "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518403015_1120690886834049_1595098545931312344_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHL_zBLKsJ5jhM4EdT10lfGmc9pQ5PYv3GZz2lDk9i_cVWgN8GYRa_VgQeAcMMzbSZyAST66i4o7BTqdlRaAU5D&_nc_ohc=-uv_JlmHr0kQ7kNvwHRVNdr&_nc_oc=Admvd1gjFhCFl7f51YLcNMCbAXoi3K4cS-jCTX0uJ8vfXzyzpV2MQUPsLN7E0bxIxRjN1pSuvfaUAmkRF2eO_ZEJ&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=4mi6xe68WVGCkt89fMxOAg&oh=00_AfYsPOnlh1XaE_o0YppqK4RaeRC7CMh9Gg6H1ciVr2-BAA&oe=68C68314",
         "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/530661664_1120690920167379_6339475029868551293_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGMUt57JUPXEthQlnoyA5Q9pf9c_nMMEbKl_1z-cwwRsjYGIoTiYmfAii7WkJfbUJWBWyYq81NAMnWmXtZAsdZ2&_nc_ohc=oadpcPrVPbYQ7kNvwEJF7fp&_nc_oc=AdlulgmbK7tqQyQBjIOvAxLxTMQ4fkAiH4N7Q-3O0DxGqncdc1T0L-cFCb6RMCLBUL8FVLbZ2nRj2VW_e0MTVwvs&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=8GxsCpc4tdYjdtjSPQKRVA&oh=00_AfbU7z9UYwr_qvv_4kQjeO58IOhSi1nfi0NzBEQ8IC5r8A&oe=68C69F95",
-        "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518403015_1120690886834049_1595098545931312344_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHL_zBLKsJ5jhM4EdT10lfGmc9pQ5PYv3GZz2lDk9i_cVWgN8GYRa_VgQeAcMMzbSZyAST66i4o7BTqdlRaAU5D&_nc_ohc=-uv_JlmHr0kQ7kNvwHRVNdr&_nc_oc=Admvd1gjFhCFl7f51YLcNMCbAXoi3K4cS-jCTX0uJ8vfXzyzpV2MQUPsLN7E0bxIxRjN1pSuvfaUAmkRF2eO_ZEJ&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=4mi6xe68WVGCkt89fMxOAg&oh=00_AfYsPOnlh1XaE_o0YppqK4RaeRC7CMh9Gg6H1ciVr2-BAA&oe=68C68314"
+        "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/518403015_1120690886834049_1595098545931312344_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHL_zBLKsJ5jhM4EdT10lfGmc9pQ5PYv3GZz2lDk9i_cVWgN8GYRa_VgQeAcMMzbSZyAST66i4o7BTqdlRaAU5D&_nc_ohc=-uv_JlmHr0kQ7kNvwHRVNdr&_nc_oc=Admvd1gjFhCFl7f51YLcNMCbAXoi3K4cS-jCTX0uJ8vfXzyzpV2MQUPsLN7E0bxIxRjN1pSuvfaUAmkRF2eO_ZEJ&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=4mi6xe68WVGCkt89fMxOAg&oh=00_AfYsPOnlh1XaE_o0YppqK4RaeRC7CMh9Gg6H1ciVr2-BAA&oe=68C68314",
       ],
     },
     {
@@ -677,7 +1025,7 @@
         "https://blob.posta.com.mx/images/2025/04/23/diseno-sin-titulo-2-15f67eb4-focus-0-0-1200-600.webp",
         "https://imggraficos.gruporeforma.com/2021/03/Parque-de-Ojo-de-Agua-de-Sabinas-Hidalgo.jpg",
         "https://images.mnstatic.com/0b/4a/0b4a3ddb9310043bbbdc16b95ba3ffa3.jpg",
-        "https://www.turismonuevoleon.com/wp-content/uploads/2021/04/Galeri%CC%81a-4-3.jpg"
+        "https://www.turismonuevoleon.com/wp-content/uploads/2021/04/Galeri%CC%81a-4-3.jpg",
       ],
     },
   ];
@@ -692,13 +1040,18 @@
       summary:
         "Se entregó la remodelación de la plaza con áreas verdes y juegos infantiles.",
       body: "Hoy se inauguró la obra en la Colonia Centro.\n\n- Nueva iluminación\n- Jardineras y bancas\n\n**Invitamos** a las familias a disfrutar del espacio.",
-      links: [{ title: "Nota en prensa local", url: "https://example.com/nota-prensa" }],
+      links: [
+        {
+          title: "Nota en prensa local",
+          url: "https://example.com/nota-prensa",
+        },
+      ],
       imageIds: [],
       coverIndex: 0,
       showInHome: true,
       archived: false,
       imageUrls: [
-        "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/542768493_18293228686264631_8828376503230313082_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeH5sL9E-gf4gOaS1W8pRiOoyIag-AqoNRzIhqD4Cqg1HHVBAr70JY02AVdIncBKk1I63vtDqCMkk3ZEladT_um6&_nc_ohc=fUbFjb0pgUoQ7kNvwFb3SBY&_nc_oc=AdmKBXYSMU8EJBjFU0t2Sq1N8rqsibBBxdF7fOGYqokS-P3HAEi020JmA91gvu1qVH-PgU1jALMPcLuTiLjgz0EQ&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=ak2avFcnlu_ww3gEs_BIjw&oh=00_Afa_SXgl2W8Mi1S207y7KV_kAZLm71GqHdCvSQclVacIdA&oe=68C6A3F0"
+        "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/542768493_18293228686264631_8828376503230313082_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeH5sL9E-gf4gOaS1W8pRiOoyIag-AqoNRzIhqD4Cqg1HHVBAr70JY02AVdIncBKk1I63vtDqCMkk3ZEladT_um6&_nc_ohc=fUbFjb0pgUoQ7kNvwFb3SBY&_nc_oc=AdmKBXYSMU8EJBjFU0t2Sq1N8rqsibBBxdF7fOGYqokS-P3HAEi020JmA91gvu1qVH-PgU1jALMPcLuTiLjgz0EQ&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=ak2avFcnlu_ww3gEs_BIjw&oh=00_Afa_SXgl2W8Mi1S207y7KV_kAZLm71GqHdCvSQclVacIdA&oe=68C6A3F0",
       ],
       coverIsUrl: true,
     },
@@ -709,28 +1062,27 @@
       date: "2025-09-10",
       author: "Comunicación Social",
       summary: "Sabinas siempre firme con el cuidado de la vida silvestre.",
-      body:
-        "El día de hoy junto a Parques y Vida Silvestre de N.L., firmamos un Convenio de Colaboración con varios municipios para la transferencia de lobina negra (Micropterus salmoides) desde la Presa “El Cuchillo-Solidaridad” hacia presas receptoras en distintas regiones del estado.\nLas presas receptoras son:\n • José López Portillo “Cerro Prieto”, Linares.\n • General Mariano Escobedo “Sombreretillo”, Sabinas Hidalgo.\n • Rodrigo Gómez “La Boca”, Santiago.\n • José S. Noriega “Los Mimbres”, General Terán.\nCon este convenio, trabajamos para repoblar y conservar esta especie, promoviendo la biodiversidad, la pesca responsable y espacios de recreación que beneficien a las familias de Nuevo León.",
+      body: "El día de hoy junto a Parques y Vida Silvestre de N.L., firmamos un Convenio de Colaboración con varios municipios para la transferencia de lobina negra (Micropterus salmoides) desde la Presa “El Cuchillo-Solidaridad” hacia presas receptoras en distintas regiones del estado.\nLas presas receptoras son:\n • José López Portillo “Cerro Prieto”, Linares.\n • General Mariano Escobedo “Sombreretillo”, Sabinas Hidalgo.\n • Rodrigo Gómez “La Boca”, Santiago.\n • José S. Noriega “Los Mimbres”, General Terán.\nCon este convenio, trabajamos para repoblar y conservar esta especie, promoviendo la biodiversidad, la pesca responsable y espacios de recreación que beneficien a las familias de Nuevo León.",
       showInHome: true,
       archived: false,
       links: [],
       imageIds: [],
       coverIndex: 0,
       imageUrls: [
-        "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/542309182_18293107060264631_7707407202290637380_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHhnYhEjfY9SBD-a25Xw8W31n49Gil4Ej3Wfj0aKXgSPWK7xqVeg4hAVqWPtqMFnp_2wWLeDTONbdAhEjSBJ4Lk&_nc_ohc=lVi5KOcJ2VwQ7kNvwGs6pER&_nc_oc=AdlkzCNOUgRbYlNQPu7H7Z2L9sDYHK4-6BnTuTyeJlq8FHIoyggvjfH-RM00gJSOWLtwbjvC-ITLrc1IAUb4iSjk&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=aRj-jQSmdEGSJ4Yu_RisgA&oh=00_AfZG6OwGlTtepsFYIY-aa7ro8hZ-0dBYMepqABzdxbZgfg&oe=68C68C36"
+        "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/542309182_18293107060264631_7707407202290637380_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHhnYhEjfY9SBD-a25Xw8W31n49Gil4Ej3Wfj0aKXgSPWK7xqVeg4hAVqWPtqMFnp_2wWLeDTONbdAhEjSBJ4Lk&_nc_ohc=lVi5KOcJ2VwQ7kNvwGs6pER&_nc_oc=AdlkzCNOUgRbYlNQPu7H7Z2L9sDYHK4-6BnTuTyeJlq8FHIoyggvjfH-RM00gJSOWLtwbjvC-ITLrc1IAUb4iSjk&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=aRj-jQSmdEGSJ4Yu_RisgA&oh=00_AfZG6OwGlTtepsFYIY-aa7ro8hZ-0dBYMepqABzdxbZgfg&oe=68C68C36",
       ],
       coverIsUrl: true,
     },
     {
       id: 3,
-      title: "Pavimentación de la Ampliación de Vialidad en el Parque La Turbina",
+      title:
+        "Pavimentación de la Ampliación de Vialidad en el Parque La Turbina",
       category: "Obras Públicas",
       date: "2025-09-09",
       author: "Comunicación Social",
       summary:
         "El Gobierno Municipal informa que este día se realizó la pavimentación de la Ampliación de Vialidad en el Parque La Turbina.",
-      body:
-        "El Gobierno Municipal informa que este día se realizó la pavimentación de la Ampliación de Vialidad en el Parque La Turbina, obra que forma parte de la primera etapa de mejoramientos anunciados hace algunas semanas.\nEste proyecto incluye además la construcción de un nuevo estacionamiento y una vialidad que permitirá un tránsito más ágil y seguro, beneficiando a todas y todos los visitantes de este importante espacio público.",
+      body: "El Gobierno Municipal informa que este día se realizó la pavimentación de la Ampliación de Vialidad en el Parque La Turbina, obra que forma parte de la primera etapa de mejoramientos anunciados hace algunas semanas.\nEste proyecto incluye además la construcción de un nuevo estacionamiento y una vialidad que permitirá un tránsito más ágil y seguro, beneficiando a todas y todos los visitantes de este importante espacio público.",
       showInHome: true,
       archived: false,
       links: [],
@@ -739,12 +1091,57 @@
       imageUrls: [
         "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/544417000_1094678186173737_6109100192931889123_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGQ2Cc3XyEkwTvu-7tkTUF_PqTyAqUqERw-pPICpSoRHB3Px_vvHmIAFF4J9uHEUwHdRUKRsaA_60-k0lMq8XeL&_nc_ohc=UxuL2vQ9_qMQ7kNvwFqzXj1&_nc_oc=Adnq9vn7xbgz0srTw6hGS735ZxmOOibeL2k8O34qRF8UUOoobFv5ab-cqVjPHI0tesMDmCwBpWiAsLhPYc2WVSvB&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=Or4Wk6ZN_qCf5Uce0cGhBA&oh=00_AfZP6SctqWFZZQSrdBaXYb3wqyiPjPt1IR_Aii8LtHEzIQ&oe=68C673E0",
         "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/543422568_1094678496173706_6354471204268581763_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeE2OzMRBsKvHR_WWfuWluo3qVJpQvDMzQqpUmlC8MzNCj8xCMt4NUF9r_VWRKHfSG2dbL8RLJ5MXQt40izA2nPX&_nc_ohc=ipHSqLGVG48Q7kNvwHlcY1u&_nc_oc=AdlCgK2ueJdJriEmIV2WUr9zCGQmE8fPacUb6sqlKXliDy7Hf-Gx-kuyeyqsyjPwExy0mysCbe_AP56o6ZEjX1c5&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=Or4Wk6ZN_qCf5Uce0cGhBA&oh=00_AfYTsiBL-AHR76hnEGl-LWa5a8uIXviYntIa3sDzlZVzqg&oe=68C685EE",
-        "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/542742180_1094678476173708_2818499899245729483_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEjz21vWu0u35s8sEpDzRxnKfIk3tS4DL8p8iTe1LgMvwVi7p_G4TFz4uJYrIV-8YMQ2EXZj9jCd9aE_1wrWUq7&_nc_ohc=PpolpEkIl78Q7kNvwGxWrIU&_nc_oc=Adm78crDqfMPuj6sJD7ljd017B6DHWKDbNgBnujkwQGzQdxA6MHNW1HmRLT2VLruMcT7_tH-ILpGx9urnFfpzJ0J&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=Or4Wk6ZN_qCf5Uce0cGhBA&oh=00_AfaKmlf9EL5PKx0RqIOYB4S30NJvmJAYRGkIPYMGs8JGww&oe=68C69B66"
+        "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/542742180_1094678476173708_2818499899245729483_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEjz21vWu0u35s8sEpDzRxnKfIk3tS4DL8p8iTe1LgMvwVi7p_G4TFz4uJYrIV-8YMQ2EXZj9jCd9aE_1wrWUq7&_nc_ohc=PpolpEkIl78Q7kNvwGxWrIU&_nc_oc=Adm78crDqfMPuj6sJD7ljd017B6DHWKDbNgBnujkwQGzQdxA6MHNW1HmRLT2VLruMcT7_tH-ILpGx9urnFfpzJ0J&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=Or4Wk6ZN_qCf5Uce0cGhBA&oh=00_AfaKmlf9EL5PKx0RqIOYB4S30NJvmJAYRGkIPYMGs8JGww&oe=68C69B66",
       ],
       coverIsUrl: true,
     },
   ];
-
+  const shortcuts = [
+    {
+      id: "mfcrlk8xghy7n0",
+      titulo: "Servicios Municipales",
+      href: "/servicios",
+      iconClass: "fas fa-building",
+      iconColor: "#3f4be9",
+      titleColor: "#0f172a",
+      bgColor: "#ffffff",
+      order: 10,
+      activo: true,
+    },
+    {
+      id: "mfcrlk8xjegoou",
+      titulo: "Trámites Municipales",
+      href: "/tramites",
+      iconClass: "fas fa-file-lines",
+      iconColor: "#14b8a6",
+      titleColor: "#0f172a",
+      bgColor: "#ffffff",
+      order: 20,
+      activo: true,
+    },
+    {
+      id: "mfcrlk8xzptyjd",
+      titulo: "Eventos",
+      href: "/eventos",
+      iconClass: "fas fa-calendar-alt",
+      iconColor: "#10b981",
+      titleColor: "#0f172a",
+      bgColor: "#ffffff",
+      order: 30,
+      activo: true,
+    },
+    {
+      id: "mfcrlk8xvemu7p",
+      titulo: "Transparencia",
+      href: "/transparencia",
+      iconClass: "fas fa-scale-balanced",
+      iconColor: "#f43f5e",
+      titleColor: "#0f172a",
+      bgColor: "#ffffff",
+      order: 40,
+      activo: true,
+    },
+  ];
   const eventos = [
     {
       id: 1,
@@ -764,10 +1161,10 @@
       recomendaciones: "",
       fotoIds: [],
       fotoUrls: [
-        "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/487769149_580011498388796_7825819156858778655_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGT_aD1GeifpyQpGqLC_ZBWSqfsCocKAs1Kp-wKhwoCzW7lM-sC6ZrSoUEvsmzN9s_btzcuHQ_PgIEsh4j0TX0j&_nc_ohc=K-9Gr8Vl1i8Q7kNvwFZI1xj&_nc_oc=Adlm_yNlFquxpmUfi7Say8q5jyMTeVJUJb7ZpdhW3FgSThNilDMTl5qJZ_Zid29_WzUg1LDs0n-OYAFnmqQqSdvx&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=e3J8pfg0GqIUDJetyxc0HA&oh=00_AfbPU29wemjRY5fDkWLdOcixup4A7TWKx7cOnOvHa3k64g&oe=68C68E70"
+        "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/487769149_580011498388796_7825819156858778655_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGT_aD1GeifpyQpGqLC_ZBWSqfsCocKAs1Kp-wKhwoCzW7lM-sC6ZrSoUEvsmzN9s_btzcuHQ_PgIEsh4j0TX0j&_nc_ohc=K-9Gr8Vl1i8Q7kNvwFZI1xj&_nc_oc=Adlm_yNlFquxpmUfi7Say8q5jyMTeVJUJb7ZpdhW3FgSThNilDMTl5qJZ_Zid29_WzUg1LDs0n-OYAFnmqQqSdvx&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=e3J8pfg0GqIUDJetyxc0HA&oh=00_AfbPU29wemjRY5fDkWLdOcixup4A7TWKx7cOnOvHa3k64g&oe=68C68E70",
       ],
-      estado: "Pendiente"
-    }
+      estado: "Pendiente",
+    },
   ];
 
   // ---- Seed util
@@ -785,6 +1182,7 @@
 
   // ---- Do it
   seedIfEmpty("lugaresTuristicos", turismo);
+  seedIfEmpty("municipio.quicklinks.v1", shortcuts);
   seedIfEmpty("noticias.v1", noticias);
   seedIfEmpty("eventos", eventos);
 </script>
