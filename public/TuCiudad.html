@@ -1,15 +1,42 @@
 <!-- TuCiudad_Negocios.html (Public module) -->
 <section id="TuCiudadNegocios" class="font-sans">
-  <!-- Hero -->
+
+  <!-- Hero Section -->
+  <header 
+    class="relative text-white"
+    style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80'); background-size: cover; background-position: center;"
+  >
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/60"></div>
+
+    <!-- Content -->
+    <div class="relative container mx-auto px-6 py-20 text-center max-w-3xl">
+      <i class="fas fa-store text-6xl mb-4 opacity-90"></i>
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+        Directorio de Negocios Locales
+      </h1>
+      <p class="text-xl md:text-2xl mb-6 text-blue-100 leading-relaxed">
+        Descubre y apoya a los emprendedores de Sabinas Hidalgo
+      </p>
+      <p class="text-lg mb-8 text-blue-50">
+        Encuentra restaurantes, servicios, comercios y más. Filtra por nombre, giro, servicios y tipo de comida.
+      </p>
+      <a href="#biz-grid" class="bg-white text-blue-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl">
+        <i class="fas fa-magnifying-glass mr-2"></i> Explorar Negocios
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero (search & filters) -->
   <section class="relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 py-10 md:py-14">
       <div class="grid md:grid-cols-2 gap-8 items-center">
         <div>
-          <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900">
-            Encuentra y apoya negocios locales
-          </h1>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+            Encuentra lo que buscas fácilmente
+          </h2>
           <p class="mt-3 text-gov-gray">
-            Explora el directorio oficial creado por emprendedores de la comunidad. Filtra por nombre, giro, servicios, tipo de comida y más.
+            Filtra por categoría, giro, servicios generales o escribe lo que necesitas en el buscador.
           </p>
         </div>
         <div class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-5 md:p-6 shadow">
@@ -46,59 +73,10 @@
   </main>
 
   <!-- Business Modal -->
-  <div id="biz-modal" class="fixed inset-0 bg-black/60 hidden z-50">
-    <div class="absolute inset-0 p-4 overflow-y-auto">
-      <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl animate-fade-in">
-        <div class="flex items-center justify-between px-6 py-4 border-b">
-          <div class="flex items-center gap-3">
-            <div id="m-cat-pill" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700"></div>
-            <div id="m-giro-pill" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700"></div>
-          </div>
-          <button class="text-slate-500 hover:text-slate-800 text-xl" id="biz-modal-close">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
+  <!-- (keep the same modal code you already have) -->
 
-        <div class="p-6">
-          <div class="flex items-start gap-4">
-            <div class="h-14 w-14 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 grid place-items-center text-white text-2xl shrink-0">
-              <i class="fa-solid fa-store"></i>
-            </div>
-            <div class="min-w-0">
-              <h2 id="m-title" class="text-2xl font-extrabold text-slate-900 truncate"></h2>
-              <p id="m-desc" class="text-slate-600 mt-1"></p>
-            </div>
-          </div>
-
-          <div class="mt-6 grid md:grid-cols-2 gap-6">
-            <div class="space-y-3">
-              <div><div class="text-xs text-slate-500">Propietario</div><div id="m-owner" class="font-medium">—</div></div>
-              <div><div class="text-xs text-slate-500">Teléfono</div><div id="m-phone" class="font-medium">—</div></div>
-              <div><div class="text-xs text-slate-500">Email</div><div id="m-email" class="font-medium">—</div></div>
-              <div><div class="text-xs text-slate-500">Dirección</div><div id="m-address" class="font-medium">—</div></div>
-              <div><div class="text-xs text-slate-500">Horario</div><div id="m-hours" class="font-medium">—</div></div>
-            </div>
-            <div class="space-y-3">
-              <div>
-                <div class="text-xs text-slate-500 mb-1">Servicios</div>
-                <div id="m-services" class="flex flex-wrap gap-2"></div>
-              </div>
-              <div id="m-food" class="hidden">
-                <div class="text-xs text-slate-500 mb-1">Tipo de comida</div>
-                <div id="m-food-tags" class="flex flex-wrap gap-2"></div>
-              </div>
-            </div>
-          </div>
-
-          <div id="m-menu-box" class="hidden mt-6">
-            <h3 class="font-bold text-slate-900 mb-2"><i class="fa-solid fa-utensils mr-2 text-indigo-600"></i>Menú</h3>
-            <div id="m-menu" class="grid sm:grid-cols-2 gap-3"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
+
 
 <script>
 (() => {
