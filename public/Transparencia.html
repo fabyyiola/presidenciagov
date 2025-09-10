@@ -95,7 +95,9 @@
         >
           <i class="fas fa-calendar text-2xl text-municipal-green"></i>
         </div>
-        <h3 id="statUpdated" class="text-2xl font-bold text-municipal-green">—</h3>
+        <h3 id="statUpdated" class="text-2xl font-bold text-municipal-green">
+          —
+        </h3>
         <p class="text-gray-600">Última Actualización</p>
       </div>
 
@@ -189,9 +191,7 @@
             <i class="fas fa-gavel text-2xl text-purple-600"></i>
           </div>
           <h3 class="font-bold text-municipal-blue mb-2">Normatividad</h3>
-          <p class="text-gray-600 text-sm mb-3">
-            Reglamentos y disposiciones
-          </p>
+          <p class="text-gray-600 text-sm mb-3">Reglamentos y disposiciones</p>
           <div class="text-xs text-gray-500">
             <span class="bg-purple-50 px-2 py-1 rounded"
               ><span data-count>—</span> documentos</span
@@ -353,11 +353,16 @@
   id="documentModal"
   class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"
 >
-  <div class="bg-white rounded-lg max-w-4xl w-full max-h-screen overflow-y-auto">
+  <div
+    class="bg-white rounded-lg max-w-4xl w-full max-h-screen overflow-y-auto"
+  >
     <div class="p-6">
       <div class="flex justify-between items-center mb-6">
         <h3 id="modalTitle" class="text-2xl font-bold text-municipal-blue"></h3>
-        <button id="closeModal" class="text-gray-500 hover:text-gray-700 text-2xl">
+        <button
+          id="closeModal"
+          class="text-gray-500 hover:text-gray-700 text-2xl"
+        >
           &times;
         </button>
       </div>
@@ -391,9 +396,9 @@
 
     // ====== Hero background (estático, puedes cambiar a tu preferencia) ======
     const fotos = [
-      "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/537443703_1083175363990686_8045232977682833621_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHFKmSngXodx6ohCkdwY33quu5ihEImdb667mKEQiZ1vtGT4xomiZqx4UJbjiOfpcA53iME9KPTybE-mq7RK--L&_nc_ohc=RNl-MM1NnbQQ7kNvwF8V5kj&_nc_oc=AdmYrMgG5oeODvMZHwxTnylSDoqnu0xc2K9zvF9R8EvWOmf8veDSqjhfLu248IWHP4QfSHvpcGpv2Q9pLBqbhavE&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=NqYF_VNV5jMZdbeupbxu-g&oh=00_AfaVuQtXw0xJXuwprnRn0KusoJgXq3lxKcyfUz3P-uNXfA&oe=68C78C49",
-      "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/543411036_18293228668264631_1528231244587165159_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeG3yBqAEhz_OD-CKfjFY8KaUjQRTyWT1iNSNBFPJZPWI2mnHJ1s1_uCkuzSX3GAzgwN9EV6uM6BxZY_qW6bss_R&_nc_ohc=ULaepqrpGqMQ7kNvwF2ln-j&_nc_oc=AdkEUiWQoVpAq6mx0q6llN4CdS38RtzYCaiga8JV-gt7LuXShMXkWSvYrPTn_z_zTpS8cqYNuCNUvuNc62n4BESx&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=04YgI-7VC-wWMbfI3J65Bg&oh=00_AfZT5X2CfAeqQ5oKePddszfKs387PgNnyP347NKvUoHyvQ&oe=68C78DFA",
       "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/541385071_18293106994264631_2069341172021805007_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHFTmGfs-V6kGm-O13RO7_dH5DXY-TNmK0fkNdj5M2YreM-ePEeRhjg8gK9FLELKiE4SpUEHBSqFdaESz5hal1W&_nc_ohc=IIk7hLrXKawQ7kNvwHx8GCn&_nc_oc=AdkunGtpsvJf3ZRmeTdQArO7wt3KfUypCZcKDM4M03qjssfvHFV6c2reKmWQpX-9pyzNwbdh_Vka540VICvZuBjH&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=x2L9cfLnKC_37zEyuLLMSw&oh=00_Afbbc29JERQcirwkn1WspzRM8Qp4H5YGqsMgPYB2Gis-pA&oe=68C7885E",
+      "https://scontent.fntr8-1.fna.fbcdn.net/v/t51.82787-15/543411036_18293228668264631_1528231244587165159_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeG3yBqAEhz_OD-CKfjFY8KaUjQRTyWT1iNSNBFPJZPWI2mnHJ1s1_uCkuzSX3GAzgwN9EV6uM6BxZY_qW6bss_R&_nc_ohc=ULaepqrpGqMQ7kNvwF2ln-j&_nc_oc=AdkEUiWQoVpAq6mx0q6llN4CdS38RtzYCaiga8JV-gt7LuXShMXkWSvYrPTn_z_zTpS8cqYNuCNUvuNc62n4BESx&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=04YgI-7VC-wWMbfI3J65Bg&oh=00_AfZT5X2CfAeqQ5oKePddszfKs387PgNnyP347NKvUoHyvQ&oe=68C78DFA",
+      "https://scontent.fntr8-1.fna.fbcdn.net/v/t39.30808-6/537443703_1083175363990686_8045232977682833621_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHFKmSngXodx6ohCkdwY33quu5ihEImdb667mKEQiZ1vtGT4xomiZqx4UJbjiOfpcA53iME9KPTybE-mq7RK--L&_nc_ohc=RNl-MM1NnbQQ7kNvwF8V5kj&_nc_oc=AdmYrMgG5oeODvMZHwxTnylSDoqnu0xc2K9zvF9R8EvWOmf8veDSqjhfLu248IWHP4QfSHvpcGpv2Q9pLBqbhavE&_nc_zt=23&_nc_ht=scontent.fntr8-1.fna&_nc_gid=NqYF_VNV5jMZdbeupbxu-g&oh=00_AfaVuQtXw0xJXuwprnRn0KusoJgXq3lxKcyfUz3P-uNXfA&oe=68C78C49",
     ];
     const slidesContainer = document.getElementById("transparencia-slides");
     fotos.forEach((url, i) => {
@@ -488,7 +493,9 @@
       const years = new Set(docs.map((d) => d.anio).filter(Boolean));
       heroSub.textContent = `Consulta ${published.length.toLocaleString(
         "es-MX"
-      )} documento(s) publicados · ${years.size || "—"} año(s) de información disponible.`;
+      )} documento(s) publicados · ${
+        years.size || "—"
+      } año(s) de información disponible.`;
     }
 
     function updateCategoryCounts(docs) {
@@ -511,7 +518,8 @@
       const cat = categoryFilter.value; // categoría base (opcional)
       const cards = document.querySelectorAll(".category-card");
       cards.forEach((card) => {
-        const title = card.querySelector("h3")?.textContent?.toLowerCase() || "";
+        const title =
+          card.querySelector("h3")?.textContent?.toLowerCase() || "";
         const desc = card.querySelector("p")?.textContent?.toLowerCase() || "";
         const baseCats = getCardCategories(card);
         const matchesText = title.includes(q) || desc.includes(q);
@@ -531,7 +539,9 @@
     const modalContent = byId("modalContent");
     const modalFooter = byId("modalFooter");
     const modalSearch = byId("modalSearch");
-    byId("closeModal").addEventListener("click", () => modal.classList.add("hidden"));
+    byId("closeModal").addEventListener("click", () =>
+      modal.classList.add("hidden")
+    );
     modal.addEventListener("click", (e) => {
       if (e.target === modal) modal.classList.add("hidden");
     });
@@ -562,7 +572,9 @@
                   <a href="${url}" target="_blank" rel="noopener" class="bg-municipal-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition">
                     <i class="fas fa-eye mr-1"></i> Ver
                   </a>
-                  <a href="${url}" download="${(d.fileName || d.titulo || "documento")}.pdf" class="bg-municipal-green text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition">
+                  <a href="${url}" download="${
+                d.fileName || d.titulo || "documento"
+              }.pdf" class="bg-municipal-green text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition">
                     <i class="fas fa-download mr-1"></i> Descargar
                   </a>
                 </div>
@@ -590,9 +602,13 @@
                 <i class="fas fa-file-pdf text-red-600"></i>
               </div>
               <div>
-                <h4 class="font-semibold text-municipal-blue">${d.titulo || "Sin título"}</h4>
+                <h4 class="font-semibold text-municipal-blue">${
+                  d.titulo || "Sin título"
+                }</h4>
                 <p class="text-sm text-gray-600">
-                  ${d.categoria || "—"} • ${d.dependencia || "—"} • ${periodStr(d)} • ${estadoBadge}
+                  ${d.categoria || "—"} • ${d.dependencia || "—"} • ${periodStr(
+          d
+        )} • ${estadoBadge}
                 </p>
                 ${
                   d.descripcion
@@ -606,8 +622,13 @@
         `;
         modalContent.appendChild(item);
       }
-      modalFooter.textContent = `📄 Mostrando ${docs.length} documento(s) • Última actualización: ${fmtDate(
-        docs.map((d) => d.createdAt).sort().pop()
+      modalFooter.textContent = `📄 Mostrando ${
+        docs.length
+      } documento(s) • Última actualización: ${fmtDate(
+        docs
+          .map((d) => d.createdAt)
+          .sort()
+          .pop()
       )}`;
     }
 
