@@ -146,11 +146,11 @@
 
   // Debe coincidir con el módulo de administración
   const STORAGE_KEY = "municipio.proyectos.v1";
-
-  // Opcional: leer fotos desde IndexedDB si existen (solo lectura)
   const IDB_NAME = "proyectos_media";
   const IDB_STORE = "etapa_fotos";
   let idb = null;
+
+  // IndexedDB (solo lectura para fotos)
   function idbOpen(){
     return new Promise((res,rej)=>{
       const req = indexedDB.open(IDB_NAME,1);
@@ -206,6 +206,22 @@
     document.getElementById("pp-modal-close").addEventListener("click", closeModal);
     modal.querySelector("[data-close]").addEventListener("click", closeModal);
     window.addEventListener("keydown", e => { if(e.key==="Escape") closeModal(); });
+
+    // Delegación para acordeones dentro del modal
+    modalBody.addEventListener("click", (e)=>{
+      const btn = e.target.closest("[data-acc='toggle']");
+      if(!btn) return;
+      const id = btn.getAttribute("data-acc-id");
+      const panel = modalBody.querySelector(`[data-acc='panel'][data-acc-id="${id}"]`);
+      const chev = btn.querySelector("[data-acc='chev']");
+      const open = panel.classList.contains("hidden");
+      panel.classList.toggle("hidden", !open === false); // ensure toggle
+      panel.classList.toggle("hidden");
+      if(chev){
+        chev.classList.toggle("rotate-180");
+        chev.classList.add("transition-transform","duration-200");
+      }
+    });
   }
 
   function applyFilters(){
@@ -321,13 +337,13 @@
     }).join("");
   }
 
-  // --- Modal ---
+  // --- Modal con ACORDEÓN de etapas ---
   window.PP_open = async function(id){
     const p = proyectos.find(x=>x.id===id);
     if(!p) return;
     modalTitle.textContent = p.nombre;
 
-    const etapasHTML = await buildEtapasPreview(p);
+    const etapasHTML = await buildEtapasAccordion(p);
     const resumen = `
       <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-slate-50 rounded-xl p-4">
@@ -379,53 +395,122 @@
   }
   window.closeModal = closeModal;
 
-  // --- Helpers de Render ---
-  async function buildEtapasPreview(p){
+  // --- Etapas: Acordeón ---
+  async function buildEtapasAccordion(p){
     if(!p.etapas?.length) return `<div class="text-sm text-gray-500">Sin etapas registradas.</div>`;
+    let i = 0;
     const parts = [];
     for(const e of p.etapas){
+      i++;
       const avance = calcAvanceEtapa(e);
-      // Thumbs: intenta con photoIds si existen
+      const peso = Number(e.peso||0);
+      const montoEtapa = Math.round((p.inversionTotal||0) * (peso/100)); // estimado por % peso
+      const beneficiariosEtapa = Math.round((p.beneficiarios||0) * (peso/100)); // estimado por % peso
+      const accId = `acc-${e.id || (i+"-"+Math.random().toString(36).slice(2,6))}`;
+
+      // thumbnails (máx 6)
       let thumbs = "";
       if(e.photoIds?.length && idb){
         const urls = [];
         for(const pid of e.photoIds.slice(0,6)){
           const rec = await idbGetPhotoById(pid);
           if(rec?.blob){
-            const url = URL.createObjectURL(rec.blob);
-            urls.push(url);
+            urls.push(URL.createObjectURL(rec.blob));
           }
         }
         if(urls.length){
-          thumbs = `<div class="grid grid-cols-3 md:grid-cols-6 gap-2 mt-2">` +
+          thumbs = `<div class="grid grid-cols-3 md:grid-cols-6 gap-2 mt-3">` +
                    urls.map(u=>`<img src="${u}" class="w-full h-16 object-cover rounded">`).join("") +
                    `</div>`;
         }
       }
+
+      // tareas
+      const tareas = e.tareas||[];
+      const totalTareasCosto = tareas.reduce((s,t)=>s + (Number(t.costo)||0), 0);
+
       const fi = e.inicio ? new Date(e.inicio).toLocaleDateString("es-MX") : "Sin fecha";
       const ff = e.fin ? new Date(e.fin).toLocaleDateString("es-MX") : "Sin fecha";
+
+      // Header compacto: Título | % avance | $ total (estim.) | Beneficiarios (estim.)
       parts.push(`
-        <article class="border rounded-xl p-4 bg-white">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <h5 class="font-medium text-gray-900">${esc(e.nombre||"Etapa")}</h5>
-              <span class="text-xs text-gray-500">(${e.peso||0}%)</span>
+        <article class="border rounded-xl bg-white overflow-hidden">
+          <button type="button" data-acc="toggle" data-acc-id="${accId}"
+                  class="w-full px-4 py-3 flex items-center justify-between hover:bg-slate-50">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-500">${i}.</span>
+                <span class="font-medium text-gray-900 truncate">${esc(e.nombre||"Etapa")}</span>
+                <span class="text-xs text-gray-500">(${peso}%)</span>
+              </div>
             </div>
-            <span class="text-sm font-semibold text-gray-900">${avance}%</span>
+            <div class="flex items-center gap-4 text-sm shrink-0">
+              <span class="inline-flex items-center gap-1 text-gray-700"><i class="fas fa-chart-pie"></i> ${avance}%</span>
+              <span class="inline-flex items-center gap-1 text-gray-700"><i class="fas fa-dollar-sign"></i> $${fmt(montoEtapa)}</span>
+              <span class="inline-flex items-center gap-1 text-gray-700"><i class="fas fa-users"></i> ${fmt(beneficiariosEtapa)}</span>
+              <i data-acc="chev" class="fas fa-chevron-down text-gray-400"></i>
+            </div>
+          </button>
+
+          <div class="px-4 pb-4 border-t hidden" data-acc="panel" data-acc-id="${accId}">
+            <!-- Detalle expandido -->
+            <div class="pt-4">
+              <div class="flex items-center justify-between text-sm">
+                <span class="font-medium text-gray-700">Avance de la etapa</span>
+                <span class="font-semibold text-gray-900">${avance}%</span>
+              </div>
+              <div class="w-full h-2 bg-gray-200 rounded-full mt-2">
+                <div class="h-2 rounded-full bg-gradient-to-r from-municipal-blue to-municipal-teal" style="width:${avance}%"></div>
+              </div>
+
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 text-sm">
+                <div><span class="text-gray-500">Inicio:</span> <span class="font-medium text-gray-800">${fi}</span></div>
+                <div><span class="text-gray-500">Fin:</span> <span class="font-medium text-gray-800">${ff}</span></div>
+                <div><span class="text-gray-500">Monto estimado:</span> <span class="font-medium text-gray-800">$${fmt(montoEtapa)}</span></div>
+                <div><span class="text-gray-500">Beneficiarios est.:</span> <span class="font-medium text-gray-800">${fmt(beneficiariosEtapa)}</span></div>
+              </div>
+
+              ${thumbs || ''}
+
+              <div class="mt-4">
+                <h6 class="font-semibold text-gray-800 mb-2">Tareas</h6>
+                ${
+                  tareas.length
+                  ? `
+                    <div class="overflow-hidden rounded-lg border">
+                      <div class="divide-y">
+                        ${tareas.map(t => `
+                          <div class="grid grid-cols-1 md:grid-cols-6 gap-2 p-3 bg-white">
+                            <div class="md:col-span-2">
+                              <div class="text-sm font-medium text-gray-900">${esc(t.nombre||"—")}</div>
+                              <div class="text-xs text-gray-500">Responsable: ${esc(t.responsable||"—")}</div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                              <span class="text-xs ${t.completada ? 'text-emerald-700 bg-emerald-50' : 'text-gray-700 bg-gray-100'} px-2 py-0.5 rounded-full">
+                                ${t.completada ? 'Completada' : 'Pendiente'}
+                              </span>
+                            </div>
+                            <div class="md:col-span-2 text-sm text-gray-700">Costo: $${fmt(t.costo||0)}</div>
+                          </div>
+                        `).join('')}
+                      </div>
+                      <div class="px-3 py-2 bg-slate-50 text-sm flex justify-end">
+                        <div><span class="text-gray-600">Total costos de tareas:</span> <span class="font-semibold text-gray-900">$${fmt(totalTareasCosto)}</span></div>
+                      </div>
+                    </div>
+                  `
+                  : `<div class="text-sm text-gray-500">Sin tareas registradas.</div>`
+                }
+              </div>
+            </div>
           </div>
-          <div class="w-full h-2 bg-gray-200 rounded-full mt-2">
-            <div class="h-2 rounded-full bg-gradient-to-r from-municipal-blue to-municipal-teal" style="width:${avance}%"></div>
-          </div>
-          <div class="flex justify-between text-xs text-gray-500 mt-2">
-            <span>${fi}</span><span>${ff}</span>
-          </div>
-          ${thumbs || ""}
         </article>
       `);
     }
     return parts.join("");
   }
 
+  // --- Cálculos ---
   function calcProgreso(p){
     if(!p.etapas?.length) return 0;
     let total = 0;
@@ -466,7 +551,7 @@
       "Cancelado":"bg-rose-50 text-rose-700 border border-rose-200"
     };
     return map[s] || "bg-gray-50 text-gray-700 border border-gray-200";
-    }
+  }
   function timeBadge(st){
     const map = {
       "completado":"bg-emerald-50 text-emerald-700 border border-emerald-200",
