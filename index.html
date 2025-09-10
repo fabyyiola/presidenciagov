@@ -336,7 +336,103 @@
           updatedAt: "2025-09-09T19:46:26.554Z",
         },
       ];
-
+      const secretarias = [
+        {
+          id: 1,
+          nombre: "Secretaría del Ayuntamiento",
+          responsable: "Lic. Carlos Mendoza Ruiz",
+          titulo: "Secretario del Ayuntamiento",
+          descripcion:
+            "Encargada de la administración general y actas de cabildo",
+          telefono: "(873) 742-0001",
+          email: "secretaria@sabinashidalgo.gob.mx",
+          icono: "fas fa-gavel",
+        },
+        {
+          id: 2,
+          nombre: "Secretaría de Finanzas",
+          responsable: "C.P. María Elena Torres",
+          titulo: "Secretaria de Finanzas",
+          descripcion: "Administración de recursos financieros municipales",
+          telefono: "(873) 742-0015",
+          email: "finanzas@sabinashidalgo.gob.mx",
+          icono: "fas fa-coins",
+        },
+        {
+          id: 3,
+          nombre: "Secretaría de Desarrollo Social",
+          responsable: "Lic. Roberto Hernández",
+          titulo: "Secretario de Desarrollo Social",
+          descripcion: "Programas sociales y desarrollo comunitario",
+          telefono: "(873) 742-0020",
+          email: "desarrollo@sabinashidalgo.gob.mx",
+          icono: "fas fa-heart",
+        },
+      ];
+      const direcciones = [
+        {
+          id: 1,
+          nombre: "Dirección de Salud",
+          responsable: "Dra. Patricia Flores Vega",
+          titulo: "Directora de Salud",
+          descripcion: "Programas de salud pública y prevención",
+          telefono: "(873) 742-0025",
+          email: "salud@sabinashidalgo.gob.mx",
+          icono: "fas fa-heartbeat",
+        },
+        {
+          id: 2,
+          nombre: "Dirección de Obras Públicas",
+          responsable: "Ing. Miguel Ángel Sánchez",
+          titulo: "Director de Obras Públicas",
+          descripcion: "Infraestructura y mantenimiento urbano",
+          telefono: "(873) 742-0030",
+          email: "obras@sabinashidalgo.gob.mx",
+          icono: "fas fa-hard-hat",
+        },
+        {
+          id: 3,
+          nombre: "Dirección de Educación y Cultura",
+          responsable: "Profra. Ana Lucía Morales",
+          titulo: "Directora de Educación",
+          descripcion: "Programas educativos y actividades culturales",
+          telefono: "(873) 742-0035",
+          email: "educacion@sabinashidalgo.gob.mx",
+          icono: "fas fa-graduation-cap",
+        },
+      ];
+      const cabildo = [
+        {
+          id: 1,
+          nombre: "Lic. José Manuel Rodríguez",
+          titulo: "Primer Regidor",
+          descripcion: "Comisión de Hacienda y Patrimonio",
+          telefono: "(873) 742-0040",
+          email: "regidor1@sabinashidalgo.gob.mx",
+          partido: "Partido Acción Nacional",
+          icono: "fas fa-user-tie",
+        },
+        {
+          id: 2,
+          nombre: "Lic. Carmen Beatriz López",
+          titulo: "Segunda Regidora",
+          descripcion: "Comisión de Desarrollo Social",
+          telefono: "(873) 742-0041",
+          email: "regidor2@sabinashidalgo.gob.mx",
+          partido: "Movimiento Ciudadano",
+          icono: "fas fa-female",
+        },
+        {
+          id: 3,
+          nombre: "Ing. Fernando Castillo Vega",
+          titulo: "Tercer Regidor",
+          descripcion: "Comisión de Obras Públicas",
+          telefono: "(873) 742-0042",
+          email: "regidor3@sabinashidalgo.gob.mx",
+          partido: "Partido Revolucionario Institucional",
+          icono: "fas fa-user-tie",
+        },
+      ];
       // ---- Seed util
       function seedIfEmpty(key, value) {
         try {
@@ -357,6 +453,9 @@
       seedIfEmpty("eventos", eventos);
       seedIfEmpty("municipio.contactos.emergencia.v1", contactos);
       seedIfEmpty("municipio.programas.v1", programas);
+      seedIfEmpty("secretarias", secretarias);
+      seedIfEmpty("direcciones", direcciones);
+      seedIfEmpty("cabildo", cabildo);
     </script>
     <!-- Font Awesome -->
     <link
