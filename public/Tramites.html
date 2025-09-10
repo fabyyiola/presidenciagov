@@ -1,13 +1,13 @@
 <!-- TramitesPublicos.html -->
 <section id="TramitesPublicos" class="section-content">
   <!-- Hero -->
-   <section class="relative h-64 bg-gradient-to-r from-municipal-blue to-purple-600 flex items-center justify-center">
-        <div class="absolute inset-0 bg-black opacity-20"></div>
-        <div class="relative text-center text-white z-10">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">TRÁMITES Y SERVICIOS</h1>
-            <p class="text-xl text-blue-100">Facilitamos tus gestiones municipales</p>
-        </div>
-    </section>
+  <section class="relative h-64 bg-gradient-to-r from-municipal-blue to-purple-600 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black opacity-20"></div>
+    <div class="relative text-center text-white z-10">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">TRÁMITES Y SERVICIOS</h1>
+      <p class="text-xl text-blue-100">Facilitamos tus gestiones municipales</p>
+    </div>
+  </section>
 
   <!-- Grid -->
   <div id="tramites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4"></div>
@@ -21,9 +21,9 @@
   <!-- Modal Detalle -->
   <div id="tramite-detail" class="fixed inset-0 bg-black/60 hidden z-50 p-4">
     <div class="bg-white rounded-2xl max-w-4xl w-full mx-auto max-h-[90vh] overflow-y-auto shadow-xl">
-      <div class="p-6 border-b flex justify-between items-center">
+      <div class="p-6 border-b flex justify-between items-center bg-blue-600 text-white rounded-t-2xl">
         <h3 id="dTitulo" class="text-2xl font-bold">Detalle del Trámite</h3>
-        <button onclick="UI.closeDetail()" class="text-slate-500 hover:text-slate-800">
+        <button onclick="UI.closeDetail()" class="hover:text-gray-200">
           <i class="fa-solid fa-xmark text-xl"></i>
         </button>
       </div>
@@ -31,56 +31,87 @@
     </div>
   </div>
 </section>
+
 <script>
 (() => {
   const LS_KEY = "tramites";
 
   function loadTramites() {
-    try {
-      return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-    } catch {
-      return [];
-    }
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
+    catch { return []; }
   }
 
   const UI = {
-    el(id) { return document.getElementById(id); },
-    render() {
+    el(id){ return document.getElementById(id); },
+    render(){
       const list = loadTramites();
       const grid = this.el("tramites-grid");
       const empty = this.el("tramites-empty");
-
       grid.innerHTML = "";
-      if (!list.length) {
-        empty.classList.remove("hidden");
-        return;
-      }
+
+      if (!list.length){ empty.classList.remove("hidden"); return; }
       empty.classList.add("hidden");
 
-      list.forEach(t => {
+      list.forEach(t=>{
         const card = document.createElement("div");
         card.className = "bg-white rounded-xl border shadow hover:shadow-lg transition p-6 cursor-pointer";
         card.innerHTML = `
           <h3 class="font-bold text-gray-800 mb-1">${t.titulo || "—"}</h3>
           <p class="text-sm text-gray-600 mb-2">${t.descripcion || ""}</p>
-          <p class="text-xs text-gray-500">${t.categoria || ""}</p>
+          <p class="text-xs text-gray-500">${t.categoriaNombre || t.categoria || ""}</p>
           <span class="text-teal-600 text-sm font-medium hover:underline">Ver más</span>
         `;
-        card.addEventListener("click", () => UI.openDetail(t));
+        card.addEventListener("click", ()=>UI.openDetail(t));
         grid.appendChild(card);
       });
     },
-    openDetail(item) {
+    openDetail(item){
       this.el("dTitulo").textContent = item.titulo || "Detalle";
-      this.el("dBody").innerHTML = `<pre class="whitespace-pre-wrap text-sm">${JSON.stringify(item, null, 2)}</pre>`;
+
+      this.el("dBody").innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="space-y-3 text-sm">
+            <div><i class="fas fa-map-marker-alt text-red-600 mr-2"></i><strong>Ubicación:</strong> ${item.ubicacion || "—"}</div>
+            <div><i class="fas fa-clock text-blue-600 mr-2"></i><strong>Horario:</strong> ${item.horario || "—"}</div>
+          </div>
+          <div class="space-y-3 text-sm">
+            <div><i class="fas fa-dollar-sign text-green-600 mr-2"></i><strong>Costo:</strong> ${item.costo || "—"}</div>
+            <div><i class="fas fa-hourglass-half text-orange-600 mr-2"></i><strong>Tiempo:</strong> ${item.tiempo || "—"}</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+              <i class="fas fa-clipboard-list text-blue-600 mr-2"></i> Requisitos
+            </h4>
+            <ul class="space-y-2 text-sm">
+              ${(item.requisitos||[]).map(r=>`
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-600 mt-0.5 mr-2 text-xs"></i>
+                  <span>${r}</span>
+                </li>`).join("") || "<li>—</li>"}
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+              <i class="fas fa-list-ol text-green-600 mr-2"></i> Procedimiento
+            </h4>
+            <ol class="space-y-2 text-sm">
+              ${(item.procedimiento||[]).map((p,i)=>`
+                <li class="flex items-start">
+                  <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-medium mr-2 mt-0.5">${i+1}</span>
+                  <span>${p}</span>
+                </li>`).join("") || "<li>—</li>"}
+            </ol>
+          </div>
+        </div>
+      `;
       this.el("tramite-detail").classList.remove("hidden");
     },
-    closeDetail() {
-      this.el("tramite-detail").classList.add("hidden");
-    }
+    closeDetail(){ this.el("tramite-detail").classList.add("hidden"); }
   };
 
-  // Run immediately, not only on DOMContentLoaded
   UI.render();
   window.UI = UI;
 })();
